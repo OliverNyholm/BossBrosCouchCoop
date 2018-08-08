@@ -11,7 +11,9 @@ public class Health : NetworkBehaviour
     public int myCurrentHealth = 100;
 
     public delegate void HealthChanged();
-    public event HealthChanged OnHealthChange;
+
+    [SyncEvent]
+    public event HealthChanged EventOnHealthChange;
 
     public void TakeDamage(int aValue)
     {
@@ -26,7 +28,7 @@ public class Health : NetworkBehaviour
             myCurrentHealth = 0;
         }
 
-        OnHealthChange?.Invoke();
+        RpcHealthChanged();
     }
 
     public void GainHealth(int aValue)
@@ -42,7 +44,7 @@ public class Health : NetworkBehaviour
             myCurrentHealth = myMaxHealth;
         }
 
-        OnHealthChange?.Invoke();
+        RpcHealthChanged();
     }
 
     public bool IsDead()
@@ -61,7 +63,13 @@ public class Health : NetworkBehaviour
         set
         {
             myMaxHealth = value;
-            OnHealthChange?.Invoke();
+            RpcHealthChanged();
         }
+    }
+
+    [ClientRpc]
+    private void RpcHealthChanged()
+    {
+        EventOnHealthChange?.Invoke();
     }
 }

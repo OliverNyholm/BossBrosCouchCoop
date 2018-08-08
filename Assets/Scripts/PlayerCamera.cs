@@ -10,7 +10,8 @@ public class PlayerCamera : MonoBehaviour
     public float myMaxDistance = 20.0f;
     public float myTargetHeight = 1.7f;
     public float zoomDampening = 5.0f;
-    public float myRotationSpeed = 2.0f;
+    public float myRotationSpeedX = 2.0f;
+    public float myRotationSpeedY = 2.0f;
 
     private float myDesiredDistance;
     private float myCurrentDistance;
@@ -44,8 +45,15 @@ public class PlayerCamera : MonoBehaviour
 
         if (Input.GetMouseButton(1))
         {
-            myXDegrees += Input.GetAxis("Mouse X") * myRotationSpeed;
-            myYDegrees -= Input.GetAxis("Mouse Y") * myRotationSpeed;
+            myXDegrees += Input.GetAxis("Mouse X") * myRotationSpeedX;
+            myYDegrees -= Input.GetAxis("Mouse Y") * myRotationSpeedY;
+        }
+        else if (!myTarget.GetComponent<PlayerCharacter>().myShouldStrafe && (Input.GetButton("Vertical") || Input.GetButton("Horizontal")))
+        {
+            float rotationDampening = 3.0f;
+            float targetRotationAngle = myTarget.GetComponentInChildren<MeshFilter>().transform.eulerAngles.y;
+            float currentRotationAngle = transform.eulerAngles.y;
+            myXDegrees = Mathf.LerpAngle(currentRotationAngle, targetRotationAngle, rotationDampening * Time.deltaTime);
         }
 
         myYDegrees = ClampAngle(myYDegrees, myMinYRotation, myMaxYRotation);
@@ -63,13 +71,13 @@ public class PlayerCamera : MonoBehaviour
         Vector3 trueTargetPosition = new Vector3(myTarget.position.x, myTarget.position.y + myTargetHeight, myTarget.position.z);
 
         bool hasHitWall = false;
-        if(Physics.Linecast(trueTargetPosition, position, out collisionHit))
+        if (Physics.Linecast(trueTargetPosition, position, out collisionHit))
         {
             myCorrectedDistance = Vector3.Distance(trueTargetPosition, collisionHit.point) - myOffsetFromWall;
             hasHitWall = true;
         }
 
-        if(hasHitWall || myCorrectedDistance > myCurrentDistance)
+        if (hasHitWall || myCorrectedDistance > myCurrentDistance)
         {
             myCurrentDistance = Mathf.Lerp(myCurrentDistance, myCorrectedDistance, Time.deltaTime * zoomDampening);
         }

@@ -58,7 +58,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1578893479564142
 GameObject:
@@ -352,7 +352,18 @@ MonoBehaviour:
   - {fileID: 1060916130889568, guid: 4caa3539b55677c468d384289c61f19c, type: 2}
   - {fileID: 1458153417168346, guid: 7d4fe2b9e97731e4881150b10df5ef4e, type: 2}
   - {fileID: 1508935094154108, guid: b4d20528e4cbcc246bed632b25b3b55f, type: 2}
-  - {fileID: 1983804006253038, guid: 994ef13aed7efe94a860fab4a9fb9abb, type: 2}
+  - {fileID: 1837549656673452, guid: fc507ae2236c8cb4eae8587a9dd8ecea, type: 2}
+  myActionBar: {fileID: 1026129865368490, guid: 82db672da088dea4fa51852e27f2817c,
+    type: 2}
+  myCooldownTimers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
 --- !u!114 &114978270228319164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -369,6 +380,8 @@ MonoBehaviour:
   myGravity: 60
   myDirection: {x: 0, y: 0, z: 0}
   myShouldStrafe: 1
+  myIsTypingInChat: 0
+  myClass: {fileID: 0}
 --- !u!114 &114979219753306776
 MonoBehaviour:
   m_ObjectHideFlags: 1

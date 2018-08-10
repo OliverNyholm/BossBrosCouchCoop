@@ -6,7 +6,6 @@ public class Enemy : MonoBehaviour
 {
 
     public string myName;
-    public int myHealth;
     public float myDamage;
 
     public GameObject[] mySpells;
@@ -38,10 +37,5 @@ public class Enemy : MonoBehaviour
             else
                 myTargetPosition = myStartPosition;
         }
-    }
-
-    public void TakeDamage(int aValue)
-    {
-        myHealth -= aValue;
     }
 }

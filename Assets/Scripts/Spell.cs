@@ -18,9 +18,10 @@ public class Spell : NetworkBehaviour
 
     public GameObject OnTargetSpell;
 
+    [SyncVar]
     private GameObject myParent;
     [SyncVar]
-    private GameObject myTarget;
+    public GameObject myTarget;
 
     void Start()
     {
@@ -72,6 +73,9 @@ public class Spell : NetworkBehaviour
         {
             if (myDamage > 0.0f)
                 myTarget.GetComponent<Health>().GainHealth(myDamage);
+
+            if (mySpellType == SpellType.Interrupt)
+                Interrupt();
         }
         else
         {
@@ -96,6 +100,7 @@ public class Spell : NetworkBehaviour
             || mySpellType == SpellType.HOT
             || mySpellType == SpellType.Shield
             || mySpellType == SpellType.Buff
+            || mySpellType == SpellType.Interrupt //TODO: REMOVE THIS :)
             || mySpellType == SpellType.Ressurect)
             return true;
 
@@ -122,5 +127,11 @@ public class Spell : NetworkBehaviour
             text += " - Ressurect";
 
         return text;
+    }
+
+    private void Interrupt()
+    {
+        myParent.GetComponent<PlayerCharacter>().InterruptTarget();
+        //myTarget.GetComponent<PlayerCharacter>().InterruptSpellCast();
     }
 }

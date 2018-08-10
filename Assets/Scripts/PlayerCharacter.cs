@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 
 public class PlayerCharacter : NetworkBehaviour
@@ -13,6 +14,10 @@ public class PlayerCharacter : NetworkBehaviour
     public Vector3 myDirection;
 
     public bool myShouldStrafe = true;
+
+    public bool myIsTypingInChat = false;
+
+    [SyncVar]
     private string myName;
 
     private CharacterController myController;
@@ -22,7 +27,7 @@ public class PlayerCharacter : NetworkBehaviour
 
     private Castbar myCastbar;
     private bool myIsCasting;
-    private Coroutine castingRoutine;
+    private Coroutine myCastingRoutine;
 
     [SyncVar]//(hook ="OnTargetChange")
     private GameObject myTarget;
@@ -37,7 +42,6 @@ public class PlayerCharacter : NetworkBehaviour
 
         myCamera = Camera.main;
         myCamera.GetComponent<PlayerCamera>().SetTarget(this.transform);
-
     }
 
     private void Start()
@@ -45,6 +49,7 @@ public class PlayerCharacter : NetworkBehaviour
         myController = transform.GetComponent<CharacterController>();
 
         myClass = GetComponentInChildren<Class>();
+        myClass.SetupSpellHud(CastSpell);
 
         myCastbar = GameObject.Find("Castbar Background").GetComponent<Castbar>();
         myCharacterHUD = GameObject.Find("PlayerHud").GetComponent<CharacterHUD>();
@@ -59,8 +64,12 @@ public class PlayerCharacter : NetworkBehaviour
         if (!hasAuthority)
             return;
 
-        DetectMovementInput();
-        DetectPressedSpellOrRaycast();
+        if (!myIsTypingInChat)
+        {
+            DetectMovementInput();
+            DetectPressedSpellOrRaycast();
+        }
+
         RotatePlayer();
 
         myDirection.y -= myGravity * Time.deltaTime;
@@ -106,7 +115,8 @@ public class PlayerCharacter : NetworkBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastNewTarget();
+            if (!EventSystem.current.IsPointerOverGameObject())
+                RaycastNewTarget();
         }
     }
 
@@ -132,20 +142,25 @@ public class PlayerCharacter : NetworkBehaviour
         }
     }
 
-    private void CastSpell(int aKeyIndex)
+    public void CastSpell(int aKeyIndex)
     {
-        Debug.Log("Cast spell Index: " + aKeyIndex);
+        if(myClass.IsSpellOnCooldown(aKeyIndex))
+        {
+            Debug.Log("Can't cast that spell yet");
+            return;
+        }
 
         GameObject spell = myClass.GetSpell(aKeyIndex);
         Spell spellScript = spell.GetComponent<Spell>();
 
-        if (!IsUnableToCastSpell(spellScript))
+        if (!IsAbleToCastSpell(spellScript))
             return;
 
 
         if (spellScript.mySpeed <= 0.0f)
         {
             CmdSpawnSpell(aKeyIndex, myTarget.transform.position);
+            myClass.SetSpellOnCooldown(aKeyIndex);
             return;
         }
 
@@ -156,7 +171,7 @@ public class PlayerCharacter : NetworkBehaviour
         myCastbar.SetSpellIcon(spellScript.myCastbarIcon);
         myCastbar.SetCastTimeText(spellScript.myCastTime.ToString());
 
-        castingRoutine = StartCoroutine(CastbarProgress(aKeyIndex));
+        myCastingRoutine = StartCoroutine(CastbarProgress(aKeyIndex));
     }
 
     [Command]
@@ -190,14 +205,59 @@ public class PlayerCharacter : NetworkBehaviour
 
             progress += rate * Time.deltaTime;
 
+            if (IsMoving())
+            {
+                myCastbar.SetCastTimeText("Cancelled");
+                StopCasting();
+                yield break;
+            }
+
             yield return null;
         }
 
+
+        StopCasting();
+
+        if (IsAbleToCastSpell(spellScript))
+        {
+            CmdSpawnSpell(aKeyIndex, transform.position);
+            myClass.SetSpellOnCooldown(aKeyIndex);
+        }
+    }
+
+    public void InterruptSpellCast()
+    {
+        if (myIsCasting)
+        {
+            StopCasting();
+        }
+    }
+
+    public void InterruptTarget()
+    {
+        if (isServer)
+            RpcInterrupt();
+        else if (hasAuthority)
+            CmdInterrupt();
+    }
+
+    [Command]
+    private void CmdInterrupt()
+    {
+        myTarget.GetComponent<PlayerCharacter>().InterruptSpellCast();
+    }
+
+    [ClientRpc]
+    private void RpcInterrupt()
+    {
+        myTarget.GetComponent<PlayerCharacter>().InterruptSpellCast();
+    }
+
+    private void StopCasting()
+    {
+        StopCoroutine(myCastingRoutine);
         myIsCasting = false;
         myCastbar.FadeOutCastbar();
-
-        if (IsInSightOrCloseEnough(spellScript.myRange))
-            CmdSpawnSpell(aKeyIndex, transform.position);
     }
 
     private bool CanRaycastToTarget()
@@ -210,13 +270,29 @@ public class PlayerCharacter : NetworkBehaviour
             {
                 return true;
             }
+            else if (hit.transform.parent == myTarget.transform)
+            {
+                return true;
+            }
         }
 
         return false;
     }
 
-    private bool IsInSightOrCloseEnough(float aSpellRange)
+    private bool IsAbleToCastSpell(Spell aSpellScript)
     {
+        if (!myTarget || myIsCasting)
+        {
+            Debug.Log("Already casting or no target!");
+            return false;
+        }
+
+        if (IsMoving())
+        {
+            Debug.Log("Can't cast while moving!");
+            return false;
+        }
+
         if (!CanRaycastToTarget())
         {
             Debug.Log("Target not in line of sight!");
@@ -224,30 +300,11 @@ public class PlayerCharacter : NetworkBehaviour
         }
 
         float distance = Vector3.Distance(transform.position, myTarget.transform.position);
-        if (distance > aSpellRange)
+        if (distance > aSpellScript.myRange)
         {
             Debug.Log("Out of range!");
             return false;
         }
-
-        return true;
-    }
-
-    private bool IsUnableToCastSpell(Spell aSpellScript)
-    {
-        if (!myTarget || myIsCasting)
-        {
-            if (!myTarget)
-                Debug.Log("no target!");
-            if (myIsCasting)
-                Debug.Log("Casting!");
-
-            Debug.Log("Already casting or no target!");
-            return false;
-        }
-
-        if (!IsInSightOrCloseEnough(aSpellScript.myRange))
-            return false;
 
         if (aSpellScript.IsFriendly() && myTarget.tag == "Enemy")
         {
@@ -268,10 +325,16 @@ public class PlayerCharacter : NetworkBehaviour
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        LayerMask layerMask = LayerMask.GetMask("Targetable");
+        LayerMask layerMask = LayerMask.GetMask("Targetable") | LayerMask.GetMask("UI");
 
         if (Physics.Raycast(ray, out hit, 100.0f, layerMask))
         {
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("UI"))
+            {
+                Debug.Log("Hit UI");
+                return;
+            }
+
             if (myTarget != null)
             {
                 myTarget.GetComponentInChildren<Projector>().enabled = false;
@@ -299,6 +362,17 @@ public class PlayerCharacter : NetworkBehaviour
         }
     }
 
+    private bool IsMoving()
+    {
+        if (myDirection.x != 0 && myDirection.y != 0)
+            return true;
+
+        if (!myController.isGrounded)
+            return true;
+
+        return false;
+    }
+
     [Command]
     private void CmdSetTarget(GameObject aTarget)
     {
@@ -323,7 +397,8 @@ public class PlayerCharacter : NetworkBehaviour
         myTarget.GetComponent<Health>().EventOnHealthChange += ChangeHudHealth;
 
         myTargetHUD.Show();
-        ChangeHudHealth();
+        ChangeHudHealth(myTarget.GetComponent<Health>().GetHealthPercentage(),
+            myTarget.GetComponent<Health>().myCurrentHealth.ToString() + "/" + myTarget.GetComponent<Health>().MaxHealth);
 
         if (myTarget.tag == "Enemy")
         {
@@ -332,16 +407,16 @@ public class PlayerCharacter : NetworkBehaviour
         }
         else if (myTarget.tag == "Player")
         {
-            myTargetHUD.SetName(myTarget.GetComponent<PlayerCharacter>().myName);
+            if (myTarget.GetComponent<PlayerCharacter>() != null)
+                myTargetHUD.SetName(myTarget.GetComponent<PlayerCharacter>().Name);
             myTargetHUD.SetNameColor(new Color(120f / 255f, 1.0f, 0.0f));
         }
     }
 
-    private void ChangeHudHealth()
+    private void ChangeHudHealth(float aHealthPercentage, string aHealthText)
     {
-        Health targetHealth = myTarget.GetComponent<Health>();
-        myTargetHUD.SetHealthBarFillAmount(targetHealth.GetHealthPercentage());
-        myTargetHUD.SetHealthText(targetHealth.myCurrentHealth.ToString() + "/" + targetHealth.MaxHealth);
+        myTargetHUD.SetHealthBarFillAmount(aHealthPercentage);
+        myTargetHUD.SetHealthText(aHealthText);
     }
 
     private GameObject FindParentWithNetworkIdentity(GameObject aGameObject)

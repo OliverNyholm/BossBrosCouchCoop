@@ -9,6 +9,7 @@ public class PlayerCamera : MonoBehaviour
     public float myMinDistance = 0.2f;
     public float myMaxDistance = 20.0f;
     public float myTargetHeight = 1.7f;
+    public float myScrollSpeed = 5.0f;
     public float zoomDampening = 5.0f;
     public float myRotationSpeedX = 2.0f;
     public float myRotationSpeedY = 2.0f;
@@ -60,7 +61,7 @@ public class PlayerCamera : MonoBehaviour
 
         Quaternion rotation = Quaternion.Euler(myYDegrees, myXDegrees, 0.0f);
 
-        myDesiredDistance -= Input.GetAxis("Mouse ScrollWheel");
+        myDesiredDistance -= Input.GetAxis("Mouse ScrollWheel") * myScrollSpeed;
         myDesiredDistance = Mathf.Clamp(myDesiredDistance, myMinDistance, myMaxDistance);
         myCorrectedDistance = myDesiredDistance;
 

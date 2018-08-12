@@ -121,18 +121,16 @@ MonoBehaviour:
   myName: Ice Spear
   myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 2}
   mySpellType: 0
+  myDamage: 200
   mySpeed: 20
   myCastTime: 1.5
-  myDamage: 200
   myCooldown: 1
   myRange: 25
-  myCastbarColor:
-    r: 0
-    g: 0.77544075
-    b: 0.8962264
-    a: 1
+  myCastbarColor: {r: 0, g: 0.77544075, b: 0.8962264, a: 1}
   myCastbarIcon: {fileID: 21300000, guid: 9764fa63aed91ae46a9ec2374d186842, type: 3}
+  myIsCastableWhileMoving: 1
   OnTargetSpell: {fileID: 0}
+  myTarget: {fileID: 0}
 --- !u!114 &114558398430314528
 MonoBehaviour:
   m_ObjectHideFlags: 1

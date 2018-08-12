@@ -163,9 +163,9 @@ public class PlayerCharacter : NetworkBehaviour
             return;
 
 
-        if (spellScript.mySpeed <= 0.0f)
+        if (spellScript.myCastTime <= 0.0f)
         {
-            CmdSpawnSpell(aKeyIndex, myTarget.transform.position);
+            CmdSpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
             return;
         }
@@ -211,7 +211,7 @@ public class PlayerCharacter : NetworkBehaviour
 
             progress += rate * Time.deltaTime;
 
-            if (IsMoving())
+            if (!spellScript.IsCastableWhileMoving() && IsMoving() || Input.GetKeyDown(KeyCode.Escape))
             {
                 myCastbar.SetCastTimeText("Cancelled");
                 StopCasting();
@@ -226,9 +226,17 @@ public class PlayerCharacter : NetworkBehaviour
 
         if (IsAbleToCastSpell(spellScript))
         {
-            CmdSpawnSpell(aKeyIndex, transform.position);
+            CmdSpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
         }
+    }
+
+    private Vector3 GetSpellSpawnPosition(Spell aSpellScript)
+    {
+        if(aSpellScript.mySpeed <= 0.0f)
+            return myTarget.transform.position;
+
+        return transform.position;
     }
 
     public void InterruptSpellCast()
@@ -297,7 +305,7 @@ public class PlayerCharacter : NetworkBehaviour
             return false;
         }
 
-        if (IsMoving())
+        if (!aSpellScript.IsCastableWhileMoving() && IsMoving())
         {
             Debug.Log("Can't cast while moving!");
             return false;

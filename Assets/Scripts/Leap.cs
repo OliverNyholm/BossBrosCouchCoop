@@ -38,6 +38,7 @@ public class Leap : Spell {
         float angleBetweenObjects = Vector3.Angle(Vector3.forward, planarTarget - planarPostion);
         Vector3 finalVelocity = Quaternion.AngleAxis(angleBetweenObjects, Vector3.up) * velocity;
 
+        //Have to inverse in x, since angleBetweenObjects seems to ignore that fact //Oliver
         if (myTarget.transform.position.x < myParent.transform.position.x)
             finalVelocity.x *= -1;
 

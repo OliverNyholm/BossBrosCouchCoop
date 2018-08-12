@@ -8,16 +8,20 @@ public class Spell : NetworkBehaviour
     public string myName;
     public GameObject myTextMesh;
     public SpellType mySpellType;
+
+    public int myDamage;
+
     public float mySpeed;
     public float myCastTime;
-    public int myDamage;
     public float myCooldown;
     public float myRange;
+
     public Color myCastbarColor;
     public Sprite myCastbarIcon;
 
-    public GameObject OnTargetSpell;
+    public bool myIsCastableWhileMoving;
 
+    public GameObject OnTargetSpell;
     [SyncVar]
     protected GameObject myParent;
     [SyncVar]
@@ -105,6 +109,11 @@ public class Spell : NetworkBehaviour
             return true;
 
         return false;
+    }
+
+    public bool IsCastableWhileMoving()
+    {
+        return myIsCastableWhileMoving || myCastTime <= 0.0f;
     }
 
     private string GetSpellHitText()

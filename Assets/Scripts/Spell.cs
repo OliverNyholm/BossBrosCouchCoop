@@ -19,7 +19,7 @@ public class Spell : NetworkBehaviour
     public GameObject OnTargetSpell;
 
     [SyncVar]
-    private GameObject myParent;
+    protected GameObject myParent;
     [SyncVar]
     public GameObject myTarget;
 
@@ -67,7 +67,7 @@ public class Spell : NetworkBehaviour
         NetworkServer.Spawn(onTarget);
     }
 
-    private void DealSpellEffect()
+    protected virtual void DealSpellEffect()
     {
         if (IsFriendly())
         {

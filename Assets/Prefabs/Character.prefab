@@ -148,8 +148,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1115726613946492}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.4, z: 0.4}
-  m_LocalScale: {x: 1.3764, y: 0.24338, z: 0.57274}
+  m_LocalPosition: {x: -0, y: 0.539, z: 0.191}
+  m_LocalScale: {x: 0.9552522, y: 0.24338, z: 0.57274}
   m_Children: []
   m_Father: {fileID: 4907434678024006}
   m_RootOrder: 0
@@ -345,7 +345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myClassName: Mage
   mySpells:
-  - {fileID: 1983804006253038, guid: 994ef13aed7efe94a860fab4a9fb9abb, type: 2}
+  - {fileID: 1310371387935930, guid: 2a2919ac58a524c4ba3a6dec1ec28854, type: 2}
   - {fileID: 1954426499067478, guid: 95cd55402fb14d64b9bdceca5a3be4a6, type: 2}
   - {fileID: 1125694136323164, guid: 6fefe2c9c789eed4b99cd374abe17664, type: 2}
   - {fileID: 1233940432947236, guid: 1b123b8be2c110d42a377fca64b18196, type: 2}
@@ -353,8 +353,6 @@ MonoBehaviour:
   - {fileID: 1458153417168346, guid: 7d4fe2b9e97731e4881150b10df5ef4e, type: 2}
   - {fileID: 1508935094154108, guid: b4d20528e4cbcc246bed632b25b3b55f, type: 2}
   - {fileID: 1837549656673452, guid: fc507ae2236c8cb4eae8587a9dd8ecea, type: 2}
-  myActionBar: {fileID: 1026129865368490, guid: 82db672da088dea4fa51852e27f2817c,
-    type: 2}
   myCooldownTimers:
   - 0
   - 0
@@ -381,6 +379,7 @@ MonoBehaviour:
   myDirection: {x: 0, y: 0, z: 0}
   myShouldStrafe: 1
   myIsTypingInChat: 0
+  myStunDuration: 0
   myClass: {fileID: 0}
 --- !u!114 &114979219753306776
 MonoBehaviour:

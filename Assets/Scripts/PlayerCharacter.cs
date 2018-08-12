@@ -17,6 +17,8 @@ public class PlayerCharacter : NetworkBehaviour
 
     public bool myIsTypingInChat = false;
 
+    public float myStunDuration;
+
     [SyncVar]
     private string myName;
 
@@ -64,10 +66,14 @@ public class PlayerCharacter : NetworkBehaviour
         if (!hasAuthority)
             return;
 
-        if (!myIsTypingInChat)
+        if (!myIsTypingInChat && myStunDuration <= 0.0f)
         {
             DetectMovementInput();
             DetectPressedSpellOrRaycast();
+        }
+        else if(myStunDuration > 0.0f)
+        {
+            myStunDuration -= Time.deltaTime;
         }
 
         RotatePlayer();
@@ -264,7 +270,11 @@ public class PlayerCharacter : NetworkBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position + Vector3.up, ((myTarget.transform.position + Vector3.up * 0.5f) - (transform.position + Vector3.up)), out hit))
+        Vector3 hardcodedEyePosition = new Vector3(0.0f, 0.7f, 0.0f);
+        Vector3 infrontOfPlayer = (transform.position + hardcodedEyePosition) + transform.forward;
+        Vector3 direction = (myTarget.transform.position + hardcodedEyePosition) - infrontOfPlayer;
+
+        if (Physics.Raycast(infrontOfPlayer, direction, out hit))
         {
             if (hit.transform == myTarget.transform)
             {

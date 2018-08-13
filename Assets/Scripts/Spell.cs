@@ -10,6 +10,7 @@ public class Spell : NetworkBehaviour
     public SpellType mySpellType;
 
     public int myDamage;
+    public int myResourceCost;
 
     public float mySpeed;
     public float myCastTime;

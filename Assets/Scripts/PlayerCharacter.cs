@@ -26,16 +26,18 @@ public class PlayerCharacter : NetworkBehaviour
     private Camera myCamera;
 
     public Class myClass;
+    private Health myHealth;
+    private Resource myResource;
 
     private Castbar myCastbar;
     private bool myIsCasting;
     private Coroutine myCastingRoutine;
 
-    [SyncVar]//(hook ="OnTargetChange")
+    [SyncVar]
     private GameObject myTarget;
 
-    CharacterHUD myCharacterHUD;
-    CharacterHUD myTargetHUD;
+    private CharacterHUD myCharacterHUD;
+    private CharacterHUD myTargetHUD;
 
     // Use this for initialization
     public override void OnStartAuthority()
@@ -57,6 +59,14 @@ public class PlayerCharacter : NetworkBehaviour
         myCharacterHUD = GameObject.Find("PlayerHud").GetComponent<CharacterHUD>();
         myTargetHUD = GameObject.Find("TargetHud").GetComponent<CharacterHUD>();
 
+        myHealth = GetComponent<Health>();
+        myHealth.EventOnHealthChange += ChangeMyHudHealth;
+        ChangeMyHudHealth(myHealth.GetHealthPercentage(), myHealth.myCurrentHealth.ToString() + "/" + myHealth.myMaxHealth.ToString());
+
+        myResource = GetComponent<Resource>();
+        myResource.EventOnResourceChange += ChangeMyHudResource;
+        ChangeMyHudResource(myResource.GetResourcePercentage(), myResource.myCurrentResource.ToString() + "/" + myResource.MaxResource.ToString());
+
         myCharacterHUD.SetName(myName + " (" + myClass.myClassName + ")");
     }
 
@@ -71,7 +81,7 @@ public class PlayerCharacter : NetworkBehaviour
             DetectMovementInput();
             DetectPressedSpellOrRaycast();
         }
-        else if(myStunDuration > 0.0f)
+        else if (myStunDuration > 0.0f)
         {
             myStunDuration -= Time.deltaTime;
         }
@@ -150,7 +160,7 @@ public class PlayerCharacter : NetworkBehaviour
 
     public void CastSpell(int aKeyIndex)
     {
-        if(myClass.IsSpellOnCooldown(aKeyIndex))
+        if (myClass.IsSpellOnCooldown(aKeyIndex))
         {
             Debug.Log("Can't cast that spell yet");
             return;
@@ -167,6 +177,7 @@ public class PlayerCharacter : NetworkBehaviour
         {
             CmdSpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
+            myResource.LoseResource(spellScript.myResourceCost);
             return;
         }
 
@@ -228,12 +239,13 @@ public class PlayerCharacter : NetworkBehaviour
         {
             CmdSpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
+            myResource.LoseResource(spellScript.myResourceCost);
         }
     }
 
     private Vector3 GetSpellSpawnPosition(Spell aSpellScript)
     {
-        if(aSpellScript.mySpeed <= 0.0f)
+        if (aSpellScript.mySpeed <= 0.0f)
             return myTarget.transform.position;
 
         return transform.position;
@@ -305,6 +317,12 @@ public class PlayerCharacter : NetworkBehaviour
             return false;
         }
 
+        if (myResource.myCurrentResource < aSpellScript.myResourceCost)
+        {
+            Debug.Log("Not enough resource to cast");
+            return false;
+        }
+
         if (!aSpellScript.IsCastableWhileMoving() && IsMoving())
         {
             Debug.Log("Can't cast while moving!");
@@ -343,20 +361,16 @@ public class PlayerCharacter : NetworkBehaviour
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        LayerMask layerMask = LayerMask.GetMask("Targetable") | LayerMask.GetMask("UI");
+        LayerMask layerMask = LayerMask.GetMask("Targetable");
 
         if (Physics.Raycast(ray, out hit, 100.0f, layerMask))
         {
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("UI"))
-            {
-                Debug.Log("Hit UI");
-                return;
-            }
-
             if (myTarget != null)
             {
                 myTarget.GetComponentInChildren<Projector>().enabled = false;
-                myTarget.GetComponent<Health>().EventOnHealthChange -= ChangeHudHealth;
+                myTarget.GetComponent<Health>().EventOnHealthChange -= ChangeTargetHudHealth;
+                if (myTarget.GetComponent<Resource>() != null)
+                    myTarget.GetComponent<Resource>().EventOnResourceChange -= ChangeTargetHudResource;
             }
 
             GameObject target = FindParentWithNetworkIdentity(hit.collider.transform.gameObject);
@@ -372,7 +386,9 @@ public class PlayerCharacter : NetworkBehaviour
             if (myTarget != null)
             {
                 myTarget.GetComponentInChildren<Projector>().enabled = false;
-                myTarget.GetComponent<Health>().EventOnHealthChange -= ChangeHudHealth;
+                myTarget.GetComponent<Health>().EventOnHealthChange -= ChangeTargetHudHealth;
+                if (myTarget.GetComponent<Resource>() != null)
+                    myTarget.GetComponent<Resource>().EventOnResourceChange -= ChangeTargetHudResource;
             }
 
             CmdSetTarget(null);
@@ -412,11 +428,22 @@ public class PlayerCharacter : NetworkBehaviour
 
     private void SetTargetHUD()
     {
-        myTarget.GetComponent<Health>().EventOnHealthChange += ChangeHudHealth;
-
         myTargetHUD.Show();
-        ChangeHudHealth(myTarget.GetComponent<Health>().GetHealthPercentage(),
+        myTarget.GetComponent<Health>().EventOnHealthChange += ChangeTargetHudHealth;
+        ChangeTargetHudHealth(myTarget.GetComponent<Health>().GetHealthPercentage(),
             myTarget.GetComponent<Health>().myCurrentHealth.ToString() + "/" + myTarget.GetComponent<Health>().MaxHealth);
+
+        if (myTarget.GetComponent<Resource>() != null)
+        {
+            myTarget.GetComponent<Resource>().EventOnResourceChange += ChangeTargetHudResource;
+            ChangeTargetHudResource(myTarget.GetComponent<Resource>().GetResourcePercentage(),
+                myTarget.GetComponent<Resource>().myCurrentResource.ToString() + "/" + myTarget.GetComponent<Resource>().MaxResource);
+        }
+        else
+        {
+            ChangeTargetHudResource(0.0f, "0/0");
+        }
+
 
         if (myTarget.tag == "Enemy")
         {
@@ -431,10 +458,28 @@ public class PlayerCharacter : NetworkBehaviour
         }
     }
 
-    private void ChangeHudHealth(float aHealthPercentage, string aHealthText)
+    private void ChangeTargetHudHealth(float aHealthPercentage, string aHealthText)
     {
         myTargetHUD.SetHealthBarFillAmount(aHealthPercentage);
         myTargetHUD.SetHealthText(aHealthText);
+    }
+
+    private void ChangeTargetHudResource(float aResourcePercentage, string aResourceText)
+    {
+        myTargetHUD.SetResourceBarFillAmount(aResourcePercentage);
+        myTargetHUD.SetResourceText(aResourceText);
+    }
+
+    private void ChangeMyHudHealth(float aHealthPercentage, string aHealthText)
+    {
+        myCharacterHUD.SetHealthBarFillAmount(aHealthPercentage);
+        myCharacterHUD.SetHealthText(aHealthText);
+    }
+
+    private void ChangeMyHudResource(float aResourcePercentage, string aResourceText)
+    {
+        myCharacterHUD.SetResourceBarFillAmount(aResourcePercentage);
+        myCharacterHUD.SetResourceText(aResourceText);
     }
 
     private GameObject FindParentWithNetworkIdentity(GameObject aGameObject)

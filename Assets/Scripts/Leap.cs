@@ -9,6 +9,9 @@ public class Leap : Spell {
 
     protected override void DealSpellEffect()
     {
+        if (!hasAuthority)
+            return;
+
         myParent.GetComponent<PlayerCharacter>().myStunDuration = 0.2f;
         myParent.GetComponent<PlayerCharacter>().myDirection = CalculateJumpImpact();
 

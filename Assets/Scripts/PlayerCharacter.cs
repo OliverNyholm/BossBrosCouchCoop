@@ -39,6 +39,8 @@ public class PlayerCharacter : NetworkBehaviour
     private CharacterHUD myCharacterHUD;
     private CharacterHUD myTargetHUD;
 
+    private UIManager myUIManager;
+
     // Use this for initialization
     public override void OnStartAuthority()
     {
@@ -58,6 +60,8 @@ public class PlayerCharacter : NetworkBehaviour
         myCastbar = GameObject.Find("Castbar Background").GetComponent<Castbar>();
         myCharacterHUD = GameObject.Find("PlayerHud").GetComponent<CharacterHUD>();
         myTargetHUD = GameObject.Find("TargetHud").GetComponent<CharacterHUD>();
+
+        myUIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
 
         myHealth = GetComponent<Health>();
         myHealth.EventOnHealthChange += ChangeMyHudHealth;
@@ -162,7 +166,7 @@ public class PlayerCharacter : NetworkBehaviour
     {
         if (myClass.IsSpellOnCooldown(aKeyIndex))
         {
-            Debug.Log("Can't cast that spell yet");
+            myUIManager.CreateErrorMessage("Can't cast that spell yet");
             return;
         }
 
@@ -313,44 +317,44 @@ public class PlayerCharacter : NetworkBehaviour
     {
         if (!myTarget || myIsCasting)
         {
-            Debug.Log("Already casting or no target!");
+            myUIManager.CreateErrorMessage("Already casting or no target!");
             return false;
         }
 
         if (myResource.myCurrentResource < aSpellScript.myResourceCost)
         {
-            Debug.Log("Not enough resource to cast");
+            myUIManager.CreateErrorMessage("Not enough resource to cast");
             return false;
         }
 
         if (!aSpellScript.IsCastableWhileMoving() && IsMoving())
         {
-            Debug.Log("Can't cast while moving!");
+            myUIManager.CreateErrorMessage("Can't cast while moving!");
             return false;
         }
 
         if (!CanRaycastToTarget())
         {
-            Debug.Log("Target not in line of sight!");
+            myUIManager.CreateErrorMessage("Target not in line of sight!");
             return false;
         }
 
         float distance = Vector3.Distance(transform.position, myTarget.transform.position);
         if (distance > aSpellScript.myRange)
         {
-            Debug.Log("Out of range!");
+            myUIManager.CreateErrorMessage("Out of range!");
             return false;
         }
 
         if (aSpellScript.IsFriendly() && myTarget.tag == "Enemy")
         {
-            Debug.Log("Can't cast friendly spells on enemies");
+            myUIManager.CreateErrorMessage("Can't cast friendly spells on enemies");
             return false;
         }
 
         if (!aSpellScript.IsFriendly() && myTarget.tag == "Player")
         {
-            Debug.Log("Can't cast hostile spells on friends.");
+            myUIManager.CreateErrorMessage("Can't cast hostile spells on friends.");
             return false;
         }
 
@@ -412,17 +416,11 @@ public class PlayerCharacter : NetworkBehaviour
     {
         myTarget = aTarget;
         RpcUpdateTargetForAllClients(aTarget);
-
-        if (myTarget)
-            Debug.Log("Target is: " + myTarget.name);
-        else
-            Debug.Log("Target is null now!");
     }
 
     [ClientRpc]
     private void RpcUpdateTargetForAllClients(GameObject aTarget)
     {
-        Debug.Log("Target is updated for all clients!");
         myTarget = aTarget;
     }
 

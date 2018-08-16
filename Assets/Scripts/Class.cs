@@ -14,7 +14,16 @@ public enum SpellType
     Silence,
     Slow,
     Buff,
-    Ressurect
+    Ressurect,
+    Special
+}
+
+[System.Flags]
+public enum SpellTarget
+{
+    Friend = 1 << 1,
+    Enemy = 1 << 2,
+    Anyone = Friend | Enemy
 }
 
 

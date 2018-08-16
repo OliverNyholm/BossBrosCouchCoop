@@ -8,6 +8,7 @@ public class Spell : NetworkBehaviour
     public string myName;
     public GameObject myTextMesh;
     public SpellType mySpellType;
+    public SpellTarget mySpellTarget;
 
     public int myDamage;
     public int myResourceCost;
@@ -21,6 +22,7 @@ public class Spell : NetworkBehaviour
     public Sprite myCastbarIcon;
 
     public bool myIsCastableWhileMoving;
+    public bool myCanCastOnSelf;
 
     public GameObject OnTargetSpell;
     [SyncVar]
@@ -54,7 +56,7 @@ public class Spell : NetworkBehaviour
 
             Vector3 startPosition = myTarget.transform.position + new Vector3(Random.Range(-2.0f, 2.0f), 2.0f, Random.Range(-2.0f, 2.0f));
             GameObject textMesh = Instantiate(myTextMesh, startPosition, myTarget.transform.rotation, myTarget.transform);
-            Color textColor = IsFriendly() ? Color.yellow : Color.red;
+            Color textColor = GetSpellTarget() == SpellTarget.Friend ? Color.yellow : Color.red;
             textMesh.GetComponent<FloatingHealth>().SetText(GetSpellHitText(), textColor);
 
 
@@ -79,20 +81,20 @@ public class Spell : NetworkBehaviour
 
     protected virtual void DealSpellEffect()
     {
-        if (IsFriendly())
+        if (GetSpellTarget() == SpellTarget.Friend)
         {
             if (myDamage > 0.0f)
                 myTarget.GetComponent<Health>().GainHealth(myDamage);
-
-            if (mySpellType == SpellType.Interrupt)
-            {
-                RpcInterrupt();
-            }
         }
         else
         {
             if (myDamage > 0.0f)
                 myTarget.GetComponent<Health>().TakeDamage(myDamage);
+        }
+
+        if (mySpellType == SpellType.Interrupt) //TODO - Remove this later on to enemy spellTarget
+        {
+            RpcInterrupt();
         }
     }
 
@@ -106,17 +108,9 @@ public class Spell : NetworkBehaviour
         myTarget = aTarget;
     }
 
-    public bool IsFriendly()
+    public SpellTarget GetSpellTarget()
     {
-        if (mySpellType == SpellType.Heal
-            || mySpellType == SpellType.HOT
-            || mySpellType == SpellType.Shield
-            || mySpellType == SpellType.Buff
-            || mySpellType == SpellType.Interrupt //TODO: REMOVE THIS :)
-            || mySpellType == SpellType.Ressurect)
-            return true;
-
-        return false;
+        return mySpellTarget;
     }
 
     public bool IsCastableWhileMoving()

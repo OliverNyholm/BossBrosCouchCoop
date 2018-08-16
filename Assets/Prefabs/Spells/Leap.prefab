@@ -99,7 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myName: Leap
   myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 2}
-  mySpellType: 8
+  mySpellType: 10
+  mySpellTarget: 6
   myDamage: 0
   myResourceCost: 100
   mySpeed: 0
@@ -108,7 +109,8 @@ MonoBehaviour:
   myRange: 25
   myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
   myCastbarIcon: {fileID: 21300000, guid: eb5f6e2757c821940b69cf1456f7865a, type: 3}
-  myIsCastableWhileMoving: 0
+  myIsCastableWhileMoving: 1
+  myCanCastOnSelf: 0
   OnTargetSpell: {fileID: 0}
   myTarget: {fileID: 0}
   myInitialAngle: 30

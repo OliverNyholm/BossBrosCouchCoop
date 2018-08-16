@@ -335,15 +335,21 @@ public class PlayerCharacter : NetworkBehaviour
             return false;
         }
 
-        if (aSpellScript.IsFriendly() && myTarget.tag == "Enemy")
+        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && myTarget.tag == "Enemy")
         {
             myUIManager.CreateErrorMessage("Can't cast friendly spells on enemies");
             return false;
         }
 
-        if (!aSpellScript.IsFriendly() && myTarget.tag == "Player")
+        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && myTarget.tag == "Player")
         {
             myUIManager.CreateErrorMessage("Can't cast hostile spells on friends.");
+            return false;
+        }
+
+        if (!aSpellScript.myCanCastOnSelf && myTarget == transform.gameObject)
+        {
+            myUIManager.CreateErrorMessage("Can't be cast on self!");
             return false;
         }
 

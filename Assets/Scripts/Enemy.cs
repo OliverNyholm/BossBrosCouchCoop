@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Enemy : MonoBehaviour
+public class Enemy : NetworkBehaviour
 {
 
     public string myName;
@@ -27,6 +28,9 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isServer)
+            return;
+
         Vector3 direction = myTargetPosition - transform.position;
         transform.position += direction.normalized * mySpeed * Time.deltaTime;
 

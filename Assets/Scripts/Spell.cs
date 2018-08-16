@@ -35,7 +35,12 @@ public class Spell : NetworkBehaviour
 
     void Update()
     {
-        float distance = Vector3.Distance(transform.position, myTarget.transform.position);
+        if (!isServer)
+            return;
+
+        float distance = 0.0f;
+        if (mySpeed > 0.0f)
+            distance = Vector3.Distance(transform.position, myTarget.transform.position);
 
         if (distance > 1.0f)
         {
@@ -58,7 +63,7 @@ public class Spell : NetworkBehaviour
                 CmdSpawnOnTargetSpell();
             }
 
-            Destroy(transform.gameObject);
+            RpcDestroy();
         }
     }
 
@@ -80,7 +85,9 @@ public class Spell : NetworkBehaviour
                 myTarget.GetComponent<Health>().GainHealth(myDamage);
 
             if (mySpellType == SpellType.Interrupt)
-                Interrupt();
+            {
+                RpcInterrupt();
+            }
         }
         else
         {
@@ -139,9 +146,15 @@ public class Spell : NetworkBehaviour
         return text;
     }
 
-    private void Interrupt()
+    [ClientRpc]
+    private void RpcInterrupt()
     {
-        myParent.GetComponent<PlayerCharacter>().InterruptTarget();
-        //myTarget.GetComponent<PlayerCharacter>().InterruptSpellCast();
+        myTarget.GetComponent<PlayerCharacter>().InterruptSpellCast();
+    }
+
+    [ClientRpc]
+    private void RpcDestroy()
+    {
+        NetworkServer.Destroy(gameObject);
     }
 }

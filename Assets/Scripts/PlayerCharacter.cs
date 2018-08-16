@@ -255,32 +255,21 @@ public class PlayerCharacter : NetworkBehaviour
         return transform.position;
     }
 
+    public void GiveImpulse(Vector3 aVelocity, bool aShouldLookAtDirection)
+    {
+        myStunDuration = 0.2f;
+        myDirection = aVelocity;
+
+        if (aShouldLookAtDirection)
+            transform.LookAt(myTarget.transform);
+    }
+
     public void InterruptSpellCast()
     {
         if (myIsCasting)
         {
             StopCasting();
         }
-    }
-
-    public void InterruptTarget()
-    {
-        if (isServer)
-            RpcInterrupt();
-        else if (hasAuthority)
-            CmdInterrupt();
-    }
-
-    [Command]
-    private void CmdInterrupt()
-    {
-        myTarget.GetComponent<PlayerCharacter>().InterruptSpellCast();
-    }
-
-    [ClientRpc]
-    private void RpcInterrupt()
-    {
-        myTarget.GetComponent<PlayerCharacter>().InterruptSpellCast();
     }
 
     private void StopCasting()
@@ -413,13 +402,6 @@ public class PlayerCharacter : NetworkBehaviour
 
     [Command]
     private void CmdSetTarget(GameObject aTarget)
-    {
-        myTarget = aTarget;
-        RpcUpdateTargetForAllClients(aTarget);
-    }
-
-    [ClientRpc]
-    private void RpcUpdateTargetForAllClients(GameObject aTarget)
     {
         myTarget = aTarget;
     }

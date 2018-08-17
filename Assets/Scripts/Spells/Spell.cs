@@ -54,10 +54,7 @@ public class Spell : NetworkBehaviour
         {
             DealSpellEffect();
 
-            Vector3 startPosition = myTarget.transform.position + new Vector3(Random.Range(-2.0f, 2.0f), 2.0f, Random.Range(-2.0f, 2.0f));
-            GameObject textMesh = Instantiate(myTextMesh, startPosition, myTarget.transform.rotation, myTarget.transform);
-            Color textColor = GetSpellTarget() == SpellTarget.Friend ? Color.yellow : Color.red;
-            textMesh.GetComponent<FloatingHealth>().SetText(GetSpellHitText(), textColor);
+            CmdSpawnText();
 
 
             if (OnTargetSpell != null)
@@ -73,10 +70,21 @@ public class Spell : NetworkBehaviour
     private void CmdSpawnOnTargetSpell()
     {
         GameObject onTarget = Instantiate(OnTargetSpell, myTarget.transform.position, myTarget.transform.rotation, myTarget.transform);
-        onTarget.GetComponent<OnTargetSpell>().SetParent(transform.gameObject);
+        onTarget.GetComponent<OnTargetSpell>().SetParent(myParent);
         onTarget.GetComponent<OnTargetSpell>().SetTarget(myTarget.transform);
 
         NetworkServer.Spawn(onTarget);
+    }
+
+    [Command]
+    private void CmdSpawnText()
+    {
+        Vector3 startPosition = myTarget.transform.position + new Vector3(Random.Range(-2.0f, 2.0f), 2.0f, Random.Range(-2.0f, 2.0f));
+        GameObject textMesh = Instantiate(myTextMesh, startPosition, myTarget.transform.rotation, myTarget.transform);
+        Color textColor = GetSpellTarget() == SpellTarget.Friend ? Color.yellow : Color.red;
+        textMesh.GetComponent<FloatingHealth>().SetText(GetSpellHitText(), textColor);
+
+        NetworkServer.Spawn(textMesh);
     }
 
     protected virtual void DealSpellEffect()

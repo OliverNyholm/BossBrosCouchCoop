@@ -55,6 +55,7 @@ public class Class : MonoBehaviour
     private void FindActionBar()
     {
         myActionBar = GameObject.Find("ActionBar");
+        myActionBar.GetComponent<CanvasGroup>().alpha = 1.0f;
     }
 
     private void Update()
@@ -113,6 +114,7 @@ public class Class : MonoBehaviour
                 if (myActionBar.transform.GetChild(childIndex).name == name)
                 {
                     myActionButtons[index] = myActionBar.transform.GetChild(childIndex).gameObject;
+                    myActionButtons[index].GetComponent<Image>().sprite = mySpells[index].GetComponent<Spell>().myCastbarIcon;
                     break;
                 }
             }

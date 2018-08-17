@@ -9,13 +9,14 @@ public class OnTargetSpell : NetworkBehaviour
     public GameObject myTextMesh;
 
     public SpellType mySpellType;
+    public SpellTarget mySpellTarget;
     public int myTotalDamage;
     public float myDuration;
     public float myModifier;
     public int myNrOfTicks;
 
+    [SyncVar]
     private GameObject myParent;
-
     [SyncVar]
     private Transform myTarget;
 
@@ -28,6 +29,9 @@ public class OnTargetSpell : NetworkBehaviour
 
     void Start()
     {
+        if (!isServer)
+            return;
+
         if (myTotalDamage > 0)
             myTickDamage = myTotalDamage / myNrOfTicks;
 
@@ -51,6 +55,9 @@ public class OnTargetSpell : NetworkBehaviour
 
     void Update()
     {
+        if (!isServer)
+            return;
+
         myLifeTime += Time.deltaTime;
 
         if (myLifeTime >= myDuration)
@@ -59,10 +66,8 @@ public class OnTargetSpell : NetworkBehaviour
             {
                 myTarget.GetComponent<Enemy>().mySpeed = myEnemyOriginalSpeed;
             }
-
-            GameObject textMesh = Instantiate(myTextMesh, transform.position, transform.rotation, myTarget);
-            textMesh.GetComponent<FloatingHealth>().SetText("Debuff Fade", Color.cyan);
-            Destroy(transform.gameObject);
+            
+            CmdSpawnText("Debuff Fade - " + myParent.name, Color.cyan, true);
         }
 
         if (myTotalDamage == 0)
@@ -78,9 +83,8 @@ public class OnTargetSpell : NetworkBehaviour
                 myTarget.GetComponent<Health>().GainHealth(myTickDamage);
             else
                 myTarget.GetComponent<Health>().TakeDamage(myTickDamage);
-
-            GameObject textMesh = Instantiate(myTextMesh, transform.position, transform.rotation, myTarget);
-            textMesh.GetComponent<FloatingHealth>().SetText(myTickDamage.ToString(), new Color(85f / 255f, 107f / 255f, 47f / 255f));
+            
+            CmdSpawnText(myTickDamage.ToString(), new Color(85f / 255f, 107f / 255f, 47f / 255f), false);
         }
     }
 
@@ -104,5 +108,18 @@ public class OnTargetSpell : NetworkBehaviour
             return true;
 
         return false;
+    }
+
+
+    [Command]
+    private void CmdSpawnText(string aText, Color aColor, bool aShouldDestroySelf)
+    {
+        GameObject textMesh = Instantiate(myTextMesh, transform.position, transform.rotation, myTarget);
+        textMesh.GetComponent<FloatingHealth>().SetText(aText, aColor);
+
+        NetworkServer.Spawn(textMesh);
+
+        if(aShouldDestroySelf)
+            NetworkServer.Destroy(transform.gameObject);
     }
 }

@@ -10,8 +10,8 @@ public class PlayerConnection : NetworkBehaviour
     public GameObject myCharacterPrefab;
     public string myName;
 
-    private InputField myChatInputField;
-    private PlayerCharacter myCharacter;
+    //private InputField myChatInputField;
+    //private PlayerCharacter myCharacter;
 
     void Start()
     {
@@ -21,7 +21,7 @@ public class PlayerConnection : NetworkBehaviour
         myName = "Player" + Random.Range(0, 1000);
         CmdSpawnCharacter();
 
-        myChatInputField = GameObject.Find("Canvas").GetComponentInChildren<InputField>();
+        //myChatInputField = GameObject.Find("Canvas").GetComponentInChildren<InputField>();
     }
 
     void Update()
@@ -29,11 +29,11 @@ public class PlayerConnection : NetworkBehaviour
         if (!isLocalPlayer)
             return;
 
-        //if(myChatInputField.isFocused && !myCharacter.myIsTypingInChat)
+        //if (myChatInputField.isFocused && !myCharacter.myIsTypingInChat)
         //{
         //    myCharacter.myIsTypingInChat = true;
         //}
-        //else if(!myChatInputField.isFocused && myCharacter.myIsTypingInChat)
+        //else if (!myChatInputField.isFocused && myCharacter.myIsTypingInChat)
         //{
         //    myCharacter.myIsTypingInChat = false;
         //}
@@ -45,7 +45,7 @@ public class PlayerConnection : NetworkBehaviour
         GameObject go = Instantiate(myCharacterPrefab, this.transform);
         NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
 
-        myCharacter = go.GetComponent<PlayerCharacter>();
+        //myCharacter = go.GetComponent<PlayerCharacter>();
         go.GetComponent<PlayerCharacter>().Name = myName;
     }
 }

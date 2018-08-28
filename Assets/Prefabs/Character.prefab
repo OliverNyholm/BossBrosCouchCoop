@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 114978270228319164}
   - component: {fileID: 114742805263339990}
   - component: {fileID: 114925019682461726}
+  - component: {fileID: 114929251507704650}
   m_Layer: 9
   m_Name: Character
   m_TagString: Player
@@ -347,7 +348,7 @@ MonoBehaviour:
   myClassName: Mage
   mySpells:
   - {fileID: 1310371387935930, guid: 2a2919ac58a524c4ba3a6dec1ec28854, type: 2}
-  - {fileID: 1429279037854398, guid: 2220f32f02ec769499ca3461350a1ede, type: 2}
+  - {fileID: 1778928993442950, guid: fdbf20a6bdf392348acc2d65960fd9bc, type: 2}
   - {fileID: 1125694136323164, guid: 6fefe2c9c789eed4b99cd374abe17664, type: 2}
   - {fileID: 1233940432947236, guid: 1b123b8be2c110d42a377fca64b18196, type: 2}
   - {fileID: 1060916130889568, guid: 4caa3539b55677c468d384289c61f19c, type: 2}
@@ -379,6 +380,21 @@ MonoBehaviour:
   myCurrentResource: 100
   myRegenerationPerTick: 25
   myRegenerationTimer: 0.8
+--- !u!114 &114929251507704650
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1902432903869368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94435687d56f84f4f8e7785a4fd3cb9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mySpeedMultiplier: 1
+  myAttackSpeed: 1
+  myDamageIncrease: 1
+  myDamageMitigator: 1
 --- !u!114 &114978270228319164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -390,14 +406,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5cd5ff40a3574c4f8e326ddf2eeffce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mySpeed: 7.5
+  myBaseSpeed: 8
   myJumpSpeed: 15
   myGravity: 60
   myDirection: {x: 0, y: 0, z: 0}
   myShouldStrafe: 1
   myIsTypingInChat: 0
   myStunDuration: 0
-  myClass: {fileID: 0}
 --- !u!114 &114979219753306776
 MonoBehaviour:
   m_ObjectHideFlags: 1

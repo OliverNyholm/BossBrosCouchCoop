@@ -22,7 +22,7 @@ public class Health : NetworkBehaviour
             return;
         }
 
-        myCurrentHealth -= aValue;
+        myCurrentHealth -= CalculateMitigations(aValue);
         if(myCurrentHealth <= 0)
         {
             myCurrentHealth = 0;
@@ -71,5 +71,15 @@ public class Health : NetworkBehaviour
     private void CmdHealthChanged()
     {
         EventOnHealthChange?.Invoke(GetHealthPercentage(), myCurrentHealth.ToString() + "/" + MaxHealth);
+    }
+
+    public int CalculateMitigations(int anIncomingDamageValue)
+    {
+        Stats parentStats = GetComponent<Stats>();
+
+        int damage = (int)(anIncomingDamageValue * parentStats.myDamageMitigator);
+
+        Debug.Log("Original: " + anIncomingDamageValue + "    New: " + damage);
+        return damage;
     }
 }

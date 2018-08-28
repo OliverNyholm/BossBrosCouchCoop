@@ -23,12 +23,15 @@ public class Spell : NetworkBehaviour
 
     public bool myIsCastableWhileMoving;
     public bool myCanCastOnSelf;
+    public bool myIsOnlySelfCast;
 
-    public GameObject OnTargetSpell;
+    public GameObject myOverTimeSpell;
+    public Buff myBuff;
+
     [SyncVar]
     protected GameObject myParent;
     [SyncVar]
-    public GameObject myTarget;
+    protected GameObject myTarget;
 
     void Start()
     {
@@ -57,9 +60,13 @@ public class Spell : NetworkBehaviour
             CmdSpawnText();
 
 
-            if (OnTargetSpell != null)
+            if (myOverTimeSpell != null)
             {
-                CmdSpawnOnTargetSpell();
+                CmdSpawnOverTargetSpell();
+            }
+            if (myBuff != null)
+            {
+                RpcSpawnBuff();
             }
 
             RpcDestroy();
@@ -67,14 +74,23 @@ public class Spell : NetworkBehaviour
     }
 
     [Command]
-    private void CmdSpawnOnTargetSpell()
+    private void CmdSpawnOverTargetSpell()
     {
-        GameObject onTarget = Instantiate(OnTargetSpell, myTarget.transform.position, myTarget.transform.rotation, myTarget.transform);
-        onTarget.GetComponent<OnTargetSpell>().SetParent(myParent);
-        onTarget.GetComponent<OnTargetSpell>().SetTarget(myTarget.transform);
+        GameObject onTarget = Instantiate(myOverTimeSpell, myTarget.transform.position, myTarget.transform.rotation, myTarget.transform);
+        onTarget.GetComponent<OverTimeSpell>().SetParent(myParent);
+        onTarget.GetComponent<OverTimeSpell>().SetTarget(myTarget.transform);
 
         NetworkServer.Spawn(onTarget);
     }
+
+    [ClientRpc]
+    private void RpcSpawnBuff()
+    {
+        BuffSpell buffSpell = myBuff.InitializeBuff(myParent);
+
+        myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell);
+    }
+
 
     [Command]
     private void CmdSpawnText()
@@ -104,6 +120,11 @@ public class Spell : NetworkBehaviour
         {
             RpcInterrupt();
         }
+    }
+
+    public void AddDamageIncrease(float aDamageIncrease)
+    {
+        myDamage = (int)(myDamage * aDamageIncrease);
     }
 
     public void SetParent(GameObject aParent)

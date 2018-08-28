@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4372494435452384}
   - component: {fileID: 33278947381868500}
   - component: {fileID: 23752594215928532}
-  - component: {fileID: 114232010031411954}
   - component: {fileID: 114974137863835132}
   - component: {fileID: 114517800665799042}
+  - component: {fileID: 114803021082663610}
   m_Layer: 0
   m_Name: DOT
   m_TagString: Untagged
@@ -86,23 +86,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1788395387444280}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114232010031411954
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1788395387444280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d355bbb8aeff44649b01d6b9920a5502, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 2}
-  mySpellType: 1
-  myTotalDamage: 200
-  myDuration: 10
-  myModifier: 0
-  myNrOfTicks: 5
 --- !u!114 &114517800665799042
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -124,6 +107,24 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114803021082663610
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1788395387444280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d355bbb8aeff44649b01d6b9920a5502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 2}
+  mySpellType: 1
+  mySpellTarget: 4
+  myTotalDamage: 200
+  myDuration: 8
+  myModifier: 0
+  myNrOfTicks: 3
 --- !u!114 &114974137863835132
 MonoBehaviour:
   m_ObjectHideFlags: 1

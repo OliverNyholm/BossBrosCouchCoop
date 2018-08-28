@@ -210,6 +210,11 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224487952891401696, guid: 82db672da088dea4fa51852e27f2817c,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82db672da088dea4fa51852e27f2817c, type: 2}
   m_IsPrefabAsset: 0
@@ -224,7 +229,7 @@ GameObject:
   - component: {fileID: 122041081}
   - component: {fileID: 122041080}
   - component: {fileID: 122041079}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BrownPillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -529,13 +534,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 740184601}
-  - component: {fileID: 740184603}
-  - component: {fileID: 740184602}
   - component: {fileID: 740184600}
   - component: {fileID: 740184599}
   - component: {fileID: 740184598}
-  - component: {fileID: 740184604}
+  - component: {fileID: 740184603}
   - component: {fileID: 740184605}
+  - component: {fileID: 740184604}
+  - component: {fileID: 740184602}
+  - component: {fileID: 740184606}
   m_Layer: 9
   m_Name: EnemyDummy
   m_TagString: Enemy
@@ -694,6 +700,21 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &740184606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 740184597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94435687d56f84f4f8e7785a4fd3cb9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mySpeedMultiplier: 1
+  myAttackSpeed: 1
+  myDamageIncrease: 1
+  myDamageMitigator: 1
 --- !u!1 &787103477
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,12 +783,14 @@ MonoBehaviour:
   - {fileID: 1508935094154108, guid: b4d20528e4cbcc246bed632b25b3b55f, type: 2}
   - {fileID: 1788395387444280, guid: f2379e5d59706b8429948553deec2d0a, type: 2}
   - {fileID: 1662648938367612, guid: 5437f738a370d3c43a62e1afc17cb7b3, type: 2}
-  - {fileID: 1443553403466414, guid: f29962db1061d544c90d0cd887f052ce, type: 2}
+  - {fileID: 1597089770568870, guid: f29962db1061d544c90d0cd887f052ce, type: 2}
   - {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 2}
   - {fileID: 1983804006253038, guid: 994ef13aed7efe94a860fab4a9fb9abb, type: 2}
   - {fileID: 1837549656673452, guid: fc507ae2236c8cb4eae8587a9dd8ecea, type: 2}
   - {fileID: 1310371387935930, guid: 2a2919ac58a524c4ba3a6dec1ec28854, type: 2}
   - {fileID: 1429279037854398, guid: 2220f32f02ec769499ca3461350a1ede, type: 2}
+  - {fileID: 1423380903055156, guid: 820c5b286ff32874ebaae95f98a5f7c1, type: 2}
+  - {fileID: 1778928993442950, guid: fdbf20a6bdf392348acc2d65960fd9bc, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:

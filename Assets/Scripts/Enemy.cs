@@ -17,12 +17,16 @@ public class Enemy : NetworkBehaviour
 
     public float mySpeed;
 
+    private Stats myStats;
+
     // Use this for initialization
     void Start()
     {
         myStartPosition = transform.position;
         myEndPosition = myStartPosition + new Vector3(10.0f, 0.0f, 0.0f);
         myTargetPosition = myEndPosition;
+
+        myStats = GetComponent<Stats>();
     }
 
     // Update is called once per frame

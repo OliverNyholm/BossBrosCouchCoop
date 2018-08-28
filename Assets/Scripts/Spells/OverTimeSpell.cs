@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class OnTargetSpell : NetworkBehaviour
+public class OverTimeSpell : NetworkBehaviour
 {
 
     public GameObject myTextMesh;
@@ -25,32 +25,17 @@ public class OnTargetSpell : NetworkBehaviour
     private float myIntervalTimer;
     private int myTickDamage;
 
-    private float myEnemyOriginalSpeed; //Used by slow
-
     void Start()
     {
         if (!isServer)
             return;
+        
 
-        if (myTotalDamage > 0)
-            myTickDamage = myTotalDamage / myNrOfTicks;
+        myTickDamage = myTotalDamage / myNrOfTicks;
+        myInterval = myDuration / myNrOfTicks;
+        myIntervalTimer = 0.0f;
 
-        if (mySpellType == SpellType.Slow)
-        {
-            myEnemyOriginalSpeed = myTarget.GetComponent<Enemy>().mySpeed;
-            myTarget.GetComponent<Enemy>().mySpeed *= myModifier;
-        }
-        else if (mySpellType == SpellType.DOT || mySpellType == SpellType.HOT)
-        {
-            myInterval = myDuration / myNrOfTicks;
-            myIntervalTimer = 0.0f;
-
-            myDuration += 0.05f; //Ugly hack to get the last tick off before destruction
-        }
-        else if (mySpellType == SpellType.Shield)
-        {
-            //Do something later.
-        }
+        myDuration += 0.05f; //Ugly hack to get the last tick off before destruction
     }
 
     void Update()
@@ -62,11 +47,6 @@ public class OnTargetSpell : NetworkBehaviour
 
         if (myLifeTime >= myDuration)
         {
-            if (mySpellType == SpellType.Slow)
-            {
-                myTarget.GetComponent<Enemy>().mySpeed = myEnemyOriginalSpeed;
-            }
-            
             CmdSpawnText("Debuff Fade - " + myParent.name, Color.cyan, true);
         }
 
@@ -79,11 +59,11 @@ public class OnTargetSpell : NetworkBehaviour
         {
             myIntervalTimer -= myInterval;
 
-            if (IsFriendly())
+            if (GetSpellTarget() == SpellTarget.Friend)
                 myTarget.GetComponent<Health>().GainHealth(myTickDamage);
             else
                 myTarget.GetComponent<Health>().TakeDamage(myTickDamage);
-            
+
             CmdSpawnText(myTickDamage.ToString(), new Color(85f / 255f, 107f / 255f, 47f / 255f), false);
         }
     }
@@ -98,18 +78,10 @@ public class OnTargetSpell : NetworkBehaviour
         myTarget = aTarget;
     }
 
-    public bool IsFriendly()
+    public SpellTarget GetSpellTarget()
     {
-        if (mySpellType == SpellType.Heal
-            || mySpellType == SpellType.HOT
-            || mySpellType == SpellType.Shield
-            || mySpellType == SpellType.Buff
-            || mySpellType == SpellType.Ressurect)
-            return true;
-
-        return false;
+        return mySpellTarget;
     }
-
 
     [Command]
     private void CmdSpawnText(string aText, Color aColor, bool aShouldDestroySelf)
@@ -119,7 +91,7 @@ public class OnTargetSpell : NetworkBehaviour
 
         NetworkServer.Spawn(textMesh);
 
-        if(aShouldDestroySelf)
+        if (aShouldDestroySelf)
             NetworkServer.Destroy(transform.gameObject);
     }
 }

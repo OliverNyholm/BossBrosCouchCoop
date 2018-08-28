@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public class PlayerCharacter : NetworkBehaviour
 {
 
-    public float mySpeed;
+    public float myBaseSpeed;
     public float myJumpSpeed;
     public float myGravity;
 
@@ -25,9 +25,13 @@ public class PlayerCharacter : NetworkBehaviour
     private CharacterController myController;
     private Camera myCamera;
 
-    public Class myClass;
+    private Class myClass;
     private Health myHealth;
     private Resource myResource;
+
+    private Stats myStats;
+
+    private List<BuffSpell> myBuffs;
 
     private Castbar myCastbar;
     private bool myIsCasting;
@@ -41,7 +45,6 @@ public class PlayerCharacter : NetworkBehaviour
 
     private UIManager myUIManager;
 
-    // Use this for initialization
     public override void OnStartAuthority()
     {
         base.OnStartAuthority();
@@ -71,10 +74,12 @@ public class PlayerCharacter : NetworkBehaviour
         myResource.EventOnResourceChange += ChangeMyHudResource;
         ChangeMyHudResource(myResource.GetResourcePercentage(), myResource.myCurrentResource.ToString() + "/" + myResource.MaxResource.ToString());
 
+        myStats = GetComponent<Stats>();
+        myBuffs = new List<BuffSpell>();
+
         myCharacterHUD.SetName(myName + " (" + myClass.myClassName + ")");
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!hasAuthority)
@@ -91,6 +96,7 @@ public class PlayerCharacter : NetworkBehaviour
         }
 
         RotatePlayer();
+        HandleBuffs();
 
         myDirection.y -= myGravity * Time.deltaTime;
 
@@ -104,11 +110,11 @@ public class PlayerCharacter : NetworkBehaviour
 
         if (myShouldStrafe)
         {
-            myDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0.0f, Input.GetAxisRaw("Vertical")).normalized * mySpeed;
+            myDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0.0f, Input.GetAxisRaw("Vertical")).normalized * myBaseSpeed * myStats.mySpeedMultiplier;
         }
         else
         {
-            myDirection = new Vector3(0.0f, 0.0f, Input.GetAxisRaw("Vertical")) * mySpeed;
+            myDirection = new Vector3(0.0f, 0.0f, Input.GetAxisRaw("Vertical")) * myBaseSpeed * myStats.mySpeedMultiplier;
         }
 
         myDirection = transform.TransformDirection(myDirection);
@@ -162,6 +168,19 @@ public class PlayerCharacter : NetworkBehaviour
         }
     }
 
+    private void HandleBuffs()
+    {
+        for (int index = 0; index < myBuffs.Count; index++)
+        {
+            myBuffs[index].Tick();
+            if (myBuffs[index].IsFinished())
+            {
+                myBuffs[index].GetBuff().EndBuff(ref myStats);
+                myBuffs.RemoveAt(index);
+            }
+        }
+    }
+
     public void CastSpell(int aKeyIndex)
     {
         if (myClass.IsSpellOnCooldown(aKeyIndex))
@@ -203,8 +222,13 @@ public class PlayerCharacter : NetworkBehaviour
         GameObject instance = Instantiate(spell, aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f), transform.rotation);
 
         Spell spellScript = instance.GetComponent<Spell>();
+        spellScript.AddDamageIncrease(myStats.myDamageIncrease);
         spellScript.SetParent(transform.gameObject);
-        spellScript.SetTarget(myTarget);
+
+        if (spellScript.myIsOnlySelfCast)
+            spellScript.SetTarget(transform.gameObject);
+        else
+            spellScript.SetTarget(myTarget);
 
         NetworkServer.Spawn(instance);
     }
@@ -216,13 +240,14 @@ public class PlayerCharacter : NetworkBehaviour
 
 
         myIsCasting = true;
-        float rate = 1.0f / spellScript.myCastTime;
+        float castSpeed = spellScript.myCastTime / myStats.myAttackSpeed;
+        float rate = 1.0f / castSpeed;
         float progress = 0.0f;
 
         while (progress <= 1.0f)
         {
             myCastbar.SetCastbarFillAmount(Mathf.Lerp(0, 1, progress));
-            myCastbar.SetCastTimeText((spellScript.myCastTime - (progress * spellScript.myCastTime)).ToString("0.0"));
+            myCastbar.SetCastTimeText((castSpeed - (progress * castSpeed)).ToString("0.0"));
 
             progress += rate * Time.deltaTime;
 
@@ -249,8 +274,10 @@ public class PlayerCharacter : NetworkBehaviour
 
     private Vector3 GetSpellSpawnPosition(Spell aSpellScript)
     {
-        if (aSpellScript.mySpeed <= 0.0f)
+        if (aSpellScript.mySpeed <= 0.0f && !aSpellScript.myIsOnlySelfCast)
+        {
             return myTarget.transform.position;
+        }
 
         return transform.position;
     }
@@ -272,6 +299,12 @@ public class PlayerCharacter : NetworkBehaviour
         }
     }
 
+    public void AddBuff(BuffSpell aBuffSpell)
+    {
+        myBuffs.Add(aBuffSpell);
+        aBuffSpell.GetBuff().ApplyBuff(ref myStats);
+    }
+
     private void StopCasting()
     {
         StopCoroutine(myCastingRoutine);
@@ -281,32 +314,27 @@ public class PlayerCharacter : NetworkBehaviour
 
     private bool CanRaycastToTarget()
     {
-        RaycastHit hit;
-
         Vector3 hardcodedEyePosition = new Vector3(0.0f, 0.7f, 0.0f);
         Vector3 infrontOfPlayer = (transform.position + hardcodedEyePosition) + transform.forward;
         Vector3 direction = (myTarget.transform.position + hardcodedEyePosition) - infrontOfPlayer;
 
-        if (Physics.Raycast(infrontOfPlayer, direction, out hit))
+        Ray ray = new Ray(infrontOfPlayer, direction);
+        float distance = Vector3.Distance(infrontOfPlayer, myTarget.transform.position + hardcodedEyePosition);
+        LayerMask layerMask = LayerMask.GetMask("Terrain");
+
+        if (Physics.Raycast(ray, distance, layerMask))
         {
-            if (hit.transform == myTarget.transform)
-            {
-                return true;
-            }
-            else if (hit.transform.parent == myTarget.transform)
-            {
-                return true;
-            }
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     private bool IsAbleToCastSpell(Spell aSpellScript)
     {
-        if (!myTarget || myIsCasting)
+        if (myIsCasting)
         {
-            myUIManager.CreateErrorMessage("Already casting or no target!");
+            myUIManager.CreateErrorMessage("Already casting another spell!");
             return false;
         }
 
@@ -320,6 +348,24 @@ public class PlayerCharacter : NetworkBehaviour
         {
             myUIManager.CreateErrorMessage("Can't cast while moving!");
             return false;
+        }
+
+        if (aSpellScript.myIsOnlySelfCast)
+            return true;
+
+
+
+        if (!myTarget)
+        {
+            if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) != 0)
+            {
+                myTarget = gameObject;
+            }
+            else
+            {
+                myUIManager.CreateErrorMessage("No Target!");
+                return false;
+            }
         }
 
         if (!CanRaycastToTarget())
@@ -481,4 +527,5 @@ public class PlayerCharacter : NetworkBehaviour
         get { return myName + " (" + myClass.myClassName + ")"; }
         set { myName = value; }
     }
+
 }

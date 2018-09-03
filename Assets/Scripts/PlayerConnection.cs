@@ -43,9 +43,10 @@ public class PlayerConnection : NetworkBehaviour
     private void CmdSpawnCharacter()
     {
         GameObject go = Instantiate(myCharacterPrefab, this.transform);
+        go.GetComponent<PlayerCharacter>().Name = myName;
+
         NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
 
         //myCharacter = go.GetComponent<PlayerCharacter>();
-        go.GetComponent<PlayerCharacter>().Name = myName;
     }
 }

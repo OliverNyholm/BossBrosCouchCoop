@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class CharacterHUD : MonoBehaviour
 {
@@ -8,6 +10,8 @@ public class CharacterHUD : MonoBehaviour
     [SerializeField]
     private Image myHealthbarImage;
     [SerializeField]
+    private Image myShieldBarImage;
+    [SerializeField]
     private Image myResourceBarImage;
     [SerializeField]
     private Text myHealthText;
@@ -15,6 +19,12 @@ public class CharacterHUD : MonoBehaviour
     private Text myResourceText;
     [SerializeField]
     private Text myNameText;
+    [SerializeField]
+    private GameObject myBuffParent;
+    [SerializeField]
+    private GameObject myBuffPrefab;
+
+    private List<GameObject> myBuffs = new List<GameObject>();
 
     public void Show()
     {
@@ -29,6 +39,20 @@ public class CharacterHUD : MonoBehaviour
     public void SetHealthBarFillAmount(float aValue)
     {
         myHealthbarImage.fillAmount = aValue;
+    }
+
+    public void SetShieldBar(int aShieldValue, int aCurrentHealth)
+    {
+        //float width = myHealthbarImage.rectTransform.rect.width;
+        //float x = (myHealthbarImage.transform.position.x - (width / 2f)) + (width * myHealthbarImage.fillAmount) - myShieldBarImage.rectTransform.rect.width / 2;
+        //myShieldBarImage.transform.position = new Vector2(x, myShieldBarImage.transform.position.y);
+
+        float fillAmount = (float)aShieldValue / aCurrentHealth;
+
+        if (fillAmount > myHealthbarImage.fillAmount)
+            fillAmount = myHealthbarImage.fillAmount;
+
+        myShieldBarImage.fillAmount = fillAmount;
     }
 
     public void SetResourceBarFillAmount(float aValue)
@@ -59,5 +83,19 @@ public class CharacterHUD : MonoBehaviour
     public void SetResourceText(string aString)
     {
         myResourceText.text = aString;
+    }
+
+    public void AddBuff(Sprite aSprite)
+    {
+        GameObject buff = Instantiate(myBuffPrefab, myBuffParent.transform);
+
+        buff.GetComponent<Image>().sprite = aSprite;
+        myBuffs.Add(buff);
+    }
+
+    public void RemoveBuff(int anIndex)
+    {
+        Destroy(myBuffs[anIndex]);
+        myBuffs.RemoveAt(anIndex);
     }
 }

@@ -25,7 +25,6 @@ public class Spell : NetworkBehaviour
     public bool myCanCastOnSelf;
     public bool myIsOnlySelfCast;
 
-    public GameObject myOverTimeSpell;
     public Buff myBuff;
 
     [SyncVar]
@@ -33,15 +32,11 @@ public class Spell : NetworkBehaviour
     [SyncVar]
     protected GameObject myTarget;
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         if (!isServer)
             return;
+
 
         float distance = 0.0f;
         if (mySpeed > 0.0f)
@@ -57,13 +52,6 @@ public class Spell : NetworkBehaviour
         {
             DealSpellEffect();
 
-            CmdSpawnText();
-
-
-            if (myOverTimeSpell != null)
-            {
-                CmdSpawnOverTargetSpell();
-            }
             if (myBuff != null)
             {
                 RpcSpawnBuff();
@@ -73,34 +61,21 @@ public class Spell : NetworkBehaviour
         }
     }
 
-    [Command]
-    private void CmdSpawnOverTargetSpell()
-    {
-        GameObject onTarget = Instantiate(myOverTimeSpell, myTarget.transform.position, myTarget.transform.rotation, myTarget.transform);
-        onTarget.GetComponent<OverTimeSpell>().SetParent(myParent);
-        onTarget.GetComponent<OverTimeSpell>().SetTarget(myTarget.transform);
-
-        NetworkServer.Spawn(onTarget);
-    }
-
     [ClientRpc]
     private void RpcSpawnBuff()
     {
-        BuffSpell buffSpell = myBuff.InitializeBuff(myParent);
-
-        myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell);
-    }
-
-
-    [Command]
-    private void CmdSpawnText()
-    {
-        Vector3 startPosition = myTarget.transform.position + new Vector3(Random.Range(-2.0f, 2.0f), 2.0f, Random.Range(-2.0f, 2.0f));
-        GameObject textMesh = Instantiate(myTextMesh, startPosition, myTarget.transform.rotation, myTarget.transform);
-        Color textColor = GetSpellTarget() == SpellTarget.Friend ? Color.yellow : Color.red;
-        textMesh.GetComponent<FloatingHealth>().SetText(GetSpellHitText(), textColor);
-
-        NetworkServer.Spawn(textMesh);
+        if (myBuff.mySpellType == SpellType.DOT || myBuff.mySpellType == SpellType.HOT)
+        {
+            BuffTickSpell buffSpell;
+            buffSpell = (myBuff as TickBuff).InitializeBuff(myParent, myTarget);
+            myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, myCastbarIcon);
+        }
+        else
+        {
+            BuffSpell buffSpell;
+            buffSpell = myBuff.InitializeBuff(myParent);
+            myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, myCastbarIcon);
+        }
     }
 
     protected virtual void DealSpellEffect()
@@ -116,7 +91,7 @@ public class Spell : NetworkBehaviour
                 myTarget.GetComponent<Health>().TakeDamage(myDamage);
         }
 
-        if (mySpellType == SpellType.Interrupt) //TODO - Remove this later on to enemy spellTarget
+        if (mySpellType == SpellType.Interrupt)
         {
             RpcInterrupt();
         }

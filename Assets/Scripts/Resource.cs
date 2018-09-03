@@ -27,7 +27,7 @@ public class Resource : NetworkBehaviour
 
     private void Update()
     {
-        if (!hasAuthority)
+        if (!isServer)
             return;
 
         if (myCurrentResource >= myMaxResource)

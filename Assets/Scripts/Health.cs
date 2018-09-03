@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -10,10 +9,12 @@ public class Health : NetworkBehaviour
     [SyncVar]
     public int myCurrentHealth = 100;
 
-    public delegate void HealthChanged(float aHealthPercentage, string aHealthText);
+    public delegate void HealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue);
 
     [SyncEvent]
     public event HealthChanged EventOnHealthChange;
+
+    private List<BuffShieldSpell> myShields = new List<BuffShieldSpell>();
 
     public void TakeDamage(int aValue)
     {
@@ -67,10 +68,36 @@ public class Health : NetworkBehaviour
         }
     }
 
+    public void AddShield(BuffShieldSpell aShield)
+    {
+        if (!isServer)
+            return;
+
+        myShields.Add(aShield);
+        CmdHealthChanged();
+    }
+
+    public void RemoveShield(float aBuffOriginalDuration)
+    {
+        if (!isServer)
+            return;
+
+        for (int index = 0; index < myShields.Count; index++)
+        {
+            if(myShields[index].IsFinished())
+            {
+                myShields.RemoveAt(index);
+                break;
+            }
+        }
+
+        CmdHealthChanged();
+    }
+
     [Command]
     private void CmdHealthChanged()
     {
-        EventOnHealthChange?.Invoke(GetHealthPercentage(), myCurrentHealth.ToString() + "/" + MaxHealth);
+        EventOnHealthChange?.Invoke(GetHealthPercentage(), myCurrentHealth.ToString() + "/" + MaxHealth, GetTotalShieldValue());
     }
 
     public int CalculateMitigations(int anIncomingDamageValue)
@@ -79,7 +106,26 @@ public class Health : NetworkBehaviour
 
         int damage = (int)(anIncomingDamageValue * parentStats.myDamageMitigator);
 
-        Debug.Log("Original: " + anIncomingDamageValue + "    New: " + damage);
+        for (int index = 0; index < myShields.Count; index++)
+        {
+            damage = myShields[index].SoakDamage(damage);
+
+            if (damage <= 0)
+                break;
+        }
+
         return damage;
+    }
+
+    public int GetTotalShieldValue()
+    {
+        int shieldValue = 0;
+
+        for (int index = 0; index < myShields.Count; index++)
+        {
+            shieldValue += myShields[index].GetRemainingShieldHealth();
+        }
+
+        return shieldValue;
     }
 }

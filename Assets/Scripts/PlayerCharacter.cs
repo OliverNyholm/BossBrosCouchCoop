@@ -25,6 +25,7 @@ public class PlayerCharacter : NetworkBehaviour
     private CharacterController myController;
     private Camera myCamera;
 
+    private Animator myAnimator;
     private Class myClass;
     private Health myHealth;
     private Resource myResource;
@@ -57,6 +58,7 @@ public class PlayerCharacter : NetworkBehaviour
     {
         myController = transform.GetComponent<CharacterController>();
 
+        myAnimator = GetComponentInChildren<Animator>();
         myClass = GetComponentInChildren<Class>();
         myClass.SetupSpellHud(CastSpell);
 
@@ -68,7 +70,7 @@ public class PlayerCharacter : NetworkBehaviour
 
         myHealth = GetComponent<Health>();
         myHealth.EventOnHealthChange += ChangeMyHudHealth;
-        ChangeMyHudHealth(myHealth.GetHealthPercentage(), myHealth.myCurrentHealth.ToString() + "/" + myHealth.myMaxHealth.ToString());
+        ChangeMyHudHealth(myHealth.GetHealthPercentage(), myHealth.myCurrentHealth.ToString() + "/" + myHealth.myMaxHealth.ToString(), GetComponent<Health>().GetTotalShieldValue());
 
         myResource = GetComponent<Resource>();
         myResource.EventOnResourceChange += ChangeMyHudResource;
@@ -118,6 +120,8 @@ public class PlayerCharacter : NetworkBehaviour
         }
 
         myDirection = transform.TransformDirection(myDirection);
+
+        myAnimator.SetBool("IsRunning", IsMoving());
 
         if (Input.GetButtonDown("Jump"))
             myDirection.y = myJumpSpeed;
@@ -176,13 +180,22 @@ public class PlayerCharacter : NetworkBehaviour
             if (myBuffs[index].IsFinished())
             {
                 myBuffs[index].GetBuff().EndBuff(ref myStats);
+                if (myBuffs[index].GetBuff().mySpellType == SpellType.Shield)
+                {
+                    myHealth.RemoveShield(myBuffs[index].GetBuff().myDuration);
+                }
+
                 myBuffs.RemoveAt(index);
+                myCharacterHUD.RemoveBuff(index);
             }
         }
     }
 
     public void CastSpell(int aKeyIndex)
     {
+        if (!hasAuthority)
+            return;
+
         if (myClass.IsSpellOnCooldown(aKeyIndex))
         {
             myUIManager.CreateErrorMessage("Can't cast that spell yet");
@@ -195,12 +208,12 @@ public class PlayerCharacter : NetworkBehaviour
         if (!IsAbleToCastSpell(spellScript))
             return;
 
-
         if (spellScript.myCastTime <= 0.0f)
         {
             CmdSpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
             myResource.LoseResource(spellScript.myResourceCost);
+            myAnimator.SetTrigger("Attack");
             return;
         }
 
@@ -227,8 +240,10 @@ public class PlayerCharacter : NetworkBehaviour
 
         if (spellScript.myIsOnlySelfCast)
             spellScript.SetTarget(transform.gameObject);
-        else
+        else if(myTarget)
             spellScript.SetTarget(myTarget);
+        else
+            spellScript.SetTarget(transform.gameObject);
 
         NetworkServer.Spawn(instance);
     }
@@ -269,6 +284,7 @@ public class PlayerCharacter : NetworkBehaviour
             CmdSpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
             myResource.LoseResource(spellScript.myResourceCost);
+            myAnimator.SetTrigger("Attack");
         }
     }
 
@@ -299,10 +315,17 @@ public class PlayerCharacter : NetworkBehaviour
         }
     }
 
-    public void AddBuff(BuffSpell aBuffSpell)
+    public void AddBuff(BuffSpell aBuffSpell, Sprite aSpellIcon)
     {
+        if (!hasAuthority)
+            return;
+
         myBuffs.Add(aBuffSpell);
         aBuffSpell.GetBuff().ApplyBuff(ref myStats);
+        myCharacterHUD.AddBuff(aSpellIcon);
+
+        if (aBuffSpell.GetBuff().mySpellType == SpellType.Shield)
+            myHealth.AddShield(aBuffSpell as BuffShieldSpell);
     }
 
     private void StopCasting()
@@ -443,7 +466,7 @@ public class PlayerCharacter : NetworkBehaviour
 
     private bool IsMoving()
     {
-        if (myDirection.x != 0 && myDirection.y != 0)
+        if (myDirection.x != 0 && myDirection.z != 0)
             return true;
 
         if (!myController.isGrounded)
@@ -463,7 +486,8 @@ public class PlayerCharacter : NetworkBehaviour
         myTargetHUD.Show();
         myTarget.GetComponent<Health>().EventOnHealthChange += ChangeTargetHudHealth;
         ChangeTargetHudHealth(myTarget.GetComponent<Health>().GetHealthPercentage(),
-            myTarget.GetComponent<Health>().myCurrentHealth.ToString() + "/" + myTarget.GetComponent<Health>().MaxHealth);
+            myTarget.GetComponent<Health>().myCurrentHealth.ToString() + "/" + myTarget.GetComponent<Health>().MaxHealth,
+            myTarget.GetComponent<Health>().GetTotalShieldValue());
 
         if (myTarget.GetComponent<Resource>() != null)
         {
@@ -490,10 +514,11 @@ public class PlayerCharacter : NetworkBehaviour
         }
     }
 
-    private void ChangeTargetHudHealth(float aHealthPercentage, string aHealthText)
+    private void ChangeTargetHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
     {
         myTargetHUD.SetHealthBarFillAmount(aHealthPercentage);
         myTargetHUD.SetHealthText(aHealthText);
+        myTargetHUD.SetShieldBar(aShieldValue, myTarget.GetComponent<Health>().myCurrentHealth);
     }
 
     private void ChangeTargetHudResource(float aResourcePercentage, string aResourceText)
@@ -502,10 +527,11 @@ public class PlayerCharacter : NetworkBehaviour
         myTargetHUD.SetResourceText(aResourceText);
     }
 
-    private void ChangeMyHudHealth(float aHealthPercentage, string aHealthText)
+    private void ChangeMyHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
     {
         myCharacterHUD.SetHealthBarFillAmount(aHealthPercentage);
         myCharacterHUD.SetHealthText(aHealthText);
+        myCharacterHUD.SetShieldBar(aShieldValue, myHealth.myCurrentHealth);
     }
 
     private void ChangeMyHudResource(float aResourcePercentage, string aResourceText)

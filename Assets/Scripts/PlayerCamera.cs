@@ -69,10 +69,11 @@ public class PlayerCamera : MonoBehaviour
         Vector3 position = myTarget.position - (rotation * Vector3.forward * myDesiredDistance + targetOffset);
 
         RaycastHit collisionHit;
+        LayerMask layerMask = LayerMask.GetMask("Terrain");
         Vector3 trueTargetPosition = new Vector3(myTarget.position.x, myTarget.position.y + myTargetHeight, myTarget.position.z);
 
         bool hasHitWall = false;
-        if (Physics.Linecast(trueTargetPosition, position, out collisionHit))
+        if (Physics.Linecast(trueTargetPosition, position, out collisionHit, layerMask))
         {
             myCorrectedDistance = Vector3.Distance(trueTargetPosition, collisionHit.point) - myOffsetFromWall;
             hasHitWall = true;

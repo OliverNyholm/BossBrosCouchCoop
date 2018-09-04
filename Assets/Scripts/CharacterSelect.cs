@@ -19,6 +19,12 @@ public class CharacterSelect : MonoBehaviour
         CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0;
 
+        for (int index = 0; index < transform.childCount; index++)
+        {
+            if (transform.GetChild(index).GetComponent<Button>() != null)
+                transform.GetChild(index).GetComponent<Button>().enabled = false;
+        }
+
         myPlayerConnection.SetCharacterPrefab(myCharacterPrefabs[anIndex]);
     }
 }

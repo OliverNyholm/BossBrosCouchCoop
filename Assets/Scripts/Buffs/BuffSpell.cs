@@ -35,4 +35,9 @@ public class BuffSpell
     {
         return myBuff;
     }
+
+    public GameObject GetParent()
+    {
+        return myParent;
+    }
 }

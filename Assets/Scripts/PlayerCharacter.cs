@@ -180,14 +180,7 @@ public class PlayerCharacter : NetworkBehaviour
             myBuffs[index].Tick();
             if (myBuffs[index].IsFinished())
             {
-                myBuffs[index].GetBuff().EndBuff(ref myStats);
-                if (myBuffs[index].GetBuff().mySpellType == SpellType.Shield)
-                {
-                    myHealth.RemoveShield(myBuffs[index].GetBuff().myDuration);
-                }
-
-                myBuffs.RemoveAt(index);
-                myCharacterHUD.RemoveBuff(index);
+                RemoveBuff(index);
             }
         }
     }
@@ -321,12 +314,34 @@ public class PlayerCharacter : NetworkBehaviour
         if (!hasAuthority)
             return;
 
+        for (int index = 0; index < myBuffs.Count; index++)
+        {
+            if(myBuffs[index].GetParent() == aBuffSpell.GetParent() &&
+                myBuffs[index].GetBuff() == aBuffSpell.GetBuff())
+            {
+                RemoveBuff(index);
+                break;
+            }
+        }
+
         myBuffs.Add(aBuffSpell);
         aBuffSpell.GetBuff().ApplyBuff(ref myStats);
         myCharacterHUD.AddBuff(aSpellIcon);
 
         if (aBuffSpell.GetBuff().mySpellType == SpellType.Shield)
             myHealth.AddShield(aBuffSpell as BuffShieldSpell);
+    }
+
+    private void RemoveBuff(int anIndex)
+    {
+        myBuffs[anIndex].GetBuff().EndBuff(ref myStats);
+        if (myBuffs[anIndex].GetBuff().mySpellType == SpellType.Shield)
+        {
+            myHealth.RemoveShield(myBuffs[anIndex].GetBuff().myDuration);
+        }
+
+        myBuffs.RemoveAt(anIndex);
+        myCharacterHUD.RemoveBuff(anIndex);
     }
 
     private void StopCasting()

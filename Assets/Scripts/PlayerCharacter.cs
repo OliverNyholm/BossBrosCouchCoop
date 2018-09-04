@@ -79,6 +79,7 @@ public class PlayerCharacter : NetworkBehaviour
         myStats = GetComponent<Stats>();
         myBuffs = new List<BuffSpell>();
 
+        myCharacterHUD.Show();
         myCharacterHUD.SetName(myName + " (" + myClass.myClassName + ")");
     }
 

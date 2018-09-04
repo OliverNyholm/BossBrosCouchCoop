@@ -19,7 +19,11 @@ public class PlayerConnection : NetworkBehaviour
             return;
 
         myName = "Player" + Random.Range(0, 1000);
-        CmdSpawnCharacter();
+
+        CharacterSelect characterSelect = GameObject.Find("CharacterSelect").GetComponent<CharacterSelect>();
+        characterSelect.GetComponent<CanvasGroup>().alpha = 1;
+        characterSelect.SetPlayerCharacter(this);
+        //CmdSpawnCharacter();
 
         //myChatInputField = GameObject.Find("Canvas").GetComponentInChildren<InputField>();
     }
@@ -37,6 +41,12 @@ public class PlayerConnection : NetworkBehaviour
         //{
         //    myCharacter.myIsTypingInChat = false;
         //}
+    }
+
+    public void SetCharacterPrefab(GameObject aPrefab)
+    {
+        myCharacterPrefab = aPrefab;
+        CmdSpawnCharacter();
     }
 
     [Command]

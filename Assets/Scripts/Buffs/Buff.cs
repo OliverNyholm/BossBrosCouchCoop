@@ -32,34 +32,3 @@ public class Buff : ScriptableObject
         return new BuffSpell(this, aParent);
     }
 }
-
-[CreateAssetMenu(fileName = "New Buff", menuName = "Buff/Shield")]
-public class ShieldBuff : Buff
-{
-    public int myShieldValue;
-    private int myCurrentShieldValue;
-
-    public override void ApplyBuff(ref Stats aStats)
-    {
-        base.ApplyBuff(ref aStats);
-
-        myCurrentShieldValue = myShieldValue;
-    }
-
-    public override BuffSpell InitializeBuff(GameObject aParent)
-    {
-        return new BuffShieldSpell(this, aParent);
-    }
-}
-
-[CreateAssetMenu(fileName = "New Buff", menuName = "Buff/Tick")]
-public class TickBuff : Buff
-{
-    public int myTotalDamage;
-    public int myNrOfTicks;
-
-    public BuffTickSpell InitializeBuff(GameObject aParent, GameObject aTarget)
-    {
-        return new BuffTickSpell(this, aParent, aTarget);
-    }
-}

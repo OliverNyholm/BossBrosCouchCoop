@@ -14,10 +14,11 @@ public class PlayerCharacter : NetworkBehaviour
     public Vector3 myDirection;
 
     public bool myShouldStrafe = true;
-
     public bool myIsTypingInChat = false;
 
     public float myStunDuration;
+    private float myAutoAttackCooldown;
+    private float myAutoAttackCooldownReset = 1.0f;
 
     [SyncVar]
     private string myName;
@@ -35,8 +36,10 @@ public class PlayerCharacter : NetworkBehaviour
     private List<BuffSpell> myBuffs;
 
     private Castbar myCastbar;
-    private bool myIsCasting;
     private Coroutine myCastingRoutine;
+
+    private bool myIsCasting;
+    private bool myShouldAutoAttack;
 
     [SyncVar]
     private GameObject myTarget;
@@ -52,6 +55,11 @@ public class PlayerCharacter : NetworkBehaviour
 
         myCamera = Camera.main;
         myCamera.GetComponent<PlayerCamera>().SetTarget(this.transform);
+
+        if (myClass == null)
+            myClass = GetComponentInChildren<Class>();
+
+        myClass.SetupSpellHud(CastSpell);
     }
 
     private void Start()
@@ -59,8 +67,6 @@ public class PlayerCharacter : NetworkBehaviour
         myController = transform.GetComponent<CharacterController>();
 
         myAnimator = GetComponentInChildren<Animator>();
-        myClass = GetComponentInChildren<Class>();
-        myClass.SetupSpellHud(CastSpell);
 
         myCastbar = GameObject.Find("Castbar Background").GetComponent<Castbar>();
         myCharacterHUD = GameObject.Find("PlayerHud").GetComponent<CharacterHUD>();
@@ -78,6 +84,10 @@ public class PlayerCharacter : NetworkBehaviour
 
         myStats = GetComponent<Stats>();
         myBuffs = new List<BuffSpell>();
+
+        if(myClass == null)
+            myClass = GetComponentInChildren<Class>();
+
 
         myCharacterHUD.Show();
         myCharacterHUD.SetName(myName + " (" + myClass.myClassName + ")");
@@ -100,6 +110,9 @@ public class PlayerCharacter : NetworkBehaviour
 
         RotatePlayer();
         HandleBuffs();
+
+        if (myShouldAutoAttack)
+            AutoAttack();
 
         myDirection.y -= myGravity * Time.deltaTime;
 
@@ -144,10 +157,29 @@ public class PlayerCharacter : NetworkBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
             if (!EventSystem.current.IsPointerOverGameObject())
+            {
                 RaycastNewTarget();
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    myShouldAutoAttack = false;
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    if (myTarget != null && myTarget.tag == "Enemy")
+                        myShouldAutoAttack = true;
+                }
+            }
+        }
+
+
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            myShouldAutoAttack = false;
         }
     }
 
@@ -183,6 +215,29 @@ public class PlayerCharacter : NetworkBehaviour
                 RemoveBuff(index);
             }
         }
+    }
+
+    private void AutoAttack()
+    {
+        if (!hasAuthority)
+            return;
+
+        if (myAutoAttackCooldown > 0.0f)
+        {
+            myAutoAttackCooldown -= Time.deltaTime * myStats.myAttackSpeed;
+            return;
+        }
+
+        GameObject spell = myClass.GetAutoAttack();
+        Spell spellScript = spell.GetComponent<Spell>();
+
+        if (!IsAbleToAutoAttack())
+            return;
+
+        myAnimator.SetTrigger("Attack");
+        myAutoAttackCooldown = 1.2f;
+
+        CmdSpawnSpell(-1, GetSpellSpawnPosition(spellScript));
     }
 
     public void CastSpell(int aKeyIndex)
@@ -224,7 +279,11 @@ public class PlayerCharacter : NetworkBehaviour
     [Command]
     private void CmdSpawnSpell(int aKeyIndex, Vector3 aSpawnPosition)
     {
-        GameObject spell = myClass.GetSpell(aKeyIndex);
+        GameObject spell;
+        if (aKeyIndex == -1)
+            spell = myClass.GetAutoAttack();
+        else
+            spell = myClass.GetSpell(aKeyIndex);
 
         GameObject instance = Instantiate(spell, aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f), transform.rotation);
 
@@ -234,7 +293,7 @@ public class PlayerCharacter : NetworkBehaviour
 
         if (spellScript.myIsOnlySelfCast)
             spellScript.SetTarget(transform.gameObject);
-        else if(myTarget)
+        else if (myTarget)
             spellScript.SetTarget(myTarget);
         else
             spellScript.SetTarget(transform.gameObject);
@@ -284,7 +343,7 @@ public class PlayerCharacter : NetworkBehaviour
 
     private Vector3 GetSpellSpawnPosition(Spell aSpellScript)
     {
-        if (aSpellScript.mySpeed <= 0.0f && !aSpellScript.myIsOnlySelfCast)
+        if (aSpellScript.mySpeed <= 0.0f && !aSpellScript.myIsOnlySelfCast && myTarget != null)
         {
             return myTarget.transform.position;
         }
@@ -316,7 +375,7 @@ public class PlayerCharacter : NetworkBehaviour
 
         for (int index = 0; index < myBuffs.Count; index++)
         {
-            if(myBuffs[index].GetParent() == aBuffSpell.GetParent() &&
+            if (myBuffs[index].GetParent() == aBuffSpell.GetParent() &&
                 myBuffs[index].GetBuff() == aBuffSpell.GetBuff())
             {
                 RemoveBuff(index);
@@ -330,6 +389,21 @@ public class PlayerCharacter : NetworkBehaviour
 
         if (aBuffSpell.GetBuff().mySpellType == SpellType.Shield)
             myHealth.AddShield(aBuffSpell as BuffShieldSpell);
+
+        if (aBuffSpell.GetBuff().myAttackSpeed != 0.0f)
+        {
+            float attackspeed = myAutoAttackCooldownReset / myStats.myAttackSpeed;
+
+            float currentAnimationSpeed = 1.0f;
+            if (currentAnimationSpeed > attackspeed)
+            {
+                myAnimator.SetFloat("AutoAttackSpeed", myAnimator.GetFloat("AutoAttackSpeed") + attackspeed / currentAnimationSpeed);
+            }
+        }
+        else if (aBuffSpell.GetBuff().mySpeedMultiplier != 0.0f)
+        {
+            myAnimator.SetFloat("RunSpeed", myStats.mySpeedMultiplier);
+        }
     }
 
     private void RemoveBuff(int anIndex)
@@ -338,6 +412,25 @@ public class PlayerCharacter : NetworkBehaviour
         if (myBuffs[anIndex].GetBuff().mySpellType == SpellType.Shield)
         {
             myHealth.RemoveShield(myBuffs[anIndex].GetBuff().myDuration);
+        }
+
+        if (myBuffs[anIndex].GetBuff().myAttackSpeed != 0.0f)
+        {
+            float attackspeed = myAutoAttackCooldownReset / myStats.myAttackSpeed;
+
+            float currentAnimationSpeed = 1.0f;
+            if (currentAnimationSpeed > attackspeed)
+            {
+                myAnimator.SetFloat("AutoAttackSpeed", myAnimator.GetFloat("AutoAttackSpeed") + attackspeed / currentAnimationSpeed);
+            }
+            else
+            {
+                myAnimator.SetFloat("AutoAttackSpeed", 1.0f);
+            }
+        }
+        else if (myBuffs[anIndex].GetBuff().mySpeedMultiplier != 0.0f)
+        {
+            myAnimator.SetFloat("RunSpeed", myStats.mySpeedMultiplier);
         }
 
         myBuffs.RemoveAt(anIndex);
@@ -362,6 +455,33 @@ public class PlayerCharacter : NetworkBehaviour
         LayerMask layerMask = LayerMask.GetMask("Terrain");
 
         if (Physics.Raycast(ray, distance, layerMask))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool IsAbleToAutoAttack()
+    {
+        if (myIsCasting)
+        {
+            myUIManager.CreateErrorMessage("Already casting another spell!");
+            return false;
+        }
+
+        if (!myTarget)
+        {
+            return false;
+        }
+
+        if (!CanRaycastToTarget())
+        {
+            return false;
+        }
+
+        float distance = Vector3.Distance(transform.position, myTarget.transform.position);
+        if (distance > 3.0f)
         {
             return false;
         }
@@ -477,6 +597,7 @@ public class PlayerCharacter : NetworkBehaviour
 
             CmdSetTarget(null);
             myTargetHUD.Hide();
+            myShouldAutoAttack = false;
         }
     }
 

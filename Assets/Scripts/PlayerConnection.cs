@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class PlayerConnection : NetworkBehaviour
 {
-
     public GameObject myCharacterPrefab;
     public string myName;
 
@@ -23,7 +22,6 @@ public class PlayerConnection : NetworkBehaviour
         CharacterSelect characterSelect = GameObject.Find("CharacterSelect").GetComponent<CharacterSelect>();
         characterSelect.GetComponent<CanvasGroup>().alpha = 1;
         characterSelect.SetPlayerCharacter(this);
-        //CmdSpawnCharacter();
 
         //myChatInputField = GameObject.Find("Canvas").GetComponentInChildren<InputField>();
     }
@@ -43,15 +41,21 @@ public class PlayerConnection : NetworkBehaviour
         //}
     }
 
-    public void SetCharacterPrefab(GameObject aPrefab)
+    public void SpawnCharacterPrefab(int anIndex)
     {
-        myCharacterPrefab = aPrefab;
-        CmdSpawnCharacter();
+        if (!isLocalPlayer)
+            return;
+        
+        CmdSpawnCharacter(anIndex);
     }
 
     [Command]
-    private void CmdSpawnCharacter()
+    private void CmdSpawnCharacter(int aCharacterID)
     {
+        CharacterSelect characterSelect = GameObject.Find("CharacterSelect").GetComponent<CharacterSelect>();
+
+        myCharacterPrefab = characterSelect.GetCharacterPrefab(aCharacterID);
+
         GameObject go = Instantiate(myCharacterPrefab, this.transform);
         go.GetComponent<PlayerCharacter>().Name = myName;
 

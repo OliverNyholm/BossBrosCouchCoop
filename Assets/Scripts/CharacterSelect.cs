@@ -25,6 +25,11 @@ public class CharacterSelect : MonoBehaviour
                 transform.GetChild(index).GetComponent<Button>().enabled = false;
         }
 
-        myPlayerConnection.SetCharacterPrefab(myCharacterPrefabs[anIndex]);
+        myPlayerConnection.SpawnCharacterPrefab(anIndex);
+    }
+
+    public GameObject GetCharacterPrefab(int anIndex)
+    {
+        return myCharacterPrefabs[anIndex];
     }
 }

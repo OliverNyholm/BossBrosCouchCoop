@@ -102,6 +102,11 @@ public class Spell : NetworkBehaviour
         myDamage = (int)(myDamage * aDamageIncrease);
     }
 
+    public void SetDamage(int aDamage)
+    {
+        myDamage = aDamage;
+    }
+
     public void SetParent(GameObject aParent)
     {
         myParent = aParent;

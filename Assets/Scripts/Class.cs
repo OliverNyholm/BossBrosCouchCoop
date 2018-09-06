@@ -31,6 +31,9 @@ public class Class : MonoBehaviour
 {
 
     public string myClassName;
+
+    [SerializeField]
+    private GameObject myAutoAttack;
     public GameObject[] mySpells;
 
     private GameObject myActionBar;
@@ -84,6 +87,11 @@ public class Class : MonoBehaviour
             return true;
 
         return false;
+    }
+
+    public GameObject GetAutoAttack()
+    {
+        return myAutoAttack;
     }
 
     public GameObject GetSpell(int anIndex)

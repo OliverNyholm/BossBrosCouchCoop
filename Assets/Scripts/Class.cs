@@ -123,67 +123,12 @@ public class Class : MonoBehaviour
                 {
                     myActionButtons[index] = myActionBar.transform.GetChild(childIndex).gameObject;
                     myActionButtons[index].GetComponent<Image>().sprite = mySpells[index].GetComponent<Spell>().myCastbarIcon;
-                    myActionButtons[index].GetComponent<ActionKey>().SetDescription(GetSpellDescription(mySpells[index].GetComponent<Spell>()));
+                    myActionButtons[index].GetComponent<ActionKey>().SetDescription(mySpells[index].GetComponent<Spell>().GetSpellDescription());
                     break;
                 }
             }
 
             myActionButtons[tempIndex].GetComponent<Button>().onClick.AddListener(delegate { anActionClickFunction(tempIndex); });
         }
-    }
-
-    private string GetSpellDescription(Spell aSpell)
-    {
-        string target = "Cast spell on ";
-        if (aSpell.myIsOnlySelfCast)
-            target += "self ";
-        else
-            target += aSpell.GetSpellTarget().ToString() + " ";
-
-        string detail = "to ";
-        switch (aSpell.mySpellType)
-        {
-            case SpellType.Damage:
-                detail += "deal " + aSpell.myDamage + " damage. ";
-                break;
-            case SpellType.Heal:
-                break;
-            case SpellType.Interrupt:
-                break;
-            case SpellType.Silence:
-                break;
-            case SpellType.Slow:
-                break;
-            case SpellType.Buff:
-                if (aSpell.myBuff.mySpellType == SpellType.DOT)
-                    detail += "deal " + (aSpell.myBuff as TickBuff).myTotalDamage + " damage over " + (aSpell.myBuff as TickBuff).myDuration.ToString("0") + " seconds. ";
-                break;
-            case SpellType.Ressurect:
-                break;
-            case SpellType.Special:
-                detail += "deal something... ";
-                break;
-            default:
-                detail += "deal something... ";
-                break;
-        }
-
-        string cost = "Costs " + aSpell.myResourceCost + " to cast spell. ";
-
-        string castTime = "Spell ";
-        if (aSpell.myCastTime <= 0.0f)
-        {
-            castTime += "is instant cast.";
-        }
-        else
-        {
-            castTime += "takes " + aSpell.myCastTime + " to cast. ";
-            if (aSpell.myIsCastableWhileMoving)
-                castTime += "Is castable while moving.";
-            else
-                castTime += "Is not castable while moving";
-        }
-
-        return target + detail + cost + castTime;
     }
 }

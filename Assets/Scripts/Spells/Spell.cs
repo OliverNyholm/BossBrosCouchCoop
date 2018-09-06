@@ -127,6 +127,165 @@ public class Spell : NetworkBehaviour
         return myIsCastableWhileMoving || myCastTime <= 0.0f;
     }
 
+    public string GetSpellDescription()
+    {
+        string target = "Cast spell on ";
+        if (myIsOnlySelfCast)
+            target += "self ";
+        else
+            target += mySpellTarget.ToString() + " ";
+
+        string detail = GetSpellDetail();
+
+        string cost = "\nCosts " + myResourceCost + " to cast spell. ";
+
+        string castTime = "\nSpell ";
+        if (myCastTime <= 0.0f)
+        {
+            castTime += "is instant cast.";
+        }
+        else
+        {
+            castTime += "takes " + myCastTime + " seconds to cast. ";
+            if (myIsCastableWhileMoving)
+                castTime += "Is castable while moving.";
+            else
+                castTime += "Is not castable while moving";
+        }
+
+        return target + detail + cost + castTime;
+    }
+
+    protected virtual string GetSpellDetail()
+    {
+        string detail = "to ";
+        switch (mySpellType)
+        {
+            case SpellType.Damage:
+                detail += "deal " + myDamage + " damage. ";
+                break;
+            case SpellType.Heal:
+                detail += "heal " + myDamage + " damage. ";
+                break;
+            case SpellType.Interrupt:
+                if (myDamage > 0.0f)
+                    detail += "deal " + myDamage + " damage and ";
+                detail += "interrupt any spellcast. ";
+                break;
+            case SpellType.Silence:
+                break;
+            case SpellType.Buff:
+                detail += GetDefaultBuffDetails();
+
+                if (myBuff.mySpellType == SpellType.DOT)
+                {
+                    if (detail[detail.Length - 1] == '%')
+                        detail += " and ";
+
+                    detail += "deal " + (myBuff as TickBuff).myTotalDamage + " damage over ";
+                }
+                else if(myBuff.mySpellType == SpellType.HOT)
+                {
+                    if (detail[detail.Length - 1] == '%')
+                        detail += " and ";
+
+                    detail += "heal " + (myBuff as TickBuff).myTotalDamage + " damage over ";
+                }
+                else if(myBuff.mySpellType == SpellType.Shield)
+                {
+                    if (detail[detail.Length - 1] == '%')
+                        detail += " and ";
+
+                    detail += "place a shield that will absorb " + (myBuff as ShieldBuff).myShieldValue + " damage for ";
+                }
+
+                detail += myBuff.myDuration.ToString("0") + " seconds.";
+                break;
+            case SpellType.Ressurect:
+                detail += "ressurect the target. ";
+                break;
+            case SpellType.Special:
+                //Override this function and add special text.
+                break;
+        }
+
+        return detail;
+    }
+
+    private string GetDefaultBuffDetails()
+    {
+        string buffDetail = " ";
+
+        bool shouldAddComma = false;
+
+        if(myBuff.mySpeedMultiplier > 0.0f)
+        {
+            buffDetail += "increase movement speed by " + (myBuff.mySpeedMultiplier * 100).ToString("0") + "%";
+            shouldAddComma = true;
+        }
+        else if(myBuff.mySpeedMultiplier < 0.0f)
+        {
+            buffDetail += "reduce movement speed by " + (myBuff.mySpeedMultiplier * 100).ToString("0") + "%";
+            shouldAddComma = true;
+        }
+
+        if (myBuff.myAttackSpeed > 0.0f)
+        {
+            if (shouldAddComma)
+                buffDetail += ", and ";
+
+            buffDetail += "increase attack speed by " + (myBuff.myAttackSpeed * 100).ToString("0") + "%";
+            shouldAddComma = true;
+        }
+        else if (myBuff.myAttackSpeed < 0.0f)
+        {
+            if (shouldAddComma)
+                buffDetail += ", and ";
+
+            buffDetail += "reduce attack speed by " + (myBuff.myAttackSpeed * 100).ToString("0") + "%";
+            shouldAddComma = true;
+        }
+
+        if (myBuff.myDamageMitigator > 0.0f)
+        {
+            if (shouldAddComma)
+                buffDetail += ", and ";
+
+            buffDetail += "reduce damage taken by " + (myBuff.myDamageMitigator * 100).ToString("0") + "%";
+            shouldAddComma = true;
+        }
+        else if (myBuff.myDamageMitigator < 0.0f)
+        {
+            if (shouldAddComma)
+                buffDetail += ", and ";
+
+            buffDetail += "increase damage taken by " + (myBuff.myDamageMitigator * 100).ToString("0") + "%";
+            shouldAddComma = true;
+        }
+
+        if (myBuff.myDamageIncrease > 0.0f)
+        {
+            if (shouldAddComma)
+                buffDetail += ", and ";
+
+            buffDetail += "increase damage dealt by " + (myBuff.myDamageIncrease * 100).ToString("0") + "%";
+            shouldAddComma = true;
+        }
+        else if (myBuff.myDamageIncrease < 0.0f)
+        {
+            if (shouldAddComma)
+                buffDetail += ", and ";
+
+            buffDetail += "reduce damage dealt by " + (myBuff.myDamageIncrease * 100).ToString("0") + "% ";
+            shouldAddComma = true;
+        }
+
+        if (myBuff.mySpellType == SpellType.Buff)
+            buffDetail += " for ";
+
+        return buffDetail;
+    }
+
     private string GetSpellHitText()
     {
         string text = string.Empty;
@@ -148,6 +307,7 @@ public class Spell : NetworkBehaviour
 
         return text;
     }
+
 
     [ClientRpc]
     private void RpcInterrupt()

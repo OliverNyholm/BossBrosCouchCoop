@@ -52,4 +52,11 @@ public class Leap : Spell {
     {
         myParent.GetComponent<PlayerCharacter>().GiveImpulse(aVelocity, true);
     }
+
+    protected override string GetSpellDetail()
+    {
+        string detail = "to leap to the target\'s position";
+
+        return detail;
+    }
 }

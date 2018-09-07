@@ -82,7 +82,6 @@ public class PlayerCharacter : NetworkBehaviour
         myResource.EventOnResourceChange += ChangeMyHudResource;
 
         ChangeMyHudResource(myResource.GetResourcePercentage(), myResource.myCurrentResource.ToString() + "/" + myResource.MaxResource.ToString());
-        myCharacterHUD.SetResourceBarColor(myResource.myResourceColor);
 
         myStats = GetComponent<Stats>();
         myBuffs = new List<BuffSpell>();
@@ -341,6 +340,35 @@ public class PlayerCharacter : NetworkBehaviour
             myResource.LoseResource(spellScript.myResourceCost);
             myAnimator.SetTrigger("Attack");
         }
+    }
+
+    public IEnumerator SpellChannelRoutine(float aDuration)
+    {
+        myStunDuration = aDuration;
+        myIsCasting = true;
+        float castSpeed = aDuration;
+        float rate = 1.0f / castSpeed;
+        float progress = 1.0f;
+
+        while (progress >= 0.0f)
+        {
+            myCastbar.SetCastbarFillAmount(Mathf.Lerp(1, 0, progress));
+            myCastbar.SetCastTimeText((castSpeed - (progress * castSpeed)).ToString("0.0"));
+
+            progress += rate * Time.deltaTime;
+
+            if (IsMoving() || Input.GetKeyDown(KeyCode.Escape))
+            {
+                myCastbar.SetCastTimeText("Cancelled");
+                myStunDuration = 0.0f;
+                StopCasting();
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        StopCasting();
     }
 
     private Vector3 GetSpellSpawnPosition(Spell aSpellScript)
@@ -671,6 +699,9 @@ public class PlayerCharacter : NetworkBehaviour
 
     private void ChangeMyHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
     {
+        if (!hasAuthority)
+            return;
+
         myCharacterHUD.SetHealthBarFillAmount(aHealthPercentage);
         myCharacterHUD.SetHealthText(aHealthText);
         myCharacterHUD.SetShieldBar(aShieldValue, myHealth.myCurrentHealth);
@@ -678,8 +709,12 @@ public class PlayerCharacter : NetworkBehaviour
 
     private void ChangeMyHudResource(float aResourcePercentage, string aResourceText)
     {
+        if (!hasAuthority)
+            return;
+
         myCharacterHUD.SetResourceBarFillAmount(aResourcePercentage);
         myCharacterHUD.SetResourceText(aResourceText);
+        myCharacterHUD.SetResourceBarColor(myResource.myResourceColor);
     }
 
     private GameObject FindParentWithNetworkIdentity(GameObject aGameObject)
@@ -696,4 +731,8 @@ public class PlayerCharacter : NetworkBehaviour
         set { myName = value; }
     }
 
+    public bool IsCasting()
+    {
+        return myIsCasting;
+    }
 }

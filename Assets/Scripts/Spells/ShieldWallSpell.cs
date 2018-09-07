@@ -18,15 +18,9 @@ public class ShieldWallSpell : Spell
         NetworkServer.Spawn(shield);
     }
 
-    [ClientRpc]
-    private void RpcLeapPlayer(Vector3 aVelocity)
-    {
-        myParent.GetComponent<PlayerCharacter>().GiveImpulse(aVelocity, true);
-    }
-
     protected override string GetSpellDetail()
     {
-        string detail = "to hold up his shield and block all incoming projectiles";
+        string detail = "to hold up your and block all incoming projectiles";
 
         return detail;
     }

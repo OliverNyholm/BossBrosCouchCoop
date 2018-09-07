@@ -12,7 +12,7 @@ public class ShieldWall : NetworkBehaviour
     {
         if (!isServer)
             return;
-        Debug.Log("TriggerEnter!");
+
         if(other.tag == "Spell")
             NetworkServer.Destroy(other.gameObject);
     }

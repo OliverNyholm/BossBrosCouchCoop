@@ -9,49 +9,47 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1068469352923482}
+  m_RootGameObject: {fileID: 1923039765265374}
   m_IsPrefabAsset: 1
---- !u!1 &1068469352923482
+--- !u!1 &1923039765265374
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4188397540295688}
-  - component: {fileID: 33931677605229128}
-  - component: {fileID: 23634382624623986}
-  - component: {fileID: 65031346234296418}
-  - component: {fileID: 114219369492653340}
-  - component: {fileID: 114612876506762914}
-  - component: {fileID: 114464171052196264}
-  - component: {fileID: 54084253920272820}
+  - component: {fileID: 4030755200977328}
+  - component: {fileID: 33196943747742436}
+  - component: {fileID: 23519293307820428}
+  - component: {fileID: 114031702513823754}
+  - component: {fileID: 114184677465875562}
+  - component: {fileID: 114862396603677272}
   m_Layer: 0
-  m_Name: ShieldWall(Wall)
-  m_TagString: Spell
+  m_Name: Barrier (Spell)
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4188397540295688
+--- !u!4 &4030755200977328
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1068469352923482}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.4923512, z: 1.3}
-  m_LocalScale: {x: 3.1609, y: 2.7166, z: 0.21986}
+  m_GameObject: {fileID: 1923039765265374}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.1474582, y: 0.6805223, z: 0.6294943}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23634382624623986
+--- !u!23 &23519293307820428
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1068469352923482}
+  m_GameObject: {fileID: 1923039765265374}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -61,7 +59,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 5d0bf02a44a2ab449a2ca6dd36c4a772, type: 2}
+  - {fileID: 2100000, guid: 543a9e08fa192584d96e9f5b477ef3d3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,46 +79,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33931677605229128
+--- !u!33 &33196943747742436
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1068469352923482}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54084253920272820
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1068469352923482}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!65 &65031346234296418
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1068469352923482}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114219369492653340
+  m_GameObject: {fileID: 1923039765265374}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114031702513823754
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1068469352923482}
+  m_GameObject: {fileID: 1923039765265374}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
@@ -129,49 +100,37 @@ MonoBehaviour:
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 20
-    i1: 180
-    i2: 117
-    i3: 146
-    i4: 154
-    i5: 230
-    i6: 105
-    i7: 20
-    i8: 184
-    i9: 53
-    i10: 29
-    i11: 230
-    i12: 169
-    i13: 166
-    i14: 14
-    i15: 6
+    i0: 197
+    i1: 237
+    i2: 186
+    i3: 76
+    i4: 173
+    i5: 183
+    i6: 158
+    i7: 196
+    i8: 216
+    i9: 179
+    i10: 245
+    i11: 219
+    i12: 222
+    i13: 194
+    i14: 136
+    i15: 12
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114464171052196264
+--- !u!114 &114184677465875562
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1068469352923482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 581fd7d9f747cc0499ece354816ae72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myLifeTime: 4
---- !u!114 &114612876506762914
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1068469352923482}
+  m_GameObject: {fileID: 1923039765265374}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 1
-  m_SendInterval: 0.1
+  m_SendInterval: 0.06666667
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
@@ -179,4 +138,34 @@ MonoBehaviour:
   m_VelocityThreshold: 0.0001
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
+  m_InterpolateMovement: 5
+--- !u!114 &114862396603677272
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1923039765265374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 422a93d14e091d84c9b4453b8f68d454, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myName: Barrier
+  myTextMesh: {fileID: 0}
+  mySpellType: 10
+  mySpellTarget: 2
+  myDamage: 0
+  myResourceCost: 100
+  mySpeed: 0
+  myCastTime: 0
+  myCooldown: 5
+  myRange: 0
+  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
+  myCastbarIcon: {fileID: 21300000, guid: eca36a03babcdbd45b73d1184d8842dc, type: 3}
+  myIsCastableWhileMoving: 1
+  myCanCastOnSelf: 1
+  myIsOnlySelfCast: 1
+  myBuff: {fileID: 0}
+  myBarrierPrefab: {fileID: 1537794772967648, guid: dbf4d65c838597349b36cbe77785661c,
+    type: 2}
+  myChannelTime: 5

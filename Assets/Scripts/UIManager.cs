@@ -23,7 +23,7 @@ public class UIManager : MonoBehaviour
     {
         for (int index = 0; index < myErrorMessages.Count; index++)
         {
-            if(myErrorMessages[index].GetComponent<ErrorMessage>().ShouldRemove())
+            if (myErrorMessages[index].GetComponent<ErrorMessage>().ShouldRemove())
             {
                 Destroy(myErrorMessages[index]);
                 myErrorMessages.RemoveAt(index);
@@ -37,5 +37,11 @@ public class UIManager : MonoBehaviour
 
         errorMessage.GetComponent<ErrorMessage>().SetText(aMessage);
         myErrorMessages.Add(errorMessage);
+
+        if (myErrorMessages.Count > 3)
+        {
+            Destroy(myErrorMessages[0]);
+            myErrorMessages.RemoveAt(0);
+        }
     }
 }

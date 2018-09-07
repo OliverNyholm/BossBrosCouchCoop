@@ -172,7 +172,7 @@ public class Spell : NetworkBehaviour
                     detail += "deal " + myDamage + " damage and ";
                 detail += "interrupt any spellcast. ";
                 break;
-            case SpellType.Silence:
+            case SpellType.Taunt:
                 break;
             case SpellType.Buff:
                 detail += GetDefaultBuffDetails();
@@ -300,8 +300,8 @@ public class Spell : NetworkBehaviour
             text += " - Interrupt";
         if (mySpellType == SpellType.Slow)
             text += " - Slow";
-        if (mySpellType == SpellType.Silence)
-            text += " - Silence";
+        if (mySpellType == SpellType.Taunt)
+            text += " - Taunt";
         if (mySpellType == SpellType.Ressurect)
             text += " - Ressurect";
 

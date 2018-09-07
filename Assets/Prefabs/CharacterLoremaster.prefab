@@ -1886,11 +1886,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c35b78c8adaa005488649c8354070efd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myResourceName: Energy
-  myMaxResource: 200
-  myCurrentResource: 100
-  myRegenerationPerTick: 25
-  myRegenerationTimer: 0.8
+  myResourceName: Mana
+  myResourceColor: {r: 1, g: 0, b: 0.6249809, a: 1}
+  myMaxResource: 2000
+  myCurrentResource: 1500
+  myRegenerationPerTick: 20
+  myRegenerationTimer: 2
 --- !u!114 &114968685423907738
 MonoBehaviour:
   m_ObjectHideFlags: 1

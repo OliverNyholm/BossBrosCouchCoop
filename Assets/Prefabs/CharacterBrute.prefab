@@ -836,7 +836,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1952300881935642
 GameObject:
@@ -1152,7 +1152,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1558744638472964}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.078895, y: 0.024661034, z: 1.3403181}
+  m_LocalPosition: {x: -5.742765, y: -0.13405123, z: 2.7211049}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4878592788866716}
@@ -1841,10 +1841,10 @@ MonoBehaviour:
   myAutoAttack: {fileID: 1076349553557202, guid: 58da3294e821ee7409b6b1de5bd92427,
     type: 2}
   mySpells:
+  - {fileID: 1894928944319450, guid: e0c2d32b3c4488c4ca7400732b9e3838, type: 2}
   - {fileID: 1310371387935930, guid: 2a2919ac58a524c4ba3a6dec1ec28854, type: 2}
-  - {fileID: 1112324760461454, guid: 06bd03b3d8dd4944a8c68e17a05233d4, type: 2}
-  - {fileID: 1429279037854398, guid: 2220f32f02ec769499ca3461350a1ede, type: 2}
-  - {fileID: 1125694136323164, guid: 6fefe2c9c789eed4b99cd374abe17664, type: 2}
+  - {fileID: 1504369000683004, guid: 514d6da34d22c8e42bc9f3dc233bb07f, type: 2}
+  - {fileID: 1436276555340398, guid: fb9b32489f063c84ba4835356b385bdb, type: 2}
   - {fileID: 1060916130889568, guid: 4caa3539b55677c468d384289c61f19c, type: 2}
   - {fileID: 1458153417168346, guid: 7d4fe2b9e97731e4881150b10df5ef4e, type: 2}
   - {fileID: 1508935094154108, guid: b4d20528e4cbcc246bed632b25b3b55f, type: 2}
@@ -1888,6 +1888,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myResourceName: Energy
+  myResourceColor: {r: 1, g: 0.44493103, b: 0, a: 1}
   myMaxResource: 200
   myCurrentResource: 100
   myRegenerationPerTick: 25

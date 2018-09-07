@@ -60,7 +60,7 @@ public class CharacterHUD : MonoBehaviour
         myResourceBarImage.fillAmount = aValue;
     }
 
-    public void SetResourceBarFillAmount(Color aColor)
+    public void SetResourceBarColor(Color aColor)
     {
         myResourceBarImage.color = aColor;
     }

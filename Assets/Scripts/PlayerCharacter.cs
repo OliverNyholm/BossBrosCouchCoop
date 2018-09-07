@@ -80,12 +80,14 @@ public class PlayerCharacter : NetworkBehaviour
 
         myResource = GetComponent<Resource>();
         myResource.EventOnResourceChange += ChangeMyHudResource;
+
         ChangeMyHudResource(myResource.GetResourcePercentage(), myResource.myCurrentResource.ToString() + "/" + myResource.MaxResource.ToString());
+        myCharacterHUD.SetResourceBarColor(myResource.myResourceColor);
 
         myStats = GetComponent<Stats>();
         myBuffs = new List<BuffSpell>();
 
-        if(myClass == null)
+        if (myClass == null)
             myClass = GetComponentInChildren<Class>();
 
 
@@ -631,6 +633,7 @@ public class PlayerCharacter : NetworkBehaviour
             myTarget.GetComponent<Resource>().EventOnResourceChange += ChangeTargetHudResource;
             ChangeTargetHudResource(myTarget.GetComponent<Resource>().GetResourcePercentage(),
                 myTarget.GetComponent<Resource>().myCurrentResource.ToString() + "/" + myTarget.GetComponent<Resource>().MaxResource);
+            myTargetHUD.SetResourceBarColor(myTarget.GetComponent<Resource>().myResourceColor);
         }
         else
         {
@@ -662,6 +665,8 @@ public class PlayerCharacter : NetworkBehaviour
     {
         myTargetHUD.SetResourceBarFillAmount(aResourcePercentage);
         myTargetHUD.SetResourceText(aResourceText);
+        if (myTarget.GetComponent<Resource>() != null)
+            myTargetHUD.SetResourceBarColor(myTarget.GetComponent<Resource>().myResourceColor);
     }
 
     private void ChangeMyHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)

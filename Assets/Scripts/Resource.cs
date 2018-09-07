@@ -9,6 +9,9 @@ public class Resource : NetworkBehaviour
     public string myResourceName;
 
     [SyncVar]
+    public Color myResourceColor;
+
+    [SyncVar]
     public int myMaxResource = 100;
     [SyncVar]
     public int myCurrentResource = 100;

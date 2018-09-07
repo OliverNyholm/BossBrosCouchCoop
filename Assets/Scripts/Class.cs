@@ -11,7 +11,7 @@ public enum SpellType
     HOT,
     Shield,
     Interrupt,
-    Silence,
+    Taunt,
     Slow,
     Buff,
     Ressurect,

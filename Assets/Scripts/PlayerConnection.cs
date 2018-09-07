@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class PlayerConnection : NetworkBehaviour
 {
     public GameObject myCharacterPrefab;
-    public string myName;
 
     //private InputField myChatInputField;
     //private PlayerCharacter myCharacter;
@@ -16,8 +15,6 @@ public class PlayerConnection : NetworkBehaviour
     {
         if (!isLocalPlayer)
             return;
-
-        myName = "Player" + Random.Range(0, 1000);
 
         CharacterSelect characterSelect = GameObject.Find("CharacterSelect").GetComponent<CharacterSelect>();
         characterSelect.GetComponent<CanvasGroup>().alpha = 1;
@@ -41,26 +38,29 @@ public class PlayerConnection : NetworkBehaviour
         //}
     }
 
-    public void SpawnCharacterPrefab(int anIndex)
+    public void SpawnCharacterPrefab(int anIndex, string aName)
     {
         if (!isLocalPlayer)
             return;
-        
-        CmdSpawnCharacter(anIndex);
+
+        CmdSpawnCharacter(anIndex, aName);
     }
 
     [Command]
-    private void CmdSpawnCharacter(int aCharacterID)
+    private void CmdSpawnCharacter(int aCharacterID, string aName)
     {
         CharacterSelect characterSelect = GameObject.Find("CharacterSelect").GetComponent<CharacterSelect>();
-
         myCharacterPrefab = characterSelect.GetCharacterPrefab(aCharacterID);
-
         GameObject go = Instantiate(myCharacterPrefab, this.transform);
-        go.GetComponent<PlayerCharacter>().Name = myName;
 
         NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
+        RpcSetChildParent(gameObject, go, aName);
+    }
 
-        //myCharacter = go.GetComponent<PlayerCharacter>();
+    [ClientRpc]
+    private void RpcSetChildParent(GameObject aParent, GameObject aChild, string aName)
+    {
+        aChild.transform.parent = aParent.transform;
+        aChild.GetComponent<PlayerCharacter>().Name = aName;
     }
 }

@@ -8,8 +8,6 @@ public class Barrier : NetworkBehaviour
     [SerializeField]
     private Buff myBuff;
 
-    private GameObject myParent;
-
     void OnTriggerEnter(Collider other)
     {
         if (!isServer)
@@ -26,14 +24,9 @@ public class Barrier : NetworkBehaviour
         if (!isServer)
             return;
 
-        if(!myParent.GetComponent<PlayerCharacter>().IsCasting())
+        if (!transform.parent.GetComponent<PlayerCharacter>().IsCasting())
         {
             NetworkServer.Destroy(gameObject);
         }
-    }
-
-    public void SetParent(GameObject aGameObject)
-    {
-        myParent = aGameObject;
     }
 }

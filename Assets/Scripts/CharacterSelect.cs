@@ -5,7 +5,10 @@ using UnityEngine.UI;
 
 public class CharacterSelect : MonoBehaviour
 {
-    public GameObject[] myCharacterPrefabs;
+    [SerializeField]
+    private InputField myNameInputField;
+    [SerializeField]
+    private GameObject[] myCharacterPrefabs;
 
     private PlayerConnection myPlayerConnection;
 
@@ -25,7 +28,7 @@ public class CharacterSelect : MonoBehaviour
                 transform.GetChild(index).GetComponent<Button>().enabled = false;
         }
 
-        myPlayerConnection.SpawnCharacterPrefab(anIndex);
+        myPlayerConnection.SpawnCharacterPrefab(anIndex, myNameInputField.text);
     }
 
     public GameObject GetCharacterPrefab(int anIndex)

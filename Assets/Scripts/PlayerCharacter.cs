@@ -56,10 +56,8 @@ public class PlayerCharacter : NetworkBehaviour
         myCamera = Camera.main;
         myCamera.GetComponent<PlayerCamera>().SetTarget(this.transform);
 
-        if (myClass == null)
-            myClass = GetComponentInChildren<Class>();
-
-        myClass.SetupSpellHud(CastSpell);
+        if(isServer)
+            ManualStart();
     }
 
     private void Start()
@@ -75,23 +73,29 @@ public class PlayerCharacter : NetworkBehaviour
         myUIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
 
         myHealth = GetComponent<Health>();
-        myHealth.EventOnHealthChange += ChangeMyHudHealth;
-        ChangeMyHudHealth(myHealth.GetHealthPercentage(), myHealth.myCurrentHealth.ToString() + "/" + myHealth.myMaxHealth.ToString(), GetComponent<Health>().GetTotalShieldValue());
-
         myResource = GetComponent<Resource>();
-        myResource.EventOnResourceChange += ChangeMyHudResource;
-
-        ChangeMyHudResource(myResource.GetResourcePercentage(), myResource.myCurrentResource.ToString() + "/" + myResource.MaxResource.ToString());
 
         myStats = GetComponent<Stats>();
         myBuffs = new List<BuffSpell>();
 
-        if (myClass == null)
-            myClass = GetComponentInChildren<Class>();
+        myClass = GetComponentInChildren<Class>();
 
+        if (hasAuthority)
+            ManualStart();
+    }
 
-        myCharacterHUD.Show();
+    private void ManualStart()
+    {
+        myHealth.EventOnHealthChange += ChangeMyHudHealth;
+        ChangeMyHudHealth(myHealth.GetHealthPercentage(), myHealth.myCurrentHealth.ToString() + "/" + myHealth.myMaxHealth.ToString(), GetComponent<Health>().GetTotalShieldValue());
+
+        myResource.EventOnResourceChange += ChangeMyHudResource;
+        ChangeMyHudResource(myResource.GetResourcePercentage(), myResource.myCurrentResource.ToString() + "/" + myResource.MaxResource.ToString());
+
+        myClass.SetupSpellHud(CastSpell);
+
         myCharacterHUD.SetName(myName + " (" + myClass.myClassName + ")");
+        myCharacterHUD.Show();
     }
 
     void Update()
@@ -474,6 +478,14 @@ public class PlayerCharacter : NetworkBehaviour
         myCastbar.FadeOutCastbar();
     }
 
+    public void StartChannel(float aDuration)
+    {
+        if (!hasAuthority)
+            return;
+
+        myCastingRoutine = StartCoroutine(SpellChannelRoutine(aDuration));
+    }
+
     private bool CanRaycastToTarget()
     {
         Vector3 hardcodedEyePosition = new Vector3(0.0f, 0.7f, 0.0f);
@@ -728,7 +740,13 @@ public class PlayerCharacter : NetworkBehaviour
     public string Name
     {
         get { return myName + " (" + myClass.myClassName + ")"; }
-        set { myName = value; }
+        set
+        {
+            myName = value;
+
+            if (hasAuthority && myCharacterHUD != null && myClass != null)
+                myCharacterHUD.SetName(value + " (" + myClass.myClassName + ")");
+        }
     }
 
     public bool IsCasting()

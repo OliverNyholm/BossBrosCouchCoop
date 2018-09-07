@@ -14,8 +14,10 @@ public class ShieldWallSpell : Spell
         if (!isServer)
             return;
 
-        GameObject shield = Instantiate(myShieldWallPrefab, myTarget.transform);
+        GameObject shield = Instantiate(myShieldWallPrefab, myParent.transform);
         NetworkServer.Spawn(shield);
+
+        RpcSetSpellParent(myParent, shield);
     }
 
     protected override string GetSpellDetail()
@@ -23,5 +25,11 @@ public class ShieldWallSpell : Spell
         string detail = "to hold up your and block all incoming projectiles";
 
         return detail;
+    }
+
+    [ClientRpc]
+    private void RpcSetSpellParent(GameObject aParent, GameObject aChild)
+    {
+        aChild.transform.parent = aParent.transform;
     }
 }

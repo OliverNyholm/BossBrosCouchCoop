@@ -17,11 +17,12 @@ public class BarrierSpell : Spell
         if (!isServer)
             return;
 
-        GameObject shield = Instantiate(myBarrierPrefab, myTarget.transform);
-        shield.GetComponent<Barrier>().SetParent(myTarget);
+        GameObject barrier = Instantiate(myBarrierPrefab, myParent.transform);
 
-        NetworkServer.Spawn(shield);
-        StartCoroutine(myTarget.GetComponent<PlayerCharacter>().SpellChannelRoutine(myChannelTime));
+        NetworkServer.Spawn(barrier);
+
+        RpcSetSpellParent(myParent, barrier);
+        RpcStartCoroutine();
     }
 
     protected override string GetSpellDetail()
@@ -29,5 +30,17 @@ public class BarrierSpell : Spell
         string detail = "to channel a barrier around yourself for " + myChannelTime + " seconds. Standing inside barrier will grant a buff to reduce damage taken by 50 % ";
 
         return detail;
+    }
+
+    [ClientRpc]
+    private void RpcStartCoroutine()
+    {
+        myParent.GetComponent<PlayerCharacter>().StartChannel(myChannelTime);
+    }
+
+    [ClientRpc]
+    private void RpcSetSpellParent(GameObject aParent, GameObject aChild)
+    {
+        aChild.transform.parent = aParent.transform;
     }
 }

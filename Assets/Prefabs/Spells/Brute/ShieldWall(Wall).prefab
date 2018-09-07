@@ -24,9 +24,10 @@ GameObject:
   - component: {fileID: 65031346234296418}
   - component: {fileID: 114219369492653340}
   - component: {fileID: 114612876506762914}
-  m_Layer: 9
+  - component: {fileID: 114464171052196264}
+  m_Layer: 0
   m_Name: ShieldWall(Wall)
-  m_TagString: Untagged
+  m_TagString: Spell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,6 +131,18 @@ MonoBehaviour:
     i15: 6
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &114464171052196264
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1068469352923482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581fd7d9f747cc0499ece354816ae72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myLifeTime: 4
 --- !u!114 &114612876506762914
 MonoBehaviour:
   m_ObjectHideFlags: 1

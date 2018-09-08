@@ -32,7 +32,7 @@ public class Spell : NetworkBehaviour
     [SyncVar]
     protected GameObject myTarget;
 
-    void Update()
+    protected virtual void Update()
     {
         if (!isServer)
             return;

@@ -8,8 +8,6 @@ public class Barrier : ChannelSpell
     [SerializeField]
     private Buff myBuff;
 
-    private List<GameObject> myCollidedWith = new List<GameObject>();
-
     void OnTriggerEnter(Collider other)
     {
         if (!isServer)
@@ -18,7 +16,6 @@ public class Barrier : ChannelSpell
         if (other.tag == "Player")
         {
             RpcSpawnBuff(other.gameObject);
-            myCollidedWith.Add(other.gameObject);
         }
     }
 
@@ -30,19 +27,6 @@ public class Barrier : ChannelSpell
         if (other.tag == "Player")
         {
             RpcRemoveBuff(other.gameObject);
-            myCollidedWith.Remove(other.gameObject);
-        }
-    }
-
-    public void OnDisable()
-    {
-        if (!isServer)
-            return;
-
-        Debug.Log("ON DESTROY! : " + myCollidedWith.Count);
-        for (int index = 0; index < myCollidedWith.Count; index++)
-        {
-            RpcRemoveBuff(myCollidedWith[index]);
         }
     }
 
@@ -69,5 +53,12 @@ public class Barrier : ChannelSpell
     {
         Debug.Log("Remove Buff: " + myBuff.name);
         aTarget.GetComponent<PlayerCharacter>().RemoveBuffByName(myBuff.name);
+    }
+
+    [ClientRpc]
+    public override void RpcSetToDestroy()
+    {  
+        transform.Translate(Vector3.up * 1000);
+        myTimerBeforeDestroy = 0.1f;
     }
 }

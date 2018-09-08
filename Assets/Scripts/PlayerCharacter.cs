@@ -418,6 +418,11 @@ public class PlayerCharacter : NetworkBehaviour
             transform.LookAt(myTarget.transform);
     }
 
+    public void SetPosition(Vector3 aPosition)
+    {
+        transform.position = aPosition;
+    }
+
     public void InterruptSpellCast()
     {
         if (myIsCasting)

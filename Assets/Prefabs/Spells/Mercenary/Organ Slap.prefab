@@ -9,34 +9,34 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1983804006253038}
+  m_RootGameObject: {fileID: 1159462510580832}
   m_IsPrefabAsset: 1
---- !u!1 &1983804006253038
+--- !u!1 &1159462510580832
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4319644148406474}
-  - component: {fileID: 33925639931622924}
-  - component: {fileID: 23225198066787160}
-  - component: {fileID: 114284622595147766}
-  - component: {fileID: 114778930586999622}
-  - component: {fileID: 114088791274879412}
+  - component: {fileID: 4286628504176774}
+  - component: {fileID: 33020571850446208}
+  - component: {fileID: 23783104684869394}
+  - component: {fileID: 114671693925793848}
+  - component: {fileID: 114910159478223994}
+  - component: {fileID: 114839666368962070}
   m_Layer: 0
-  m_Name: Fireball
+  m_Name: Organ Slap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4319644148406474
+--- !u!4 &4286628504176774
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1983804006253038}
+  m_GameObject: {fileID: 1159462510580832}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1474582, y: 0.6805223, z: 0.6294943}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -44,12 +44,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23225198066787160
+--- !u!23 &23783104684869394
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1983804006253038}
+  m_GameObject: {fileID: 1159462510580832}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -59,7 +59,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 2a4acfae4fa29ad4cba8f2f43c621d4c, type: 2}
+  - {fileID: 2100000, guid: 62e4e8e481623414292b6e191475a1af, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,19 +79,46 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33925639931622924
+--- !u!33 &33020571850446208
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1983804006253038}
+  m_GameObject: {fileID: 1159462510580832}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114088791274879412
+--- !u!114 &114671693925793848
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1983804006253038}
+  m_GameObject: {fileID: 1159462510580832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4148e1b28d969ae4aa67f15be58c979c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myName: Organ Slap
+  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 2}
+  mySpellType: 0
+  mySpellTarget: 4
+  myDamage: 500
+  myResourceCost: 120
+  mySpeed: 0
+  myCastTime: 0
+  myCooldown: 10
+  myRange: 4
+  myCastbarColor: {r: 1, g: 0.55655974, b: 0, a: 1}
+  mySpellIcon: {fileID: 21300000, guid: eca36a03babcdbd45b73d1184d8842dc, type: 3}
+  myIsCastableWhileMoving: 1
+  myCanCastOnSelf: 0
+  myIsOnlySelfCast: 0
+  myBuff: {fileID: 0}
+--- !u!114 &114839666368962070
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1159462510580832}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
@@ -107,39 +134,12 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 5
---- !u!114 &114284622595147766
+--- !u!114 &114910159478223994
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1983804006253038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4148e1b28d969ae4aa67f15be58c979c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myName: Fire Ball
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 2}
-  mySpellType: 0
-  mySpellTarget: 4
-  myDamage: 500
-  myResourceCost: 100
-  mySpeed: 10
-  myCastTime: 2
-  myCooldown: 10
-  myRange: 25
-  myCastbarColor: {r: 1, g: 0, b: 0, a: 1}
-  mySpellIcon: {fileID: 21300000, guid: fb650a735451f0a4c8d9d019d33ad40d, type: 3}
-  myIsCastableWhileMoving: 0
-  myCanCastOnSelf: 0
-  myIsOnlySelfCast: 0
-  myBuff: {fileID: 0}
---- !u!114 &114778930586999622
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1983804006253038}
+  m_GameObject: {fileID: 1159462510580832}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
@@ -148,21 +148,21 @@ MonoBehaviour:
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 153
-    i1: 78
-    i2: 241
-    i3: 58
-    i4: 237
-    i5: 126
-    i6: 254
-    i7: 148
-    i8: 168
-    i9: 96
-    i10: 250
-    i11: 180
-    i12: 169
-    i13: 251
-    i14: 154
-    i15: 187
+    i0: 216
+    i1: 238
+    i2: 164
+    i3: 114
+    i4: 67
+    i5: 69
+    i6: 106
+    i7: 68
+    i8: 136
+    i9: 205
+    i10: 143
+    i11: 122
+    i12: 117
+    i13: 18
+    i14: 8
+    i15: 108
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0

@@ -28,7 +28,8 @@ public class CharacterSelect : MonoBehaviour
                 transform.GetChild(index).GetComponent<Button>().enabled = false;
         }
 
-        myPlayerConnection.SpawnCharacterPrefab(anIndex, myNameInputField.text);
+        string name = myNameInputField.text == string.Empty ? "Player" : myNameInputField.text;
+        myPlayerConnection.SpawnCharacterPrefab(anIndex, name);
     }
 
     public GameObject GetCharacterPrefab(int anIndex)

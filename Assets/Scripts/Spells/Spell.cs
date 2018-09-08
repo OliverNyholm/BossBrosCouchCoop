@@ -19,7 +19,7 @@ public class Spell : NetworkBehaviour
     public float myRange;
 
     public Color myCastbarColor;
-    public Sprite myCastbarIcon;
+    public Sprite mySpellIcon;
 
     public bool myIsCastableWhileMoving;
     public bool myCanCastOnSelf;
@@ -68,13 +68,13 @@ public class Spell : NetworkBehaviour
         {
             BuffTickSpell buffSpell;
             buffSpell = (myBuff as TickBuff).InitializeBuff(myParent, myTarget);
-            myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, myCastbarIcon);
+            myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, mySpellIcon);
         }
         else
         {
             BuffSpell buffSpell;
             buffSpell = myBuff.InitializeBuff(myParent);
-            myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, myCastbarIcon);
+            myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, mySpellIcon);
         }
     }
 

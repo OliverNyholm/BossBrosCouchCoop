@@ -122,7 +122,7 @@ public class Class : MonoBehaviour
                 if (myActionBar.transform.GetChild(childIndex).name == name)
                 {
                     myActionButtons[index] = myActionBar.transform.GetChild(childIndex).gameObject;
-                    myActionButtons[index].GetComponent<Image>().sprite = mySpells[index].GetComponent<Spell>().myCastbarIcon;
+                    myActionButtons[index].GetComponent<Image>().sprite = mySpells[index].GetComponent<Spell>().mySpellIcon;
                     myActionButtons[index].GetComponent<ActionKey>().SetDescription(mySpells[index].GetComponent<Spell>().GetSpellDescription());
                     break;
                 }

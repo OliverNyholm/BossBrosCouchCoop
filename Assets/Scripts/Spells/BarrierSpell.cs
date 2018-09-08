@@ -22,7 +22,7 @@ public class BarrierSpell : Spell
         NetworkServer.Spawn(barrier);
 
         RpcSetSpellParent(myParent, barrier);
-        RpcStartCoroutine();
+        RpcStartCoroutine(barrier);
     }
 
     protected override string GetSpellDetail()
@@ -33,9 +33,9 @@ public class BarrierSpell : Spell
     }
 
     [ClientRpc]
-    private void RpcStartCoroutine()
+    private void RpcStartCoroutine(GameObject aChannelSpell)
     {
-        myParent.GetComponent<PlayerCharacter>().StartChannel(myChannelTime);
+        myParent.GetComponent<PlayerCharacter>().StartChannel(myChannelTime, this, aChannelSpell);
     }
 
     [ClientRpc]

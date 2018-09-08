@@ -40,4 +40,9 @@ public class BuffSpell
     {
         return myParent;
     }
+
+    public string GetName()
+    {
+        return myBuff.name;
+    }
 }

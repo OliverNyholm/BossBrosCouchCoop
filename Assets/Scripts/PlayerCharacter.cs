@@ -38,6 +38,7 @@ public class PlayerCharacter : NetworkBehaviour
     private Castbar myCastbar;
     private Coroutine myCastingRoutine;
 
+    [SyncVar]
     private bool myIsCasting;
     private bool myShouldAutoAttack;
 
@@ -56,7 +57,7 @@ public class PlayerCharacter : NetworkBehaviour
         myCamera = Camera.main;
         myCamera.GetComponent<PlayerCamera>().SetTarget(this.transform);
 
-        if(isServer)
+        if (isServer)
             ManualStart();
     }
 
@@ -275,7 +276,7 @@ public class PlayerCharacter : NetworkBehaviour
         myCastbar.SetCastbarFillAmount(0.0f);
         myCastbar.SetSpellName(spellScript.myName);
         myCastbar.SetCastbarColor(spellScript.myCastbarColor);
-        myCastbar.SetSpellIcon(spellScript.myCastbarIcon);
+        myCastbar.SetSpellIcon(spellScript.mySpellIcon);
         myCastbar.SetCastTimeText(spellScript.myCastTime.ToString());
 
         myCastingRoutine = StartCoroutine(CastbarProgress(aKeyIndex));
@@ -346,15 +347,15 @@ public class PlayerCharacter : NetworkBehaviour
         }
     }
 
-    public IEnumerator SpellChannelRoutine(float aDuration)
+    public IEnumerator SpellChannelRoutine(float aDuration, GameObject aChannelGO)
     {
         myStunDuration = aDuration;
         myIsCasting = true;
         float castSpeed = aDuration;
         float rate = 1.0f / castSpeed;
-        float progress = 1.0f;
+        float progress = 0.0f;
 
-        while (progress >= 0.0f)
+        while (progress <= 1.0f)
         {
             myCastbar.SetCastbarFillAmount(Mathf.Lerp(1, 0, progress));
             myCastbar.SetCastTimeText((castSpeed - (progress * castSpeed)).ToString("0.0"));
@@ -366,6 +367,7 @@ public class PlayerCharacter : NetworkBehaviour
                 myCastbar.SetCastTimeText("Cancelled");
                 myStunDuration = 0.0f;
                 StopCasting();
+                CmdDestroyChannelledSpell(aChannelGO);
                 yield break;
             }
 
@@ -373,6 +375,28 @@ public class PlayerCharacter : NetworkBehaviour
         }
 
         StopCasting();
+        CmdDestroyChannelledSpell(aChannelGO);
+    }
+
+    [Command]
+    private void CmdDestroyChannelledSpell(GameObject aChannelGO)
+    {
+        aChannelGO.GetComponent<ChannelSpell>().RpcSetToDestroy();
+    }
+
+    public void StartChannel(float aDuration, Spell aSpellScript, GameObject aChannelGO)
+    {
+        if (!hasAuthority)
+            return;
+
+        myCastbar.ShowCastbar();
+        myCastbar.SetCastbarFillAmount(1.0f);
+        myCastbar.SetSpellName(aSpellScript.myName);
+        myCastbar.SetCastbarColor(aSpellScript.myCastbarColor);
+        myCastbar.SetSpellIcon(aSpellScript.mySpellIcon);
+        myCastbar.SetCastTimeText(aDuration.ToString());
+
+        myCastingRoutine = StartCoroutine(SpellChannelRoutine(aDuration, aChannelGO));
     }
 
     private Vector3 GetSpellSpawnPosition(Spell aSpellScript)
@@ -471,19 +495,26 @@ public class PlayerCharacter : NetworkBehaviour
         myCharacterHUD.RemoveBuff(anIndex);
     }
 
+    public void RemoveBuffByName(string aName)
+    {
+        if (!hasAuthority)
+            return;
+
+        for (int index = 0; index < myBuffs.Count; index++)
+        {
+            if (myBuffs[index].GetName() == aName)
+            {
+                RemoveBuff(index);
+                return;
+            }
+        }
+    }
+
     private void StopCasting()
     {
         StopCoroutine(myCastingRoutine);
         myIsCasting = false;
         myCastbar.FadeOutCastbar();
-    }
-
-    public void StartChannel(float aDuration)
-    {
-        if (!hasAuthority)
-            return;
-
-        myCastingRoutine = StartCoroutine(SpellChannelRoutine(aDuration));
     }
 
     private bool CanRaycastToTarget()
@@ -749,8 +780,19 @@ public class PlayerCharacter : NetworkBehaviour
         }
     }
 
-    public bool IsCasting()
+    public bool IsCasting(bool aNonAuthorityReturn)
     {
+        if (!hasAuthority)
+            return aNonAuthorityReturn;
+
         return myIsCasting;
+    }
+
+    public void WriteErrorMessage(string aText)
+    {
+        if (!hasAuthority)
+            return;
+
+        myUIManager.CreateErrorMessage(aText);
     }
 }

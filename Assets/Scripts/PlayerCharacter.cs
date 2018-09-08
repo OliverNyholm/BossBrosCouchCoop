@@ -362,7 +362,7 @@ public class PlayerCharacter : NetworkBehaviour
 
             progress += rate * Time.deltaTime;
 
-            if (IsMoving() || Input.GetKeyDown(KeyCode.Escape))
+            if (IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && aChannelGO != null))
             {
                 myCastbar.SetCastTimeText("Cancelled");
                 myStunDuration = 0.0f;
@@ -375,7 +375,8 @@ public class PlayerCharacter : NetworkBehaviour
         }
 
         StopCasting();
-        CmdDestroyChannelledSpell(aChannelGO);
+        if (aChannelGO != null)
+            CmdDestroyChannelledSpell(aChannelGO);
     }
 
     [Command]
@@ -421,6 +422,11 @@ public class PlayerCharacter : NetworkBehaviour
     public void SetPosition(Vector3 aPosition)
     {
         transform.position = aPosition;
+    }
+
+    public void Stun(float aStunDuration)
+    {
+        myStunDuration = aStunDuration;
     }
 
     public void InterruptSpellCast()

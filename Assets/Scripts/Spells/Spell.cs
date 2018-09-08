@@ -129,6 +129,8 @@ public class Spell : NetworkBehaviour
 
     public string GetSpellDescription()
     {
+        string name = myName + "\n";
+
         string target = "Cast spell on ";
         if (myIsOnlySelfCast)
             target += "self ";
@@ -137,6 +139,9 @@ public class Spell : NetworkBehaviour
 
         string detail = GetSpellDetail();
 
+        string range = "\n";
+        if (myRange != 0 && myIsOnlySelfCast)
+            range = "Range: " + myRange;
         string cost = "\nCosts " + myResourceCost + " to cast spell. ";
 
         string castTime = "\nSpell ";
@@ -153,7 +158,7 @@ public class Spell : NetworkBehaviour
                 castTime += "Is not castable while moving";
         }
 
-        return target + detail + cost + castTime;
+        return name + target + detail + range + cost + castTime;
     }
 
     protected virtual string GetSpellDetail()
@@ -184,14 +189,14 @@ public class Spell : NetworkBehaviour
 
                     detail += "deal " + (myBuff as TickBuff).myTotalDamage + " damage over ";
                 }
-                else if(myBuff.mySpellType == SpellType.HOT)
+                else if (myBuff.mySpellType == SpellType.HOT)
                 {
                     if (detail[detail.Length - 1] == '%')
                         detail += " and ";
 
                     detail += "heal " + (myBuff as TickBuff).myTotalDamage + " damage over ";
                 }
-                else if(myBuff.mySpellType == SpellType.Shield)
+                else if (myBuff.mySpellType == SpellType.Shield)
                 {
                     if (detail[detail.Length - 1] == '%')
                         detail += " and ";
@@ -218,12 +223,12 @@ public class Spell : NetworkBehaviour
 
         bool shouldAddComma = false;
 
-        if(myBuff.mySpeedMultiplier > 0.0f)
+        if (myBuff.mySpeedMultiplier > 0.0f)
         {
             buffDetail += "increase movement speed by " + (myBuff.mySpeedMultiplier * 100).ToString("0") + "%";
             shouldAddComma = true;
         }
-        else if(myBuff.mySpeedMultiplier < 0.0f)
+        else if (myBuff.mySpeedMultiplier < 0.0f)
         {
             buffDetail += "reduce movement speed by " + (myBuff.mySpeedMultiplier * 100).ToString("0") + "%";
             shouldAddComma = true;

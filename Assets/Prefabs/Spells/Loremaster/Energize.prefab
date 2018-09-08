@@ -9,47 +9,47 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1923039765265374}
+  m_RootGameObject: {fileID: 1385395385526390}
   m_IsPrefabAsset: 1
---- !u!1 &1923039765265374
+--- !u!1 &1385395385526390
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4030755200977328}
-  - component: {fileID: 33196943747742436}
-  - component: {fileID: 23519293307820428}
-  - component: {fileID: 114031702513823754}
-  - component: {fileID: 114184677465875562}
-  - component: {fileID: 114862396603677272}
+  - component: {fileID: 4822057767249848}
+  - component: {fileID: 33637974575897462}
+  - component: {fileID: 23270370434887666}
+  - component: {fileID: 114480730585780264}
+  - component: {fileID: 114302690098176106}
+  - component: {fileID: 114081146117024262}
   m_Layer: 0
-  m_Name: Barrier (Spell)
+  m_Name: Energize
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4030755200977328
+--- !u!4 &4822057767249848
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1923039765265374}
+  m_GameObject: {fileID: 1385395385526390}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1474582, y: 0.6805223, z: 0.6294943}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23519293307820428
+--- !u!23 &23270370434887666
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1923039765265374}
+  m_GameObject: {fileID: 1385395385526390}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -59,7 +59,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 543a9e08fa192584d96e9f5b477ef3d3, type: 2}
+  - {fileID: 2100000, guid: f422daac75b75ce40bad5d08ace9243b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,51 +79,46 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33196943747742436
+--- !u!33 &33637974575897462
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1923039765265374}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114031702513823754
+  m_GameObject: {fileID: 1385395385526390}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114081146117024262
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1923039765265374}
+  m_GameObject: {fileID: 1385395385526390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 4148e1b28d969ae4aa67f15be58c979c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 197
-    i1: 237
-    i2: 186
-    i3: 76
-    i4: 173
-    i5: 183
-    i6: 158
-    i7: 196
-    i8: 216
-    i9: 179
-    i10: 245
-    i11: 219
-    i12: 222
-    i13: 194
-    i14: 136
-    i15: 12
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
---- !u!114 &114184677465875562
+  myName: Energize
+  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 2}
+  mySpellType: 8
+  mySpellTarget: 2
+  myDamage: 0
+  myResourceCost: 50
+  mySpeed: 0
+  myCastTime: 0
+  myCooldown: 1
+  myRange: 25
+  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
+  mySpellIcon: {fileID: 21300000, guid: e17cd266fdccfb641bb4961fbb4dfd47, type: 3}
+  myIsCastableWhileMoving: 1
+  myCanCastOnSelf: 1
+  myIsOnlySelfCast: 0
+  myBuff: {fileID: 11400000, guid: 9c3513f43da15de41b4f4216895df3ad, type: 2}
+--- !u!114 &114302690098176106
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1923039765265374}
+  m_GameObject: {fileID: 1385395385526390}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
@@ -139,33 +134,35 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 5
---- !u!114 &114862396603677272
+--- !u!114 &114480730585780264
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1923039765265374}
+  m_GameObject: {fileID: 1385395385526390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 422a93d14e091d84c9b4453b8f68d454, type: 3}
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myName: Barrier
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 2}
-  mySpellType: 10
-  mySpellTarget: 2
-  myDamage: 0
-  myResourceCost: 100
-  mySpeed: 0
-  myCastTime: 0
-  myCooldown: 5
-  myRange: 0
-  myCastbarColor: {r: 1, g: 0.88335323, b: 0, a: 1}
-  mySpellIcon: {fileID: 21300000, guid: 3bf1b6c2b1634ef4da726e57c4bdaf9d, type: 3}
-  myIsCastableWhileMoving: 1
-  myCanCastOnSelf: 1
-  myIsOnlySelfCast: 1
-  myBuff: {fileID: 0}
-  myBarrierPrefab: {fileID: 1537794772967648, guid: dbf4d65c838597349b36cbe77785661c,
-    type: 2}
-  myChannelTime: 5
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 58
+    i1: 44
+    i2: 183
+    i3: 235
+    i4: 127
+    i5: 186
+    i6: 244
+    i7: 228
+    i8: 123
+    i9: 45
+    i10: 181
+    i11: 123
+    i12: 11
+    i13: 211
+    i14: 117
+    i15: 183
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0

@@ -9,36 +9,36 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1724268705632966}
+  m_RootGameObject: {fileID: 1992501870367618}
   m_IsPrefabAsset: 1
---- !u!1 &1724268705632966
+--- !u!1 &1992501870367618
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4948215919692270}
-  - component: {fileID: 33112491039524460}
-  - component: {fileID: 23518725788317564}
-  - component: {fileID: 114491116766941712}
-  - component: {fileID: 114828187780306512}
-  - component: {fileID: 114249541543001016}
-  - component: {fileID: 136073544896560816}
-  - component: {fileID: 54019806464888414}
+  - component: {fileID: 4745930644453622}
+  - component: {fileID: 33535409552879960}
+  - component: {fileID: 23103748549631414}
+  - component: {fileID: 114599376548351840}
+  - component: {fileID: 114890860903576474}
+  - component: {fileID: 114915004059590692}
+  - component: {fileID: 136937635373154268}
+  - component: {fileID: 54912764487121144}
   m_Layer: 0
-  m_Name: Swing
+  m_Name: Bum Jump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4948215919692270
+--- !u!4 &4745930644453622
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1724268705632966}
+  m_GameObject: {fileID: 1992501870367618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1474582, y: 2.48, z: 0.6294943}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -46,12 +46,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23518725788317564
+--- !u!23 &23103748549631414
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1724268705632966}
+  m_GameObject: {fileID: 1992501870367618}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -81,19 +81,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33112491039524460
+--- !u!33 &33535409552879960
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1724268705632966}
+  m_GameObject: {fileID: 1992501870367618}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54019806464888414
+--- !u!54 &54912764487121144
 Rigidbody:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1724268705632966}
+  m_GameObject: {fileID: 1992501870367618}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -103,39 +103,12 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114249541543001016
+--- !u!114 &114599376548351840
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1724268705632966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8462d372ec43cf14db592b02f1887893, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myName: Swing
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 2}
-  mySpellType: 0
-  mySpellTarget: 0
-  myDamage: 150
-  myResourceCost: 80
-  mySpeed: 0
-  myCastTime: 0
-  myCooldown: 4
-  myRange: 0
-  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
-  mySpellIcon: {fileID: 21300000, guid: eca36a03babcdbd45b73d1184d8842dc, type: 3}
-  myIsCastableWhileMoving: 1
-  myCanCastOnSelf: 0
-  myIsOnlySelfCast: 1
-  myBuff: {fileID: 0}
---- !u!114 &114491116766941712
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1724268705632966}
+  m_GameObject: {fileID: 1992501870367618}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
@@ -144,30 +117,30 @@ MonoBehaviour:
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 61
-    i1: 20
-    i2: 221
-    i3: 181
-    i4: 237
-    i5: 28
-    i6: 234
-    i7: 84
-    i8: 203
-    i9: 144
-    i10: 255
-    i11: 173
-    i12: 160
-    i13: 21
-    i14: 126
-    i15: 114
+    i0: 188
+    i1: 156
+    i2: 95
+    i3: 118
+    i4: 54
+    i5: 9
+    i6: 130
+    i7: 52
+    i8: 187
+    i9: 57
+    i10: 48
+    i11: 136
+    i12: 1
+    i13: 196
+    i14: 120
+    i15: 60
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114828187780306512
+--- !u!114 &114890860903576474
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1724268705632966}
+  m_GameObject: {fileID: 1992501870367618}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
@@ -183,12 +156,39 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 5
---- !u!136 &136073544896560816
+--- !u!114 &114915004059590692
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1992501870367618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8462d372ec43cf14db592b02f1887893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myName: Bum Jump
+  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 2}
+  mySpellType: 0
+  mySpellTarget: 0
+  myDamage: 150
+  myResourceCost: 80
+  mySpeed: 0
+  myCastTime: 0
+  myCooldown: 4
+  myRange: 0
+  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
+  mySpellIcon: {fileID: 21300000, guid: 16faba4869ed8584abd918caf2a4d3bf, type: 3}
+  myIsCastableWhileMoving: 1
+  myCanCastOnSelf: 0
+  myIsOnlySelfCast: 1
+  myBuff: {fileID: 0}
+--- !u!136 &136937635373154268
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1724268705632966}
+  m_GameObject: {fileID: 1992501870367618}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1

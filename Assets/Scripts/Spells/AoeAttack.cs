@@ -7,11 +7,6 @@ public class AoeAttack : Spell {
 
     private float myLifeTime = 0.05f;
 
-    protected override void DealSpellEffect()
-    {
-        base.DealSpellEffect();
-    }
-
     protected override void Update()
     {
         if (!isServer)

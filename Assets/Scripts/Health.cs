@@ -10,9 +10,12 @@ public class Health : NetworkBehaviour
     public int myCurrentHealth = 100;
 
     public delegate void HealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue);
+    public delegate void HealthChangedParty(float aHealthPercentage, NetworkInstanceId anID);
 
     [SyncEvent]
     public event HealthChanged EventOnHealthChange;
+    [SyncEvent]
+    public event HealthChangedParty EventOnHealthChangeParty;
 
     private List<BuffShieldSpell> myShields = new List<BuffShieldSpell>();
 
@@ -24,7 +27,7 @@ public class Health : NetworkBehaviour
         }
 
         myCurrentHealth -= CalculateMitigations(aValue);
-        if(myCurrentHealth <= 0)
+        if (myCurrentHealth <= 0)
         {
             myCurrentHealth = 0;
         }
@@ -84,7 +87,7 @@ public class Health : NetworkBehaviour
 
         for (int index = 0; index < myShields.Count; index++)
         {
-            if(myShields[index].IsFinished())
+            if (myShields[index].IsFinished())
             {
                 myShields.RemoveAt(index);
                 break;
@@ -97,6 +100,7 @@ public class Health : NetworkBehaviour
     [Command]
     private void CmdHealthChanged()
     {
+        EventOnHealthChangeParty?.Invoke(GetHealthPercentage(), GetComponent<NetworkIdentity>().netId);
         EventOnHealthChange?.Invoke(GetHealthPercentage(), myCurrentHealth.ToString() + "/" + MaxHealth, GetTotalShieldValue());
     }
 

@@ -27,6 +27,7 @@ public class PlayerCharacter : NetworkBehaviour
     private Camera myCamera;
 
     private Animator myAnimator;
+    private NetworkAnimator myNetAnimator;
     private Class myClass;
     private Health myHealth;
     private Resource myResource;
@@ -65,7 +66,8 @@ public class PlayerCharacter : NetworkBehaviour
     {
         myController = transform.GetComponent<CharacterController>();
 
-        myAnimator = GetComponentInChildren<Animator>();
+        myAnimator = GetComponent<Animator>();
+        myNetAnimator = GetComponent<NetworkAnimator>();
 
         myCastbar = GameObject.Find("Castbar Background").GetComponent<Castbar>();
         myCharacterHUD = GameObject.Find("PlayerHud").GetComponent<CharacterHUD>();
@@ -104,6 +106,9 @@ public class PlayerCharacter : NetworkBehaviour
         if (!hasAuthority)
             return;
 
+        myDirection.y -= myGravity * Time.deltaTime;
+        myController.Move(myDirection * Time.deltaTime);
+
         if (!myIsTypingInChat && myStunDuration <= 0.0f)
         {
             DetectMovementInput();
@@ -119,10 +124,6 @@ public class PlayerCharacter : NetworkBehaviour
 
         if (myShouldAutoAttack)
             AutoAttack();
-
-        myDirection.y -= myGravity * Time.deltaTime;
-
-        myController.Move(myDirection * Time.deltaTime);
     }
 
     private void DetectMovementInput()
@@ -220,6 +221,24 @@ public class PlayerCharacter : NetworkBehaviour
             {
                 RemoveBuff(index);
             }
+            else if (myBuffs[index].GetBuff().mySpellType == SpellType.HOT)
+            {
+                BuffTickSpell hot = myBuffs[index] as BuffTickSpell;
+                if (hot.ShouldDealTickSpellEffect)
+                {
+                    CmdGainHealth(hot.GetTarget(), hot.GetTickValue());
+                    hot.ShouldDealTickSpellEffect = false;
+                }
+            }
+            else if (myBuffs[index].GetBuff().mySpellType == SpellType.DOT)
+            {
+                BuffTickSpell dot = myBuffs[index] as BuffTickSpell;
+                if (dot.ShouldDealTickSpellEffect)
+                {
+                    CmdTakeDamage(dot.GetTarget(), dot.GetTickValue());
+                    dot.ShouldDealTickSpellEffect = false;
+                }
+            }
         }
     }
 
@@ -240,7 +259,7 @@ public class PlayerCharacter : NetworkBehaviour
         if (!IsAbleToAutoAttack())
             return;
 
-        myAnimator.SetTrigger("Attack");
+        myNetAnimator.SetTrigger("Attack");
         myAutoAttackCooldown = 1.2f;
 
         CmdSpawnSpell(-1, GetSpellSpawnPosition(spellScript));
@@ -805,5 +824,17 @@ public class PlayerCharacter : NetworkBehaviour
             return;
 
         myUIManager.CreateErrorMessage(aText);
+    }
+    
+    [Command]
+    public void CmdGainHealth(GameObject aTarget, int aValue)
+    {
+        aTarget.GetComponent<Health>().GainHealth(aValue);
+    }
+
+    [Command]
+    public void CmdTakeDamage(GameObject aTarget, int aValue)
+    {
+        aTarget.GetComponent<Health>().TakeDamage(aValue);
     }
 }

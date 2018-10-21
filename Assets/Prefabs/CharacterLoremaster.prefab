@@ -392,6 +392,8 @@ GameObject:
   - component: {fileID: 114124240280296374}
   - component: {fileID: 114942913098814672}
   - component: {fileID: 114968685423907738}
+  - component: {fileID: 95341179349667006}
+  - component: {fileID: 114904894101571026}
   m_Layer: 9
   m_Name: CharacterLoremaster
   m_TagString: Player
@@ -589,7 +591,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074023714094714}
-  - component: {fileID: 95579984243183984}
   - component: {fileID: 136593634218726808}
   m_Layer: 0
   m_Name: Body
@@ -1741,17 +1742,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1205353851793438}
   m_Mesh: {fileID: 4300000, guid: 9b08f5f002f434546abcee81f42e244e, type: 3}
---- !u!95 &95579984243183984
+--- !u!95 &95341179349667006
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1721115537894334}
+  m_GameObject: {fileID: 1487645495372034}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 916e445a98734ac48b1d132e2f91a278, type: 3}
   m_Controller: {fileID: 9100000, guid: 5300dd8dca9628e4f815e6e05d7759c5, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -1875,6 +1876,25 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+--- !u!114 &114904894101571026
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1487645495372034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 95341179349667006}
+  m_ParameterSendBits: 15
+  param0: 
+  param1: 
+  param2: 
+  param3: 
+  param4: 
+  param5: 
 --- !u!114 &114942913098814672
 MonoBehaviour:
   m_ObjectHideFlags: 1

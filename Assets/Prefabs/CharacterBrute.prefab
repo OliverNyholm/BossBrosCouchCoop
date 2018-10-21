@@ -79,7 +79,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4878592788866716}
-  - component: {fileID: 95046816105175470}
   - component: {fileID: 136751132781550470}
   m_Layer: 0
   m_Name: Body
@@ -511,6 +510,8 @@ GameObject:
   - component: {fileID: 114027554331042194}
   - component: {fileID: 114422284243953582}
   - component: {fileID: 114598189782817402}
+  - component: {fileID: 95223215238530860}
+  - component: {fileID: 114315828234008310}
   m_Layer: 9
   m_Name: CharacterBrute
   m_TagString: Player
@@ -1152,7 +1153,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1558744638472964}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.446455, y: -0.13405123, z: 0.39602187}
+  m_LocalPosition: {x: -7.721872, y: -0.04, z: -7.825818}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4878592788866716}
@@ -1742,17 +1743,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1727592455939728}
   m_Mesh: {fileID: 4300000, guid: d25bd8abed879af4a97abcf771b22d6f, type: 3}
---- !u!95 &95046816105175470
+--- !u!95 &95223215238530860
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1079927352882696}
+  m_GameObject: {fileID: 1558744638472964}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 916e445a98734ac48b1d132e2f91a278, type: 3}
   m_Controller: {fileID: 9100000, guid: 5300dd8dca9628e4f815e6e05d7759c5, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -1826,6 +1827,25 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114315828234008310
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1558744638472964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 95223215238530860}
+  m_ParameterSendBits: 15
+  param0: 
+  param1: 
+  param2: 
+  param3: 
+  param4: 
+  param5: 
 --- !u!114 &114366103227648496
 MonoBehaviour:
   m_ObjectHideFlags: 1

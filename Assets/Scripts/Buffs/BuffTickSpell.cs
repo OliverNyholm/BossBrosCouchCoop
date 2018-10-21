@@ -7,6 +7,8 @@ public class BuffTickSpell : BuffSpell
     private float myIntervalTimer;
     private int myTickDamage;
 
+    private bool myShouldTickSpellEffect;
+
     [SyncVar]
     private GameObject myTarget;
 
@@ -19,6 +21,7 @@ public class BuffTickSpell : BuffSpell
         myIntervalTimer = 0.0f;
 
         myTarget = aTarget;
+        myShouldTickSpellEffect = false;
     }
 
     public override void Tick()
@@ -30,11 +33,23 @@ public class BuffTickSpell : BuffSpell
         if (myIntervalTimer >= myInterval)
         {
             myIntervalTimer -= myInterval;
-
-            if (myBuff.mySpellType == SpellType.HOT)
-                myTarget.GetComponent<Health>().GainHealth(myTickDamage);
-            else
-                myTarget.GetComponent<Health>().TakeDamage(myTickDamage);
+            myShouldTickSpellEffect = true;
         }
+    }
+
+    public bool ShouldDealTickSpellEffect
+    {
+        get { return myShouldTickSpellEffect; }
+        set { myShouldTickSpellEffect = value; }
+    }
+
+    public int GetTickValue()
+    {
+        return myTickDamage;
+    }
+
+    public GameObject GetTarget()
+    {
+        return myTarget;
     }
 }

@@ -56,7 +56,7 @@ public class Spell : NetworkBehaviour
             {
                 RpcSpawnBuff();
             }
-
+            
             RpcDestroy();
         }
     }
@@ -323,6 +323,6 @@ public class Spell : NetworkBehaviour
     [ClientRpc]
     private void RpcDestroy()
     {
-        NetworkServer.Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

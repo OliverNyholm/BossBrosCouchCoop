@@ -17,7 +17,6 @@ public class Friendlist : MonoBehaviour
     public void AddHud(CharacterHUD aCharacterHud, NetworkInstanceId anID, string aName)
     {
         myCharacterHuds.Add(anID, aCharacterHud);
-        Debug.Log(aName + "Added Health! :)" + anID);
     }
 
     public void ChangePartyHudHealth(float aHealthPercentage, NetworkInstanceId anID, string aName)

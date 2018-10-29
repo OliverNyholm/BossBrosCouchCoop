@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224767064184080948}
   - component: {fileID: 222492408625846076}
   - component: {fileID: 114924073266298680}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: ShieldBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 224302759957935924}
   - component: {fileID: 114431248750664652}
   - component: {fileID: 114181795236277386}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Buffs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 224202952712709528}
   - component: {fileID: 222992483772585326}
   - component: {fileID: 114126525392268804}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 224876537105791630}
   - component: {fileID: 222344143170066428}
   - component: {fileID: 114185364824146892}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: ResourceBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 224813041877106168}
   - component: {fileID: 222251299142487014}
   - component: {fileID: 114842558463710744}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 224416149578536804}
   - component: {fileID: 222805287762515132}
   - component: {fileID: 114778118444251134}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Avatar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 222566956732323008}
   - component: {fileID: 114324159609306744}
   - component: {fileID: 114189867255901832}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 222222178346697368}
   - component: {fileID: 114941278693522790}
   - component: {fileID: 114482430045425804}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: HealthText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 224872679984667864}
   - component: {fileID: 222927967872508270}
   - component: {fileID: 114332045544604316}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: AvatarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 222815898448241226}
   - component: {fileID: 114388233606917426}
   - component: {fileID: 114799626926650356}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: ResourceText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +195,8 @@ GameObject:
   - component: {fileID: 222641523338230784}
   - component: {fileID: 225856455703977850}
   - component: {fileID: 114463891519017124}
-  m_Layer: 5
+  - component: {fileID: 114291376517148986}
+  m_Layer: 11
   m_Name: FriendHud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,6 +293,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &114291376517148986
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1804561913548970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d6d6a0b9b1fbb459882b884c1634ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myCharacter: {fileID: 0}
 --- !u!114 &114324159609306744
 MonoBehaviour:
   m_ObjectHideFlags: 1

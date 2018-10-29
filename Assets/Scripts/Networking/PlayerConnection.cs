@@ -98,9 +98,10 @@ public class PlayerConnection : NetworkBehaviour
                 continue;
 
             GameObject player = ClientScene.FindLocalObject(someConnectedPlayers[index].netId);
-
-            GameObject friendHud = myFriendList.myFriendlistHudPrefab;
-            GameObject friend = Instantiate(friendHud, myFriendList.transform);
+            
+            GameObject friend = Instantiate(myFriendList.myFriendlistHudPrefab, myFriendList.transform);
+            friend.GetComponent<FriendHud>().SetCharacter(player);
+            friend.GetComponent<FriendHud>().SetParent(myCharacter.GetComponent<PlayerCharacter>());
 
             PlayerCharacter playerCharacter = player.GetComponent<PlayerCharacter>();
             CharacterHUD hud = friend.GetComponent<CharacterHUD>();

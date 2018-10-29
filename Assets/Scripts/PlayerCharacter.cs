@@ -51,6 +51,8 @@ public class PlayerCharacter : NetworkBehaviour
 
     private UIManager myUIManager;
 
+    private bool myIsGrounded;
+
     public override void OnStartAuthority()
     {
         base.OnStartAuthority();
@@ -108,6 +110,10 @@ public class PlayerCharacter : NetworkBehaviour
 
         myDirection.y -= myGravity * Time.deltaTime;
         myController.Move(myDirection * Time.deltaTime);
+        RotatePlayer();
+
+        //myController.isGrounded unstable further ahead is seems...
+        myIsGrounded = myController.isGrounded;
 
         if (!myIsTypingInChat && myStunDuration <= 0.0f)
         {
@@ -119,7 +125,6 @@ public class PlayerCharacter : NetworkBehaviour
             myStunDuration -= Time.deltaTime;
         }
 
-        RotatePlayer();
         HandleBuffs();
 
         if (myShouldAutoAttack)
@@ -128,7 +133,7 @@ public class PlayerCharacter : NetworkBehaviour
 
     private void DetectMovementInput()
     {
-        if (!myController.isGrounded)
+        if (!myIsGrounded)
             return;
 
         if (myShouldStrafe)
@@ -166,7 +171,7 @@ public class PlayerCharacter : NetworkBehaviour
 
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
-            if (!EventSystem.current.IsPointerOverGameObject())
+            if (!EventSystem.current.IsPointerOverGameObject(0))
             {
                 RaycastNewTarget();
 
@@ -542,7 +547,8 @@ public class PlayerCharacter : NetworkBehaviour
 
     private void StopCasting()
     {
-        StopCoroutine(myCastingRoutine);
+        if (myCastingRoutine != null)
+            StopCoroutine(myCastingRoutine);
         myIsCasting = false;
         myCastbar.FadeOutCastbar();
     }
@@ -668,9 +674,9 @@ public class PlayerCharacter : NetworkBehaviour
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        LayerMask layerMask = LayerMask.GetMask("Targetable");
+        LayerMask targetMask = LayerMask.GetMask("Targetable");
 
-        if (Physics.Raycast(ray, out hit, 100.0f, layerMask))
+        if (Physics.Raycast(ray, out hit, 100.0f, targetMask, QueryTriggerInteraction.Collide))
         {
             if (myTarget != null)
             {
@@ -704,12 +710,33 @@ public class PlayerCharacter : NetworkBehaviour
         }
     }
 
+    public void AssignTargetUI(GameObject aTarget)
+    {
+        if (!hasAuthority)
+            return;
+
+        if (myTarget != null)
+        {
+            myTarget.GetComponentInChildren<Projector>().enabled = false;
+            myTarget.GetComponent<Health>().EventOnHealthChange -= ChangeTargetHudHealth;
+            if (myTarget.GetComponent<Resource>() != null)
+                myTarget.GetComponent<Resource>().EventOnResourceChange -= ChangeTargetHudResource;
+        }
+        
+        myTarget = aTarget;
+        CmdSetTarget(aTarget);
+
+
+        myTarget.GetComponentInChildren<Projector>().enabled = true;
+        SetTargetHUD();
+    }
+
     private bool IsMoving()
     {
         if (myDirection.x != 0 && myDirection.z != 0)
             return true;
 
-        if (!myController.isGrounded)
+        if (!myIsGrounded)
             return true;
 
         return false;
@@ -825,7 +852,7 @@ public class PlayerCharacter : NetworkBehaviour
 
         myUIManager.CreateErrorMessage(aText);
     }
-    
+
     [Command]
     public void CmdGainHealth(GameObject aTarget, int aValue)
     {

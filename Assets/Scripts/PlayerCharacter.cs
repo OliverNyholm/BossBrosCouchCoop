@@ -480,9 +480,6 @@ public class PlayerCharacter : NetworkBehaviour
         aBuffSpell.GetBuff().ApplyBuff(ref myStats);
         myCharacterHUD.AddBuff(aSpellIcon);
 
-        if (aBuffSpell.GetBuff().mySpellType == SpellType.Shield)
-            myHealth.AddShield(aBuffSpell as BuffShieldSpell);
-
         if (aBuffSpell.GetBuff().myAttackSpeed != 0.0f)
         {
             float attackspeed = myAutoAttackCooldownReset / myStats.myAttackSpeed;
@@ -504,7 +501,9 @@ public class PlayerCharacter : NetworkBehaviour
         myBuffs[anIndex].GetBuff().EndBuff(ref myStats);
         if (myBuffs[anIndex].GetBuff().mySpellType == SpellType.Shield)
         {
-            myHealth.RemoveShield(myBuffs[anIndex].GetBuff().myDuration);
+            //Ugly hack to set shield to 0, which will remove it at myHealth.RemoveShield()
+            (myBuffs[anIndex] as BuffShieldSpell).SoakDamage((myBuffs[anIndex] as BuffShieldSpell).GetRemainingShieldHealth());
+            myHealth.RemoveShield();
         }
 
         if (myBuffs[anIndex].GetBuff().myAttackSpeed != 0.0f)

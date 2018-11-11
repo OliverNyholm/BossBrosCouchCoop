@@ -4,6 +4,9 @@ using UnityEngine.Networking;
 
 public class Health : NetworkBehaviour
 {
+    [SerializeField]
+    private GameObject myFloatingHealthPrefab;
+
     [SyncVar]
     public int myMaxHealth = 100;
     [SyncVar]
@@ -26,13 +29,22 @@ public class Health : NetworkBehaviour
             return;
         }
 
-        myCurrentHealth -= CalculateMitigations(aValue);
+        int damage = CalculateMitigations(aValue);
+        myCurrentHealth -= damage;
         if (myCurrentHealth <= 0)
         {
             myCurrentHealth = 0;
         }
 
-        CmdHealthChanged();
+        string damageText = damage.ToString();
+        if(aValue != damage)
+        {
+            int absorbed = aValue - damage;
+            damageText = damage.ToString() + " (" + absorbed.ToString() + " absorbed)";
+        }
+
+        OnHealthChanged();
+        RpcSpawnFloatingText(damageText, Color.red);
     }
 
     public void GainHealth(int aValue)
@@ -48,7 +60,8 @@ public class Health : NetworkBehaviour
             myCurrentHealth = myMaxHealth;
         }
 
-        CmdHealthChanged();
+        OnHealthChanged();
+        RpcSpawnFloatingText(aValue.ToString(), Color.yellow);
     }
 
     public bool IsDead()
@@ -67,7 +80,7 @@ public class Health : NetworkBehaviour
         set
         {
             myMaxHealth = value;
-            CmdHealthChanged();
+            OnHealthChanged();
         }
     }
 
@@ -77,10 +90,11 @@ public class Health : NetworkBehaviour
             return;
 
         myShields.Add(aShield);
-        CmdHealthChanged();
+        OnHealthChanged();
+        RpcSpawnFloatingText("Shield, " + aShield.GetRemainingShieldHealth().ToString(), Color.yellow);
     }
 
-    public void RemoveShield(float aBuffOriginalDuration)
+    public void RemoveShield()
     {
         if (!isServer)
             return;
@@ -94,14 +108,22 @@ public class Health : NetworkBehaviour
             }
         }
 
-        CmdHealthChanged();
+        OnHealthChanged();
+        RpcSpawnFloatingText("Shield faded", Color.yellow);
     }
-
-    [Command]
-    private void CmdHealthChanged()
+    
+    private void OnHealthChanged()
     {
         EventOnHealthChangeParty?.Invoke(GetHealthPercentage(), GetComponent<NetworkIdentity>().netId);
         EventOnHealthChange?.Invoke(GetHealthPercentage(), myCurrentHealth.ToString() + "/" + MaxHealth, GetTotalShieldValue());
+    }
+
+    [ClientRpc]
+    private void RpcSpawnFloatingText(string aText, Color aColor)
+    {
+        GameObject floatingHealthGO = Instantiate(myFloatingHealthPrefab, transform);
+        FloatingHealth floatingHealth = floatingHealthGO.GetComponent<FloatingHealth>();
+        floatingHealth.SetText(aText, aColor);
     }
 
     public int CalculateMitigations(int anIncomingDamageValue)

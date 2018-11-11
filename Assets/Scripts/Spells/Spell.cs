@@ -56,7 +56,7 @@ public class Spell : NetworkBehaviour
             {
                 RpcSpawnBuff();
             }
-            
+
             RpcDestroy();
         }
     }
@@ -68,13 +68,23 @@ public class Spell : NetworkBehaviour
         {
             BuffTickSpell buffSpell;
             buffSpell = (myBuff as TickBuff).InitializeBuff(myParent, myTarget);
-            myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, mySpellIcon);
+            if (myTarget.tag == "Player")
+                myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, mySpellIcon);
+            else if (myTarget.tag == "Enemy")
+                myTarget.GetComponent<Enemy>().AddBuff(buffSpell, mySpellIcon);
         }
         else
         {
             BuffSpell buffSpell;
             buffSpell = myBuff.InitializeBuff(myParent);
-            myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, mySpellIcon);
+            if (myTarget.tag == "Player")
+                myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, mySpellIcon);
+            else if (myTarget.tag == "Enemy")
+                myTarget.GetComponent<Enemy>().AddBuff(buffSpell, mySpellIcon);
+
+            if (buffSpell.GetBuff().mySpellType == SpellType.Shield)
+                myTarget.GetComponent<Health>().AddShield(buffSpell as BuffShieldSpell);
+
         }
     }
 
@@ -313,11 +323,13 @@ public class Spell : NetworkBehaviour
         return text;
     }
 
-
     [ClientRpc]
     private void RpcInterrupt()
     {
-        myTarget.GetComponent<PlayerCharacter>().InterruptSpellCast();
+        if (myTarget.tag == "Player")
+            myTarget.GetComponent<PlayerCharacter>().InterruptSpellCast();
+        else if (myTarget.tag == "Enemy")
+            myTarget.GetComponent<Enemy>().InterruptSpellCast();
     }
 
     [ClientRpc]

@@ -90,6 +90,7 @@ public class Spell : NetworkBehaviour
 
     protected virtual void DealSpellEffect()
     {
+        AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.SpellSpawned, new AIMessageData(myParent.GetComponent<NetworkIdentity>().netId, myDamage)));
         if (GetSpellTarget() == SpellTarget.Friend)
         {
             if (myDamage > 0.0f)

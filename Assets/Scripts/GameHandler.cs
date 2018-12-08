@@ -12,13 +12,23 @@ public class PlayerList : SyncListStruct<PlayerInfo> { }
 
 public class GameHandler : NetworkBehaviour
 {
+    public AIPostMaster myPostmaster;
     public PlayerList myConnectedPlayers = new PlayerList();
+
+    public Enemy myEnemy;
 
     private void Awake()
     {
         //DontDestroyOnLoad(gameObject);
         if (!isServer)
             return;
+
+        AIPostMaster.Create();
+    }
+
+    private void Update()
+    {
+        AIPostMaster.Instance.DelegateMessages();
     }
 
     public void AddPlayer(GameObject aPlayer)
@@ -30,13 +40,16 @@ public class GameHandler : NetworkBehaviour
         info.netId = aPlayer.GetComponent<NetworkIdentity>().netId;
         myConnectedPlayers.Add(info);
         RpcLoadFriendList(aPlayer);
+
+        myEnemy.AddPlayerCharacter(aPlayer);
     }
 
     public void RemovePlayer(GameObject aPlayer)
     {
         if (!isServer)
             return;
-        Debug.Log("remvoe player");
+
+        myEnemy.RemovePlayerCharacter(aPlayer);
         NetworkInstanceId playerID = aPlayer.GetComponent<NetworkIdentity>().netId;
         foreach (var player in myConnectedPlayers)
         {

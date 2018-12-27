@@ -13,6 +13,7 @@ public class Spell : NetworkBehaviour
     public int myDamage;
     public int myResourceCost;
 
+    public float myThreatModifier = 1.0f;
     public float mySpeed;
     public float myCastTime;
     public float myCooldown;
@@ -90,16 +91,21 @@ public class Spell : NetworkBehaviour
 
     protected virtual void DealSpellEffect()
     {
-        AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.SpellSpawned, new AIMessageData(myParent.GetComponent<NetworkIdentity>().netId, myDamage)));
         if (GetSpellTarget() == SpellTarget.Friend)
         {
             if (myDamage > 0.0f)
+            {
                 myTarget.GetComponent<Health>().GainHealth(myDamage);
+                AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.SpellSpawned, new AIMessageData(myParent.GetComponent<NetworkIdentity>().netId, myDamage)));
+            }
         }
         else
         {
             if (myDamage > 0.0f)
+            {
                 myTarget.GetComponent<Health>().TakeDamage(myDamage);
+                myTarget.GetComponent<Health>().GenerateThreat((int)(myDamage * myThreatModifier), myParent.GetComponent<NetworkIdentity>().netId);
+            }
         }
 
         if (mySpellType == SpellType.Interrupt)

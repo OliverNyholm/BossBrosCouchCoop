@@ -45,6 +45,8 @@ public class Enemy : NetworkBehaviour
             return;
 
         myHealth = GetComponent<Health>();
+        myHealth.EventOnThreatGenerated += AddThreat;
+
         myStats = GetComponent<Stats>();
         myBuffs = new List<BuffSpell>();
 
@@ -341,15 +343,24 @@ public class Enemy : NetworkBehaviour
                     NetworkInstanceId id = anAiMessage.Data.myNetworkID;
                     int value = anAiMessage.Data.myInt;
 
-                    for (int index = 0; index < myPlayerCharacters.Count; index++)
-                    {
-                        if (myPlayerCharacters[index].netId == id)
-                            myAggroList[index] += value;
-                    }
+                    AddThreat(value, id);
                 }
                 break;
             default:
                 break;
+        }
+    }
+
+    private void AddThreat(int aThreatValue, NetworkInstanceId anID)
+    {
+        for (int index = 0; index < myPlayerCharacters.Count; index++)
+        {
+            if (myPlayerCharacters[index].netId == anID)
+            {
+                myAggroList[index] += aThreatValue;
+                Debug.Log("Threat generated: " + aThreatValue + " by " + anID);
+                break;
+            }
         }
     }
 }

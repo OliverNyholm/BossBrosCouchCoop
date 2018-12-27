@@ -231,6 +231,7 @@ public class PlayerCharacter : NetworkBehaviour
                 BuffTickSpell hot = myBuffs[index] as BuffTickSpell;
                 if (hot.ShouldDealTickSpellEffect)
                 {
+                    AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.SpellSpawned, new AIMessageData(GetComponent<NetworkIdentity>().netId, hot.GetTickValue())));
                     CmdGainHealth(hot.GetTarget(), hot.GetTickValue());
                     hot.ShouldDealTickSpellEffect = false;
                 }
@@ -721,7 +722,7 @@ public class PlayerCharacter : NetworkBehaviour
             if (myTarget.GetComponent<Resource>() != null)
                 myTarget.GetComponent<Resource>().EventOnResourceChange -= ChangeTargetHudResource;
         }
-        
+
         myTarget = aTarget;
         CmdSetTarget(aTarget);
 

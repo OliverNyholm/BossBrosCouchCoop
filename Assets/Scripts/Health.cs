@@ -14,11 +14,14 @@ public class Health : NetworkBehaviour
 
     public delegate void HealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue);
     public delegate void HealthChangedParty(float aHealthPercentage, NetworkInstanceId anID);
+    public delegate void ThreadGenerated(int aThreatPercentage, NetworkInstanceId anID);
 
     [SyncEvent]
     public event HealthChanged EventOnHealthChange;
     [SyncEvent]
     public event HealthChangedParty EventOnHealthChangeParty;
+    [SyncEvent]
+    public event ThreadGenerated EventOnThreatGenerated;
 
     private List<BuffShieldSpell> myShields = new List<BuffShieldSpell>();
 
@@ -111,7 +114,12 @@ public class Health : NetworkBehaviour
         OnHealthChanged();
         RpcSpawnFloatingText("Shield faded", Color.yellow);
     }
-    
+
+    public void GenerateThreat(int aThreatValue, NetworkInstanceId anID)
+    {
+        EventOnThreatGenerated?.Invoke(aThreatValue, anID);
+    }
+
     private void OnHealthChanged()
     {
         EventOnHealthChangeParty?.Invoke(GetHealthPercentage(), GetComponent<NetworkIdentity>().netId);

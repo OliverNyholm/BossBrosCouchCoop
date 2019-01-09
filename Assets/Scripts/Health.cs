@@ -15,6 +15,7 @@ public class Health : NetworkBehaviour
     public delegate void HealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue);
     public delegate void HealthChangedParty(float aHealthPercentage, NetworkInstanceId anID);
     public delegate void ThreadGenerated(int aThreatPercentage, NetworkInstanceId anID);
+    public delegate void HealthZero();
 
     [SyncEvent]
     public event HealthChanged EventOnHealthChange;
@@ -22,6 +23,8 @@ public class Health : NetworkBehaviour
     public event HealthChangedParty EventOnHealthChangeParty;
     [SyncEvent]
     public event ThreadGenerated EventOnThreatGenerated;
+    [SyncEvent]
+    public event HealthZero EventOnHealthZero;
 
     private List<BuffShieldSpell> myShields = new List<BuffShieldSpell>();
 
@@ -37,6 +40,7 @@ public class Health : NetworkBehaviour
         if (myCurrentHealth <= 0)
         {
             myCurrentHealth = 0;
+            EventOnHealthZero();
         }
 
         string damageText = damage.ToString();
@@ -124,6 +128,11 @@ public class Health : NetworkBehaviour
     {
         EventOnHealthChangeParty?.Invoke(GetHealthPercentage(), GetComponent<NetworkIdentity>().netId);
         EventOnHealthChange?.Invoke(GetHealthPercentage(), myCurrentHealth.ToString() + "/" + MaxHealth, GetTotalShieldValue());
+    }
+
+    private void OnHealthZero()
+    {
+        EventOnHealthZero?.Invoke();
     }
 
     [ClientRpc]

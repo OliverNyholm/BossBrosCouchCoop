@@ -112,6 +112,10 @@ public class Spell : NetworkBehaviour
         {
             RpcInterrupt();
         }
+        if (mySpellType == SpellType.Taunt)
+        {
+            myTarget.GetComponent<Enemy>().SetTaunt(myParent.GetComponent<NetworkIdentity>().netId, 3.0f);
+        }
     }
 
     public void AddDamageIncrease(float aDamageIncrease)

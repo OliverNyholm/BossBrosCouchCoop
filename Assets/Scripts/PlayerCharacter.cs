@@ -53,6 +53,8 @@ public class PlayerCharacter : NetworkBehaviour
 
     private bool myIsGrounded;
 
+    private string previousAnimationName;
+
     public override void OnStartAuthority()
     {
         base.OnStartAuthority();
@@ -92,6 +94,8 @@ public class PlayerCharacter : NetworkBehaviour
     private void ManualStart()
     {
         myHealth.EventOnHealthChange += ChangeMyHudHealth;
+        myHealth.EventOnHealthZero += OnDeath;
+
         ChangeMyHudHealth(myHealth.GetHealthPercentage(), myHealth.myCurrentHealth.ToString() + "/" + myHealth.myMaxHealth.ToString(), GetComponent<Health>().GetTotalShieldValue());
 
         myResource.EventOnResourceChange += ChangeMyHudResource;
@@ -108,22 +112,31 @@ public class PlayerCharacter : NetworkBehaviour
         if (!hasAuthority)
             return;
 
+        string currentAnimation = myAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        if (currentAnimation != previousAnimationName)
+            Debug.Log("Previous: " + previousAnimationName + "    Current: " + currentAnimation);
+        previousAnimationName = currentAnimation;
+
         myDirection.y -= myGravity * Time.deltaTime;
         myController.Move(myDirection * Time.deltaTime);
-        RotatePlayer();
 
         //myController.isGrounded unstable further ahead is seems...
         myIsGrounded = myController.isGrounded;
+        if (!myAnimator.GetBool("IsGrounded") && myIsGrounded)
+            myAnimator.SetBool("IsGrounded", true);
 
-        if (!myIsTypingInChat && myStunDuration <= 0.0f)
+        if (!myIsTypingInChat && myStunDuration <= 0.0f && !GetComponent<Health>().IsDead())
         {
             DetectMovementInput();
-            DetectPressedSpellOrRaycast();
+            DetectPressedSpell();
+            RotatePlayer();
         }
         else if (myStunDuration > 0.0f)
         {
             myStunDuration -= Time.deltaTime;
         }
+
+        DetectMouseClick();
 
         HandleBuffs();
 
@@ -150,10 +163,36 @@ public class PlayerCharacter : NetworkBehaviour
         myAnimator.SetBool("IsRunning", IsMoving());
 
         if (Input.GetButtonDown("Jump"))
+        {
             myDirection.y = myJumpSpeed;
+            myAnimator.SetBool("IsGrounded", false);
+            myAnimator.SetTrigger("Jump");
+            myNetAnimator.SetTrigger("Jump");
+        }
     }
 
-    private void DetectPressedSpellOrRaycast()
+    private void DetectMouseClick()
+    {
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                RaycastNewTarget();
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    myShouldAutoAttack = false;
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    if (myTarget != null && myTarget.tag == "Enemy" && !GetComponent<Health>().IsDead() && !myTarget.GetComponent<Health>().IsDead())
+                        myShouldAutoAttack = true;
+                }
+            }
+        }
+    }
+
+    private void DetectPressedSpell()
     {
         if (Input.anyKeyDown)
         {
@@ -168,26 +207,6 @@ public class PlayerCharacter : NetworkBehaviour
                 }
             }
         }
-
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
-        {
-            if (!EventSystem.current.IsPointerOverGameObject(0))
-            {
-                RaycastNewTarget();
-
-                if (Input.GetMouseButtonDown(0))
-                {
-                    myShouldAutoAttack = false;
-                }
-                else if (Input.GetMouseButtonDown(1))
-                {
-                    if (myTarget != null && myTarget.tag == "Enemy")
-                        myShouldAutoAttack = true;
-                }
-            }
-        }
-
-
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -263,7 +282,9 @@ public class PlayerCharacter : NetworkBehaviour
         Spell spellScript = spell.GetComponent<Spell>();
 
         if (!IsAbleToAutoAttack())
+        {
             return;
+        }
 
         myNetAnimator.SetTrigger("Attack");
         myAutoAttackCooldown = 1.2f;
@@ -271,9 +292,25 @@ public class PlayerCharacter : NetworkBehaviour
         CmdSpawnSpell(-1, GetSpellSpawnPosition(spellScript));
     }
 
+    private void OnDeath()
+    {
+        myShouldAutoAttack = false;
+        while (myBuffs.Count > 0)
+        {
+            RemoveBuff(myBuffs.Count - 1);
+        }
+
+        myAnimator.SetTrigger("Death");
+        myNetAnimator.SetTrigger("Death");
+        myHealth.EventOnHealthZero -= OnDeath;
+    }
+
     public void CastSpell(int aKeyIndex)
     {
         if (!hasAuthority)
+            return;
+
+        if (GetComponent<Health>().IsDead())
             return;
 
         if (myClass.IsSpellOnCooldown(aKeyIndex))
@@ -293,9 +330,12 @@ public class PlayerCharacter : NetworkBehaviour
             CmdSpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
             myResource.LoseResource(spellScript.myResourceCost);
-            myAnimator.SetTrigger("Attack");
+            myAnimator.SetTrigger("CastingDone");
+            myNetAnimator.SetTrigger("CastingDone");
             return;
         }
+
+        myAnimator.SetBool("IsCasting", true);
 
         myCastbar.ShowCastbar();
         myCastbar.SetCastbarFillAmount(0.0f);
@@ -360,7 +400,6 @@ public class PlayerCharacter : NetworkBehaviour
             yield return null;
         }
 
-
         StopCasting();
 
         if (IsAbleToCastSpell(spellScript))
@@ -368,7 +407,8 @@ public class PlayerCharacter : NetworkBehaviour
             CmdSpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
             myResource.LoseResource(spellScript.myResourceCost);
-            myAnimator.SetTrigger("Attack");
+            myAnimator.SetTrigger("CastingDone");
+            myNetAnimator.SetTrigger("CastingDone");
         }
     }
 
@@ -379,6 +419,7 @@ public class PlayerCharacter : NetworkBehaviour
         float castSpeed = aDuration;
         float rate = 1.0f / castSpeed;
         float progress = 0.0f;
+
 
         while (progress <= 1.0f)
         {
@@ -551,6 +592,8 @@ public class PlayerCharacter : NetworkBehaviour
             StopCoroutine(myCastingRoutine);
         myIsCasting = false;
         myCastbar.FadeOutCastbar();
+
+        myAnimator.SetBool("IsCasting", false);
     }
 
     private bool CanRaycastToTarget()
@@ -581,6 +624,13 @@ public class PlayerCharacter : NetworkBehaviour
 
         if (!myTarget)
         {
+            return false;
+        }
+
+        if (myTarget.GetComponent<Health>().IsDead())
+        {
+            myUIManager.CreateErrorMessage("That target is dead!");
+            myShouldAutoAttack = false;
             return false;
         }
 
@@ -621,8 +671,6 @@ public class PlayerCharacter : NetworkBehaviour
         if (aSpellScript.myIsOnlySelfCast)
             return true;
 
-
-
         if (!myTarget)
         {
             if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) != 0)
@@ -634,6 +682,12 @@ public class PlayerCharacter : NetworkBehaviour
                 myUIManager.CreateErrorMessage("No Target!");
                 return false;
             }
+        }
+
+        if (myTarget.GetComponent<Health>().IsDead())
+        {
+            myUIManager.CreateErrorMessage("That target is dead!");
+            return false;
         }
 
         if (!CanRaycastToTarget())

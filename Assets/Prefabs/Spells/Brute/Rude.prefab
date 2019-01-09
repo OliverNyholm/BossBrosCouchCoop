@@ -122,8 +122,9 @@ MonoBehaviour:
   myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 2}
   mySpellType: 6
   mySpellTarget: 4
-  myDamage: 100
+  myDamage: 0
   myResourceCost: 30
+  myThreatModifier: 1
   mySpeed: 0
   myCastTime: 0
   myCooldown: 5
@@ -131,8 +132,8 @@ MonoBehaviour:
   myCastbarColor: {r: 1, g: 0.55655974, b: 0, a: 1}
   mySpellIcon: {fileID: 21300000, guid: e8e4bd8bc47ec8540833bdc7c10616c6, type: 3}
   myIsCastableWhileMoving: 1
-  myCanCastOnSelf: 1
-  myIsOnlySelfCast: 1
+  myCanCastOnSelf: 0
+  myIsOnlySelfCast: 0
   myBuff: {fileID: 0}
 --- !u!114 &114756757561156900
 MonoBehaviour:

@@ -15,6 +15,7 @@ public class Enemy : NetworkBehaviour
     public float mySpeed;
     private float myAutoAttackCooldown;
     private float myAutoAttackCooldownReset = 1.0f;
+    private float myTauntDuration;
 
     private Health myHealth;
     private Stats myStats;
@@ -34,7 +35,9 @@ public class Enemy : NetworkBehaviour
 
     [SyncVar]
     public GameObject myTarget;
-    int myTargetIndex;
+    private int myTargetIndex;
+
+    private bool myIsTaunted;
 
     AISubscriber myAISubscriber;
 
@@ -46,6 +49,7 @@ public class Enemy : NetworkBehaviour
 
         myHealth = GetComponent<Health>();
         myHealth.EventOnThreatGenerated += AddThreat;
+        myHealth.EventOnHealthZero += OnDeath;
 
         myStats = GetComponent<Stats>();
         myBuffs = new List<BuffSpell>();
@@ -76,7 +80,17 @@ public class Enemy : NetworkBehaviour
         if (!isServer)
             return;
 
+        if (GetComponent<Health>().IsDead())
+            return;
+
         HandleBuffs();
+
+        if(myIsTaunted)
+        {
+            myTauntDuration -= Time.deltaTime;
+            if (myTauntDuration <= 0.0f)
+                myIsTaunted = false;
+        }
 
         if (myPlayerCharacters.Count <= 0)
             return;
@@ -93,12 +107,22 @@ public class Enemy : NetworkBehaviour
         Behaviour();
     }
 
+    private void OnDeath()
+    {
+        myAnimator.SetTrigger("Death");
+        myNetAnimator.SetTrigger("Death");
+        myHealth.EventOnHealthZero -= OnDeath;
+    }
+
     private int GetHighestAggro()
     {
+        if (myIsTaunted)
+            return myTargetIndex;
+
         int highestAggro = 0;
         for (int index = 1; index < myAggroList.Count; index++)
         {
-            if (myAggroList[index] > myAggroList[highestAggro])
+            if (myAggroList[index] > myAggroList[highestAggro] && !myPlayerCharacters[index].GetComponent<Health>().IsDead())
                 highestAggro = index;
         }
 
@@ -162,19 +186,17 @@ public class Enemy : NetworkBehaviour
             return;
         }
 
-        //if (!myTarget)
-        //    return;
-
-        //myNetAnimator.SetTrigger("Attack");
-        //myAutoAttackCooldown = 5.2f;
-
         if (!myTarget)
             return;
+
+        //------- Flail debugging
+        //myNetAnimator.SetTrigger("Attack");
+        //myAutoAttackCooldown = 5.2f;
 
         myNetAnimator.SetTrigger("Attack");
         myAutoAttackCooldown = 1.5f;
 
-        // RpcSpawnSpell(0, myTarget.transform.position);
+        RpcSpawnSpell(0, myTarget.transform.position);
     }
 
     private void RpcSpawnSpell(int aSpellIndex, Vector3 aPosition)
@@ -258,6 +280,21 @@ public class Enemy : NetworkBehaviour
         else if (aBuffSpell.GetBuff().mySpeedMultiplier != 0.0f)
         {
             myAnimator.SetFloat("RunSpeed", myStats.mySpeedMultiplier);
+        }
+    }
+
+    public void SetTaunt(NetworkInstanceId aTaunterID, float aDuration)
+    {
+        myIsTaunted = true;
+        myTauntDuration = aDuration;
+        for (int index = 0; index < myPlayerCharacters.Count; index++)
+        {
+            if(myPlayerCharacters[index].GetComponent<NetworkIdentity>().netId == aTaunterID)
+            {
+                myTargetIndex = index;
+                Debug.Log(myTargetIndex + " taunted enemy for  " + aDuration);
+                break;
+            }
         }
     }
 
@@ -358,7 +395,6 @@ public class Enemy : NetworkBehaviour
             if (myPlayerCharacters[index].netId == anID)
             {
                 myAggroList[index] += aThreatValue;
-                Debug.Log("Threat generated: " + aThreatValue + " by " + anID);
                 break;
             }
         }

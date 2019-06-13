@@ -45,9 +45,10 @@ public class Class : MonoBehaviour
 
     public Class()
     {
-        mySpells = new GameObject[8];
-        myActionButtons = new GameObject[8];
-        myCooldownTimers = new float[8];
+        const int mySpellSize = 5;
+        mySpells = new GameObject[mySpellSize];
+        myActionButtons = new GameObject[mySpellSize];
+        myCooldownTimers = new float[mySpellSize];
 
         for (int index = 0; index < myCooldownTimers.Length; index++)
         {
@@ -123,7 +124,6 @@ public class Class : MonoBehaviour
                 {
                     myActionButtons[index] = myActionBar.transform.GetChild(childIndex).gameObject;
                     myActionButtons[index].GetComponent<Image>().sprite = mySpells[index].GetComponent<Spell>().mySpellIcon;
-                    myActionButtons[index].GetComponent<ActionKey>().SetDescription(mySpells[index].GetComponent<Spell>().GetSpellDescription());
                     break;
                 }
             }

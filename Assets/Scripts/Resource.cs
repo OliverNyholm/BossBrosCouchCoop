@@ -1,19 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class Resource : NetworkBehaviour
+public class Resource : MonoBehaviour
 {
-    [SyncVar]
     public string myResourceName;
 
-    [SyncVar]
     public Color myResourceColor;
 
-    [SyncVar]
     public int myMaxResource = 100;
-    [SyncVar]
     public int myCurrentResource = 100;
 
     [SerializeField]
@@ -25,14 +20,10 @@ public class Resource : NetworkBehaviour
 
     public delegate void ResourceChanged(float aResourcePercentage, string aResourceText);
 
-    [SyncEvent]
     public event ResourceChanged EventOnResourceChange;
 
     private void Update()
     {
-        if (!isServer)
-            return;
-
         if (myCurrentResource >= myMaxResource)
             return;
 
@@ -50,34 +41,24 @@ public class Resource : NetworkBehaviour
 
     public void LoseResource(int aValue)
     {
-        if (!isServer)
-        {
-            return;
-        }
-
         myCurrentResource -= aValue;
         if (myCurrentResource <= 0)
         {
             myCurrentResource = 0;
         }
 
-        CmdResourceChanged();
+        OnResourceChanged();
     }
 
     public void GainResource(int aValue)
     {
-        if (!isServer)
-        {
-            return;
-        }
-
         myCurrentResource += aValue;
         if (myCurrentResource > myMaxResource)
         {
             myCurrentResource = myMaxResource;
         }
 
-        CmdResourceChanged();
+        OnResourceChanged();
     }
 
     public bool HasEnoughResource(int aValue)
@@ -96,12 +77,10 @@ public class Resource : NetworkBehaviour
         set
         {
             myMaxResource = value;
-            CmdResourceChanged();
+            OnResourceChanged();
         }
     }
-
-    [Command]
-    private void CmdResourceChanged()
+    private void OnResourceChanged()
     {
         EventOnResourceChange?.Invoke(GetResourcePercentage(), myCurrentResource.ToString() + "/" + MaxResource);
     }

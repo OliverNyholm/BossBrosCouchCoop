@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class Teleport : Spell
 {
@@ -11,10 +10,7 @@ public class Teleport : Spell
 
     protected override void DealSpellEffect()
     {
-        if (!isServer)
-            return;
-
-        RpcTeleportPlayer(CalculateTeleportPosition());
+        TeleportPlayer(CalculateTeleportPosition());
     }
 
     private Vector3 CalculateTeleportPosition()
@@ -36,8 +32,7 @@ public class Teleport : Spell
         return endPosition;
     }
 
-    [ClientRpc]
-    private void RpcTeleportPlayer(Vector3 aPosition)
+    private void TeleportPlayer(Vector3 aPosition)
     {
         myParent.GetComponent<PlayerCharacter>().SetPosition(aPosition);
     }

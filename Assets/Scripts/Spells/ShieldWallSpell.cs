@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class ShieldWallSpell : Spell
 {
@@ -11,13 +10,9 @@ public class ShieldWallSpell : Spell
 
     protected override void DealSpellEffect()
     {
-        if (!isServer)
-            return;
-
         GameObject shield = Instantiate(myShieldWallPrefab, myParent.transform);
-        NetworkServer.Spawn(shield);
 
-        RpcSetSpellParent(myParent, shield);
+        SetSpellParent(myParent, shield);
     }
 
     protected override string GetSpellDetail()
@@ -27,8 +22,7 @@ public class ShieldWallSpell : Spell
         return detail;
     }
 
-    [ClientRpc]
-    private void RpcSetSpellParent(GameObject aParent, GameObject aChild)
+    private void SetSpellParent(GameObject aParent, GameObject aChild)
     {
         aChild.transform.parent = aParent.transform;
     }

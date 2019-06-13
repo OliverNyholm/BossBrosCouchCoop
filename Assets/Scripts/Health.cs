@@ -1,40 +1,29 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class Health : NetworkBehaviour
+public class Health : MonoBehaviour
 {
     [SerializeField]
     private GameObject myFloatingHealthPrefab;
 
-    [SyncVar]
+
     public int myMaxHealth = 100;
-    [SyncVar]
+
     public int myCurrentHealth = 100;
 
     public delegate void HealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue);
-    public delegate void HealthChangedParty(float aHealthPercentage, NetworkInstanceId anID);
-    public delegate void ThreadGenerated(int aThreatPercentage, NetworkInstanceId anID);
+    public delegate void ThreatGenerated(int aThreatPercentage, int anID);
     public delegate void HealthZero();
 
-    [SyncEvent]
+
     public event HealthChanged EventOnHealthChange;
-    [SyncEvent]
-    public event HealthChangedParty EventOnHealthChangeParty;
-    [SyncEvent]
-    public event ThreadGenerated EventOnThreatGenerated;
-    [SyncEvent]
+    public event ThreatGenerated EventOnThreatGenerated;
     public event HealthZero EventOnHealthZero;
 
     private List<BuffShieldSpell> myShields = new List<BuffShieldSpell>();
 
     public void TakeDamage(int aValue)
     {
-        if (!isServer)
-        {
-            return;
-        }
-
         int damage = CalculateMitigations(aValue);
         myCurrentHealth -= damage;
         if (myCurrentHealth <= 0)
@@ -51,16 +40,11 @@ public class Health : NetworkBehaviour
         }
 
         OnHealthChanged();
-        RpcSpawnFloatingText(damageText, Color.red);
+        SpawnFloatingText(damageText, Color.red);
     }
 
     public void GainHealth(int aValue)
     {
-        if (!isServer)
-        {
-            return;
-        }
-
         myCurrentHealth += aValue;
         if (myCurrentHealth > myMaxHealth)
         {
@@ -68,7 +52,7 @@ public class Health : NetworkBehaviour
         }
 
         OnHealthChanged();
-        RpcSpawnFloatingText(aValue.ToString(), Color.yellow);
+        SpawnFloatingText(aValue.ToString(), Color.yellow);
     }
 
     public bool IsDead()
@@ -93,19 +77,13 @@ public class Health : NetworkBehaviour
 
     public void AddShield(BuffShieldSpell aShield)
     {
-        if (!isServer)
-            return;
-
         myShields.Add(aShield);
         OnHealthChanged();
-        RpcSpawnFloatingText("Shield, " + aShield.GetRemainingShieldHealth().ToString(), Color.yellow);
+        SpawnFloatingText("Shield, " + aShield.GetRemainingShieldHealth().ToString(), Color.yellow);
     }
 
     public void RemoveShield()
     {
-        if (!isServer)
-            return;
-
         for (int index = 0; index < myShields.Count; index++)
         {
             if (myShields[index].IsFinished())
@@ -116,17 +94,16 @@ public class Health : NetworkBehaviour
         }
 
         OnHealthChanged();
-        RpcSpawnFloatingText("Shield faded", Color.yellow);
+        SpawnFloatingText("Shield faded", Color.yellow);
     }
 
-    public void GenerateThreat(int aThreatValue, NetworkInstanceId anID)
+    public void GenerateThreat(int aThreatValue, int anID)
     {
         EventOnThreatGenerated?.Invoke(aThreatValue, anID);
     }
 
     private void OnHealthChanged()
     {
-        EventOnHealthChangeParty?.Invoke(GetHealthPercentage(), GetComponent<NetworkIdentity>().netId);
         EventOnHealthChange?.Invoke(GetHealthPercentage(), myCurrentHealth.ToString() + "/" + MaxHealth, GetTotalShieldValue());
     }
 
@@ -135,8 +112,7 @@ public class Health : NetworkBehaviour
         EventOnHealthZero?.Invoke();
     }
 
-    [ClientRpc]
-    private void RpcSpawnFloatingText(string aText, Color aColor)
+    private void SpawnFloatingText(string aText, Color aColor)
     {
         GameObject floatingHealthGO = Instantiate(myFloatingHealthPrefab, transform);
         FloatingHealth floatingHealth = floatingHealthGO.GetComponent<FloatingHealth>();

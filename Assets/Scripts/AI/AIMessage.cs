@@ -5,15 +5,15 @@ using UnityEngine.Networking;
 
 public class AIMessageData
 {
-    public NetworkInstanceId myNetworkID;
+    public int myObjectID;
     public int myInt;
     public float myFloat;
     public Vector2 myVector2;
     public Vector3 myVector3;
 
-    public AIMessageData(NetworkInstanceId anID, int anInt)
+    public AIMessageData(int anID, int anInt)
     {
-        myNetworkID = anID;
+        myObjectID = anID;
         myInt = anInt;
     }
 

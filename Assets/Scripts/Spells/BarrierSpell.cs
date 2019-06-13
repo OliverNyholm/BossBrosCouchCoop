@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class BarrierSpell : Spell
 {
@@ -14,15 +13,10 @@ public class BarrierSpell : Spell
 
     protected override void DealSpellEffect()
     {
-        if (!isServer)
-            return;
-
         GameObject barrier = Instantiate(myBarrierPrefab, myParent.transform);
 
-        NetworkServer.Spawn(barrier);
-
-        RpcSetSpellParent(myParent, barrier);
-        RpcStartCoroutine(barrier);
+        SetSpellParent(myParent, barrier);
+        StartCoroutine(barrier);
     }
 
     protected override string GetSpellDetail()
@@ -32,14 +26,12 @@ public class BarrierSpell : Spell
         return detail;
     }
 
-    [ClientRpc]
-    private void RpcStartCoroutine(GameObject aChannelSpell)
+    private void StartCoroutine(GameObject aChannelSpell)
     {
         myParent.GetComponent<PlayerCharacter>().StartChannel(myChannelTime, this, aChannelSpell);
     }
 
-    [ClientRpc]
-    private void RpcSetSpellParent(GameObject aParent, GameObject aChild)
+    private void SetSpellParent(GameObject aParent, GameObject aChild)
     {
         aChild.transform.parent = aParent.transform;
     }

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Networking;
 
-public class Enemy : NetworkBehaviour
+public class Enemy : MonoBehaviour
 {
 
     public string myName;
@@ -22,18 +21,15 @@ public class Enemy : NetworkBehaviour
     private List<BuffSpell> myBuffs;
 
     private Animator myAnimator;
-    private NetworkAnimator myNetAnimator;
 
     private NavMeshAgent myNavmeshAgent;
 
     public List<PlayerCharacter> myPlayerCharacters;
     public List<int> myAggroList;
 
-    [SyncVar]
     private bool myIsCasting;
     private Coroutine myCastingRoutine;
 
-    [SyncVar]
     public GameObject myTarget;
     private int myTargetIndex;
 
@@ -44,9 +40,6 @@ public class Enemy : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
-        if (!isServer)
-            return;
-
         myHealth = GetComponent<Health>();
         myHealth.EventOnThreatGenerated += AddThreat;
         myHealth.EventOnHealthZero += OnDeath;
@@ -55,7 +48,6 @@ public class Enemy : NetworkBehaviour
         myBuffs = new List<BuffSpell>();
 
         myAnimator = GetComponent<Animator>();
-        myNetAnimator = GetComponent<NetworkAnimator>();
 
         myNavmeshAgent = GetComponent<NavMeshAgent>();
 
@@ -77,9 +69,6 @@ public class Enemy : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isServer)
-            return;
-
         if (GetComponent<Health>().IsDead())
             return;
 
@@ -110,7 +99,6 @@ public class Enemy : NetworkBehaviour
     private void OnDeath()
     {
         myAnimator.SetTrigger("Death");
-        myNetAnimator.SetTrigger("Death");
         myHealth.EventOnHealthZero -= OnDeath;
     }
 
@@ -193,13 +181,13 @@ public class Enemy : NetworkBehaviour
         //myNetAnimator.SetTrigger("Attack");
         //myAutoAttackCooldown = 5.2f;
 
-        myNetAnimator.SetTrigger("Attack");
+        myAnimator.SetTrigger("Attack");
         myAutoAttackCooldown = 1.5f;
 
-        RpcSpawnSpell(0, myTarget.transform.position);
+        SpawnSpell(0, myTarget.transform.position);
     }
 
-    private void RpcSpawnSpell(int aSpellIndex, Vector3 aPosition)
+    private void SpawnSpell(int aSpellIndex, Vector3 aPosition)
     {
         GameObject spell = mySpells[aSpellIndex];
 
@@ -215,8 +203,6 @@ public class Enemy : NetworkBehaviour
             spellScript.SetTarget(myTarget);
         else
             spellScript.SetTarget(transform.gameObject);
-
-        NetworkServer.Spawn(instance);
     }
 
     private void HandleBuffs()
@@ -251,9 +237,6 @@ public class Enemy : NetworkBehaviour
 
     public void AddBuff(BuffSpell aBuffSpell, Sprite aSpellIcon)
     {
-        if (!hasAuthority)
-            return;
-
         for (int index = 0; index < myBuffs.Count; index++)
         {
             if (myBuffs[index].GetParent() == aBuffSpell.GetParent() &&
@@ -283,13 +266,13 @@ public class Enemy : NetworkBehaviour
         }
     }
 
-    public void SetTaunt(NetworkInstanceId aTaunterID, float aDuration)
+    public void SetTaunt(int aTaunterID, float aDuration)
     {
         myIsTaunted = true;
         myTauntDuration = aDuration;
         for (int index = 0; index < myPlayerCharacters.Count; index++)
         {
-            if(myPlayerCharacters[index].GetComponent<NetworkIdentity>().netId == aTaunterID)
+            if(myPlayerCharacters[index].GetInstanceID() == aTaunterID)
             {
                 myTargetIndex = index;
                 Debug.Log(myTargetIndex + " taunted enemy for  " + aDuration);
@@ -331,9 +314,6 @@ public class Enemy : NetworkBehaviour
 
     public void RemoveBuffByName(string aName)
     {
-        if (!hasAuthority)
-            return;
-
         for (int index = 0; index < myBuffs.Count; index++)
         {
             if (myBuffs[index].GetName() == aName)
@@ -377,7 +357,7 @@ public class Enemy : NetworkBehaviour
         {
             case AIMessageType.SpellSpawned:
                 {
-                    NetworkInstanceId id = anAiMessage.Data.myNetworkID;
+                    int id = anAiMessage.Data.myObjectID;
                     int value = anAiMessage.Data.myInt;
 
                     AddThreat(value, id);
@@ -388,11 +368,11 @@ public class Enemy : NetworkBehaviour
         }
     }
 
-    private void AddThreat(int aThreatValue, NetworkInstanceId anID)
+    private void AddThreat(int aThreatValue, int anID)
     {
         for (int index = 0; index < myPlayerCharacters.Count; index++)
         {
-            if (myPlayerCharacters[index].netId == anID)
+            if (myPlayerCharacters[index].GetInstanceID() == anID)
             {
                 myAggroList[index] += aThreatValue;
                 break;

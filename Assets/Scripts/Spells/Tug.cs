@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class Tug : Spell
 {
@@ -11,10 +10,7 @@ public class Tug : Spell
 
     protected override void DealSpellEffect()
     {
-        if (!isServer)
-            return;
-
-        RpcTugPlayer(CalculateTugImpact());
+        TugPlayer(CalculateTugImpact());
     }
 
     private Vector3 CalculateTugImpact()
@@ -51,8 +47,7 @@ public class Tug : Spell
         return finalVelocity;
     }
 
-    [ClientRpc]
-    private void RpcTugPlayer(Vector3 aVelocity)
+    private void TugPlayer(Vector3 aVelocity)
     {
         myTarget.GetComponent<PlayerCharacter>().GiveImpulse(aVelocity, false);
     }

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class Leap : Spell {
 
@@ -10,10 +9,7 @@ public class Leap : Spell {
 
     protected override void DealSpellEffect()
     {
-        if (!isServer)
-            return;
-
-        RpcLeapPlayer(CalculateJumpImpact());
+        LeapPlayer(CalculateJumpImpact());
     }
 
     private Vector3 CalculateJumpImpact()
@@ -46,9 +42,7 @@ public class Leap : Spell {
         // Fire!
         return finalVelocity;
     }
-
-    [ClientRpc]
-    private void RpcLeapPlayer(Vector3 aVelocity)
+    private void LeapPlayer(Vector3 aVelocity)
     {
         myParent.GetComponent<PlayerCharacter>().GiveImpulse(aVelocity, true);
     }

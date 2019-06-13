@@ -250,7 +250,7 @@ public class PlayerCharacter : NetworkBehaviour
                 BuffTickSpell hot = myBuffs[index] as BuffTickSpell;
                 if (hot.ShouldDealTickSpellEffect)
                 {
-                    AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.SpellSpawned, new AIMessageData(GetComponent<NetworkIdentity>().netId, hot.GetTickValue())));
+                    AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.SpellSpawned, new AIMessageData(GetInstanceID(), hot.GetTickValue())));
                     CmdGainHealth(hot.GetTarget(), hot.GetTickValue());
                     hot.ShouldDealTickSpellEffect = false;
                 }

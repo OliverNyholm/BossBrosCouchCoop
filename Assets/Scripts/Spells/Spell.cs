@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class Spell : NetworkBehaviour
+public class Spell : MonoBehaviour
 {
     public string myName;
     public GameObject myTextMesh;
@@ -28,17 +27,11 @@ public class Spell : NetworkBehaviour
 
     public Buff myBuff;
 
-    [SyncVar]
     protected GameObject myParent;
-    [SyncVar]
     protected GameObject myTarget;
 
     protected virtual void Update()
     {
-        if (!isServer)
-            return;
-
-
         float distance = 0.0f;
         if (mySpeed > 0.0f)
             distance = Vector3.Distance(transform.position, myTarget.transform.position);
@@ -55,15 +48,13 @@ public class Spell : NetworkBehaviour
 
             if (myBuff != null)
             {
-                RpcSpawnBuff();
+                SpawnBuff();
             }
 
-            RpcDestroy();
+            Destroy();
         }
     }
-
-    [ClientRpc]
-    private void RpcSpawnBuff()
+    private void SpawnBuff()
     {
         if (myBuff.mySpellType == SpellType.DOT || myBuff.mySpellType == SpellType.HOT)
         {
@@ -96,7 +87,7 @@ public class Spell : NetworkBehaviour
             if (myDamage > 0.0f)
             {
                 myTarget.GetComponent<Health>().GainHealth(myDamage);
-                AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.SpellSpawned, new AIMessageData(myParent.GetComponent<NetworkIdentity>().netId, myDamage)));
+                AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.SpellSpawned, new AIMessageData(myParent.GetInstanceID(), myDamage)));
             }
         }
         else
@@ -104,17 +95,17 @@ public class Spell : NetworkBehaviour
             if (myDamage > 0.0f)
             {
                 myTarget.GetComponent<Health>().TakeDamage(myDamage);
-                myTarget.GetComponent<Health>().GenerateThreat((int)(myDamage * myThreatModifier), myParent.GetComponent<NetworkIdentity>().netId);
+                myTarget.GetComponent<Health>().GenerateThreat((int)(myDamage * myThreatModifier), myParent.GetInstanceID());
             }
         }
 
         if (mySpellType == SpellType.Interrupt)
         {
-            RpcInterrupt();
+            Interrupt();
         }
         if (mySpellType == SpellType.Taunt)
         {
-            myTarget.GetComponent<Enemy>().SetTaunt(myParent.GetComponent<NetworkIdentity>().netId, 3.0f);
+            myTarget.GetComponent<Enemy>().SetTaunt(myParent.GetInstanceID(), 3.0f);
         }
     }
 
@@ -295,7 +286,6 @@ public class Spell : NetworkBehaviour
                 buffDetail += ", and ";
 
             buffDetail += "increase damage dealt by " + (myBuff.myDamageIncrease * 100).ToString("0") + "%";
-            shouldAddComma = true;
         }
         else if (myBuff.myDamageIncrease < 0.0f)
         {
@@ -303,7 +293,6 @@ public class Spell : NetworkBehaviour
                 buffDetail += ", and ";
 
             buffDetail += "reduce damage dealt by " + (myBuff.myDamageIncrease * 100).ToString("0") + "% ";
-            shouldAddComma = true;
         }
 
         if (myBuff.mySpellType == SpellType.Buff)
@@ -334,8 +323,7 @@ public class Spell : NetworkBehaviour
         return text;
     }
 
-    [ClientRpc]
-    private void RpcInterrupt()
+    private void Interrupt()
     {
         if (myTarget.tag == "Player")
             myTarget.GetComponent<PlayerCharacter>().InterruptSpellCast();
@@ -343,8 +331,7 @@ public class Spell : NetworkBehaviour
             myTarget.GetComponent<Enemy>().InterruptSpellCast();
     }
 
-    [ClientRpc]
-    private void RpcDestroy()
+    private void Destroy()
     {
         Destroy(gameObject);
     }

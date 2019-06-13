@@ -9,12 +9,9 @@ public class AoeAttack : Spell {
 
     protected override void Update()
     {
-        if (!isServer)
-            return;
-
         myLifeTime -= Time.deltaTime;
         if (myLifeTime <= 0.0f)
-            NetworkServer.Destroy(gameObject);
+            Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -38,13 +38,13 @@ public class Barrier : ChannelSpell
         {
             BuffTickSpell buffSpell;
             buffSpell = (myBuff as TickBuff).InitializeBuff(transform.parent.gameObject, aTarget);
-            aTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, mySpellIcon);
+            aTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
         }
         else
         {
             BuffSpell buffSpell;
             buffSpell = myBuff.InitializeBuff(transform.parent.gameObject);
-            aTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, mySpellIcon);
+            aTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
         }
     }
 
@@ -52,7 +52,7 @@ public class Barrier : ChannelSpell
     private void RpcRemoveBuff(GameObject aTarget)
     {
         Debug.Log("Remove Buff: " + myBuff.name);
-        aTarget.GetComponent<PlayerCharacter>().RemoveBuffByName(myBuff.name);
+        aTarget.GetComponent<Player>().RemoveBuffByName(myBuff.name);
     }
 
     [ClientRpc]

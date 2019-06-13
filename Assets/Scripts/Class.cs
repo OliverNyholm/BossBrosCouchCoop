@@ -56,9 +56,9 @@ public class Class : MonoBehaviour
         }
     }
 
-    private void FindActionBar()
+    private void FindActionBar(Transform aUIParent)
     {
-        myActionBar = GameObject.Find("ActionBar");
+        myActionBar = aUIParent.Find("ActionBar").gameObject;
         myActionBar.GetComponent<CanvasGroup>().alpha = 1.0f;
     }
 
@@ -109,9 +109,9 @@ public class Class : MonoBehaviour
     }
 
     public delegate void ActionClick(int anIndex);
-    public void SetupSpellHud(ActionClick anActionClickFunction)
+    public void SetupSpellHud(ActionClick anActionClickFunction, Transform aUIParent)
     {
-        FindActionBar();
+        FindActionBar(aUIParent);
 
         for (int index = 0; index < myActionButtons.Length; index++)
         {

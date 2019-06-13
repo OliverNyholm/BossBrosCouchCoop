@@ -44,7 +44,7 @@ public class Meditate : Spell {
 
     private void StartCoroutine()
     {
-        myParent.GetComponent<PlayerCharacter>().StartChannel(myChannelTime, this, null);
+        myParent.GetComponent<Player>().StartChannel(myChannelTime, this, null);
     }
 
     protected override string GetSpellDetail()

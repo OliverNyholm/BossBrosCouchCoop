@@ -61,7 +61,7 @@ public class Spell : MonoBehaviour
             BuffTickSpell buffSpell;
             buffSpell = (myBuff as TickBuff).InitializeBuff(myParent, myTarget);
             if (myTarget.tag == "Player")
-                myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, mySpellIcon);
+                myTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
             else if (myTarget.tag == "Enemy")
                 myTarget.GetComponent<Enemy>().AddBuff(buffSpell, mySpellIcon);
         }
@@ -70,7 +70,7 @@ public class Spell : MonoBehaviour
             BuffSpell buffSpell;
             buffSpell = myBuff.InitializeBuff(myParent);
             if (myTarget.tag == "Player")
-                myTarget.GetComponent<PlayerCharacter>().AddBuff(buffSpell, mySpellIcon);
+                myTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
             else if (myTarget.tag == "Enemy")
                 myTarget.GetComponent<Enemy>().AddBuff(buffSpell, mySpellIcon);
 
@@ -326,7 +326,7 @@ public class Spell : MonoBehaviour
     private void Interrupt()
     {
         if (myTarget.tag == "Player")
-            myTarget.GetComponent<PlayerCharacter>().InterruptSpellCast();
+            myTarget.GetComponent<Player>().InterruptSpellCast();
         else if (myTarget.tag == "Enemy")
             myTarget.GetComponent<Enemy>().InterruptSpellCast();
     }

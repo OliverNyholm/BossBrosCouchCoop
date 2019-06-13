@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 
-public class PlayerCharacter : NetworkBehaviour
+public class PlayerCharacterOLD : NetworkBehaviour
 {
 
     public float myBaseSpeed;
@@ -101,7 +101,7 @@ public class PlayerCharacter : NetworkBehaviour
         myResource.EventOnResourceChange += ChangeMyHudResource;
         ChangeMyHudResource(myResource.GetResourcePercentage(), myResource.myCurrentResource.ToString() + "/" + myResource.MaxResource.ToString());
 
-        myClass.SetupSpellHud(CastSpell);
+        myClass.SetupSpellHud(CastSpell, null);
 
         myCharacterHUD.SetName(myName + " (" + myClass.myClassName + ")");
         myCharacterHUD.Show();
@@ -347,7 +347,6 @@ public class PlayerCharacter : NetworkBehaviour
         myCastingRoutine = StartCoroutine(CastbarProgress(aKeyIndex));
     }
 
-    [Command]
     private void CmdSpawnSpell(int aKeyIndex, Vector3 aSpawnPosition)
     {
         GameObject spell;
@@ -830,8 +829,8 @@ public class PlayerCharacter : NetworkBehaviour
         }
         else if (myTarget.tag == "Player")
         {
-            if (myTarget.GetComponent<PlayerCharacter>() != null)
-                myTargetHUD.SetName(myTarget.GetComponent<PlayerCharacter>().Name);
+            if (myTarget.GetComponent<Player>() != null)
+                myTargetHUD.SetName(myTarget.name);
             myTargetHUD.SetNameColor(new Color(120f / 255f, 1.0f, 0.0f));
         }
     }

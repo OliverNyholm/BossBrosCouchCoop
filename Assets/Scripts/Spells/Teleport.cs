@@ -34,7 +34,7 @@ public class Teleport : Spell
 
     private void TeleportPlayer(Vector3 aPosition)
     {
-        myParent.GetComponent<PlayerCharacter>().SetPosition(aPosition);
+        myParent.GetComponent<Player>().SetPosition(aPosition);
     }
 
     protected override string GetSpellDetail()

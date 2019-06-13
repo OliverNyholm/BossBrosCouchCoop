@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
 
     private NavMeshAgent myNavmeshAgent;
 
-    public List<PlayerCharacter> myPlayerCharacters;
+    public List<Player> myPlayerCharacters;
     public List<int> myAggroList;
 
     private bool myIsCasting;
@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
 
         myNavmeshAgent = GetComponent<NavMeshAgent>();
 
-        myPlayerCharacters = new List<PlayerCharacter>();
+        myPlayerCharacters = new List<Player>();
         myAggroList = new List<int>();
         myTargetIndex = -1;
 
@@ -341,14 +341,14 @@ public class Enemy : MonoBehaviour
 
     public void AddPlayerCharacter(GameObject aPlayerCharacter)
     {
-        myPlayerCharacters.Add(aPlayerCharacter.GetComponent<PlayerCharacter>());
+        myPlayerCharacters.Add(aPlayerCharacter.GetComponent<Player>());
         myAggroList.Add(0);
     }
 
     public void RemovePlayerCharacter(GameObject aPlayerCharacter)
     {
-        myAggroList.Remove(myPlayerCharacters.IndexOf(aPlayerCharacter.GetComponent<PlayerCharacter>()));
-        myPlayerCharacters.Remove(aPlayerCharacter.GetComponent<PlayerCharacter>());
+        myAggroList.Remove(myPlayerCharacters.IndexOf(aPlayerCharacter.GetComponent<Player>()));
+        myPlayerCharacters.Remove(aPlayerCharacter.GetComponent<Player>());
     }
 
     private void ReceiveAIMessage(AIMessage anAiMessage)

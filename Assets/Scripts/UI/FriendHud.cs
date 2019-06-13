@@ -6,11 +6,11 @@ using UnityEngine.EventSystems;
 public class FriendHud : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
-    private PlayerCharacter myParent;
+    private PlayerCharacterOLD myParent;
     [SerializeField]
     private GameObject myCharacter;
 
-    public void SetParent(PlayerCharacter aParent)
+    public void SetParent(PlayerCharacterOLD aParent)
     {
         myParent = aParent;
     }

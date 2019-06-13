@@ -14,7 +14,7 @@ public class Leap : Spell {
 
     private Vector3 CalculateJumpImpact()
     {
-        float gravity = myParent.GetComponent<PlayerCharacter>().myGravity;
+        float gravity = myParent.GetComponent<Player>().myGravity;
         // Selected angle in radians
         float angle = myInitialAngle * Mathf.Deg2Rad;
 
@@ -44,7 +44,7 @@ public class Leap : Spell {
     }
     private void LeapPlayer(Vector3 aVelocity)
     {
-        myParent.GetComponent<PlayerCharacter>().GiveImpulse(aVelocity, true);
+        myParent.GetComponent<Player>().GiveImpulse(aVelocity, true);
     }
 
     protected override string GetSpellDetail()

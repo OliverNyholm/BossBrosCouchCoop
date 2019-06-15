@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
 
 public class BuffTickSpell : BuffSpell
 {
@@ -9,7 +8,6 @@ public class BuffTickSpell : BuffSpell
 
     private bool myShouldTickSpellEffect;
 
-    [SyncVar]
     private GameObject myTarget;
 
     public BuffTickSpell(Buff aBuff, GameObject aParent, GameObject aTarget) : base(aBuff, aParent)

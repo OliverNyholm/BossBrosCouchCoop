@@ -45,7 +45,7 @@ public class Class : MonoBehaviour
 
     public Class()
     {
-        const int mySpellSize = 5;
+        const int mySpellSize = 8;
         mySpells = new GameObject[mySpellSize];
         myActionButtons = new GameObject[mySpellSize];
         myCooldownTimers = new float[mySpellSize];

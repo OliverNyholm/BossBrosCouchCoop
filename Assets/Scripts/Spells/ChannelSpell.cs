@@ -1,29 +1,24 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
 
-public class ChannelSpell : NetworkBehaviour {
+public class ChannelSpell : MonoBehaviour {
     
     [SerializeField]
     protected Sprite mySpellIcon;
 
     protected float myTimerBeforeDestroy = -1.0f;
 
-    [ClientRpc]
-    public virtual void RpcSetToDestroy()
+    public virtual void SetToDestroy()
     {
         myTimerBeforeDestroy = 0.0f;
     }
 
     public void Update()
     {
-        if (!isServer)
-            return;
-
         if(myTimerBeforeDestroy >= 0.0f)
         {
             myTimerBeforeDestroy -= Time.deltaTime;
             if (myTimerBeforeDestroy <= 0.0f)
-                NetworkServer.Destroy(gameObject);
+                Destroy(gameObject);
         }
     }
 }

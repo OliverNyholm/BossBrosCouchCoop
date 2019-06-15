@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class BuffSpell
 {
@@ -9,7 +8,6 @@ public class BuffSpell
 
     protected float myDuration = 0.0f;
 
-    [SyncVar]
     private GameObject myParent;
 
     public BuffSpell(Buff aBuff, GameObject aParent)

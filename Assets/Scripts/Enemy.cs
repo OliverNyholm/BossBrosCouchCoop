@@ -5,9 +5,7 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-
     public string myName;
-    public float myDamage;
 
     public GameObject[] mySpells;
 
@@ -24,8 +22,8 @@ public class Enemy : MonoBehaviour
 
     private NavMeshAgent myNavmeshAgent;
 
-    public List<Player> myPlayerCharacters;
-    public List<int> myAggroList;
+    public List<GameObject> myPlayers = new List<GameObject>();
+    public List<int> myAggroList = new List<int>();
 
     private bool myIsCasting;
     private Coroutine myCastingRoutine;
@@ -50,9 +48,8 @@ public class Enemy : MonoBehaviour
         myAnimator = GetComponent<Animator>();
 
         myNavmeshAgent = GetComponent<NavMeshAgent>();
+        myNavmeshAgent.speed = mySpeed;
 
-        myPlayerCharacters = new List<Player>();
-        myAggroList = new List<int>();
         myTargetIndex = -1;
 
         myAISubscriber = new AISubscriber();
@@ -81,7 +78,7 @@ public class Enemy : MonoBehaviour
                 myIsTaunted = false;
         }
 
-        if (myPlayerCharacters.Count <= 0)
+        if (myPlayers.Count <= 0)
             return;
 
         if (!IsTargetCloseBy())
@@ -98,6 +95,8 @@ public class Enemy : MonoBehaviour
 
     private void OnDeath()
     {
+        myNavmeshAgent.isStopped = true;
+
         myAnimator.SetTrigger("Death");
         myHealth.EventOnHealthZero -= OnDeath;
     }
@@ -110,7 +109,7 @@ public class Enemy : MonoBehaviour
         int highestAggro = 0;
         for (int index = 1; index < myAggroList.Count; index++)
         {
-            if (myAggroList[index] > myAggroList[highestAggro] && !myPlayerCharacters[index].GetComponent<Health>().IsDead())
+            if (myAggroList[index] > myAggroList[highestAggro] && !myPlayers[index].GetComponent<Health>().IsDead())
                 highestAggro = index;
         }
 
@@ -124,13 +123,13 @@ public class Enemy : MonoBehaviour
         if (myTargetIndex != target)
         {
             myTargetIndex = target;
-            myTarget = myPlayerCharacters[myTargetIndex].gameObject;
+            myTarget = myPlayers[myTargetIndex].gameObject;
         }
 
-        float attackRange = 2.0f;
-        if (Vector3.Distance(myTarget.transform.position, transform.position) > attackRange)
+        const float attackRangeOffset = 0.5f;
+        if (Vector3.Distance(myTarget.transform.position, transform.position) > GetComponent<Stats>().myAutoAttackRange - attackRangeOffset)
         {
-            Move(myPlayerCharacters[myTargetIndex].transform.position);
+            Move(myPlayers[myTargetIndex].transform.position);
             myAnimator.SetBool("IsRunning", true);
         }
         else
@@ -144,9 +143,9 @@ public class Enemy : MonoBehaviour
     private bool IsTargetCloseBy()
     {
         const float aggroRange = 15.0f;
-        for (int index = 0; index < myPlayerCharacters.Count; index++)
+        for (int index = 0; index < myPlayers.Count; index++)
         {
-            Vector3 playerPosition = myPlayerCharacters[index].transform.position;
+            Vector3 playerPosition = myPlayers[index].transform.position;
             float distance = Vector3.Distance(playerPosition, transform.position);
             if (distance < aggroRange)
             {
@@ -159,23 +158,20 @@ public class Enemy : MonoBehaviour
 
     private void Move(Vector3 aTargetPosition)
     {
-        //Vector3 direction = aTargetPosition - transform.position;
-        //direction.y = 0.0f;
-        //transform.position += direction.normalized * mySpeed * Time.deltaTime;
         myNavmeshAgent.destination = aTargetPosition;
-        transform.LookAt(new Vector3(aTargetPosition.x, transform.position.y, aTargetPosition.z));
     }
 
     private void Attack()
     {
+        if (!myTarget)
+            return;
+
+        transform.LookAt(new Vector3(myTarget.transform.position.x, transform.position.y, myTarget.transform.position.z));
         if (myAutoAttackCooldown > 0.0f)
         {
             myAutoAttackCooldown -= Time.deltaTime * myStats.myAttackSpeed;
             return;
         }
-
-        if (!myTarget)
-            return;
 
         //------- Flail debugging
         //myNetAnimator.SetTrigger("Attack");
@@ -194,8 +190,8 @@ public class Enemy : MonoBehaviour
         GameObject instance = Instantiate(spell, aPosition + new Vector3(0.0f, 0.5f, 0.0f), transform.rotation);
 
         Spell spellScript = instance.GetComponent<Spell>();
-        spellScript.AddDamageIncrease(myStats.myDamageIncrease);
         spellScript.SetParent(transform.gameObject);
+        spellScript.AddDamageIncrease(myStats.myDamageIncrease);
 
         if (spellScript.myIsOnlySelfCast)
             spellScript.SetTarget(transform.gameObject);
@@ -270,9 +266,9 @@ public class Enemy : MonoBehaviour
     {
         myIsTaunted = true;
         myTauntDuration = aDuration;
-        for (int index = 0; index < myPlayerCharacters.Count; index++)
+        for (int index = 0; index < myPlayers.Count; index++)
         {
-            if(myPlayerCharacters[index].GetInstanceID() == aTaunterID)
+            if(myPlayers[index].GetInstanceID() == aTaunterID)
             {
                 myTargetIndex = index;
                 Debug.Log(myTargetIndex + " taunted enemy for  " + aDuration);
@@ -339,16 +335,16 @@ public class Enemy : MonoBehaviour
         myIsCasting = false;
     }
 
-    public void AddPlayerCharacter(GameObject aPlayerCharacter)
+    public void AddPlayer(GameObject aPlayer)
     {
-        myPlayerCharacters.Add(aPlayerCharacter.GetComponent<Player>());
+        myPlayers.Add(aPlayer);
         myAggroList.Add(0);
     }
 
-    public void RemovePlayerCharacter(GameObject aPlayerCharacter)
+    public void RemovePlayer(GameObject aPlayer)
     {
-        myAggroList.Remove(myPlayerCharacters.IndexOf(aPlayerCharacter.GetComponent<Player>()));
-        myPlayerCharacters.Remove(aPlayerCharacter.GetComponent<Player>());
+        myAggroList.Remove(myPlayers.IndexOf(aPlayer));
+        myPlayers.Remove(aPlayer);
     }
 
     private void ReceiveAIMessage(AIMessage anAiMessage)
@@ -370,9 +366,9 @@ public class Enemy : MonoBehaviour
 
     private void AddThreat(int aThreatValue, int anID)
     {
-        for (int index = 0; index < myPlayerCharacters.Count; index++)
+        for (int index = 0; index < myPlayers.Count; index++)
         {
-            if (myPlayerCharacters[index].GetInstanceID() == anID)
+            if (myPlayers[index].GetInstanceID() == anID)
             {
                 myAggroList[index] += aThreatValue;
                 break;

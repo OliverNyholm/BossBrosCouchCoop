@@ -109,7 +109,7 @@ public class Spell : MonoBehaviour
         }
     }
 
-    public void AddDamageIncrease(float aDamageIncrease)
+    public virtual void AddDamageIncrease(float aDamageIncrease)
     {
         myDamage = (int)(myDamage * aDamageIncrease);
     }

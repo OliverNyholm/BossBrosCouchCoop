@@ -692,7 +692,6 @@ MonoBehaviour:
   myBaseSpeed: 8
   myJumpSpeed: 15
   myGravity: 30
-  myShouldStrafe: 0
 --- !u!114 &2079121835491590068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -714,7 +713,13 @@ MonoBehaviour:
   - {fileID: 1345520433668302, guid: 7048bcde87e081e4894b927ac90fe7af, type: 3}
   - {fileID: 1060916130889568, guid: 4caa3539b55677c468d384289c61f19c, type: 3}
   - {fileID: 1923039765265374, guid: c5edba4cadb79ec4d8b3f5dbdec2880c, type: 3}
+  - {fileID: 1233940432947236, guid: 1b123b8be2c110d42a377fca64b18196, type: 3}
+  - {fileID: 1125694136323164, guid: 6fefe2c9c789eed4b99cd374abe17664, type: 3}
+  - {fileID: 1837549656673452, guid: fc507ae2236c8cb4eae8587a9dd8ecea, type: 3}
   myCooldownTimers:
+  - 0
+  - 0
+  - 0
   - 0
   - 0
   - 0
@@ -752,7 +757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myFloatingHealthPrefab: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca,
     type: 3}
-  myMaxHealth: 100
+  myMaxHealth: 400
   myCurrentHealth: 100
 --- !u!114 &2079121835491590074
 MonoBehaviour:
@@ -1726,7 +1731,7 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7246370880520276158}
   m_Enabled: 1
-  m_CastShadows: 0
+  m_CastShadows: 1
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1

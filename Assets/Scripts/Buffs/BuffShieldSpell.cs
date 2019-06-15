@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
-
 public class BuffShieldSpell : BuffSpell {
 
     private int myCurrentShieldValue;

@@ -12,6 +12,7 @@ public class Sacrifice : Spell
 
         myParent.GetComponent<Health>().TakeDamage(healthToCast);
         myTarget.GetComponent<Health>().GainHealth(healthToCast);
+        AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.SpellSpawned, new AIMessageData(myParent.GetInstanceID(), myDamage)));
     }
 
     protected override string GetSpellDetail()

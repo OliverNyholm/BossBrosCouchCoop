@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class Barrier : ChannelSpell
 {
@@ -10,29 +9,22 @@ public class Barrier : ChannelSpell
 
     void OnTriggerEnter(Collider other)
     {
-        if (!isServer)
-            return;
-
         if (other.tag == "Player")
         {
-            RpcSpawnBuff(other.gameObject);
+            SpawnBuff(other.gameObject);
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (!isServer)
-            return;
-
         if (other.tag == "Player")
         {
-            RpcRemoveBuff(other.gameObject);
+            RemoveBuff(other.gameObject);
         }
     }
 
 
-    [ClientRpc]
-    private void RpcSpawnBuff(GameObject aTarget)
+    private void SpawnBuff(GameObject aTarget)
     {
         if (myBuff.mySpellType == SpellType.DOT || myBuff.mySpellType == SpellType.HOT)
         {
@@ -48,15 +40,13 @@ public class Barrier : ChannelSpell
         }
     }
 
-    [ClientRpc]
-    private void RpcRemoveBuff(GameObject aTarget)
+    private void RemoveBuff(GameObject aTarget)
     {
         Debug.Log("Remove Buff: " + myBuff.name);
         aTarget.GetComponent<Player>().RemoveBuffByName(myBuff.name);
     }
 
-    [ClientRpc]
-    public override void RpcSetToDestroy()
+    public override void SetToDestroy()
     {  
         transform.Translate(Vector3.up * 1000);
         myTimerBeforeDestroy = 0.1f;

@@ -48,14 +48,14 @@ public class PlayerCamera : MonoBehaviour
             myXDegrees += Input.GetAxis("Mouse X") * myRotationSpeedX;
             myYDegrees -= Input.GetAxis("Mouse Y") * myRotationSpeedY;
         }
-        else if (myTarget.GetComponent<PlayerCharacterOLD>() && !myTarget.GetComponent<PlayerCharacterOLD>().myShouldStrafe && (Input.GetButton("Vertical") || Input.GetButton("Horizontal")))
-        {
-            float rotationDampening = 3.0f;
-            float targetRotationAngle = myTarget.GetComponentInChildren<MeshFilter>().transform.eulerAngles.y;
-            float currentRotationAngle = transform.eulerAngles.y;
-            myXDegrees = Mathf.LerpAngle(currentRotationAngle, targetRotationAngle, rotationDampening * Time.deltaTime);
-        }
-        else if (myTarget.GetComponent<Player>() && !myTarget.GetComponent<Player>().myShouldStrafe && (Input.GetButton("Vertical") || Input.GetButton("Horizontal")))
+        //else if (myTarget.GetComponent<PlayerCharacterOLD>() && !myTarget.GetComponent<PlayerCharacterOLD>().myShouldStrafe && (Input.GetButton("Vertical") || Input.GetButton("Horizontal")))
+        //{
+        //    float rotationDampening = 3.0f;
+        //    float targetRotationAngle = myTarget.GetComponentInChildren<MeshFilter>().transform.eulerAngles.y;
+        //    float currentRotationAngle = transform.eulerAngles.y;
+        //    myXDegrees = Mathf.LerpAngle(currentRotationAngle, targetRotationAngle, rotationDampening * Time.deltaTime);
+        //}
+        else if (myTarget.GetComponent<Player>() && (Input.GetButton("Vertical") || Input.GetButton("Horizontal")))
         {
             float rotationDampening = 3.0f;
             float targetRotationAngle = myTarget.GetComponentInChildren<MeshFilter>().transform.eulerAngles.y;

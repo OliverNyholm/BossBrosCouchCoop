@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Networking;
 
-public class PlayerCharacterOLD : NetworkBehaviour
+public class PlayerCharacterOLD : MonoBehaviour
 {
 
-    public float myBaseSpeed;
+   /* public float myBaseSpeed;
     public float myJumpSpeed;
     public float myGravity;
 
@@ -916,5 +915,5 @@ public class PlayerCharacterOLD : NetworkBehaviour
     public void CmdTakeDamage(GameObject aTarget, int aValue)
     {
         aTarget.GetComponent<Health>().TakeDamage(aValue);
-    }
+    }*/
 }

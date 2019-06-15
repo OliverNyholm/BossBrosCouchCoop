@@ -9,10 +9,7 @@ public class Player : MonoBehaviour
     public float myJumpSpeed;
     public float myGravity;
 
-    public bool myShouldStrafe = true;
-
     private CharacterController myController;
-    private Camera myCamera;
     private Animator myAnimator;
     private Class myClass;
 
@@ -29,6 +26,8 @@ public class Player : MonoBehaviour
     private List<BuffSpell> myBuffs;
 
     private Vector3 myDirection;
+    private CameraXZTransform myCameraXZTransform;
+    private DpadInput myDpadInput;
 
     private float myStunDuration;
     private float myAutoAttackCooldown;
@@ -39,12 +38,22 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        myCamera = Camera.main;
+        myCameraXZTransform.myForwards = Camera.main.transform.forward;
+        myCameraXZTransform.myForwards.y = 0.0f;
+        myCameraXZTransform.myForwards.Normalize();
+
+        myCameraXZTransform.myRight = Camera.main.transform.right;
+        myCameraXZTransform.myRight.y = 0.0f;
+        myCameraXZTransform.myRight.Normalize();
+
+        myDpadInput = new DpadInput(myControllerIndex);
+
+        myDirection = Vector3.zero;
 
         myTargetHandler = GameObject.Find("GameManager").GetComponent<TargetHandler>();
         myUIManager = GameObject.Find("GameManager").GetComponent<UIManager>();
 
-        myController = transform.GetComponent<CharacterController>();
+        myController = GetComponent<CharacterController>();
         myAnimator = GetComponent<Animator>();
         myClass = GetComponent<Class>();
 
@@ -81,6 +90,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        myDpadInput.Update();
+
         myDirection.y -= myGravity * Time.deltaTime;
         myController.Move(myDirection * Time.deltaTime);
 
@@ -92,25 +103,22 @@ public class Player : MonoBehaviour
         DetectTargetingInput();
         DetectMovementInput();
         DetectSpellInput();
-        RotatePlayer();
     }
     private void DetectMovementInput()
     {
         if (!myIsGrounded)
             return;
 
-        if (myShouldStrafe)
-        {
-            myDirection = new Vector3(Input.GetAxisRaw("LeftHorizontal" + myControllerIndex), 0.0f, Input.GetAxisRaw("LeftVertical" + myControllerIndex)).normalized * myBaseSpeed;
-        }
-        else
-        {
-            myDirection = new Vector3(0.0f, 0.0f, Input.GetAxisRaw("LeftVertical" + myControllerIndex)) * myBaseSpeed;
-        }
+        Vector3 inputDirection = new Vector3(Input.GetAxisRaw("LeftHorizontal" + myControllerIndex), 0.0f, Input.GetAxisRaw("LeftVertical" + myControllerIndex));
 
-        myDirection = transform.TransformDirection(myDirection);
+        myDirection = (inputDirection.x * myCameraXZTransform.myRight + inputDirection.z * myCameraXZTransform.myForwards).normalized;
+        myDirection *= myBaseSpeed * GetComponent<Stats>().mySpeedMultiplier;
 
-        myAnimator.SetBool("IsRunning", IsMoving());
+        bool isMoving = IsMoving();
+        if (isMoving)
+            RotatePlayer();
+
+        myAnimator.SetBool("IsRunning", isMoving);
 
         if (Input.GetButton("RightBumper" + myControllerIndex))
         {
@@ -130,33 +138,23 @@ public class Player : MonoBehaviour
             CastSpell(2);
         else if (Input.GetButtonDown("Y" + myControllerIndex))
             CastSpell(3);
-        else if (Input.GetButtonDown("LeftBumper" + myControllerIndex))
+        else if (myDpadInput.IsDPADPressed(DpadInput.DPADButton.Down))
             CastSpell(4);
+        else if (myDpadInput.IsDPADPressed(DpadInput.DPADButton.Right))
+            CastSpell(5);
+        else if (myDpadInput.IsDPADPressed(DpadInput.DPADButton.Left))
+            CastSpell(6);
+        else if (myDpadInput.IsDPADPressed(DpadInput.DPADButton.Up))
+            CastSpell(7);
+
     }
     private void RotatePlayer()
     {
-        if (myShouldStrafe)
-        {
-            //if (Mathf.Abs(myDirection.x) > 0.0f || Mathf.Abs(myDirection.y) > 0.0f)
-            //{
-            //    Vector3 newRotation = transform.eulerAngles;
-            //    newRotation.y = myCamera.transform.eulerAngles.y;
-            //    transform.eulerAngles = newRotation;
-            //}
-        }
-        else
-        {
-            if (Input.GetAxisRaw("LeftHorizontal" + myControllerIndex) != 0.0f)
-            {
-                Vector3 newRotation = transform.eulerAngles;
-                newRotation.y += Input.GetAxisRaw("LeftHorizontal" + myControllerIndex) * 2.0f;
-                transform.eulerAngles = newRotation;
-            }
-        }
+        transform.rotation = Quaternion.LookRotation(myDirection, Vector3.up);
     }
     private bool IsMoving()
     {
-        if (myDirection.x != 0 && myDirection.z != 0)
+        if (myDirection.x != 0 || myDirection.z != 0)
             return true;
 
         if (!myIsGrounded)
@@ -298,8 +296,8 @@ public class Player : MonoBehaviour
         GameObject instance = Instantiate(spell, aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f), transform.rotation);
 
         Spell spellScript = instance.GetComponent<Spell>();
-        spellScript.AddDamageIncrease(GetComponent<Stats>().myDamageIncrease);
         spellScript.SetParent(transform.gameObject);
+        spellScript.AddDamageIncrease(GetComponent<Stats>().myDamageIncrease);
 
         if (spellScript.myIsOnlySelfCast)
             spellScript.SetTarget(transform.gameObject);
@@ -455,8 +453,8 @@ public class Player : MonoBehaviour
     private void DetectTargetingInput()
     {
         int targetIndex = -1;
-        int horizontalAxis = (int)Input.GetAxisRaw("DpadHorizontal" + myControllerIndex);
-        int verticalAxis = (int)Input.GetAxisRaw("DpadVertical" + myControllerIndex);
+        int horizontalAxis = (int)Input.GetAxisRaw("RightHorizontal" + myControllerIndex);
+        int verticalAxis = (int)Input.GetAxisRaw("RightVertical" + myControllerIndex);
 
         if (horizontalAxis != 0)
             targetIndex = horizontalAxis > 0 ? 1 : 3;
@@ -468,6 +466,9 @@ public class Player : MonoBehaviour
             SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetPlayer(targetIndex));
             return;
         }
+
+        if (Input.GetButtonDown("LeftBumper" + myControllerIndex))
+            SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetEnemy(myControllerIndex));
     }
 
     private void SetTarget(GameObject aTarget)
@@ -510,7 +511,7 @@ public class Player : MonoBehaviour
 
         if (myTarget.tag == "Enemy")
         {
-            myTargetHUD.SetName(myTarget.name);
+            myTargetHUD.SetName(myTarget.GetComponent<Enemy>().myName);
             myTargetHUD.SetNameColor(Color.red);
         }
         else if (myTarget.tag == "Player")
@@ -629,7 +630,7 @@ public class Player : MonoBehaviour
 
     private void OnDeath()
     {
-       // myShouldAutoAttack = false;
+        // myShouldAutoAttack = false;
         while (myBuffs.Count > 0)
         {
             RemoveBuff(myBuffs.Count - 1);
@@ -637,5 +638,10 @@ public class Player : MonoBehaviour
 
         myAnimator.SetTrigger("Death");
         GetComponent<Health>().EventOnHealthZero -= OnDeath;
+    }
+
+    public int GetControllerIndex()
+    {
+        return myControllerIndex;
     }
 }

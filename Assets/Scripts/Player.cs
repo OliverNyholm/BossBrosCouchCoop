@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
     public float myJumpSpeed;
     public float myGravity;
 
+    [SerializeField]
+    private Color myColor;
+
     private CharacterController myController;
     private Animator myAnimator;
     private Class myClass;
@@ -475,7 +478,7 @@ public class Player : MonoBehaviour
     {
         if (myTarget != null)
         {
-            myTarget.GetComponentInChildren<Projector>().enabled = false;
+            myTarget.GetComponentInChildren<TargetProjector>().DropTargetProjection(myControllerIndex);
             myTarget.GetComponent<Health>().EventOnHealthChange -= ChangeTargetHudHealth;
             if (myTarget.GetComponent<Resource>() != null)
                 myTarget.GetComponent<Resource>().EventOnResourceChange -= ChangeTargetHudResource;
@@ -483,7 +486,10 @@ public class Player : MonoBehaviour
 
         myTarget = aTarget;
         if (myTarget)
+        {
             SetTargetHUD();
+            myTarget.GetComponentInChildren<TargetProjector>().AddTargetProjection(myColor, myControllerIndex);
+        }
         else
             myTargetHUD.Hide();
     }

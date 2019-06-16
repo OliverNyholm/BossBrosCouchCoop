@@ -29,8 +29,10 @@ public enum SpellTarget
 
 public class Class : MonoBehaviour
 {
-
     public string myClassName;
+
+    [Header("Image to show on hud")]
+    public Sprite mySprite;
 
     [SerializeField]
     private GameObject myAutoAttack;

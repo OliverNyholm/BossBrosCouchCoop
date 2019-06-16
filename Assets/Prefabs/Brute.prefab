@@ -1227,7 +1227,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7263016341853182540}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!119 &8641236519767456823
 Projector:
@@ -1494,70 +1494,6 @@ Transform:
   m_Father: {fileID: 7341983822995992429}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7266899808818465696
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7265620509280180440}
-  - component: {fileID: 7299736549950040928}
-  m_Layer: 9
-  m_Name: Class
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!4 &7265620509280180440
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7266899808818465696}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 7263016341853182540}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7299736549950040928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7266899808818465696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d622a94a3ce4984d8669a172cc9676c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myClassName: Mercenary
-  myAutoAttack: {fileID: 1076349553557202, guid: 58da3294e821ee7409b6b1de5bd92427,
-    type: 3}
-  mySpells:
-  - {fileID: 1612158453409278, guid: 227f93179118c0645a02616e8c66a6cb, type: 3}
-  - {fileID: 1159462510580832, guid: d8eea47243456a4488cd8f7a7512086c, type: 3}
-  - {fileID: 1959371134241452, guid: 40ccca5cfcfb4ac4981418043d73d860, type: 3}
-  - {fileID: 1901770882517180, guid: d1f53adbc2af3954f8dcc5b6e43e346f, type: 3}
-  - {fileID: 1423380903055156, guid: 820c5b286ff32874ebaae95f98a5f7c1, type: 3}
-  - {fileID: 1778928993442950, guid: fdbf20a6bdf392348acc2d65960fd9bc, type: 3}
-  - {fileID: 1535284190026568, guid: c74ab07a202ee414daf0342cde4262d9, type: 3}
-  - {fileID: 1423380903055156, guid: 820c5b286ff32874ebaae95f98a5f7c1, type: 3}
-  myCooldownTimers:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
 --- !u!1 &7268288696070191918
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,7 +1530,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3001704431998284565}
-  - {fileID: 7265620509280180440}
   - {fileID: 7895695228614480147}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1703,17 +1638,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myClassName: Loremaster
+  mySprite: {fileID: 21300000, guid: 4a9c64b90c49a964a93c12fa89c6c76e, type: 3}
   myAutoAttack: {fileID: 1076349553557202, guid: 58da3294e821ee7409b6b1de5bd92427,
     type: 3}
   mySpells:
-  - {fileID: 1458153417168346, guid: 7d4fe2b9e97731e4881150b10df5ef4e, type: 3}
-  - {fileID: 1112324760461454, guid: 06bd03b3d8dd4944a8c68e17a05233d4, type: 3}
-  - {fileID: 1092754315041728, guid: b98783c2274c14941a0feee49e95536b, type: 3}
-  - {fileID: 1429279037854398, guid: 2220f32f02ec769499ca3461350a1ede, type: 3}
-  - {fileID: 1028730897020040, guid: 83797ead00c3c8640a78da0ea1bbfd3a, type: 3}
-  - {fileID: 1385395385526390, guid: 3a2cb7eb7fbaf4e47b2db57b0bd375b7, type: 3}
-  - {fileID: 1508935094154108, guid: b4d20528e4cbcc246bed632b25b3b55f, type: 3}
-  - {fileID: 1028730897020040, guid: 83797ead00c3c8640a78da0ea1bbfd3a, type: 3}
+  - {fileID: 1504369000683004, guid: 514d6da34d22c8e42bc9f3dc233bb07f, type: 3}
+  - {fileID: 1894928944319450, guid: e0c2d32b3c4488c4ca7400732b9e3838, type: 3}
+  - {fileID: 1436276555340398, guid: fb9b32489f063c84ba4835356b385bdb, type: 3}
+  - {fileID: 1992501870367618, guid: bc9c5f7636098234bb39308801c4783c, type: 3}
+  - {fileID: 1068469352923482, guid: 14b475929ae66914b8351de6a9a60e06, type: 3}
+  - {fileID: 1359873473471380, guid: eca74c57a23e9e04baadcd20d2714375, type: 3}
+  - {fileID: 1894928944319450, guid: e0c2d32b3c4488c4ca7400732b9e3838, type: 3}
+  - {fileID: 1310371387935930, guid: 2a2919ac58a524c4ba3a6dec1ec28854, type: 3}
   myCooldownTimers:
   - 0
   - 0
@@ -1735,12 +1671,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c35b78c8adaa005488649c8354070efd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myResourceName: 
-  myResourceColor: {r: 0.8962264, g: 0.5942658, b: 0.18178178, a: 1}
-  myMaxResource: 2000
-  myCurrentResource: 1800
-  myRegenerationPerTick: 20
-  myRegenerationTimer: 2
+  myResourceName: Energy
+  myResourceColor: {r: 1, g: 0.44493103, b: 0, a: 1}
+  myMaxResource: 200
+  myCurrentResource: 200
+  myRegenerationPerTick: 25
+  myRegenerationTimer: 0.8
 --- !u!114 &4785834534412229875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1756,7 +1692,7 @@ MonoBehaviour:
   myFloatingHealthPrefab: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca,
     type: 3}
   myMaxHealth: 1000
-  myCurrentHealth: 900
+  myCurrentHealth: 1000
 --- !u!114 &4785834534412229874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2031,7 +1967,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8196258183505913274}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.706288
   m_Height: 2.514565

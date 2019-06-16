@@ -3,102 +3,198 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Character
 {
     public string myName;
 
-    public GameObject[] mySpells;
-
     public float mySpeed;
-    private float myAutoAttackCooldown;
-    private float myAutoAttackCooldownReset = 1.0f;
-    private float myTauntDuration;
 
-    private Health myHealth;
-    private Stats myStats;
-    private List<BuffSpell> myBuffs;
-
-    private Animator myAnimator;
+    private AISubscriber myAISubscriber;
 
     private NavMeshAgent myNavmeshAgent;
 
     public List<GameObject> myPlayers = new List<GameObject>();
     public List<int> myAggroList = new List<int>();
 
-    private bool myIsCasting;
-    private Coroutine myCastingRoutine;
 
-    public GameObject myTarget;
     private int myTargetIndex;
+
+    private Vector3 mySpawnPosition;
+    private Quaternion mySpawnRotation;
+
+    private float myTauntDuration;
 
     private bool myIsTaunted;
 
-    AISubscriber myAISubscriber;
+    enum State
+    {
+        Idle,
+        Combat,
+        Disengage
+    };
+
+    private State myState;
 
     // Use this for initialization
-    void Start()
+    protected override void Start()
     {
-        myHealth = GetComponent<Health>();
+        base.Start();
+
         myHealth.EventOnThreatGenerated += AddThreat;
-        myHealth.EventOnHealthZero += OnDeath;
-
-        myStats = GetComponent<Stats>();
-        myBuffs = new List<BuffSpell>();
-
-        myAnimator = GetComponent<Animator>();
 
         myNavmeshAgent = GetComponent<NavMeshAgent>();
         myNavmeshAgent.speed = mySpeed;
 
         myTargetIndex = -1;
 
-        myAISubscriber = new AISubscriber();
-        myAISubscriber.EventOnReceivedMessage += ReceiveAIMessage;
-        AIPostMaster.Instance.RegisterSubscriber(ref myAISubscriber, AIMessageType.SpellSpawned);
+        mySpawnPosition = transform.position;
+        mySpawnRotation = transform.rotation;
+
+        myState = State.Idle;
+
+        SetupHud(transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").transform);
+
+        Subscribe();
     }
 
     private void OnDestroy()
     {
+        Unsubscribe();
+
+        if (myHealth)
+        {
+            myHealth.EventOnThreatGenerated -= AddThreat;
+        }
+    }
+
+    void Subscribe()
+    {
+        myAISubscriber = new AISubscriber();
+        myAISubscriber.EventOnReceivedMessage += ReceiveAIMessage;
+        AIPostMaster.Instance.RegisterSubscriber(ref myAISubscriber, AIMessageType.SpellSpawned);
+        AIPostMaster.Instance.RegisterSubscriber(ref myAISubscriber, AIMessageType.PlayerDied);
+    }
+
+    void Unsubscribe()
+    {
         myAISubscriber.EventOnReceivedMessage -= ReceiveAIMessage;
         AIPostMaster.Instance.UnregisterSubscriber(ref myAISubscriber, AIMessageType.SpellSpawned);
+        AIPostMaster.Instance.UnregisterSubscriber(ref myAISubscriber, AIMessageType.PlayerDied);
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         if (GetComponent<Health>().IsDead())
             return;
 
-        HandleBuffs();
-
-        if(myIsTaunted)
+        if (myIsTaunted)
         {
             myTauntDuration -= Time.deltaTime;
             if (myTauntDuration <= 0.0f)
                 myIsTaunted = false;
         }
 
-        if (myPlayers.Count <= 0)
-            return;
-
-        if (!IsTargetCloseBy())
+        switch (myState)
         {
-            myAnimator.SetBool("IsRunning", false);
-            myTarget = null;
-            myTargetIndex = -1;
-            myNavmeshAgent.destination = transform.position;
-            return;
+            case State.Idle:
+                if (IsTargetCloseBy())
+                {
+                    SetState(State.Combat);
+                }
+                break;
+            case State.Combat:
+                Behaviour();
+                break;
+            case State.Disengage:
+                MoveBackToSpawn();
+                break;
+            default:
+                break;
         }
-
-        Behaviour();
     }
 
-    private void OnDeath()
+    protected override void OnDeath()
     {
-        myNavmeshAgent.isStopped = true;
+        base.OnDeath();
 
-        myAnimator.SetTrigger("Death");
-        myHealth.EventOnHealthZero -= OnDeath;
+        myNavmeshAgent.isStopped = true;
+    }
+
+    protected override bool IsMoving()
+    {
+        if (myNavmeshAgent.hasPath)
+            return true;
+
+        return false;
+    }
+
+    protected override bool IsAbleToCastSpell(Spell aSpellScript)
+    {
+        if (myIsCasting)
+        {
+            return false;
+        }
+
+        if (GetComponent<Resource>().myCurrentResource < aSpellScript.myResourceCost)
+        {
+            return false;
+        }
+
+        if (!aSpellScript.IsCastableWhileMoving() && IsMoving())
+        {
+            return false;
+        }
+
+        if (aSpellScript.myIsOnlySelfCast)
+            return true;
+
+        if (!myTarget)
+        {
+            if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) != 0)
+            {
+                myTarget = gameObject;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        if (myTarget.GetComponent<Health>().IsDead())
+        {
+            return false;
+        }
+
+        if (!CanRaycastToTarget())
+        {
+            return false;
+        }
+
+        float distance = Vector3.Distance(transform.position, myTarget.transform.position);
+        if (distance > aSpellScript.myRange)
+        {
+            return false;
+        }
+
+        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && myTarget.tag == "Enemy")
+        {
+            return false;
+        }
+
+        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && myTarget.tag == "Player")
+        {
+            return false;
+        }
+
+        if (!aSpellScript.myCanCastOnSelf && myTarget == transform.gameObject)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     private int GetHighestAggro()
@@ -107,6 +203,9 @@ public class Enemy : MonoBehaviour
             return myTargetIndex;
 
         int highestAggro = 0;
+        if (myAggroList.Count == 1)
+            return highestAggro;
+
         for (int index = 1; index < myAggroList.Count; index++)
         {
             if (myAggroList[index] > myAggroList[highestAggro] && !myPlayers[index].GetComponent<Health>().IsDead())
@@ -122,8 +221,7 @@ public class Enemy : MonoBehaviour
 
         if (myTargetIndex != target)
         {
-            myTargetIndex = target;
-            myTarget = myPlayers[myTargetIndex].gameObject;
+            SetTarget(target);
         }
 
         const float attackRangeOffset = 0.5f;
@@ -140,6 +238,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void SetTarget(int aTargetIndex)
+    {
+        myTargetIndex = aTargetIndex;
+        SetTarget(myPlayers[myTargetIndex].gameObject);
+    }
+
     private bool IsTargetCloseBy()
     {
         const float aggroRange = 15.0f;
@@ -149,6 +253,8 @@ public class Enemy : MonoBehaviour
             float distance = Vector3.Distance(playerPosition, transform.position);
             if (distance < aggroRange)
             {
+                SetTarget(index);
+                AddThreat(10, index);
                 return true;
             }
         }
@@ -180,87 +286,10 @@ public class Enemy : MonoBehaviour
         myAnimator.SetTrigger("Attack");
         myAutoAttackCooldown = 1.5f;
 
-        SpawnSpell(0, myTarget.transform.position);
+        SpawnSpell(-1, GetSpellSpawnPosition(myClass.GetAutoAttack().GetComponent<Spell>()));
     }
 
-    private void SpawnSpell(int aSpellIndex, Vector3 aPosition)
-    {
-        GameObject spell = mySpells[aSpellIndex];
-
-        GameObject instance = Instantiate(spell, aPosition + new Vector3(0.0f, 0.5f, 0.0f), transform.rotation);
-
-        Spell spellScript = instance.GetComponent<Spell>();
-        spellScript.SetParent(transform.gameObject);
-        spellScript.AddDamageIncrease(myStats.myDamageIncrease);
-
-        if (spellScript.myIsOnlySelfCast)
-            spellScript.SetTarget(transform.gameObject);
-        else if (myTarget)
-            spellScript.SetTarget(myTarget);
-        else
-            spellScript.SetTarget(transform.gameObject);
-    }
-
-    private void HandleBuffs()
-    {
-        for (int index = 0; index < myBuffs.Count; index++)
-        {
-            myBuffs[index].Tick();
-            if (myBuffs[index].IsFinished())
-            {
-                RemoveBuff(index);
-            }
-            else if (myBuffs[index].GetBuff().mySpellType == SpellType.HOT)
-            {
-                BuffTickSpell hot = myBuffs[index] as BuffTickSpell;
-                if (hot.ShouldDealTickSpellEffect)
-                {
-                    myHealth.TakeDamage(hot.GetTickValue());
-                    hot.ShouldDealTickSpellEffect = false;
-                }
-            }
-            else if (myBuffs[index].GetBuff().mySpellType == SpellType.DOT)
-            {
-                BuffTickSpell dot = myBuffs[index] as BuffTickSpell;
-                if (dot.ShouldDealTickSpellEffect)
-                {
-                    myHealth.TakeDamage(dot.GetTickValue());
-                    dot.ShouldDealTickSpellEffect = false;
-                }
-            }
-        }
-    }
-
-    public void AddBuff(BuffSpell aBuffSpell, Sprite aSpellIcon)
-    {
-        for (int index = 0; index < myBuffs.Count; index++)
-        {
-            if (myBuffs[index].GetParent() == aBuffSpell.GetParent() &&
-                myBuffs[index].GetBuff() == aBuffSpell.GetBuff())
-            {
-                RemoveBuff(index);
-                break;
-            }
-        }
-
-        myBuffs.Add(aBuffSpell);
-        aBuffSpell.GetBuff().ApplyBuff(ref myStats);
-
-        if (aBuffSpell.GetBuff().myAttackSpeed != 0.0f)
-        {
-            float attackspeed = myAutoAttackCooldownReset / myStats.myAttackSpeed;
-
-            float currentAnimationSpeed = 1.0f;
-            if (currentAnimationSpeed > attackspeed)
-            {
-                myAnimator.SetFloat("AutoAttackSpeed", myAnimator.GetFloat("AutoAttackSpeed") + attackspeed / currentAnimationSpeed);
-            }
-        }
-        else if (aBuffSpell.GetBuff().mySpeedMultiplier != 0.0f)
-        {
-            myAnimator.SetFloat("RunSpeed", myStats.mySpeedMultiplier);
-        }
-    }
+   
 
     public void SetTaunt(int aTaunterID, float aDuration)
     {
@@ -268,7 +297,7 @@ public class Enemy : MonoBehaviour
         myTauntDuration = aDuration;
         for (int index = 0; index < myPlayers.Count; index++)
         {
-            if(myPlayers[index].GetInstanceID() == aTaunterID)
+            if (myPlayers[index].GetInstanceID() == aTaunterID)
             {
                 myTargetIndex = index;
                 Debug.Log(myTargetIndex + " taunted enemy for  " + aDuration);
@@ -277,74 +306,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void RemoveBuff(int anIndex)
-    {
-        myBuffs[anIndex].GetBuff().EndBuff(ref myStats);
-        if (myBuffs[anIndex].GetBuff().mySpellType == SpellType.Shield)
-        {
-            myBuffs[anIndex].GetBuff().myDuration = 0.0f;
-            myHealth.RemoveShield();
-        }
-
-        if (myBuffs[anIndex].GetBuff().myAttackSpeed != 0.0f)
-        {
-            float attackspeed = myAutoAttackCooldownReset / myStats.myAttackSpeed;
-
-            float currentAnimationSpeed = 1.0f;
-            if (currentAnimationSpeed > attackspeed)
-            {
-                myAnimator.SetFloat("AutoAttackSpeed", myAnimator.GetFloat("AutoAttackSpeed") + attackspeed / currentAnimationSpeed);
-            }
-            else
-            {
-                myAnimator.SetFloat("AutoAttackSpeed", 1.0f);
-            }
-        }
-        else if (myBuffs[anIndex].GetBuff().mySpeedMultiplier != 0.0f)
-        {
-            myAnimator.SetFloat("RunSpeed", myStats.mySpeedMultiplier);
-        }
-
-        myBuffs.RemoveAt(anIndex);
-    }
-
-    public void RemoveBuffByName(string aName)
-    {
-        for (int index = 0; index < myBuffs.Count; index++)
-        {
-            if (myBuffs[index].GetName() == aName)
-            {
-                RemoveBuff(index);
-                return;
-            }
-        }
-    }
-
-    public void InterruptSpellCast()
-    {
-        if (myIsCasting)
-        {
-            StopCasting();
-        }
-    }
-
-    private void StopCasting()
-    {
-        if (myCastingRoutine != null)
-            StopCoroutine(myCastingRoutine);
-        myIsCasting = false;
-    }
-
     public void AddPlayer(GameObject aPlayer)
     {
         myPlayers.Add(aPlayer);
         myAggroList.Add(0);
     }
 
-    public void RemovePlayer(GameObject aPlayer)
+    public void RemovePlayer(int anIndex)
     {
-        myAggroList.Remove(myPlayers.IndexOf(aPlayer));
-        myPlayers.Remove(aPlayer);
+        myAggroList.RemoveAt(anIndex);
+        myPlayers.RemoveAt(anIndex);
+
+        if (myPlayers.Count == 0)
+            SetState(State.Disengage);
     }
 
     private void ReceiveAIMessage(AIMessage anAiMessage)
@@ -353,10 +327,26 @@ public class Enemy : MonoBehaviour
         {
             case AIMessageType.SpellSpawned:
                 {
-                    int id = anAiMessage.Data.myObjectID;
-                    int value = anAiMessage.Data.myInt;
+                    int id = (int)anAiMessage.Data.myVector2.x;
+                    int value = (int)anAiMessage.Data.myVector2.y;
 
                     AddThreat(value, id);
+                }
+                break;
+            case AIMessageType.PlayerDied:
+                {
+                    int id = anAiMessage.Data.myInt;
+                    for (int index = 0; index < myPlayers.Count; index++)
+                    {
+                        if (myPlayers[index].GetInstanceID() == id)
+                        {
+                            if (index == myTargetIndex)
+                                DropTarget();
+
+                            RemovePlayer(index);
+                            break;
+                        }
+                    }
                 }
                 break;
             default:
@@ -366,6 +356,9 @@ public class Enemy : MonoBehaviour
 
     private void AddThreat(int aThreatValue, int anID)
     {
+        if (myState != State.Combat)
+            return;
+
         for (int index = 0; index < myPlayers.Count; index++)
         {
             if (myPlayers[index].GetInstanceID() == anID)
@@ -374,5 +367,48 @@ public class Enemy : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void DropTarget()
+    {
+        myTarget = null;
+        myTargetIndex = -1;
+        myNavmeshAgent.destination = transform.position;
+
+        SetTarget(null);
+    }
+
+    private void SetState(State aState)
+    {
+        myState = aState;
+
+        switch (myState)
+        {
+            case State.Idle:
+                transform.rotation = mySpawnRotation;
+                myAnimator.SetBool("IsRunning", false);
+                myHealth.GainHealth(100000);
+                break;
+            case State.Combat:
+                break;
+            case State.Disengage:
+                myNavmeshAgent.destination = mySpawnPosition;
+                myAnimator.SetBool("IsRunning", true);
+                break;
+        }
+    }
+
+    private void MoveBackToSpawn()
+    {
+        if (!myNavmeshAgent.hasPath)
+            SetState(State.Idle);
+    }
+
+    protected override void ChangeMyHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
+    {
+        base.ChangeMyHudHealth(aHealthPercentage, aHealthText, aShieldValue);
+
+        if (myState != State.Combat && myHealth.GetHealthPercentage() < 1.0f)
+            SetState(State.Combat);
     }
 }

@@ -42,7 +42,7 @@ public class TargetHandler : MonoBehaviour
         int playerIndex = aPlayerIndex - 1;
 
         int aTargetIndex = ++myPlayersTargetIndex[playerIndex];
-        if (aTargetIndex > myEnemies.Count)
+        if (aTargetIndex >= myEnemies.Count)
         {
             myPlayersTargetIndex[playerIndex] = 0;
             aTargetIndex = 0;

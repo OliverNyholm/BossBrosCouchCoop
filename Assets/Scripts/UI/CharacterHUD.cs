@@ -7,6 +7,8 @@ public class CharacterHUD : MonoBehaviour
     [SerializeField]
     private Image myAvatarImage;
     [SerializeField]
+    private Image myClassImage;
+    [SerializeField]
     private Image myHealthbarImage;
     [SerializeField]
     private Image myShieldBarImage;
@@ -62,6 +64,11 @@ public class CharacterHUD : MonoBehaviour
     public void SetResourceBarColor(Color aColor)
     {
         myResourceBarImage.color = aColor;
+    }
+
+    public void SetClassSprite(Sprite aSprite)
+    {
+        myClassImage.sprite = aSprite;
     }
 
     public void SetName(string aName)

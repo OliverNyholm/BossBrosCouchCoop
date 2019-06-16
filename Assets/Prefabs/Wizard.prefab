@@ -197,7 +197,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 450947880058582228}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.706288
   m_Height: 2.514565
@@ -547,7 +547,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2743953739748961260}
-  - {fileID: 2079121835658895660}
   - {fileID: 6639432801376120248}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -642,7 +641,7 @@ MonoBehaviour:
   myBaseSpeed: 8
   myJumpSpeed: 15
   myGravity: 30
-  myColor: {r: 0.15294118, g: 0.28235295, b: 0.52156866, a: 1}
+  myColor: {r: 0.22978188, g: 0.0990566, b: 1, a: 1}
 --- !u!114 &2079121835491590068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -656,16 +655,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myClassName: Wizard
+  mySprite: {fileID: 21300000, guid: 16687594674a848478f77295eb2db14c, type: 3}
   myAutoAttack: {fileID: 1076349553557202, guid: 58da3294e821ee7409b6b1de5bd92427,
     type: 3}
   mySpells:
-  - {fileID: 1983804006253038, guid: 994ef13aed7efe94a860fab4a9fb9abb, type: 3}
+  - {fileID: 1125694136323164, guid: 6fefe2c9c789eed4b99cd374abe17664, type: 3}
   - {fileID: 1954426499067478, guid: 95cd55402fb14d64b9bdceca5a3be4a6, type: 3}
-  - {fileID: 1345520433668302, guid: 7048bcde87e081e4894b927ac90fe7af, type: 3}
+  - {fileID: 1983804006253038, guid: 994ef13aed7efe94a860fab4a9fb9abb, type: 3}
   - {fileID: 1060916130889568, guid: 4caa3539b55677c468d384289c61f19c, type: 3}
   - {fileID: 1923039765265374, guid: c5edba4cadb79ec4d8b3f5dbdec2880c, type: 3}
+  - {fileID: 1345520433668302, guid: 7048bcde87e081e4894b927ac90fe7af, type: 3}
   - {fileID: 1233940432947236, guid: 1b123b8be2c110d42a377fca64b18196, type: 3}
-  - {fileID: 1125694136323164, guid: 6fefe2c9c789eed4b99cd374abe17664, type: 3}
   - {fileID: 1837549656673452, guid: fc507ae2236c8cb4eae8587a9dd8ecea, type: 3}
   myCooldownTimers:
   - 0
@@ -688,10 +688,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c35b78c8adaa005488649c8354070efd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myResourceName: 
+  myResourceName: Focus
   myResourceColor: {r: 0.5906193, g: 0.041651815, b: 0.9811321, a: 1}
   myMaxResource: 200
-  myCurrentResource: 100
+  myCurrentResource: 200
   myRegenerationPerTick: 20
   myRegenerationTimer: 2
 --- !u!114 &2079121835491590067
@@ -709,7 +709,7 @@ MonoBehaviour:
   myFloatingHealthPrefab: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca,
     type: 3}
   myMaxHealth: 400
-  myCurrentHealth: 200
+  myCurrentHealth: 400
 --- !u!114 &2079121835491590074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728,70 +728,6 @@ MonoBehaviour:
   myDamageMitigator: 1
   myAutoAttackRange: 4
   myAutoAttackDamage: 20
---- !u!1 &2079121835658895659
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2079121835658895660}
-  - component: {fileID: 2079121835658895661}
-  m_Layer: 9
-  m_Name: Class
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!4 &2079121835658895660
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2079121835658895659}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2079121835491590073}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2079121835658895661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2079121835658895659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d622a94a3ce4984d8669a172cc9676c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myClassName: Mercenary
-  myAutoAttack: {fileID: 1076349553557202, guid: 58da3294e821ee7409b6b1de5bd92427,
-    type: 3}
-  mySpells:
-  - {fileID: 1612158453409278, guid: 227f93179118c0645a02616e8c66a6cb, type: 3}
-  - {fileID: 1159462510580832, guid: d8eea47243456a4488cd8f7a7512086c, type: 3}
-  - {fileID: 1959371134241452, guid: 40ccca5cfcfb4ac4981418043d73d860, type: 3}
-  - {fileID: 1901770882517180, guid: d1f53adbc2af3954f8dcc5b6e43e346f, type: 3}
-  - {fileID: 1423380903055156, guid: 820c5b286ff32874ebaae95f98a5f7c1, type: 3}
-  - {fileID: 1778928993442950, guid: fdbf20a6bdf392348acc2d65960fd9bc, type: 3}
-  - {fileID: 1535284190026568, guid: c74ab07a202ee414daf0342cde4262d9, type: 3}
-  - {fileID: 1423380903055156, guid: 820c5b286ff32874ebaae95f98a5f7c1, type: 3}
-  myCooldownTimers:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
 --- !u!1 &2530635680937451071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1670,7 +1606,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7246370880520276158}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 3.77, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2743953739748961260}
@@ -1956,7 +1892,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2079121835491590073}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!119 &5070194300048277660
 Projector:

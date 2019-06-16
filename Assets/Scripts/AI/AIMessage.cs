@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class AIMessageData
 {
-    public int myObjectID;
     public int myInt;
     public float myFloat;
     public Vector2 myVector2;
     public Vector3 myVector3;
 
-    public AIMessageData(int anID, int anInt)
+    public AIMessageData(int anInt)
     {
-        myObjectID = anID;
         myInt = anInt;
+    }
+    public AIMessageData(int anObjectID, int anInt)
+    {
+        myVector2 = new Vector2(anObjectID, anInt);
+    }
+    public AIMessageData(int anInt, Vector3 aVector3)
+    {
+        myInt = anInt;
+        myVector3 = aVector3;
     }
 
     public AIMessageData() { }
@@ -21,51 +28,60 @@ public class AIMessageData
 
 public class AIMessage
 {
-    private AIMessageType myAIMessageType;
-    private AIMessageData myAIMessageData;
-
     public AIMessage(AIMessageType anAIMessageType)
     {
-        myAIMessageType = anAIMessageType;
+        Type = anAIMessageType;
     }
 
-    public AIMessage(AIMessageType anAIMessageType, AIMessageData aMessageData)
+    public AIMessage(AIMessageType anAIMessageType, AIMessageData aAIMessageData)
     {
-        myAIMessageType = anAIMessageType;
-        myAIMessageData = aMessageData;
+        Type = anAIMessageType;
+        Data = aAIMessageData;
     }
 
     public AIMessage(AIMessageType anAIMessageType, int aIntValue)
     {
-        myAIMessageType = anAIMessageType;
-        myAIMessageData.myInt = aIntValue;
+        Type = anAIMessageType;
+        Data = new AIMessageData
+        {
+            myInt = aIntValue
+        };
     }
 
     public AIMessage(AIMessageType anAIMessageType, float aFloatValue)
     {
-        myAIMessageType = anAIMessageType;
-        myAIMessageData.myFloat = aFloatValue;
+        Type = anAIMessageType;
+        Data = new AIMessageData
+        {
+            myFloat = aFloatValue
+        };
     }
 
     public AIMessage(AIMessageType anAIMessageType, Vector2 aVector2)
     {
-        myAIMessageType = anAIMessageType;
-        myAIMessageData.myVector2 = aVector2;
+        Type = anAIMessageType;
+        Data = new AIMessageData
+        {
+            myVector2 = aVector2
+        };
     }
 
     public AIMessage(AIMessageType anAIMessageType, Vector3 aVector3)
     {
-        myAIMessageType = anAIMessageType;
-        myAIMessageData.myVector3 = aVector3;
+        Type = anAIMessageType;
+        Data = new AIMessageData
+        {
+            myVector3 = aVector3
+        };
     }
 
-    public AIMessageType Type
+    public AIMessage(AIMessageType anAIMessageType, int aIntValue, Vector3 aVector3)
     {
-        get { return myAIMessageType; }
+        Type = anAIMessageType;
+        Data = new AIMessageData(aIntValue, aVector3);
     }
 
-    public AIMessageData Data
-    {
-        get { return myAIMessageData; }
-    }
+    public AIMessageType Type { get; }
+
+    public AIMessageData Data { get; }
 }

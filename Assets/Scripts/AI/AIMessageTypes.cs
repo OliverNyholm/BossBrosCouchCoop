@@ -5,5 +5,6 @@ using UnityEngine;
 public enum AIMessageType
 {
     SpellSpawned,
+    PlayerDied,
     Count
 }

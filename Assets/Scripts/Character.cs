@@ -77,7 +77,7 @@ public abstract class Character : MonoBehaviour
         HandleBuffs();
     }
 
-    private IEnumerator CastbarProgress(int aKeyIndex)
+    protected IEnumerator CastbarProgress(int aKeyIndex)
     {
         GameObject spell = myClass.GetSpell(aKeyIndex);
         Spell spellScript = spell.GetComponent<Spell>();
@@ -124,6 +124,7 @@ public abstract class Character : MonoBehaviour
         float rate = 1.0f / castSpeed;
         float progress = 0.0f;
 
+        myAnimator.SetBool("IsCasting", true);
 
         while (progress <= 1.0f)
         {
@@ -330,7 +331,7 @@ public abstract class Character : MonoBehaviour
                 BuffTickSpell hot = myBuffs[index] as BuffTickSpell;
                 if (hot.ShouldDealTickSpellEffect)
                 {
-                    myHealth.TakeDamage(hot.GetTickValue());
+                    myHealth.GainHealth(hot.GetTickValue());
                     hot.ShouldDealTickSpellEffect = false;
                 }
             }

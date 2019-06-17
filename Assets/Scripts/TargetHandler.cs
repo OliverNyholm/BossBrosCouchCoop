@@ -29,6 +29,11 @@ public class TargetHandler : MonoBehaviour
         }
     }
 
+    public List<GameObject> GetAllPlayers()
+    {
+        return myPlayers;
+    }
+
     public GameObject GetPlayer(int aIndex)
     {
         if (aIndex < 0 || aIndex >= myPlayers.Count)

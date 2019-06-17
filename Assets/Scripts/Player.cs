@@ -66,6 +66,9 @@ public class Player : Character
         if (GetComponent<Health>().IsDead())
             return;
 
+        if (IsStunned())
+            return;
+
         DetectMovementInput();
         DetectSpellInput();
 
@@ -98,7 +101,17 @@ public class Player : Character
 
     private void DetectSpellInput()
     {
-        if (Input.GetButtonDown("A" + myControllerIndex))
+        bool isTriggerDown = (Input.GetAxisRaw("LeftTrigger" + myControllerIndex) > 0.0f) || (Input.GetAxisRaw("RightTrigger" + myControllerIndex) > 0.0f);
+
+        if (isTriggerDown && Input.GetButtonDown("A" + myControllerIndex))
+            CastSpell(4);
+        else if (isTriggerDown && Input.GetButtonDown("B" + myControllerIndex))
+            CastSpell(5);
+        else if (isTriggerDown && Input.GetButtonDown("X" + myControllerIndex))
+            CastSpell(6);
+        else if (isTriggerDown && Input.GetButtonDown("Y" + myControllerIndex))
+            CastSpell(7);
+        else if (Input.GetButtonDown("A" + myControllerIndex))
             CastSpell(0);
         else if (Input.GetButtonDown("B" + myControllerIndex))
             CastSpell(1);
@@ -106,15 +119,6 @@ public class Player : Character
             CastSpell(2);
         else if (Input.GetButtonDown("Y" + myControllerIndex))
             CastSpell(3);
-        else if (myDpadInput.IsDPADPressed(DpadInput.DPADButton.Down))
-            CastSpell(4);
-        else if (myDpadInput.IsDPADPressed(DpadInput.DPADButton.Right))
-            CastSpell(5);
-        else if (myDpadInput.IsDPADPressed(DpadInput.DPADButton.Left))
-            CastSpell(6);
-        else if (myDpadInput.IsDPADPressed(DpadInput.DPADButton.Up))
-            CastSpell(7);
-
     }
     private void RotatePlayer()
     {
@@ -127,6 +131,17 @@ public class Player : Character
 
         if (!myIsGrounded)
             return true;
+
+        return false;
+    }
+
+    private bool IsStunned()
+    {
+        myStunDuration -= Time.deltaTime;
+        if (myStunDuration > 0.0f)
+            return true;
+
+        myStunDuration = 0.0f;
 
         return false;
     }
@@ -191,45 +206,6 @@ public class Player : Character
         myCastingRoutine = StartCoroutine(CastbarProgress(aKeyIndex));
     }
 
-    private IEnumerator CastbarProgress(int aKeyIndex)
-    {
-        GameObject spell = myClass.GetSpell(aKeyIndex);
-        Spell spellScript = spell.GetComponent<Spell>();
-
-
-        myIsCasting = true;
-        float castSpeed = spellScript.myCastTime / GetComponent<Stats>().myAttackSpeed;
-        float rate = 1.0f / castSpeed;
-        float progress = 0.0f;
-
-        while (progress <= 1.0f)
-        {
-            myCastbar.SetCastbarFillAmount(Mathf.Lerp(0, 1, progress));
-            myCastbar.SetCastTimeText((castSpeed - (progress * castSpeed)).ToString("0.0"));
-
-            progress += rate * Time.deltaTime;
-
-            if (!spellScript.IsCastableWhileMoving() && IsMoving() || Input.GetKeyDown(KeyCode.Escape))
-            {
-                myCastbar.SetCastTimeText("Cancelled");
-                StopCasting();
-                yield break;
-            }
-
-            yield return null;
-        }
-
-        StopCasting();
-
-        if (IsAbleToCastSpell(spellScript))
-        {
-            SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
-            myClass.SetSpellOnCooldown(aKeyIndex);
-            GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
-            myAnimator.SetTrigger("CastingDone");
-        }
-    }
-
     private bool IsAbleToAutoAttack()
     {
         if (myIsCasting)
@@ -263,6 +239,7 @@ public class Player : Character
 
         return true;
     }
+
     protected override bool IsAbleToCastSpell(Spell aSpellScript)
     {
         if (myIsCasting)
@@ -337,6 +314,14 @@ public class Player : Character
         }
 
         return true;
+    }
+
+    public override void Stun(float aDuration)
+    {
+        base.Stun(aDuration);
+
+        myDirection.x = 0.0f;
+        myDirection.z = 0.0f;
     }
 
     public void GiveImpulse(Vector3 aVelocity, bool aShouldLookAtDirection)

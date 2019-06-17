@@ -151,7 +151,7 @@ public class Spell : MonoBehaviour
 
         string detail = GetSpellDetail();
 
-        string range = "\n";
+        string range = "";
         if (myRange != 0 && myIsOnlySelfCast)
             range = "Range: " + myRange;
         string cost = "\nCosts " + myResourceCost + " to cast spell. ";
@@ -190,6 +190,7 @@ public class Spell : MonoBehaviour
                 detail += "interrupt any spellcast. ";
                 break;
             case SpellType.Taunt:
+                detail += "to make the target attack you for a few seconds.";
                 break;
             case SpellType.Buff:
                 detail += GetDefaultBuffDetails();

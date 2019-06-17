@@ -236,6 +236,18 @@ public class Enemy : Character
             myAnimator.SetBool("IsRunning", false);
             Attack();
         }
+
+        if (myClass.myCooldownTimers[0] <= 0.0f)
+        {
+            int randomPlayer = Random.Range(0, myPlayers.Count - 1);
+
+            Vector3 playerPosition = myPlayers[randomPlayer].transform.position;
+            Vector3 offsetAbove = Vector3.up * 80.0f;
+
+            SpawnSpell(0, playerPosition + offsetAbove);
+            myClass.SetSpellOnCooldown(0);
+            GetComponent<Resource>().LoseResource(myClass.mySpells[0].GetComponent<Spell>().myResourceCost);
+        }
     }
 
     private void SetTarget(int aTargetIndex)

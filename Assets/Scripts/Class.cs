@@ -71,6 +71,9 @@ public class Class : MonoBehaviour
             if (myCooldownTimers[index] > 0.0f)
             {
                 myCooldownTimers[index] -= Time.deltaTime;
+                if (myActionButtons[index] == null)
+                    continue;
+
                 if (myCooldownTimers[index] > 0.0f)
                 {
                     myActionButtons[index].GetComponentInChildren<Text>().text = myCooldownTimers[index].ToString("0.0");
@@ -105,6 +108,9 @@ public class Class : MonoBehaviour
     public void SetSpellOnCooldown(int anIndex)
     {
         myCooldownTimers[anIndex] = mySpells[anIndex].GetComponent<Spell>().myCooldown;
+
+        if (myActionButtons[anIndex] == null)
+            return;
 
         myActionButtons[anIndex].GetComponentInChildren<Text>().text = myCooldownTimers[anIndex].ToString("0.0");
         myActionButtons[anIndex].GetComponent<Image>().color = new Color(0.8f, 0.3f, 0.3f, 0.5f);

@@ -58,7 +58,7 @@ public class Player : Character
         myController.Move(myDirection * Time.deltaTime);
 
         //myController.isGrounded unstable further ahead is seems...
-        myIsGrounded = myController.isGrounded;
+        myIsGrounded = IsGrounded();
         if (!myAnimator.GetBool("IsGrounded") && myIsGrounded)
             myAnimator.SetBool("IsGrounded", true);
 
@@ -75,6 +75,22 @@ public class Player : Character
         if (myShouldAutoAttack)
             AutoAttack();
     }
+
+    bool IsGrounded()
+    {
+        Ray ray = new Ray(transform.position, Vector3.down);
+        float distance = 0.2f;
+        LayerMask layerMask = LayerMask.GetMask("Terrain");
+
+        //Debug.DrawLine(transform.position, transform.position + Vector3.down * distance);
+
+        if (Physics.Raycast(ray, distance, layerMask))
+            return true;
+
+
+        return false;
+    }
+
     private void DetectMovementInput()
     {
         if (!myIsGrounded)

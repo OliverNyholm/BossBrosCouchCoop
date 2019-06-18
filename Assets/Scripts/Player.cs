@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using InControl;
 
 public class Player : Character
 {
@@ -13,11 +14,12 @@ public class Player : Character
 
     private UIManager myUIManager;
 
+    private InputDevice myInputDevice;
+
     private List<BuffSpell> myBuffs;
 
     private Vector3 myDirection;
     private CameraXZTransform myCameraXZTransform;
-    private DpadInput myDpadInput;
 
     private bool myIsGrounded;
     private bool myShouldAutoAttack;
@@ -34,8 +36,6 @@ public class Player : Character
         myCameraXZTransform.myRight.y = 0.0f;
         myCameraXZTransform.myRight.Normalize();
 
-        myDpadInput = new DpadInput(myControllerIndex);
-
         myDirection = Vector3.zero;
 
         myTargetHandler = GameObject.Find("GameManager").GetComponent<TargetHandler>();
@@ -51,8 +51,6 @@ public class Player : Character
     protected override void Update()
     {
         base.Update();
-
-        myDpadInput.Update();
 
         myDirection.y -= myGravity * Time.deltaTime;
         myController.Move(myDirection * Time.deltaTime);
@@ -96,9 +94,14 @@ public class Player : Character
         if (!myIsGrounded)
             return;
 
-        Vector3 inputDirection = new Vector3(Input.GetAxisRaw("LeftHorizontal" + myControllerIndex), 0.0f, Input.GetAxisRaw("LeftVertical" + myControllerIndex));
+        //float horizontal = myInputDevice.LeftStickX.RawValue > 0.0f ? 1.0f : -1.0f;
+        //float vertical = myInputDevice.LeftStickY.RawValue > 0.0f ? 1.0f : -1.0f;
+        // Vector3 inputDirection = new Vector3(horizontal, 0.0f, vertical);
+        // Vector3 inputDirection = new Vector3(Input.GetAxisRaw("LeftHorizontal" + myControllerIndex), 0.0f, Input.GetAxisRaw("LeftVertical" + myControllerIndex));
 
-        myDirection = (inputDirection.x * myCameraXZTransform.myRight + inputDirection.z * myCameraXZTransform.myForwards).normalized;
+        Vector2 leftStickAxis = myInputDevice.LeftStick;
+
+        myDirection = (leftStickAxis.x * myCameraXZTransform.myRight + leftStickAxis.y * myCameraXZTransform.myForwards).normalized;
         myDirection *= myBaseSpeed * GetComponent<Stats>().mySpeedMultiplier;
 
         bool isMoving = IsMoving();
@@ -114,7 +117,6 @@ public class Player : Character
             myAnimator.SetTrigger("Jump");
         }
     }
-
     private void DetectSpellInput()
     {
         bool isTriggerDown = (Input.GetAxisRaw("LeftTrigger" + myControllerIndex) > 0.0f) || (Input.GetAxisRaw("RightTrigger" + myControllerIndex) > 0.0f);
@@ -400,5 +402,10 @@ public class Player : Character
     public int GetControllerIndex()
     {
         return myControllerIndex;
+    }
+
+    public void SetInputDevice(InputDevice aInputDevice)
+    {
+        myInputDevice = aInputDevice;
     }
 }

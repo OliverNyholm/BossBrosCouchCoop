@@ -26,7 +26,6 @@ public enum SpellTarget
     Anyone = Friend | Enemy
 }
 
-
 public class Class : MonoBehaviour
 {
     public string myClassName;

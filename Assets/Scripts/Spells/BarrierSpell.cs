@@ -6,10 +6,10 @@ public class BarrierSpell : Spell
 {
 
     [SerializeField]
-    private GameObject myBarrierPrefab;
+    private GameObject myBarrierPrefab = null;
 
     [SerializeField]
-    private float myChannelTime;
+    private float myChannelTime = 0.0f;
 
     protected override void DealSpellEffect()
     {

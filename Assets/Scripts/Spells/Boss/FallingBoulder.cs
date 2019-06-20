@@ -6,7 +6,7 @@ public class FallingBoulder : Spell
 {
     [Header("The Model to rotate")]
     [SerializeField]
-    private Transform myMeshTransform;
+    private Transform myMeshTransform = null;
 
     private Vector3 myLandPosition;
     private Vector3 myRandomRotation;

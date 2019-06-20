@@ -7,10 +7,10 @@ public class ErrorMessage : MonoBehaviour
 {
 
     [SerializeField]
-    private float myLifeTime;
+    private float myLifeTime = 0.0f;
 
     [SerializeField]
-    private float myFadeTime;
+    private float myFadeTime = 0.0f;
     private float myCurrentFadeTime;
 
     private Text myText;

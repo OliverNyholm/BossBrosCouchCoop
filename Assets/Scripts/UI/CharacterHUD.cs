@@ -5,25 +5,25 @@ using System.Collections.Generic;
 public class CharacterHUD : MonoBehaviour
 {
     [SerializeField]
-    private Image myAvatarImage;
+    private Image myAvatarImage = null;
     [SerializeField]
-    private Image myClassImage;
+    private Image myClassImage = null;
     [SerializeField]
-    private Image myHealthbarImage;
+    private Image myHealthbarImage = null;
     [SerializeField]
-    private Image myShieldBarImage;
+    private Image myShieldBarImage = null;
     [SerializeField]
-    private Image myResourceBarImage;
+    private Image myResourceBarImage = null;
     [SerializeField]
-    private Text myHealthText;
+    private Text myHealthText = null;
     [SerializeField]
-    private Text myResourceText;
+    private Text myResourceText = null;
     [SerializeField]
-    private Text myNameText;
+    private Text myNameText = null;
     [SerializeField]
-    private GameObject myBuffParent;
+    private GameObject myBuffParent = null;
     [SerializeField]
-    private GameObject myBuffPrefab;
+    private GameObject myBuffPrefab = null;
 
     private List<GameObject> myBuffs = new List<GameObject>();
 
@@ -64,6 +64,11 @@ public class CharacterHUD : MonoBehaviour
     public void SetResourceBarColor(Color aColor)
     {
         myResourceBarImage.color = aColor;
+    }
+
+    public void SetAvatarSprite(Sprite aSprite)
+    {
+        myAvatarImage.sprite = aSprite;
     }
 
     public void SetClassSprite(Sprite aSprite)

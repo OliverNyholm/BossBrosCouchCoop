@@ -5,7 +5,7 @@ using UnityEngine;
 public class Barrier : ChannelSpell
 {
     [SerializeField]
-    private Buff myBuff;
+    private Buff myBuff = null;
 
     void OnTriggerEnter(Collider other)
     {

@@ -8,12 +8,14 @@ public struct CharacterSelectData
     public InputDevice myInputDevice;
     public ClassData myClassData;
     public ColorScheme myColorScheme;
+    public string myName;
 
-    public CharacterSelectData(InputDevice aInputDevice, ClassData aClassData, ColorScheme aColorScheme)
+    public CharacterSelectData(InputDevice aInputDevice, ClassData aClassData, ColorScheme aColorScheme, string aName)
     {
         myInputDevice = aInputDevice;
         myClassData = aClassData;
         myColorScheme = aColorScheme;
+        myName = aName;
     }
 }
 
@@ -28,9 +30,9 @@ public class CharacterGameData : MonoBehaviour
         mySelectedCharacters = new List<CharacterSelectData>();
     }
 
-    public void AddPlayerData(InputDevice aInputDevice, ClassData aClassData, ColorScheme aColorScheme)
+    public void AddPlayerData(InputDevice aInputDevice, ClassData aClassData, ColorScheme aColorScheme, string aName)
     {
-        mySelectedCharacters.Add(new CharacterSelectData(aInputDevice, aClassData, aColorScheme));
+        mySelectedCharacters.Add(new CharacterSelectData(aInputDevice, aClassData, aColorScheme, aName));
     }
 
     public bool RemovePlayerData(InputDevice aInputDevice)

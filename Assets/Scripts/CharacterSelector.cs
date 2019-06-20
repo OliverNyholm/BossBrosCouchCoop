@@ -8,27 +8,27 @@ public class CharacterSelector : MonoBehaviour
 {
     [Header("Image to show player color")]
     [SerializeField]
-    private Image myAvatar;
+    private Image myAvatar = null;
 
     [Header("Image to show class icon")]
     [SerializeField]
-    private Image myClassIcon;
+    private Image myClassIcon = null;
 
     [Header("Text to show class color")]
     [SerializeField]
-    private Text myColorText;
+    private Text myColorText = null;
 
     [Header("Text to show class name")]
     [SerializeField]
-    private Text myClassNameText;
+    private Text myClassNameText = null;
 
     [Header("Text to show class description")]
     [SerializeField]
-    private Text myDescriptionText;
+    private Text myDescriptionText = null;
 
     [Header("Text to show current insctructions")]
     [SerializeField]
-    private Text myInstructionsText;
+    private Text myInstructionsText = null;
 
     public InputDevice Device { get; set; }
     private CharacterSelectManager myManager;
@@ -62,10 +62,9 @@ public class CharacterSelector : MonoBehaviour
 
         if (Device.Action2.WasPressed)
         {
-            State--;
-            myManager.GetNextDescription(this);
+            myManager.PlayerSetState(this, --State);
             if (State == SelectionState.Idle)
-                Hide();
+                return;
         }
 
         if (Device.CommandWasPressed)
@@ -76,8 +75,7 @@ public class CharacterSelector : MonoBehaviour
 
         if (Device.Action1.WasPressed)
         {
-            State++;
-            myManager.GetNextDescription(this);
+            myManager.PlayerSetState(this, ++State);
         }
 
 
@@ -152,5 +150,10 @@ public class CharacterSelector : MonoBehaviour
     public void SetInstructions(string aInstruction)
     {
         myInstructionsText.text = aInstruction;
+    }
+
+    public string GetName()
+    {
+        return myColorText.text;
     }
 }

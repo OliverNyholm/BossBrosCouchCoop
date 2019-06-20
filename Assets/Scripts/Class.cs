@@ -34,7 +34,7 @@ public class Class : MonoBehaviour
     public Sprite mySprite;
 
     [SerializeField]
-    private GameObject myAutoAttack;
+    private GameObject myAutoAttack = null;
     public GameObject[] mySpells;
 
     private GameObject myActionBar;

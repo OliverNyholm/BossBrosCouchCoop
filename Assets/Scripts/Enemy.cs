@@ -224,8 +224,9 @@ public class Enemy : Character
             SetTarget(target);
         }
 
+        bool isCurrentlyAutoAttacking = myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
         const float attackRangeOffset = 0.5f;
-        if (Vector3.Distance(myTarget.transform.position, transform.position) > GetComponent<Stats>().myAutoAttackRange - attackRangeOffset)
+        if (!isCurrentlyAutoAttacking && Vector3.Distance(myTarget.transform.position, transform.position) > GetComponent<Stats>().myAutoAttackRange - attackRangeOffset)
         {
             Move(myPlayers[myTargetIndex].transform.position);
             myAnimator.SetBool("IsRunning", true);
@@ -313,6 +314,7 @@ public class Enemy : Character
             {
                 myTargetIndex = index;
                 Debug.Log(myTargetIndex + " taunted enemy for  " + aDuration);
+                AddThreat(5000, aTaunterID);
                 break;
             }
         }

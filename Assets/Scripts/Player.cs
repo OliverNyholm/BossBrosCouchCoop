@@ -5,9 +5,6 @@ using InControl;
 
 public class Player : Character
 {
-    [SerializeField]
-    private Color myColor;
-
     private CharacterController myController;
 
     private TargetHandler myTargetHandler;
@@ -21,8 +18,12 @@ public class Player : Character
     private Vector3 myDirection;
     private CameraXZTransform myCameraXZTransform;
 
+
     private bool myIsGrounded;
     private bool myShouldAutoAttack;
+
+    public Color PlayerColor { get; set; }
+    public int PlayerIndex { get; set; }
 
     protected override void Start()
     {
@@ -43,7 +44,7 @@ public class Player : Character
 
         myController = GetComponent<CharacterController>();
 
-        Transform uiHud = GameObject.Find("PlayerUI" + myControllerIndex).transform;
+        Transform uiHud = GameObject.Find("PlayerUI" + PlayerIndex).transform;
         SetupHud(uiHud);
         myClass.SetupSpellHud(CastSpell, uiHud);
     }
@@ -76,6 +77,9 @@ public class Player : Character
 
     bool IsGrounded()
     {
+        if (myDirection.y > 0.0f)
+            return false;
+
         Ray ray = new Ray(transform.position, Vector3.down);
         float distance = 0.2f;
         LayerMask layerMask = LayerMask.GetMask("Terrain");
@@ -94,11 +98,6 @@ public class Player : Character
         if (!myIsGrounded)
             return;
 
-        //float horizontal = myInputDevice.LeftStickX.RawValue > 0.0f ? 1.0f : -1.0f;
-        //float vertical = myInputDevice.LeftStickY.RawValue > 0.0f ? 1.0f : -1.0f;
-        // Vector3 inputDirection = new Vector3(horizontal, 0.0f, vertical);
-        // Vector3 inputDirection = new Vector3(Input.GetAxisRaw("LeftHorizontal" + myControllerIndex), 0.0f, Input.GetAxisRaw("LeftVertical" + myControllerIndex));
-
         Vector2 leftStickAxis = myInputDevice.LeftStick;
 
         myDirection = (leftStickAxis.x * myCameraXZTransform.myRight + leftStickAxis.y * myCameraXZTransform.myForwards).normalized;
@@ -110,7 +109,7 @@ public class Player : Character
 
         myAnimator.SetBool("IsRunning", isMoving);
 
-        if (Input.GetButton("RightBumper" + myControllerIndex))
+        if (myInputDevice.RightBumper.WasPressed)
         {
             myDirection.y = myJumpSpeed;
             myAnimator.SetBool("IsGrounded", false);
@@ -119,23 +118,23 @@ public class Player : Character
     }
     private void DetectSpellInput()
     {
-        bool isTriggerDown = (Input.GetAxisRaw("LeftTrigger" + myControllerIndex) > 0.0f) || (Input.GetAxisRaw("RightTrigger" + myControllerIndex) > 0.0f);
+        bool isTriggerDown = (myInputDevice.LeftTrigger.RawValue > 0.0f) || (myInputDevice.RightTrigger.RawValue > 0.0f);
 
-        if (isTriggerDown && Input.GetButtonDown("A" + myControllerIndex))
+        if (isTriggerDown && myInputDevice.Action1.WasPressed)
             CastSpell(4);
-        else if (isTriggerDown && Input.GetButtonDown("B" + myControllerIndex))
+        else if (isTriggerDown && myInputDevice.Action2.WasPressed)
             CastSpell(5);
-        else if (isTriggerDown && Input.GetButtonDown("X" + myControllerIndex))
+        else if (isTriggerDown && myInputDevice.Action3.WasPressed)
             CastSpell(6);
-        else if (isTriggerDown && Input.GetButtonDown("Y" + myControllerIndex))
+        else if (isTriggerDown && myInputDevice.Action4.WasPressed)
             CastSpell(7);
-        else if (Input.GetButtonDown("A" + myControllerIndex))
+        else if (myInputDevice.Action1.WasPressed)
             CastSpell(0);
-        else if (Input.GetButtonDown("B" + myControllerIndex))
+        else if (myInputDevice.Action2.WasPressed)
             CastSpell(1);
-        else if (Input.GetButtonDown("X" + myControllerIndex))
+        else if (myInputDevice.Action3.WasPressed)
             CastSpell(2);
-        else if (Input.GetButtonDown("Y" + myControllerIndex))
+        else if (myInputDevice.Action4.WasPressed)
             CastSpell(3);
     }
     private void RotatePlayer()
@@ -359,13 +358,14 @@ public class Player : Character
     private void DetectTargetingInput()
     {
         int targetIndex = -1;
-        int horizontalAxis = (int)Input.GetAxisRaw("RightHorizontal" + myControllerIndex);
-        int verticalAxis = (int)Input.GetAxisRaw("RightVertical" + myControllerIndex);
-
-        if (horizontalAxis != 0)
-            targetIndex = horizontalAxis > 0 ? 1 : 3;
-        else if (verticalAxis != 0)
-            targetIndex = verticalAxis > 0 ? 0 : 2;
+        if (myInputDevice.RightStickRight.RawValue > 0.5f)
+            targetIndex = 1;
+        if (myInputDevice.RightStickLeft.RawValue > 0.5f)
+            targetIndex = 4;
+        if (myInputDevice.RightStickUp.RawValue > 0.5f)
+            targetIndex = 0;
+        if (myInputDevice.RightStickDown.RawValue > 0.5f)
+            targetIndex = 2;
 
         if (targetIndex != -1)
         {
@@ -373,16 +373,19 @@ public class Player : Character
             return;
         }
 
-        if (Input.GetButtonDown("LeftBumper" + myControllerIndex))
-            SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetEnemy(myControllerIndex));
+        if (myInputDevice.LeftBumper.WasPressed)
+            SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetEnemy(PlayerIndex));
     }
 
     protected override void SetTarget(GameObject aTarget)
     {
+        if(myTarget)
+            myTarget.GetComponentInChildren<TargetProjector>().DropTargetProjection(PlayerIndex);
+
         base.SetTarget(aTarget);
 
         if (myTarget)
-            myTarget.GetComponentInChildren<TargetProjector>().AddTargetProjection(myColor, myControllerIndex);
+            myTarget.GetComponentInChildren<TargetProjector>().AddTargetProjection(PlayerColor, PlayerIndex);
 
         myShouldAutoAttack = false;
         if (myTarget && myTarget.tag == "Enemy")
@@ -401,7 +404,7 @@ public class Player : Character
 
     public int GetControllerIndex()
     {
-        return myControllerIndex;
+        return PlayerIndex;
     }
 
     public void SetInputDevice(InputDevice aInputDevice)

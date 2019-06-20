@@ -4,7 +4,10 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    public int myControllerIndex;
+    [Header("Avatar used by character")]
+    [SerializeField]
+    private Sprite myAvatarSprite;
+
     public float myBaseSpeed;
     public float myJumpSpeed;
     public float myGravity;
@@ -23,6 +26,7 @@ public abstract class Character : MonoBehaviour
     protected Resource myResource;
     protected Stats myStats;
     protected Class myClass;
+
 
     private List<BuffSpell> myBuffs;
 
@@ -57,6 +61,7 @@ public abstract class Character : MonoBehaviour
 
         myCharacterHUD.SetName(transform.name);
         myCharacterHUD.SetClassSprite(myClass.mySprite);
+        myCharacterHUD.SetAvatarSprite(myAvatarSprite);
 
         myHealth.EventOnHealthChange += ChangeMyHudHealth;
         myHealth.EventOnHealthZero += OnDeath;
@@ -242,7 +247,6 @@ public abstract class Character : MonoBehaviour
     {
         if (myTarget != null)
         {
-            myTarget.GetComponentInChildren<TargetProjector>().DropTargetProjection(myControllerIndex);
             myTarget.GetComponent<Health>().EventOnHealthChange -= ChangeTargetHudHealth;
             if (myTarget.GetComponent<Resource>() != null)
                 myTarget.GetComponent<Resource>().EventOnResourceChange -= ChangeTargetHudResource;
@@ -277,6 +281,7 @@ public abstract class Character : MonoBehaviour
             ChangeTargetHudResource(0.0f, "0/0");
         }
 
+        myTargetHUD.SetAvatarSprite(myTarget.GetComponent<Character>().GetAvatar());
         if (myTarget.tag == "Enemy")
         {
             myTargetHUD.SetName(myTarget.GetComponent<Enemy>().myName);
@@ -433,5 +438,15 @@ public abstract class Character : MonoBehaviour
 
         myAnimator.SetTrigger("Death");
         myHealth.EventOnHealthZero -= OnDeath;
+    }
+
+    public void SetAvatar(Sprite aSprite)
+    {
+        myAvatarSprite = aSprite;
+    }
+
+    public Sprite GetAvatar()
+    {
+        return myAvatarSprite;
     }
 }

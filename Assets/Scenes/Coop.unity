@@ -212,18 +212,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &196047653 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2998986373520784574, guid: ba859facf7c6e3c4791e9b5b95a10b6b,
-    type: 3}
-  m_PrefabInstance: {fileID: 2695556951961149587}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &232884227 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 848091889081503347, guid: a3d8be0d10881004ba90d1d48b33946a,
@@ -463,7 +451,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 88f9cc2fe14900748884a84e8695fc37, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -996,18 +984,6 @@ Transform:
   m_Father: {fileID: 941560110}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1439480361 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8608186130166048114, guid: ba859facf7c6e3c4791e9b5b95a10b6b,
-    type: 3}
-  m_PrefabInstance: {fileID: 2695556951961149587}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2079967900
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,7 +1000,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2079967901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2508,16 +2484,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6531226161368197310, guid: ba859facf7c6e3c4791e9b5b95a10b6b,
-        type: 3}
-      propertyPath: myClassImage
-      value: 
-      objectReference: {fileID: 1439480361}
-    - target: {fileID: 6573060274038762649, guid: ba859facf7c6e3c4791e9b5b95a10b6b,
-        type: 3}
-      propertyPath: myClassImage
-      value: 
-      objectReference: {fileID: 196047653}
     - target: {fileID: 4451744620799214805, guid: ba859facf7c6e3c4791e9b5b95a10b6b,
         type: 3}
       propertyPath: m_SizeDelta.x

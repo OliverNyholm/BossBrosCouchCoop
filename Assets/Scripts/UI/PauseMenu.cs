@@ -9,7 +9,7 @@ public class PauseMenu : MonoBehaviour
 
     [Header("The parent gameobject to pause menu")]
     [SerializeField]
-    private GameObject myPauseObject;
+    private GameObject myPauseObject = null;
 
     void Update()
     {

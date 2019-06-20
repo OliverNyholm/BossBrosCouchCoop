@@ -5,7 +5,7 @@ using UnityEngine;
 public class Meditate : Spell {
 
     [SerializeField]
-    private int myRegenerationPercentage;
+    private int myRegenerationPercentage = 1;
 
     [SerializeField]
     private float myChannelTime;

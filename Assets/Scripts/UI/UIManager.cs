@@ -7,10 +7,10 @@ public class UIManager : MonoBehaviour
 {
 
     [SerializeField]
-    private GameObject myErrorMessageBox;
+    private GameObject myErrorMessageBox = null;
 
     [SerializeField]
-    private GameObject myErrorMessagePrefab;
+    private GameObject myErrorMessagePrefab = null;
 
     private List<GameObject> myErrorMessages;
 

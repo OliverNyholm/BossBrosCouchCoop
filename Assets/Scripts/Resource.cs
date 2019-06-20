@@ -12,10 +12,10 @@ public class Resource : MonoBehaviour
     public int myCurrentResource = 100;
 
     [SerializeField]
-    private int myRegenerationPerTick;
+    private int myRegenerationPerTick = 1;
 
     [SerializeField]
-    private float myRegenerationTimer;
+    private float myRegenerationTimer = 0.0f;
     private float myCurrentRegenerationTimer = 0.0f;
 
     public delegate void ResourceChanged(float aResourcePercentage, string aResourceText);

@@ -6,7 +6,7 @@ public class ShieldWallSpell : Spell
 {
 
     [SerializeField]
-    private GameObject myShieldWallPrefab;
+    private GameObject myShieldWallPrefab = null;
 
     protected override void DealSpellEffect()
     {

@@ -5,16 +5,16 @@ using UnityEngine.UI;
 public class Castbar : MonoBehaviour
 {
     [SerializeField]
-    private float myFadeoutSpeed;
+    private float myFadeoutSpeed = 0.0f;
 
     [SerializeField]
-    private Image myCastbarUI;
+    private Image myCastbarUI = null;
     [SerializeField]
-    private Image mySpellIconUI;
+    private Image mySpellIconUI = null;
     [SerializeField]
-    private Text mySpellNameUI;
+    private Text mySpellNameUI = null;
     [SerializeField]
-    private Text myCastTimeUI;
+    private Text myCastTimeUI = null;
 
     private Coroutine fadeCoroutine;
 

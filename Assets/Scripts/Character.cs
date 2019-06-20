@@ -305,7 +305,7 @@ public abstract class Character : MonoBehaviour
     {
         myTargetHUD.SetResourceBarFillAmount(aResourcePercentage);
         myTargetHUD.SetResourceText(aResourceText);
-        if (myTarget.GetComponent<Resource>() != null)
+        if (myTarget && myTarget.GetComponent<Resource>() != null)
             myTargetHUD.SetResourceBarColor(myTarget.GetComponent<Resource>().myResourceColor);
     }
 

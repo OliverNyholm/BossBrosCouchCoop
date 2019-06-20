@@ -36,6 +36,8 @@ public class CharacterSelector : MonoBehaviour
     float myPreviousLeftAxis;
     float myPreviousRightAxis;
 
+    bool myIsInitialized;
+
     public enum SelectionState
     {
         Idle,
@@ -59,6 +61,12 @@ public class CharacterSelector : MonoBehaviour
 
         if (Device == null)
             return;
+
+        if(myIsInitialized)
+        {
+            myIsInitialized = false;
+            return;
+        }
 
         if (Device.Action2.WasPressed)
         {
@@ -120,6 +128,8 @@ public class CharacterSelector : MonoBehaviour
         myDescriptionText.enabled = true;
 
         State = SelectionState.Class;
+
+        myIsInitialized = true;
     }
 
     public void Hide()

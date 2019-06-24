@@ -13,7 +13,7 @@ Shader "Projector/SkullMarker" {
 		Pass {
 			ZWrite Off
 			ColorMask RGB
-			Blend DstColor One
+			Blend One One
 			Offset -1, -1
 	
 			CGPROGRAM

@@ -22,7 +22,7 @@ public class Health : MonoBehaviour
 
     private List<BuffShieldSpell> myShields = new List<BuffShieldSpell>();
 
-    public void TakeDamage(int aValue)
+    public int TakeDamage(int aValue, Color aDamagerColor)
     {
         int damage = CalculateMitigations(aValue);
         myCurrentHealth -= damage;
@@ -40,7 +40,9 @@ public class Health : MonoBehaviour
         }
 
         OnHealthChanged();
-        SpawnFloatingText(damageText, Color.red);
+        SpawnFloatingText(damageText, aDamagerColor);
+
+        return damage;
     }
 
     public void GainHealth(int aValue)

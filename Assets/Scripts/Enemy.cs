@@ -5,11 +5,9 @@ using UnityEngine.AI;
 
 public class Enemy : Character
 {
-    public string myName;
-
     public float mySpeed;
 
-    private AISubscriber myAISubscriber;
+    private Subscriber myAISubscriber;
 
     private NavMeshAgent myNavmeshAgent;
 
@@ -69,17 +67,17 @@ public class Enemy : Character
 
     void Subscribe()
     {
-        myAISubscriber = new AISubscriber();
+        myAISubscriber = new Subscriber();
         myAISubscriber.EventOnReceivedMessage += ReceiveAIMessage;
-        AIPostMaster.Instance.RegisterSubscriber(ref myAISubscriber, AIMessageType.SpellSpawned);
-        AIPostMaster.Instance.RegisterSubscriber(ref myAISubscriber, AIMessageType.PlayerDied);
+        PostMaster.Instance.RegisterSubscriber(ref myAISubscriber, MessageType.SpellSpawned);
+        PostMaster.Instance.RegisterSubscriber(ref myAISubscriber, MessageType.PlayerDied);
     }
 
     void Unsubscribe()
     {
         myAISubscriber.EventOnReceivedMessage -= ReceiveAIMessage;
-        AIPostMaster.Instance.UnregisterSubscriber(ref myAISubscriber, AIMessageType.SpellSpawned);
-        AIPostMaster.Instance.UnregisterSubscriber(ref myAISubscriber, AIMessageType.PlayerDied);
+        PostMaster.Instance.UnregisterSubscriber(ref myAISubscriber, MessageType.SpellSpawned);
+        PostMaster.Instance.UnregisterSubscriber(ref myAISubscriber, MessageType.PlayerDied);
     }
 
     // Update is called once per frame
@@ -335,11 +333,11 @@ public class Enemy : Character
             SetState(State.Disengage);
     }
 
-    private void ReceiveAIMessage(AIMessage anAiMessage)
+    private void ReceiveAIMessage(Message anAiMessage)
     {
         switch (anAiMessage.Type)
         {
-            case AIMessageType.SpellSpawned:
+            case MessageType.SpellSpawned:
                 {
                     int id = (int)anAiMessage.Data.myVector2.x;
                     int value = (int)anAiMessage.Data.myVector2.y;
@@ -347,7 +345,7 @@ public class Enemy : Character
                     AddThreat(value, id);
                 }
                 break;
-            case AIMessageType.PlayerDied:
+            case MessageType.PlayerDied:
                 {
                     int id = anAiMessage.Data.myInt;
                     for (int index = 0; index < myPlayers.Count; index++)

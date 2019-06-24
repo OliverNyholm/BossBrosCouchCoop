@@ -10,9 +10,9 @@ public class Sacrifice : Spell
         if (myDamage > myParent.GetComponent<Health>().myCurrentHealth)
             healthToCast = myParent.GetComponent<Health>().myCurrentHealth - 1;
 
-        myParent.GetComponent<Health>().TakeDamage(healthToCast);
+        myParent.GetComponent<Health>().TakeDamage(healthToCast, myParent.GetComponent<Character>().myCharacterColor);
         myTarget.GetComponent<Health>().GainHealth(healthToCast);
-        AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.SpellSpawned, new AIMessageData(myParent.GetInstanceID(), myDamage)));
+        PostMaster.Instance.PostMessage(new Message(MessageType.SpellSpawned, new MessageData(myParent.GetInstanceID(), myDamage)));
     }
 
     protected override string GetSpellDetail()

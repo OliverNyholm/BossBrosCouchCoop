@@ -6,21 +6,14 @@ public class TargetProjector : MonoBehaviour
 {
     private Material myMaterial;
 
-    private int myProjectionCounter;
-
-    private void Start()
+    private void Awake()
     {
         myMaterial = new Material(GetComponent<Projector>().material);
 
         GetComponent<Projector>().material = myMaterial;
-
-        myProjectionCounter = 0;
     }
     public void AddTargetProjection(Color aColor, int aPlayerIndex)
     {
-        if (myProjectionCounter++ == 0)
-            GetComponent<Projector>().enabled = true;
-
         switch (aPlayerIndex)
         {
             case 1:
@@ -55,8 +48,10 @@ public class TargetProjector : MonoBehaviour
                 myMaterial.SetColor("_BottomRight", Color.black);
                 break;
         }
+    }
 
-        if (myProjectionCounter-- == 0)
-            GetComponent<Projector>().enabled = false;
+    public void SetPlayerColor(Color aColor)
+    {
+        myMaterial.SetColor("_PlayerColor", aColor);
     }
 }

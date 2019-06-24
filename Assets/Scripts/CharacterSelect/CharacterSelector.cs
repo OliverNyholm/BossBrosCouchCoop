@@ -30,7 +30,7 @@ public class CharacterSelector : MonoBehaviour
     [SerializeField]
     private Text myInstructionsText = null;
 
-    public InputDevice Device { get; set; }
+    public PlayerControls PlayerControls { get; set; }
     private CharacterSelectManager myManager;
 
     float myPreviousLeftAxis;
@@ -59,35 +59,34 @@ public class CharacterSelector : MonoBehaviour
         color.a = Mathf.Abs(Mathf.Sin(Time.time));
         myInstructionsText.color = color;
 
-        if (Device == null)
+        if (PlayerControls == null)
             return;
 
-        if(myIsInitialized)
+        if (myIsInitialized)
         {
             myIsInitialized = false;
             return;
         }
 
-        if (Device.Action2.WasPressed)
+        if (PlayerControls.Action2.WasPressed)
         {
             myManager.PlayerSetState(this, --State);
             if (State == SelectionState.Idle)
                 return;
         }
 
-        if (Device.CommandWasPressed)
-            myManager.StartPlaying();
+        if (PlayerControls.Action1.WasPressed || PlayerControls.Start.WasPressed)
+        {
+            if (State == SelectionState.Ready)
+                myManager.StartPlaying();
+            else
+                myManager.PlayerSetState(this, ++State);
+        }
 
         if (State == SelectionState.Ready)
             return;
 
-        if (Device.Action1.WasPressed)
-        {
-            myManager.PlayerSetState(this, ++State);
-        }
-
-
-        if (myPreviousLeftAxis == 0.0f && Device.LeftStickLeft.RawValue > 0.0f)
+        if (myPreviousLeftAxis == 0.0f && PlayerControls.Left.RawValue > 0.0f)
         {
             switch (State)
             {
@@ -99,7 +98,7 @@ public class CharacterSelector : MonoBehaviour
                     break;
             }
         }
-        if (myPreviousRightAxis == 0.0f && Device.LeftStickRight.RawValue > 0.0f)
+        if (myPreviousRightAxis == 0.0f && PlayerControls.Right.RawValue > 0.0f)
         {
             switch (State)
             {
@@ -112,13 +111,13 @@ public class CharacterSelector : MonoBehaviour
             }
         }
 
-        myPreviousLeftAxis = Device.LeftStickLeft.RawValue > 0.0f ? 1.0f : 0.0f;
-        myPreviousRightAxis = Device.LeftStickRight.RawValue > 0.0f ? 1.0f : 0.0f;
+        myPreviousLeftAxis = PlayerControls.Left.RawValue > 0.0f ? 1.0f : 0.0f;
+        myPreviousRightAxis = PlayerControls.Right.RawValue > 0.0f ? 1.0f : 0.0f;
     }
 
-    public void Show(InputDevice aInputDevice, CharacterSelectManager aManager)
+    public void Show(PlayerControls aPlayerControls, CharacterSelectManager aManager)
     {
-        Device = aInputDevice;
+        PlayerControls = aPlayerControls;
         myManager = aManager;
 
         myAvatar.enabled = true;
@@ -134,7 +133,7 @@ public class CharacterSelector : MonoBehaviour
 
     public void Hide()
     {
-        Device = null;
+        PlayerControls = null;
         myManager = null;
 
         myAvatar.enabled = false;

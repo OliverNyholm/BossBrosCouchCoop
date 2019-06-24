@@ -87,15 +87,14 @@ public class Spell : MonoBehaviour
             if (myDamage > 0.0f)
             {
                 myTarget.GetComponent<Health>().GainHealth(myDamage);
-                AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.SpellSpawned, new AIMessageData(myParent.GetInstanceID(), myDamage)));
+                PostMaster.Instance.PostMessage(new Message(MessageType.SpellSpawned, new MessageData(myParent.GetInstanceID(), myDamage)));
             }
         }
         else
         {
             if (myDamage > 0.0f)
             {
-                myTarget.GetComponent<Health>().TakeDamage(myDamage);
-                myTarget.GetComponent<Health>().GenerateThreat((int)(myDamage * myThreatModifier), myParent.GetInstanceID());
+                DealDamage(myDamage);
             }
         }
 
@@ -117,6 +116,20 @@ public class Spell : MonoBehaviour
     public void SetDamage(int aDamage)
     {
         myDamage = aDamage;
+    }
+
+    protected void DealDamage(int aDamage, GameObject aTarget = null)
+    {
+        GameObject target = myTarget;
+        if (aTarget)
+            target = aTarget;
+
+        int parentID = myParent.GetInstanceID();
+        int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<Character>().myCharacterColor);
+        target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID);
+
+        if (myParent.tag == "Player")
+            PostMaster.Instance.PostMessage(new Message(MessageType.DamageDealt, new Vector2(parentID, damageDone)));
     }
 
     public void SetParent(GameObject aParent)

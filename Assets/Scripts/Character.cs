@@ -12,6 +12,9 @@ public abstract class Character : MonoBehaviour
     public float myJumpSpeed;
     public float myGravity;
 
+    public string myName;
+    public Color myCharacterColor;
+
     protected Animator myAnimator;
 
     protected GameObject myTarget;
@@ -51,7 +54,7 @@ public abstract class Character : MonoBehaviour
         myIsCasting = false;
     }
 
-    protected void SetupHud(Transform aUIParent)
+    protected virtual void SetupHud(Transform aUIParent)
     {
         aUIParent.GetComponent<CanvasGroup>().alpha = 1.0f;
 
@@ -59,9 +62,10 @@ public abstract class Character : MonoBehaviour
         myTargetHUD = aUIParent.transform.Find("TargetHud").GetComponent<CharacterHUD>();
         myCastbar = aUIParent.transform.Find("Castbar Background").GetComponent<Castbar>();
 
-        myCharacterHUD.SetName(transform.name);
+        myCharacterHUD.SetName(myName);
         myCharacterHUD.SetClassSprite(myClass.mySprite);
         myCharacterHUD.SetAvatarSprite(myAvatarSprite);
+        myCharacterHUD.SetHudColor(myCharacterColor);
 
         myHealth.EventOnHealthChange += ChangeMyHudHealth;
         myHealth.EventOnHealthZero += OnDeath;
@@ -282,18 +286,9 @@ public abstract class Character : MonoBehaviour
         }
 
         myTargetHUD.SetAvatarSprite(myTarget.GetComponent<Character>().GetAvatar());
-        if (myTarget.tag == "Enemy")
-        {
-            myTargetHUD.SetName(myTarget.GetComponent<Enemy>().myName);
-            myTargetHUD.SetClassSprite(myTarget.GetComponent<Class>().mySprite);
-            myTargetHUD.SetNameColor(Color.red);
-        }
-        else if (myTarget.tag == "Player")
-        {
-            myTargetHUD.SetName(myTarget.name);
-            myTargetHUD.SetClassSprite(myTarget.GetComponent<Class>().mySprite);
-            myTargetHUD.SetNameColor(new Color(120f / 255f, 1.0f, 0.0f));
-        }
+        myTargetHUD.SetClassSprite(myTarget.GetComponent<Class>().mySprite);
+        myTargetHUD.SetHudColor(myTarget.GetComponent<Character>().myCharacterColor);
+        myTargetHUD.SetName(myTarget.GetComponent<Character>().myName);
     }
     private void ChangeTargetHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
     {
@@ -345,7 +340,10 @@ public abstract class Character : MonoBehaviour
                 BuffTickSpell dot = myBuffs[index] as BuffTickSpell;
                 if (dot.ShouldDealTickSpellEffect)
                 {
-                    myHealth.TakeDamage(dot.GetTickValue());
+                    myHealth.TakeDamage(dot.GetTickValue(), dot.GetParent().GetComponent<Character>().myCharacterColor);
+                    if (dot.GetParent().tag == "Player")
+                        PostMaster.Instance.PostMessage(new Message(MessageType.DamageDealt, new Vector2(dot.GetParent().GetInstanceID(), dot.GetTickValue())));
+
                     dot.ShouldDealTickSpellEffect = false;
                 }
             }

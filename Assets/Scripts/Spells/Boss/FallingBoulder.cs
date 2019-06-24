@@ -49,7 +49,7 @@ public class FallingBoulder : Spell
             return;
 
         myTargetsHit.Add(instanceID);
-
-        other.gameObject.GetComponent<Health>().TakeDamage(myDamage);
+        
+        DealDamage(myDamage, other.gameObject);
     }
 }

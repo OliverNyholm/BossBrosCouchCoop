@@ -5,14 +5,14 @@ using InControl;
 
 public struct CharacterSelectData
 {
-    public InputDevice myInputDevice;
+    public PlayerControls myPlayerControls;
     public ClassData myClassData;
     public ColorScheme myColorScheme;
     public string myName;
 
-    public CharacterSelectData(InputDevice aInputDevice, ClassData aClassData, ColorScheme aColorScheme, string aName)
+    public CharacterSelectData(PlayerControls aPlayerControls, ClassData aClassData, ColorScheme aColorScheme, string aName)
     {
-        myInputDevice = aInputDevice;
+        myPlayerControls = aPlayerControls;
         myClassData = aClassData;
         myColorScheme = aColorScheme;
         myName = aName;
@@ -23,23 +23,28 @@ public class CharacterGameData : MonoBehaviour
 {
     private List<CharacterSelectData> mySelectedCharacters;
 
+    private static CharacterGameData ourCharacterGameDataInstance;
     private void Awake()
     {
         DontDestroyOnLoad(this);
+        if (ourCharacterGameDataInstance)
+            Destroy(gameObject);
+        else
+            ourCharacterGameDataInstance = this;
 
         mySelectedCharacters = new List<CharacterSelectData>();
     }
 
-    public void AddPlayerData(InputDevice aInputDevice, ClassData aClassData, ColorScheme aColorScheme, string aName)
+    public void AddPlayerData(PlayerControls aPlayerControls, ClassData aClassData, ColorScheme aColorScheme, string aName)
     {
-        mySelectedCharacters.Add(new CharacterSelectData(aInputDevice, aClassData, aColorScheme, aName));
+        mySelectedCharacters.Add(new CharacterSelectData(aPlayerControls, aClassData, aColorScheme, aName));
     }
 
-    public bool RemovePlayerData(InputDevice aInputDevice)
+    public bool RemovePlayerData(PlayerControls aPlayerControls)
     {
         for (int index = 0; index < mySelectedCharacters.Count; index++)
         {
-            if(mySelectedCharacters[index].myInputDevice == aInputDevice)
+            if(mySelectedCharacters[index].myPlayerControls == aPlayerControls)
             {
                 mySelectedCharacters.RemoveAt(index);
                 return true;

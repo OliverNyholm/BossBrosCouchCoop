@@ -36,7 +36,7 @@ public class Health : MonoBehaviour
         if(aValue != damage)
         {
             int absorbed = aValue - damage;
-            damageText = damage.ToString() + " (" + absorbed.ToString() + " absorbed)";
+            damageText = damage.ToString() + " (-" + absorbed.ToString() +")";
         }
 
         OnHealthChanged();
@@ -116,7 +116,11 @@ public class Health : MonoBehaviour
 
     private void SpawnFloatingText(string aText, Color aColor)
     {
+        Vector3 randomOffset = new Vector2(Random.Range(-2.0f, 2.0f), Random.Range(0.0f, 2.0f));
+
         GameObject floatingHealthGO = Instantiate(myFloatingHealthPrefab, transform);
+        floatingHealthGO.transform.position += randomOffset;
+
         FloatingHealth floatingHealth = floatingHealthGO.GetComponent<FloatingHealth>();
         floatingHealth.SetText(aText, aColor);
     }

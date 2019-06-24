@@ -7,7 +7,7 @@ public class Enemy : Character
 {
     public float mySpeed;
 
-    private Subscriber myAISubscriber;
+    protected Subscriber mySubscriber;
 
     private NavMeshAgent myNavmeshAgent;
 
@@ -67,17 +67,17 @@ public class Enemy : Character
 
     void Subscribe()
     {
-        myAISubscriber = new Subscriber();
-        myAISubscriber.EventOnReceivedMessage += ReceiveAIMessage;
-        PostMaster.Instance.RegisterSubscriber(ref myAISubscriber, MessageType.SpellSpawned);
-        PostMaster.Instance.RegisterSubscriber(ref myAISubscriber, MessageType.PlayerDied);
+        mySubscriber = new Subscriber();
+        mySubscriber.EventOnReceivedMessage += ReceiveMessage;
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.SpellSpawned);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
     }
 
     void Unsubscribe()
     {
-        myAISubscriber.EventOnReceivedMessage -= ReceiveAIMessage;
-        PostMaster.Instance.UnregisterSubscriber(ref myAISubscriber, MessageType.SpellSpawned);
-        PostMaster.Instance.UnregisterSubscriber(ref myAISubscriber, MessageType.PlayerDied);
+        mySubscriber.EventOnReceivedMessage -= ReceiveMessage;
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.SpellSpawned);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
     }
 
     // Update is called once per frame
@@ -334,7 +334,7 @@ public class Enemy : Character
             SetState(State.Disengage);
     }
 
-    private void ReceiveAIMessage(Message anAiMessage)
+    protected void ReceiveMessage(Message anAiMessage)
     {
         switch (anAiMessage.Type)
         {

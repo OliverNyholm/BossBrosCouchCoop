@@ -31,7 +31,7 @@ public abstract class Character : MonoBehaviour
     protected Class myClass;
 
 
-    private List<BuffSpell> myBuffs;
+    protected List<BuffSpell> myBuffs;
 
     protected float myStunDuration;
     protected float myAutoAttackCooldown;
@@ -90,6 +90,9 @@ public abstract class Character : MonoBehaviour
     {
         GameObject spell = myClass.GetSpell(aKeyIndex);
         Spell spellScript = spell.GetComponent<Spell>();
+
+        GetComponent<AudioSource>().clip = spellScript.GetSpellSFX().myCastSound;
+        GetComponent<AudioSource>().Play();
 
 
         myIsCasting = true;
@@ -168,6 +171,9 @@ public abstract class Character : MonoBehaviour
         myCastbar.SetSpellIcon(aSpellScript.mySpellIcon);
         myCastbar.SetCastTimeText(aDuration.ToString());
 
+        GetComponent<AudioSource>().clip = aSpellScript.GetSpellSFX().myCastSound;
+        GetComponent<AudioSource>().Play();
+
         myCastingRoutine = StartCoroutine(SpellChannelRoutine(aDuration, aChannelGO));
     }
 
@@ -191,6 +197,9 @@ public abstract class Character : MonoBehaviour
             spellScript.SetTarget(myTarget);
         else
             spellScript.SetTarget(transform.gameObject);
+
+        if (aSpawnPosition == transform.position)
+            GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
     }
 
     protected abstract bool IsAbleToCastSpell(Spell aSpellScript);
@@ -230,7 +239,7 @@ public abstract class Character : MonoBehaviour
             StopCoroutine(myCastingRoutine);
         myIsCasting = false;
         myCastbar.FadeOutCastbar();
-
+        GetComponent<AudioSource>().Stop();
         myAnimator.SetBool("IsCasting", false);
     }
 
@@ -317,7 +326,7 @@ public abstract class Character : MonoBehaviour
         myCharacterHUD.SetResourceText(aResourceText);
         myCharacterHUD.SetResourceBarColor(myResource.myResourceColor);
     }
-    private void HandleBuffs()
+    protected void HandleBuffs()
     {
         for (int index = 0; index < myBuffs.Count; index++)
         {
@@ -434,6 +443,9 @@ public abstract class Character : MonoBehaviour
             RemoveBuff(myBuffs.Count - 1);
         }
 
+        StopAllCoroutines();
+
+        GetComponent<AudioSource>().Stop();
         myAnimator.SetTrigger("Death");
         myHealth.EventOnHealthZero -= OnDeath;
     }

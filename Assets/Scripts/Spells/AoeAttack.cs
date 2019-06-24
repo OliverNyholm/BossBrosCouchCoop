@@ -11,6 +11,7 @@ public class AoeAttack : Spell {
         myLifeTime -= Time.deltaTime;
         if (myLifeTime <= 0.0f)
             Destroy(gameObject);
+        SpawnVFX(2.5f);
     }
 
     private void OnTriggerEnter(Collider other)

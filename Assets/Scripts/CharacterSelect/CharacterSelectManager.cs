@@ -27,6 +27,10 @@ public class CharacterSelectManager : MonoBehaviour
     private PlayerControls myKeyboardListener;
     private PlayerControls myJoystickListener;
 
+    [Header("Level to load")]
+    [SerializeField]
+    private string myNextLevel = "Coop";
+
     void Start()
     {
         myPlayerClassIndex = new List<int>();
@@ -73,6 +77,7 @@ public class CharacterSelectManager : MonoBehaviour
                 return;
 
             SetupCharacterSelector(GetAvailableCharacterSelector(), null);
+            AudioManager.Instance.PlaySoundEffect("Example");
         }
     }
 
@@ -251,6 +256,6 @@ public class CharacterSelectManager : MonoBehaviour
                 myColorSchemes[myPlayerColorIndex[index]], myPlayers[index].GetComponent<CharacterSelector>().GetName());
         }
 
-        SceneManager.LoadScene("Coop");
+        SceneManager.LoadScene(myNextLevel);
     }
 }

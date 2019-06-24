@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Spell : MonoBehaviour
 {
     public string myName;
@@ -27,6 +28,21 @@ public class Spell : MonoBehaviour
 
     public Buff myBuff;
 
+    [System.Serializable]
+    public struct SpellSFX
+    {
+        public AudioClip myCastSound;
+        public AudioClip mySpawnSound;
+        public AudioClip myHitSound;
+    }
+    [Header("The sound effects for the spell")]
+    [SerializeField]
+    protected SpellSFX mySpellSFX;
+
+    [Header("The spawned effect for the spell")]
+    [SerializeField]
+    protected GameObject mySpellVFX;
+
     protected GameObject myParent;
     protected GameObject myTarget;
 
@@ -45,6 +61,7 @@ public class Spell : MonoBehaviour
         else
         {
             DealSpellEffect();
+            SpawnVFX(2.5f);
 
             if (myBuff != null)
             {
@@ -343,6 +360,26 @@ public class Spell : MonoBehaviour
             myTarget.GetComponent<Player>().InterruptSpellCast();
         else if (myTarget.tag == "Enemy")
             myTarget.GetComponent<Enemy>().InterruptSpellCast();
+    }
+
+    public SpellSFX GetSpellSFX()
+    {
+        return mySpellSFX;
+    }
+
+    protected void SpawnVFX(float aDuration)
+    {
+        if(!mySpellVFX)
+        {
+            Debug.Log("Missing VFX for spell: " + myName);
+            return;
+        }
+
+        GameObject vfxGO = Instantiate(mySpellVFX, myTarget.transform);
+        vfxGO.GetComponent<AudioSource>().clip = mySpellSFX.myHitSound;
+        vfxGO.GetComponent<AudioSource>().Play();
+
+        Destroy(vfxGO, aDuration);
     }
 
     private void Destroy()

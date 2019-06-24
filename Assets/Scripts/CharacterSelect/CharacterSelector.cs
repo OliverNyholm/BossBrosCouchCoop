@@ -68,7 +68,7 @@ public class CharacterSelector : MonoBehaviour
             return;
         }
 
-        if (PlayerControls.Action2.WasPressed)
+        if (PlayerControls.Action2.WasPressed || PlayerControls.Action3.WasPressed)
         {
             myManager.PlayerSetState(this, --State);
             if (State == SelectionState.Idle)

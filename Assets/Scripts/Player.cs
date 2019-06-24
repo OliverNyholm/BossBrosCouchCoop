@@ -225,7 +225,6 @@ public class Player : Character
     {
         if (myIsCasting)
         {
-            myUIManager.CreateErrorMessage("Already casting another spell!");
             return false;
         }
 
@@ -236,7 +235,6 @@ public class Player : Character
 
         if (myTarget.GetComponent<Health>().IsDead())
         {
-            myUIManager.CreateErrorMessage("That target is dead!");
             myShouldAutoAttack = false;
             return false;
         }

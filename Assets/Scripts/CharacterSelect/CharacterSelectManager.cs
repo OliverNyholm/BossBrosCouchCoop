@@ -77,7 +77,6 @@ public class CharacterSelectManager : MonoBehaviour
                 return;
 
             SetupCharacterSelector(GetAvailableCharacterSelector(), null);
-            AudioManager.Instance.PlaySoundEffect("Example");
         }
     }
 

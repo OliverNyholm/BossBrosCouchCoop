@@ -79,10 +79,30 @@ public class Class : MonoBehaviour
                 }
                 else
                 {
-                    myActionButtons[index].GetComponentInChildren<Text>().text = "";
-                    myActionButtons[index].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    myActionButtons[index].GetComponent<ActionKey>().SetCooldown(0.0f);
                 }
             }
+        }
+    }
+
+    public void SpellPressed(int anIndex)
+    {
+        myActionButtons[anIndex].GetComponent<ActionKey>().SpellPressed();
+    }
+
+    public void ShiftInteracted(bool aIsDown)
+    {
+        for (int index = 4; index < mySpells.Length; index++)
+        {
+            myActionButtons[index].GetComponent<ActionKey>().ShiftInteracted(aIsDown);
+        }
+    }
+
+    public void ToggleSpellInfo()
+    {
+        for (int index = 0; index < myActionButtons.Length; index++)
+        {
+            myActionButtons[index].GetComponent<ActionKey>().ToggleInfo();
         }
     }
 
@@ -111,8 +131,7 @@ public class Class : MonoBehaviour
         if (myActionButtons[anIndex] == null)
             return;
 
-        myActionButtons[anIndex].GetComponentInChildren<Text>().text = myCooldownTimers[anIndex].ToString("0.0");
-        myActionButtons[anIndex].GetComponent<Image>().color = new Color(0.8f, 0.3f, 0.3f, 0.5f);
+        myActionButtons[anIndex].GetComponent<ActionKey>().SetCooldown(myCooldownTimers[anIndex]);
     }
 
     public delegate void ActionClick(int anIndex);
@@ -131,6 +150,7 @@ public class Class : MonoBehaviour
                 {
                     myActionButtons[index] = myActionBar.transform.GetChild(childIndex).gameObject;
                     myActionButtons[index].GetComponent<Image>().sprite = mySpells[index].GetComponent<Spell>().mySpellIcon;
+                    myActionButtons[index].GetComponent<ActionKey>().SetSpellInfo(mySpells[index].GetComponent<Spell>().myQuickInfo);
                     break;
                 }
             }

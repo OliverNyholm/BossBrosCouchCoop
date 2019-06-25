@@ -17,8 +17,10 @@ public class PlayerControls : PlayerActionSet
     public PlayerAction PlayerThree;
     public PlayerAction PlayerFour;
     public PlayerAction TargetEnemy;
+    public PlayerAction TargetSelf;
     public PlayerAction Start;
     public PlayerAction Pause;
+    public PlayerAction ToggleSpellInfo;
     public PlayerTwoAxisAction Movement;
 
 
@@ -39,8 +41,10 @@ public class PlayerControls : PlayerActionSet
         PlayerThree = CreatePlayerAction("PlayerThree");
         PlayerFour = CreatePlayerAction("PlayerFour");
         TargetEnemy = CreatePlayerAction("TargetEnemy");
+        TargetSelf = CreatePlayerAction("TargetSelf");
         Start = CreatePlayerAction("Start");
         Pause = CreatePlayerAction("Pause");
+        ToggleSpellInfo = CreatePlayerAction("ToggleSpellInfo");
         Movement = CreateTwoAxisPlayerAction(Left, Right, Down, Up);
     }
 
@@ -67,9 +71,12 @@ public class PlayerControls : PlayerActionSet
         actions.PlayerThree.AddDefaultBinding(Key.F3);
         actions.PlayerFour.AddDefaultBinding(Key.F4);
         actions.TargetEnemy.AddDefaultBinding(Key.Tab);
+        actions.TargetSelf.AddDefaultBinding(Key.G);
 
         actions.Start.AddDefaultBinding(Key.Return);
         actions.Pause.AddDefaultBinding(Key.Escape);
+
+        actions.ToggleSpellInfo.AddDefaultBinding(Key.I);
 
         return actions;
     }
@@ -99,9 +106,12 @@ public class PlayerControls : PlayerActionSet
         actions.PlayerThree.AddDefaultBinding(InputControlType.RightStickDown);
         actions.PlayerFour.AddDefaultBinding(InputControlType.RightStickLeft);
         actions.TargetEnemy.AddDefaultBinding(InputControlType.LeftBumper);
+        actions.TargetSelf.AddDefaultBinding(InputControlType.RightStickButton);
 
         actions.Start.AddDefaultBinding(InputControlType.Command);
         actions.Pause.AddDefaultBinding(InputControlType.Command);
+
+        actions.ToggleSpellInfo.AddDefaultBinding(InputControlType.DPadUp);
 
         return actions;
     }

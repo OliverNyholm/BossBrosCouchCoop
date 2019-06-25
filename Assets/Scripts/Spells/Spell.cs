@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Spell : MonoBehaviour
 {
+    public string myQuickInfo;
+
     public string myName;
     public GameObject myTextMesh;
     public SpellType mySpellType;

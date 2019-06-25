@@ -1921,11 +1921,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7586150612886126392, guid: c6cadcf7a6fe2f24ab1c0aa99f6b4d6b,
         type: 3}
-      propertyPath: myEnemies.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7586150612886126392, guid: c6cadcf7a6fe2f24ab1c0aa99f6b4d6b,
-        type: 3}
       propertyPath: myEnemies.Array.data[0]
       value: 
       objectReference: {fileID: 1106713476812670439}
@@ -1934,6 +1929,26 @@ PrefabInstance:
       propertyPath: myEnemies.Array.data[1]
       value: 
       objectReference: {fileID: 261754178}
+    - target: {fileID: 8046675286095121425, guid: c6cadcf7a6fe2f24ab1c0aa99f6b4d6b,
+        type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662075306030803148, guid: c6cadcf7a6fe2f24ab1c0aa99f6b4d6b,
+        type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1699677042199421443, guid: c6cadcf7a6fe2f24ab1c0aa99f6b4d6b,
+        type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2053063222328945434, guid: c6cadcf7a6fe2f24ab1c0aa99f6b4d6b,
+        type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6cadcf7a6fe2f24ab1c0aa99f6b4d6b, type: 3}
 --- !u!1 &863358740
@@ -7593,6 +7608,9 @@ MonoBehaviour:
   myGravity: 0
   myName: EnemyDummy
   myCharacterColor: {r: 1, g: 0, b: 0, a: 1}
+  mySpeed: 0
+  myPlayers: []
+  myAggroList: 
 --- !u!114 &1106713476812670441
 MonoBehaviour:
   m_ObjectHideFlags: 0

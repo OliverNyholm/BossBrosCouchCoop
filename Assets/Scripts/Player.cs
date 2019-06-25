@@ -116,6 +116,14 @@ public class Player : Character
     }
     private void DetectSpellInput()
     {
+        if (myPlayerControls.Shift.WasPressed)
+            myClass.ShiftInteracted(true);
+        if (myPlayerControls.Shift.WasReleased)
+            myClass.ShiftInteracted(false);
+
+        if (myPlayerControls.ToggleSpellInfo.WasPressed)
+            myClass.ToggleSpellInfo();
+
         bool isShiftDown = myPlayerControls.Shift.RawValue > 0.0f;
 
         if (isShiftDown && myPlayerControls.Action1.WasPressed)
@@ -135,6 +143,32 @@ public class Player : Character
         else if (myPlayerControls.Action4.WasPressed)
             CastSpell(3);
     }
+
+    private void DetectTargetingInput()
+    {
+        int targetIndex = -1;
+        if (myPlayerControls.PlayerOne.RawValue > 0.5f)
+            targetIndex = 0;
+        if (myPlayerControls.PlayerTwo.RawValue > 0.5f)
+            targetIndex = 1;
+        if (myPlayerControls.PlayerThree.RawValue > 0.5f)
+            targetIndex = 2;
+        if (myPlayerControls.PlayerFour.RawValue > 0.5f)
+            targetIndex = 3;
+
+        if (myPlayerControls.TargetSelf.WasPressed)
+            targetIndex = PlayerIndex - 1;
+
+        if (targetIndex != -1)
+        {
+            SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetPlayer(targetIndex));
+            return;
+        }
+
+        if (myPlayerControls.TargetEnemy.WasPressed)
+            SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetEnemy(PlayerIndex));
+    }
+
     private void RotatePlayer()
     {
         transform.rotation = Quaternion.LookRotation(myDirection, Vector3.up);
@@ -185,6 +219,8 @@ public class Player : Character
 
     public void CastSpell(int aKeyIndex)
     {
+        myClass.SpellPressed(aKeyIndex);
+
         if (GetComponent<Health>().IsDead())
             return;
 
@@ -355,28 +391,6 @@ public class Player : Character
     public void SetPosition(Vector3 aPosition)
     {
         transform.position = aPosition;
-    }
-
-    private void DetectTargetingInput()
-    {
-        int targetIndex = -1;
-        if (myPlayerControls.PlayerOne.RawValue > 0.5f)
-            targetIndex = 0;
-        if (myPlayerControls.PlayerTwo.RawValue > 0.5f)
-            targetIndex = 1;
-        if (myPlayerControls.PlayerThree.RawValue > 0.5f)
-            targetIndex = 2;
-        if (myPlayerControls.PlayerFour.RawValue > 0.5f)
-            targetIndex = 3;
-
-        if (targetIndex != -1)
-        {
-            SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetPlayer(targetIndex));
-            return;
-        }
-
-        if (myPlayerControls.TargetEnemy.WasPressed)
-            SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetEnemy(PlayerIndex));
     }
 
     protected override void SetTarget(GameObject aTarget)

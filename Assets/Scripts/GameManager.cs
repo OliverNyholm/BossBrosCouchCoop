@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     private void Awake()
     {
-        AIPostMaster.Create();
+        PostMaster.Create();
 
         TargetHandler targetHandler = GetComponent<TargetHandler>();
         GameObject characterGameDataGO = GameObject.Find("CharacterGameData");
@@ -27,10 +27,14 @@ public class GameManager : MonoBehaviour
             playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material.mainTexture = characters[index].myColorScheme.myTexture;
 
             Player player = playerGO.GetComponent<Player>();
-            player.SetInputDevice(characters[index].myInputDevice);
+            player.SetPlayerControls(characters[index].myPlayerControls);
+            player.myName = characters[index].myName;
             player.PlayerIndex = index + 1;
-            player.PlayerColor = characters[index].myColorScheme.myColor;
+            player.myCharacterColor = characters[index].myColorScheme.myColor;
             player.SetAvatar(characters[index].myColorScheme.myAvatar);
+
+            Vector3 rgb = new Vector3(player.myCharacterColor.r, player.myCharacterColor.g, player.myCharacterColor.b);
+            PostMaster.Instance.PostMessage(new Message(MessageType.RegisterPlayer, playerGO.GetInstanceID(), rgb));
 
             targetHandler.AddPlayer(playerGO);
         }
@@ -38,7 +42,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        AIPostMaster.Instance.DelegateMessages();
+        PostMaster.Instance.DelegateMessages();
 
         if (Input.GetButtonDown("Restart"))
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);

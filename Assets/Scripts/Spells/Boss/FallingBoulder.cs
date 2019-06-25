@@ -36,7 +36,10 @@ public class FallingBoulder : Spell
 
         transform.position += Vector3.down * mySpeed * Time.deltaTime;
         if (transform.position.y <= myLandPosition.y)
+        {
+            SpawnVFX(2.5f);
             Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,7 +52,7 @@ public class FallingBoulder : Spell
             return;
 
         myTargetsHit.Add(instanceID);
-
-        other.gameObject.GetComponent<Health>().TakeDamage(myDamage);
+        
+        DealDamage(myDamage, other.gameObject);
     }
 }

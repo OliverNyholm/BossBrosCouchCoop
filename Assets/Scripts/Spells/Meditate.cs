@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Meditate : Spell {
+public class Meditate : Spell
+{
 
     [SerializeField]
     private int myRegenerationPercentage = 1;
@@ -15,7 +16,7 @@ public class Meditate : Spell {
     private int myResourcePerTick;
 
     private void Start()
-    {        
+    {
         const int NrOfTicks = 10;
 
         myIntervalTimer = NrOfTicks / myChannelTime;
@@ -26,12 +27,13 @@ public class Meditate : Spell {
         myChannelTime += 0.02f;
 
         StartCoroutine();
+        SpawnVFX(myChannelTime + 1.5f);
     }
 
     protected override void Update()
     {
         myCurrentIntervalTimer += Time.deltaTime;
-        if(myCurrentIntervalTimer >= myIntervalTimer)
+        if (myCurrentIntervalTimer >= myIntervalTimer)
         {
             myCurrentIntervalTimer -= myIntervalTimer;
             myParent.GetComponent<Resource>().GainResource(myResourcePerTick); ;

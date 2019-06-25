@@ -24,6 +24,8 @@ public class TargetHandler : MonoBehaviour
         {
             for (int playerIndex = 0; playerIndex < myPlayers.Count; playerIndex++)
             {
+                if (!myEnemies[index].GetComponent<Enemy>())
+                    continue;
                 myEnemies[index].GetComponent<Enemy>().AddPlayer(myPlayers[playerIndex]);
             }
         }

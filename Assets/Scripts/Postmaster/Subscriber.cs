@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AISubscriber
+public class Subscriber
 {
-    public delegate void ReceivedMessage(AIMessage anAIMessage);
+    public delegate void ReceivedMessage(Message anAIMessage);
     public event ReceivedMessage EventOnReceivedMessage;
 
-    public AISubscriber()
+    public Subscriber()
     {
 
     }
 
-    public void ReceiveMessage(AIMessage anAIMessage)
+    public void ReceiveMessage(Message anAIMessage)
     {
         EventOnReceivedMessage?.Invoke(anAIMessage);
     }

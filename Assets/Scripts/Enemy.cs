@@ -5,11 +5,9 @@ using UnityEngine.AI;
 
 public class Enemy : Character
 {
-    public string myName;
-
     public float mySpeed;
 
-    private AISubscriber myAISubscriber;
+    protected Subscriber mySubscriber;
 
     private NavMeshAgent myNavmeshAgent;
 
@@ -69,17 +67,17 @@ public class Enemy : Character
 
     void Subscribe()
     {
-        myAISubscriber = new AISubscriber();
-        myAISubscriber.EventOnReceivedMessage += ReceiveAIMessage;
-        AIPostMaster.Instance.RegisterSubscriber(ref myAISubscriber, AIMessageType.SpellSpawned);
-        AIPostMaster.Instance.RegisterSubscriber(ref myAISubscriber, AIMessageType.PlayerDied);
+        mySubscriber = new Subscriber();
+        mySubscriber.EventOnReceivedMessage += ReceiveMessage;
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.SpellSpawned);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
     }
 
     void Unsubscribe()
     {
-        myAISubscriber.EventOnReceivedMessage -= ReceiveAIMessage;
-        AIPostMaster.Instance.UnregisterSubscriber(ref myAISubscriber, AIMessageType.SpellSpawned);
-        AIPostMaster.Instance.UnregisterSubscriber(ref myAISubscriber, AIMessageType.PlayerDied);
+        mySubscriber.EventOnReceivedMessage -= ReceiveMessage;
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.SpellSpawned);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
     }
 
     // Update is called once per frame
@@ -120,6 +118,7 @@ public class Enemy : Character
     {
         base.OnDeath();
 
+        transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").gameObject.SetActive(false);
         myNavmeshAgent.isStopped = true;
     }
 
@@ -335,11 +334,11 @@ public class Enemy : Character
             SetState(State.Disengage);
     }
 
-    private void ReceiveAIMessage(AIMessage anAiMessage)
+    protected void ReceiveMessage(Message anAiMessage)
     {
         switch (anAiMessage.Type)
         {
-            case AIMessageType.SpellSpawned:
+            case MessageType.SpellSpawned:
                 {
                     int id = (int)anAiMessage.Data.myVector2.x;
                     int value = (int)anAiMessage.Data.myVector2.y;
@@ -347,7 +346,7 @@ public class Enemy : Character
                     AddThreat(value, id);
                 }
                 break;
-            case AIMessageType.PlayerDied:
+            case MessageType.PlayerDied:
                 {
                     int id = anAiMessage.Data.myInt;
                     for (int index = 0; index < myPlayers.Count; index++)

@@ -12,6 +12,9 @@ public abstract class Character : MonoBehaviour
     public float myJumpSpeed;
     public float myGravity;
 
+    public string myName;
+    public Color myCharacterColor;
+
     protected Animator myAnimator;
 
     protected GameObject myTarget;
@@ -28,7 +31,7 @@ public abstract class Character : MonoBehaviour
     protected Class myClass;
 
 
-    private List<BuffSpell> myBuffs;
+    protected List<BuffSpell> myBuffs;
 
     protected float myStunDuration;
     protected float myAutoAttackCooldown;
@@ -51,7 +54,7 @@ public abstract class Character : MonoBehaviour
         myIsCasting = false;
     }
 
-    protected void SetupHud(Transform aUIParent)
+    protected virtual void SetupHud(Transform aUIParent)
     {
         aUIParent.GetComponent<CanvasGroup>().alpha = 1.0f;
 
@@ -59,9 +62,10 @@ public abstract class Character : MonoBehaviour
         myTargetHUD = aUIParent.transform.Find("TargetHud").GetComponent<CharacterHUD>();
         myCastbar = aUIParent.transform.Find("Castbar Background").GetComponent<Castbar>();
 
-        myCharacterHUD.SetName(transform.name);
+        myCharacterHUD.SetName(myName);
         myCharacterHUD.SetClassSprite(myClass.mySprite);
         myCharacterHUD.SetAvatarSprite(myAvatarSprite);
+        myCharacterHUD.SetHudColor(myCharacterColor);
 
         myHealth.EventOnHealthChange += ChangeMyHudHealth;
         myHealth.EventOnHealthZero += OnDeath;
@@ -86,6 +90,9 @@ public abstract class Character : MonoBehaviour
     {
         GameObject spell = myClass.GetSpell(aKeyIndex);
         Spell spellScript = spell.GetComponent<Spell>();
+
+        GetComponent<AudioSource>().clip = spellScript.GetSpellSFX().myCastSound;
+        GetComponent<AudioSource>().Play();
 
 
         myIsCasting = true;
@@ -164,6 +171,9 @@ public abstract class Character : MonoBehaviour
         myCastbar.SetSpellIcon(aSpellScript.mySpellIcon);
         myCastbar.SetCastTimeText(aDuration.ToString());
 
+        GetComponent<AudioSource>().clip = aSpellScript.GetSpellSFX().myCastSound;
+        GetComponent<AudioSource>().Play();
+
         myCastingRoutine = StartCoroutine(SpellChannelRoutine(aDuration, aChannelGO));
     }
 
@@ -187,6 +197,9 @@ public abstract class Character : MonoBehaviour
             spellScript.SetTarget(myTarget);
         else
             spellScript.SetTarget(transform.gameObject);
+
+        if (aSpawnPosition == transform.position)
+            GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
     }
 
     protected abstract bool IsAbleToCastSpell(Spell aSpellScript);
@@ -226,7 +239,7 @@ public abstract class Character : MonoBehaviour
             StopCoroutine(myCastingRoutine);
         myIsCasting = false;
         myCastbar.FadeOutCastbar();
-
+        GetComponent<AudioSource>().Stop();
         myAnimator.SetBool("IsCasting", false);
     }
 
@@ -282,18 +295,9 @@ public abstract class Character : MonoBehaviour
         }
 
         myTargetHUD.SetAvatarSprite(myTarget.GetComponent<Character>().GetAvatar());
-        if (myTarget.tag == "Enemy")
-        {
-            myTargetHUD.SetName(myTarget.GetComponent<Enemy>().myName);
-            myTargetHUD.SetClassSprite(myTarget.GetComponent<Class>().mySprite);
-            myTargetHUD.SetNameColor(Color.red);
-        }
-        else if (myTarget.tag == "Player")
-        {
-            myTargetHUD.SetName(myTarget.name);
-            myTargetHUD.SetClassSprite(myTarget.GetComponent<Class>().mySprite);
-            myTargetHUD.SetNameColor(new Color(120f / 255f, 1.0f, 0.0f));
-        }
+        myTargetHUD.SetClassSprite(myTarget.GetComponent<Class>().mySprite);
+        myTargetHUD.SetHudColor(myTarget.GetComponent<Character>().myCharacterColor);
+        myTargetHUD.SetName(myTarget.GetComponent<Character>().myName);
     }
     private void ChangeTargetHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
     {
@@ -322,7 +326,7 @@ public abstract class Character : MonoBehaviour
         myCharacterHUD.SetResourceText(aResourceText);
         myCharacterHUD.SetResourceBarColor(myResource.myResourceColor);
     }
-    private void HandleBuffs()
+    protected void HandleBuffs()
     {
         for (int index = 0; index < myBuffs.Count; index++)
         {
@@ -345,7 +349,10 @@ public abstract class Character : MonoBehaviour
                 BuffTickSpell dot = myBuffs[index] as BuffTickSpell;
                 if (dot.ShouldDealTickSpellEffect)
                 {
-                    myHealth.TakeDamage(dot.GetTickValue());
+                    myHealth.TakeDamage(dot.GetTickValue(), dot.GetParent().GetComponent<Character>().myCharacterColor);
+                    if (dot.GetParent().tag == "Player")
+                        PostMaster.Instance.PostMessage(new Message(MessageType.DamageDealt, new Vector2(dot.GetParent().GetInstanceID(), dot.GetTickValue())));
+
                     dot.ShouldDealTickSpellEffect = false;
                 }
             }
@@ -436,6 +443,9 @@ public abstract class Character : MonoBehaviour
             RemoveBuff(myBuffs.Count - 1);
         }
 
+        StopAllCoroutines();
+
+        GetComponent<AudioSource>().Stop();
         myAnimator.SetTrigger("Death");
         myHealth.EventOnHealthZero -= OnDeath;
     }

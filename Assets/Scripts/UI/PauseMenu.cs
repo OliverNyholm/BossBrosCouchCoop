@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -30,7 +31,8 @@ public class PauseMenu : MonoBehaviour
 
         List<GameObject> players = GameObject.FindObjectOfType<TargetHandler>().GetAllPlayers();
 
-        for (int index = 0; index < myPauseObject.transform.childCount; index++)
+        const int playerMax = 4;
+        for (int index = 0; index < playerMax; index++)
         {
             if (players.Count <= index)
             {
@@ -48,5 +50,12 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         myPauseObject.SetActive(false);
+    }
+
+    public void LoadCharacterSelect()
+    {
+        ourIsGamePaused = false;
+        Resume();
+        SceneManager.LoadScene("CharacterSelect");
     }
 }

@@ -66,6 +66,11 @@ public class CharacterHUD : MonoBehaviour
         myResourceBarImage.color = aColor;
     }
 
+    public void SetHealthbarColor(Color aColor)
+    {
+        myHealthbarImage.color = aColor;
+    }
+
     public void SetAvatarSprite(Sprite aSprite)
     {
         myAvatarImage.sprite = aSprite;
@@ -84,6 +89,12 @@ public class CharacterHUD : MonoBehaviour
     public void SetNameColor(Color aColor)
     {
         myNameText.color = aColor;
+    }
+
+    public void SetHudColor(Color aColor)
+    {
+        myNameText.color = aColor;
+        myHealthbarImage.color = aColor;
     }
 
     public void SetHealthText(string aString)

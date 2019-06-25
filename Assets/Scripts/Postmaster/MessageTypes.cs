@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum AIMessageType
+public enum MessageType
 {
     SpellSpawned,
     PlayerDied,
+    RegisterPlayer,
+    DamageDealt,
     Count
 }

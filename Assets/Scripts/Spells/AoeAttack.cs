@@ -11,6 +11,7 @@ public class AoeAttack : Spell {
         myLifeTime -= Time.deltaTime;
         if (myLifeTime <= 0.0f)
             Destroy(gameObject);
+        SpawnVFX(2.5f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,7 +19,7 @@ public class AoeAttack : Spell {
         if (other.gameObject.tag == "Enemy")
         {
             if (myDamage > 0.0f)
-                other.GetComponent<Health>().TakeDamage(myDamage);
+                other.GetComponent<Health>().TakeDamage(myDamage, myParent.GetComponent<Character>().myCharacterColor);
         }
     }
 

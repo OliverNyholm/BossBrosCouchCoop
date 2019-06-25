@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Spell : MonoBehaviour
 {
     public string myName;
@@ -27,6 +28,21 @@ public class Spell : MonoBehaviour
 
     public Buff myBuff;
 
+    [System.Serializable]
+    public struct SpellSFX
+    {
+        public AudioClip myCastSound;
+        public AudioClip mySpawnSound;
+        public AudioClip myHitSound;
+    }
+    [Header("The sound effects for the spell")]
+    [SerializeField]
+    protected SpellSFX mySpellSFX;
+
+    [Header("The spawned effect for the spell")]
+    [SerializeField]
+    protected GameObject mySpellVFX;
+
     protected GameObject myParent;
     protected GameObject myTarget;
 
@@ -45,6 +61,7 @@ public class Spell : MonoBehaviour
         else
         {
             DealSpellEffect();
+            SpawnVFX(2.5f);
 
             if (myBuff != null)
             {
@@ -87,15 +104,14 @@ public class Spell : MonoBehaviour
             if (myDamage > 0.0f)
             {
                 myTarget.GetComponent<Health>().GainHealth(myDamage);
-                AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.SpellSpawned, new AIMessageData(myParent.GetInstanceID(), myDamage)));
+                PostMaster.Instance.PostMessage(new Message(MessageType.SpellSpawned, new MessageData(myParent.GetInstanceID(), myDamage)));
             }
         }
         else
         {
             if (myDamage > 0.0f)
             {
-                myTarget.GetComponent<Health>().TakeDamage(myDamage);
-                myTarget.GetComponent<Health>().GenerateThreat((int)(myDamage * myThreatModifier), myParent.GetInstanceID());
+                DealDamage(myDamage);
             }
         }
 
@@ -117,6 +133,20 @@ public class Spell : MonoBehaviour
     public void SetDamage(int aDamage)
     {
         myDamage = aDamage;
+    }
+
+    protected void DealDamage(int aDamage, GameObject aTarget = null)
+    {
+        GameObject target = myTarget;
+        if (aTarget)
+            target = aTarget;
+
+        int parentID = myParent.GetInstanceID();
+        int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<Character>().myCharacterColor);
+        target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID);
+
+        if (myParent.tag == "Player")
+            PostMaster.Instance.PostMessage(new Message(MessageType.DamageDealt, new Vector2(parentID, damageDone)));
     }
 
     public void SetParent(GameObject aParent)
@@ -330,6 +360,26 @@ public class Spell : MonoBehaviour
             myTarget.GetComponent<Player>().InterruptSpellCast();
         else if (myTarget.tag == "Enemy")
             myTarget.GetComponent<Enemy>().InterruptSpellCast();
+    }
+
+    public SpellSFX GetSpellSFX()
+    {
+        return mySpellSFX;
+    }
+
+    protected void SpawnVFX(float aDuration)
+    {
+        if(!mySpellVFX)
+        {
+            Debug.Log("Missing VFX for spell: " + myName);
+            return;
+        }
+
+        GameObject vfxGO = Instantiate(mySpellVFX, myTarget.transform);
+        vfxGO.GetComponent<AudioSource>().clip = mySpellSFX.myHitSound;
+        vfxGO.GetComponent<AudioSource>().Play();
+
+        Destroy(vfxGO, aDuration);
     }
 
     private void Destroy()

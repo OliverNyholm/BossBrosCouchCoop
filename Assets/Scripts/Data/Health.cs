@@ -22,7 +22,7 @@ public class Health : MonoBehaviour
 
     private List<BuffShieldSpell> myShields = new List<BuffShieldSpell>();
 
-    public void TakeDamage(int aValue)
+    public int TakeDamage(int aValue, Color aDamagerColor)
     {
         int damage = CalculateMitigations(aValue);
         myCurrentHealth -= damage;
@@ -36,11 +36,13 @@ public class Health : MonoBehaviour
         if(aValue != damage)
         {
             int absorbed = aValue - damage;
-            damageText = damage.ToString() + " (" + absorbed.ToString() + " absorbed)";
+            damageText = damage.ToString() + " (-" + absorbed.ToString() +")";
         }
 
         OnHealthChanged();
-        SpawnFloatingText(damageText, Color.red);
+        SpawnFloatingText(damageText, aDamagerColor);
+
+        return damage;
     }
 
     public void GainHealth(int aValue)
@@ -114,7 +116,11 @@ public class Health : MonoBehaviour
 
     private void SpawnFloatingText(string aText, Color aColor)
     {
+        Vector3 randomOffset = new Vector2(Random.Range(-2.0f, 2.0f), Random.Range(0.0f, 2.0f));
+
         GameObject floatingHealthGO = Instantiate(myFloatingHealthPrefab, transform);
+        floatingHealthGO.transform.position += randomOffset;
+
         FloatingHealth floatingHealth = floatingHealthGO.GetComponent<FloatingHealth>();
         floatingHealth.SetText(aText, aColor);
     }

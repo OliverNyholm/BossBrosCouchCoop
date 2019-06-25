@@ -8,7 +8,9 @@ Shader "Projector/Target" {
 		_TopRight("_TopRight", Color) = (1,1,1,1)
 		_BottomLeft("_BottomLeft", Color) = (1,1,1,1)
 		_BottomRight("_BottomRight", Color) = (1,1,1,1)
+		_PlayerColor("_PlayerColor", Color) = (1,1,1,1)
 		_ShadowTex ("Cookie", 2D) = "" {}
+		_PlayerTex ("PlayerTexture", 2D) = "" {}
 		_FalloffTex ("FallOff", 2D) = "" {}
 	}
 	
@@ -48,11 +50,13 @@ Shader "Projector/Target" {
 			
 			fixed4 _Color;
 			sampler2D _ShadowTex;
+			sampler2D _PlayerTex;
 			sampler2D _FalloffTex;
 			float4 _TopLeft;
 			float4 _TopRight;
 			float4 _BottomLeft;
 			float4 _BottomRight;
+			float4 _PlayerColor;
 			
 			fixed4 frag(v2f i) : SV_Target
 			{
@@ -81,11 +85,17 @@ Shader "Projector/Target" {
 				clamp(colorBottomRight, 0, 1);
 
 				texS.rgb *= colorTopLeft + colorTopRight + colorBottomLeft + colorBottomRight;
-
 				texS.a = 1.0 - texS.a;
+
+				fixed4 texP = tex2Dproj (_PlayerTex, UNITY_PROJ_COORD(i.uvShadow));
+				texP.rgb *= _PlayerColor;
+
+				texP.a = 1.0 - texP.a;
+
+				fixed4 finalColor = texS + texP;
 				
 				fixed4 texF = tex2Dproj (_FalloffTex, UNITY_PROJ_COORD(i.uvFalloff));
-				fixed4 res = texS * texF.a;
+				fixed4 res = finalColor * texF.a;
 
 				UNITY_APPLY_FOG_COLOR(i.fogCoord, res, fixed4(0,0,0,0));
 				return res;

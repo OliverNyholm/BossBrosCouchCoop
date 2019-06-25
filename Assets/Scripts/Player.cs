@@ -11,18 +11,16 @@ public class Player : Character
 
     private UIManager myUIManager;
 
-    private InputDevice myInputDevice;
+    private PlayerControls myPlayerControls;
 
     private List<BuffSpell> myBuffs;
 
     private Vector3 myDirection;
     private CameraXZTransform myCameraXZTransform;
 
-
     private bool myIsGrounded;
     private bool myShouldAutoAttack;
 
-    public Color PlayerColor { get; set; }
     public int PlayerIndex { get; set; }
 
     protected override void Start()
@@ -98,7 +96,7 @@ public class Player : Character
         if (!myIsGrounded)
             return;
 
-        Vector2 leftStickAxis = myInputDevice.LeftStick;
+        Vector2 leftStickAxis = myPlayerControls.Movement;
 
         myDirection = (leftStickAxis.x * myCameraXZTransform.myRight + leftStickAxis.y * myCameraXZTransform.myForwards).normalized;
         myDirection *= myBaseSpeed * GetComponent<Stats>().mySpeedMultiplier;
@@ -109,7 +107,7 @@ public class Player : Character
 
         myAnimator.SetBool("IsRunning", isMoving);
 
-        if (myInputDevice.RightBumper.WasPressed)
+        if (myPlayerControls.Jump.WasPressed)
         {
             myDirection.y = myJumpSpeed;
             myAnimator.SetBool("IsGrounded", false);
@@ -118,23 +116,23 @@ public class Player : Character
     }
     private void DetectSpellInput()
     {
-        bool isTriggerDown = (myInputDevice.LeftTrigger.RawValue > 0.0f) || (myInputDevice.RightTrigger.RawValue > 0.0f);
+        bool isShiftDown = myPlayerControls.Shift.RawValue > 0.0f;
 
-        if (isTriggerDown && myInputDevice.Action1.WasPressed)
+        if (isShiftDown && myPlayerControls.Action1.WasPressed)
             CastSpell(4);
-        else if (isTriggerDown && myInputDevice.Action2.WasPressed)
+        else if (isShiftDown && myPlayerControls.Action2.WasPressed)
             CastSpell(5);
-        else if (isTriggerDown && myInputDevice.Action3.WasPressed)
+        else if (isShiftDown && myPlayerControls.Action3.WasPressed)
             CastSpell(6);
-        else if (isTriggerDown && myInputDevice.Action4.WasPressed)
+        else if (isShiftDown && myPlayerControls.Action4.WasPressed)
             CastSpell(7);
-        else if (myInputDevice.Action1.WasPressed)
+        else if (myPlayerControls.Action1.WasPressed)
             CastSpell(0);
-        else if (myInputDevice.Action2.WasPressed)
+        else if (myPlayerControls.Action2.WasPressed)
             CastSpell(1);
-        else if (myInputDevice.Action3.WasPressed)
+        else if (myPlayerControls.Action3.WasPressed)
             CastSpell(2);
-        else if (myInputDevice.Action4.WasPressed)
+        else if (myPlayerControls.Action4.WasPressed)
             CastSpell(3);
     }
     private void RotatePlayer()
@@ -227,7 +225,6 @@ public class Player : Character
     {
         if (myIsCasting)
         {
-            myUIManager.CreateErrorMessage("Already casting another spell!");
             return false;
         }
 
@@ -238,7 +235,6 @@ public class Player : Character
 
         if (myTarget.GetComponent<Health>().IsDead())
         {
-            myUIManager.CreateErrorMessage("That target is dead!");
             myShouldAutoAttack = false;
             return false;
         }
@@ -333,6 +329,12 @@ public class Player : Character
         return true;
     }
 
+    protected override void SetupHud(Transform aUIParent)
+    {
+        base.SetupHud(aUIParent);
+        GetComponentInChildren<TargetProjector>().SetPlayerColor(myCharacterColor);
+    }
+
     public override void Stun(float aDuration)
     {
         base.Stun(aDuration);
@@ -358,14 +360,14 @@ public class Player : Character
     private void DetectTargetingInput()
     {
         int targetIndex = -1;
-        if (myInputDevice.RightStickRight.RawValue > 0.5f)
-            targetIndex = 1;
-        if (myInputDevice.RightStickLeft.RawValue > 0.5f)
-            targetIndex = 4;
-        if (myInputDevice.RightStickUp.RawValue > 0.5f)
+        if (myPlayerControls.PlayerOne.RawValue > 0.5f)
             targetIndex = 0;
-        if (myInputDevice.RightStickDown.RawValue > 0.5f)
+        if (myPlayerControls.PlayerTwo.RawValue > 0.5f)
+            targetIndex = 1;
+        if (myPlayerControls.PlayerThree.RawValue > 0.5f)
             targetIndex = 2;
+        if (myPlayerControls.PlayerFour.RawValue > 0.5f)
+            targetIndex = 3;
 
         if (targetIndex != -1)
         {
@@ -373,7 +375,7 @@ public class Player : Character
             return;
         }
 
-        if (myInputDevice.LeftBumper.WasPressed)
+        if (myPlayerControls.TargetEnemy.WasPressed)
             SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetEnemy(PlayerIndex));
     }
 
@@ -385,7 +387,7 @@ public class Player : Character
         base.SetTarget(aTarget);
 
         if (myTarget)
-            myTarget.GetComponentInChildren<TargetProjector>().AddTargetProjection(PlayerColor, PlayerIndex);
+            myTarget.GetComponentInChildren<TargetProjector>().AddTargetProjection(myCharacterColor, PlayerIndex);
 
         myShouldAutoAttack = false;
         if (myTarget && myTarget.tag == "Enemy")
@@ -399,7 +401,7 @@ public class Player : Character
         myDirection.x = 0.0f;
         myDirection.z = 0.0f;
         myShouldAutoAttack = false;
-        AIPostMaster.Instance.PostAIMessage(new AIMessage(AIMessageType.PlayerDied, gameObject.GetInstanceID()));
+        PostMaster.Instance.PostMessage(new Message(MessageType.PlayerDied, gameObject.GetInstanceID()));
     }
 
     public int GetControllerIndex()
@@ -407,8 +409,8 @@ public class Player : Character
         return PlayerIndex;
     }
 
-    public void SetInputDevice(InputDevice aInputDevice)
+    public void SetPlayerControls(PlayerControls aPlayerControls)
     {
-        myInputDevice = aInputDevice;
+        myPlayerControls = aPlayerControls;
     }
 }

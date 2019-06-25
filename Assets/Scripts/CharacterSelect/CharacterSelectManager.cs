@@ -6,9 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class CharacterSelectManager : MonoBehaviour
 {
-    [Header("The class that should store the players for all levels")]
-    [SerializeField]
-    private CharacterGameData myCharacterGameData = null;
 
     [Header("The HUD gameobjects for each player")]
     [SerializeField]
@@ -22,8 +19,17 @@ public class CharacterSelectManager : MonoBehaviour
     [SerializeField]
     private List<ColorScheme> myColorSchemes = new List<ColorScheme>();
 
+    private CharacterGameData myCharacterGameData = null;
+
     private List<int> myPlayerClassIndex;
     private List<int> myPlayerColorIndex;
+
+    private PlayerControls myKeyboardListener;
+    private PlayerControls myJoystickListener;
+
+    [Header("Level to load")]
+    [SerializeField]
+    private string myNextLevel = "Coop";
 
     void Start()
     {
@@ -39,36 +45,77 @@ public class CharacterSelectManager : MonoBehaviour
             characterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]]);
             characterSelector.SetColor(myColorSchemes[myPlayerColorIndex[index]]);
         }
+
+        myKeyboardListener = PlayerControls.CreateWithKeyboardBindings();
+        myJoystickListener = PlayerControls.CreateWithJoystickBindings();
+
+        myCharacterGameData = FindObjectOfType<CharacterGameData>();
+        myCharacterGameData.ClearPlayerData();
+    }
+
+    private void OnDisable()
+    {
+        myJoystickListener.Destroy();
+        if (IsKeyboardAvailable())
+            myKeyboardListener.Destroy();
     }
 
     void Update()
     {
-        InputDevice activeDevice = InputManager.ActiveDevice;
-        if (!activeDevice.Action1.WasPressed)
-            return;
+        if (JoinButtonWasPressedOnListener(myJoystickListener))
+        {
+            InputDevice inputDevice = InputManager.ActiveDevice;
 
-        if (!IsInputDeviceAvailable(activeDevice))
-            return;
+            if (!IsInputDeviceAvailable(inputDevice))
+                return;
 
-        SetupCharacterSelector(GetAvailableCharacterSelector(), activeDevice);
+            SetupCharacterSelector(GetAvailableCharacterSelector(), inputDevice);
+        }
+        if (myKeyboardListener != null && JoinButtonWasPressedOnListener(myKeyboardListener))
+        {
+            if (!IsKeyboardAvailable())
+                return;
+
+            SetupCharacterSelector(GetAvailableCharacterSelector(), null);
+            AudioManager.Instance.PlaySoundEffect("Example");
+        }
     }
 
     bool IsInputDeviceAvailable(InputDevice aInputDevice)
     {
         for (int index = 0; index < myPlayers.Count; index++)
         {
-            if (myPlayers[index].GetComponent<CharacterSelector>().Device == aInputDevice)
+            PlayerControls controls = myPlayers[index].GetComponent<CharacterSelector>().PlayerControls;
+
+            if (controls != null && controls.Device == aInputDevice)
                 return false;
         }
 
         return true;
     }
 
+    bool IsKeyboardAvailable()
+    {
+        for (int index = 0; index < myPlayers.Count; index++)
+        {
+            PlayerControls controls = myPlayers[index].GetComponent<CharacterSelector>().PlayerControls;
+            if (controls != null && controls.Device == myKeyboardListener.Device)
+                return false;
+        }
+
+        return true;
+    }
+
+    bool JoinButtonWasPressedOnListener(PlayerControls actions)
+    {
+        return actions.Action1.WasPressed || actions.Start.WasPressed;
+    }
+
     CharacterSelector GetAvailableCharacterSelector()
     {
         for (int index = 0; index < myPlayers.Count; index++)
         {
-            if (myPlayers[index].GetComponent<CharacterSelector>().Device == null)
+            if (myPlayers[index].GetComponent<CharacterSelector>().PlayerControls == null)
                 return myPlayers[index].GetComponent<CharacterSelector>();
         }
 
@@ -80,7 +127,19 @@ public class CharacterSelectManager : MonoBehaviour
         if (!aCharacterSelector)
             return;
 
-        aCharacterSelector.Show(aInputDevice, this);
+        PlayerControls playerControls = null;// = myKeyboardListener;
+        if (aInputDevice != null)
+        {
+            playerControls = PlayerControls.CreateWithJoystickBindings();
+            playerControls.Device = aInputDevice;
+        }
+        else
+        {
+            //playerControls = PlayerControls.CreateWithJoystickBindings();
+            playerControls = myKeyboardListener;
+        }
+
+        aCharacterSelector.Show(playerControls, this);
         PlayerSetState(aCharacterSelector, CharacterSelector.SelectionState.Class);
     }
 
@@ -90,12 +149,6 @@ public class CharacterSelectManager : MonoBehaviour
         {
             if (myPlayers[index].GetComponent<CharacterSelector>() == aCharacterSelector)
             {
-                //myPlayerClassIndex[index] += aModifier;
-                //if (myPlayerClassIndex[index] >= myClassHuds.Count)
-                //    myPlayerClassIndex[index] = 0;
-                //else if (myPlayerClassIndex[index] < 0)
-                //    myPlayerClassIndex[index] = myClassHuds.Count - 1;
-
                 myPlayerClassIndex[index] = GetNextAvailableOption(CharacterSelector.SelectionState.Class, myClassHuds, myPlayerClassIndex, myPlayerClassIndex[index], aModifier);
                 aCharacterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]]);
             }
@@ -195,14 +248,14 @@ public class CharacterSelectManager : MonoBehaviour
     {
         for (int index = 0; index < myPlayers.Count; index++)
         {
-            InputDevice inputDevice = myPlayers[index].GetComponent<CharacterSelector>().Device;
-            if (inputDevice == null)
+            PlayerControls playerControls = myPlayers[index].GetComponent<CharacterSelector>().PlayerControls;
+            if (playerControls == null)
                 continue;
 
-            myCharacterGameData.AddPlayerData(inputDevice, myClassHuds[myPlayerClassIndex[index]],
+            myCharacterGameData.AddPlayerData(playerControls, myClassHuds[myPlayerClassIndex[index]],
                 myColorSchemes[myPlayerColorIndex[index]], myPlayers[index].GetComponent<CharacterSelector>().GetName());
         }
 
-        SceneManager.LoadScene("Coop");
+        SceneManager.LoadScene(myNextLevel);
     }
 }

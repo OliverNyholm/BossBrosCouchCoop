@@ -667,7 +667,7 @@ MonoBehaviour:
   - {fileID: 1060916130889568, guid: 4caa3539b55677c468d384289c61f19c, type: 3}
   - {fileID: 1923039765265374, guid: c5edba4cadb79ec4d8b3f5dbdec2880c, type: 3}
   - {fileID: 1345520433668302, guid: 7048bcde87e081e4894b927ac90fe7af, type: 3}
-  - {fileID: 1233940432947236, guid: 1b123b8be2c110d42a377fca64b18196, type: 3}
+  - {fileID: 105232365839172733, guid: e8ff27299d97a624a8ed2108ecf5554f, type: 3}
   - {fileID: 1837549656673452, guid: fc507ae2236c8cb4eae8587a9dd8ecea, type: 3}
   myCooldownTimers:
   - 0
@@ -1324,7 +1324,8 @@ Transform:
   m_LocalRotation: {x: -0.065645605, y: -0.7182394, z: 0.07582721, w: 0.68852955}
   m_LocalPosition: {x: 0.15576744, y: 0.2586478, z: 0.027602442}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 2536206668061123602}
   m_Father: {fileID: 6995626362926830033}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 1.062, y: -92.313, z: 11.464001}
@@ -1525,6 +1526,36 @@ Transform:
   - {fileID: 282515417452408370}
   m_Father: {fileID: 2190415603197172484}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5751520547433361544
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2536206668061123602}
+  m_Layer: 9
+  m_Name: MainHandVFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2536206668061123602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751520547433361544}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.882, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2090263116659659287}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5880202801447586323
 GameObject:

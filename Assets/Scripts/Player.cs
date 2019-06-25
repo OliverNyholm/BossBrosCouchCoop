@@ -13,8 +13,6 @@ public class Player : Character
 
     private PlayerControls myPlayerControls;
 
-    private List<BuffSpell> myBuffs;
-
     private Vector3 myDirection;
     private CameraXZTransform myCameraXZTransform;
 

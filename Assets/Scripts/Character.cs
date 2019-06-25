@@ -320,6 +320,11 @@ public abstract class Character : MonoBehaviour
         myCharacterHUD.SetShieldBar(aShieldValue, myHealth.myCurrentHealth);
     }
 
+    public GameObject GetTarget()
+    {
+        return myTarget;
+    }
+
     private void ChangeMyHudResource(float aResourcePercentage, string aResourceText)
     {
         myCharacterHUD.SetResourceBarFillAmount(aResourcePercentage);

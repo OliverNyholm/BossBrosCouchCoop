@@ -105,6 +105,10 @@ public class Enemy : Character
                 break;
             case State.Combat:
                 Behaviour();
+                if (myAutoAttackCooldown > 0.0f)
+                {
+                    myAutoAttackCooldown -= Time.deltaTime * myStats.myAttackSpeed;
+                }
                 break;
             case State.Disengage:
                 MoveBackToSpawn();
@@ -222,15 +226,24 @@ public class Enemy : Character
         {
             SetTarget(target);
         }
+        
 
-        bool isCurrentlyAutoAttacking = myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
-        const float attackRangeOffset = 0.5f;
-        if (!isCurrentlyAutoAttacking && Vector3.Distance(myTarget.transform.position, transform.position) > GetComponent<Stats>().myAutoAttackRange - attackRangeOffset)
+        const float attackRangeOffset = 1.0f;
+        float distanceSqr = (myTarget.transform.position - transform.position).sqrMagnitude;
+        float autoAttackRange = GetComponent<Stats>().myAutoAttackRange;
+        float moveMinDistance = autoAttackRange - attackRangeOffset;
+        if (distanceSqr > moveMinDistance * moveMinDistance)
         {
             Move(myPlayers[myTargetIndex].transform.position);
             myAnimator.SetBool("IsRunning", true);
         }
         else
+        {
+            myNavmeshAgent.destination = transform.position;
+            myAnimator.SetBool("IsRunning", false);
+        }
+        
+        if (distanceSqr < autoAttackRange * autoAttackRange)
         {
             myNavmeshAgent.destination = transform.position;
             myAnimator.SetBool("IsRunning", false);
@@ -285,15 +298,6 @@ public class Enemy : Character
             return;
 
         transform.LookAt(new Vector3(myTarget.transform.position.x, transform.position.y, myTarget.transform.position.z));
-        if (myAutoAttackCooldown > 0.0f)
-        {
-            myAutoAttackCooldown -= Time.deltaTime * myStats.myAttackSpeed;
-            return;
-        }
-
-        //------- Flail debugging
-        //myNetAnimator.SetTrigger("Attack");
-        //myAutoAttackCooldown = 5.2f;
 
         myAnimator.SetTrigger("Attack");
         myAutoAttackCooldown = 1.5f;

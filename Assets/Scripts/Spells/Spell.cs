@@ -27,6 +27,11 @@ public class Spell : MonoBehaviour
     public bool myCanCastOnSelf;
     public bool myIsOnlySelfCast;
 
+    public bool myShouldRotate;
+
+    private float myRotationSpeed;
+    private Vector3 myRandomRotation;
+
     public Buff myBuff;
 
     [System.Serializable]
@@ -47,16 +52,27 @@ public class Spell : MonoBehaviour
     protected GameObject myParent;
     protected GameObject myTarget;
 
+    protected virtual void Start()
+    {
+        if(myShouldRotate)
+        {
+            myRotationSpeed = Random.Range(0.7f, 2.5f);
+            myRandomRotation = Random.rotation.eulerAngles;
+        }
+    }
+
     protected virtual void Update()
     {
-        float distance = 0.0f;
+        float distanceSqr = 0.0f;
         if (mySpeed > 0.0f)
-            distance = Vector3.Distance(transform.position, myTarget.transform.position);
+            distanceSqr = (myTarget.transform.position - transform.position).sqrMagnitude;
 
-        if (distance > 1.0f)
+        if (distanceSqr > 1.0f)
         {
-            Vector3 direction = myTarget.transform.position - transform.position;
+            if(myShouldRotate)
+                transform.Rotate(myRandomRotation * myRotationSpeed * Time.deltaTime);
 
+            Vector3 direction = myTarget.transform.position - transform.position;
             transform.position += direction.normalized * mySpeed * Time.deltaTime;
         }
         else

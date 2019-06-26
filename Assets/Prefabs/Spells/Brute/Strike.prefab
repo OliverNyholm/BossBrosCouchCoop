@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1458153417168346
+--- !u!1 &1504369000683004
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,25 +8,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4876655138131858}
-  - component: {fileID: 33746412327778938}
-  - component: {fileID: 23083418575563756}
-  - component: {fileID: 114186873931798550}
-  - component: {fileID: -5941459868964341134}
+  - component: {fileID: 4752107194032712}
+  - component: {fileID: 33615352762341798}
+  - component: {fileID: 23703719846947000}
+  - component: {fileID: 114784976726069702}
+  - component: {fileID: 8892797277364096202}
   m_Layer: 0
-  m_Name: Holy Grenade
+  m_Name: Strike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4876655138131858
+--- !u!4 &4752107194032712
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1458153417168346}
+  m_GameObject: {fileID: 1504369000683004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1474582, y: 0.6805223, z: 0.6294943}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,21 +34,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &33746412327778938
+--- !u!33 &33615352762341798
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1458153417168346}
+  m_GameObject: {fileID: 1504369000683004}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &23083418575563756
+--- !u!23 &23703719846947000
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1458153417168346}
+  m_GameObject: {fileID: 1504369000683004}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4ab96d49cf9927a47abc165f26aebb20, type: 2}
+  - {fileID: 2100000, guid: 543a9e08fa192584d96e9f5b477ef3d3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,54 +79,53 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114186873931798550
+--- !u!114 &114784976726069702
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1458153417168346}
+  m_GameObject: {fileID: 1504369000683004}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4148e1b28d969ae4aa67f15be58c979c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myQuickInfo: Heal 200
-  myName: Holy Grenade
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
-  mySpellType: 2
-  mySpellTarget: 2
-  myDamage: 200
-  myResourceCost: 100
-  myThreatModifier: 1
-  mySpeed: 20
-  myCastTime: 3
-  myCooldown: 1
-  myRange: 30
-  myCastbarColor: {r: 1, g: 0.9544131, b: 0, a: 1}
-  mySpellIcon: {fileID: 21300000, guid: ad86df8db84c4c5419f48c8de311d3c4, type: 3}
-  myIsCastableWhileMoving: 0
-  myCanCastOnSelf: 1
+  myQuickInfo: 150 damage
+  myName: Belly Slam
+  mySpellType: 0
+  mySpellTarget: 4
+  myDamage: 150
+  myResourceCost: 50
+  myThreatModifier: 3
+  mySpeed: 0
+  myCastTime: 0
+  myCooldown: 10
+  myRange: 4
+  myCastbarColor: {r: 1, g: 0.55655974, b: 0, a: 1}
+  mySpellIcon: {fileID: 21300000, guid: e6f95c52d821cd642b6eb586a59d889b, type: 3}
+  myIsCastableWhileMoving: 1
+  myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myBuff: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
-    myHitSound: {fileID: 0}
-  mySpellVFX: {fileID: 2989814573608996187, guid: b3e288b451638e845a75f5ac1c747a5f,
+    myHitSound: {fileID: 8300000, guid: 3262c985deb9a494b9b580b7cc9b1580, type: 3}
+  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
---- !u!82 &-5941459868964341134
+--- !u!82 &8892797277364096202
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1458153417168346}
+  m_GameObject: {fileID: 1504369000683004}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

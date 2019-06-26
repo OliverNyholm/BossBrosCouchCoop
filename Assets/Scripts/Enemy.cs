@@ -101,6 +101,7 @@ public class Enemy : Character
                 if (IsTargetCloseBy())
                 {
                     SetState(State.Combat);
+                    AddThreat(10, myPlayers[myTargetIndex].GetInstanceID());
                 }
                 break;
             case State.Combat:
@@ -226,7 +227,7 @@ public class Enemy : Character
         {
             SetTarget(target);
         }
-        
+
 
         const float attackRangeOffset = 1.0f;
         float distanceSqr = (myTarget.transform.position - transform.position).sqrMagnitude;
@@ -242,7 +243,7 @@ public class Enemy : Character
             myNavmeshAgent.destination = transform.position;
             myAnimator.SetBool("IsRunning", false);
         }
-        
+
         if (distanceSqr < autoAttackRange * autoAttackRange)
         {
             myNavmeshAgent.destination = transform.position;
@@ -279,7 +280,6 @@ public class Enemy : Character
             if (distance < aggroRange)
             {
                 SetTarget(index);
-                AddThreat(10, index);
                 return true;
             }
         }
@@ -297,6 +297,9 @@ public class Enemy : Character
         if (!myTarget)
             return;
 
+        if (myAutoAttackCooldown > 0.0f)
+            return;
+
         transform.LookAt(new Vector3(myTarget.transform.position.x, transform.position.y, myTarget.transform.position.z));
 
         myAnimator.SetTrigger("Attack");
@@ -305,7 +308,7 @@ public class Enemy : Character
         SpawnSpell(-1, GetSpellSpawnPosition(myClass.GetAutoAttack().GetComponent<Spell>()));
     }
 
-   
+
 
     public void SetTaunt(int aTaunterID, float aDuration)
     {
@@ -316,8 +319,8 @@ public class Enemy : Character
             if (myPlayers[index].GetInstanceID() == aTaunterID)
             {
                 myTargetIndex = index;
-                Debug.Log(myTargetIndex + " taunted enemy for  " + aDuration);
-                AddThreat(5000, aTaunterID);
+                SetTarget(myTargetIndex);
+                AddThreat(2000, aTaunterID);
                 break;
             }
         }

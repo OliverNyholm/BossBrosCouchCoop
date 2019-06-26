@@ -93,13 +93,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myQuickInfo: Heal 200 Lose 200
   myName: Sacrifice
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
   mySpellType: 2
   mySpellTarget: 2
   myDamage: 200
   myResourceCost: 40
   myThreatModifier: 1
-  mySpeed: 30
+  mySpeed: 40
   myCastTime: 1
   myCooldown: 0.2
   myRange: 25
@@ -108,6 +107,7 @@ MonoBehaviour:
   myIsCastableWhileMoving: 0
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
+  myShouldRotate: 0
   myBuff: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}

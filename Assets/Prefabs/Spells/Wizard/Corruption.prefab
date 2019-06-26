@@ -92,14 +92,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: DOT 50 + 300
-  myName: Corruption
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
+  myName: Wring Mind
   mySpellType: 8
   mySpellTarget: 4
   myDamage: 50
   myResourceCost: 0
   myThreatModifier: 1
-  mySpeed: 20
+  mySpeed: 40
   myCastTime: 1
   myCooldown: 1
   myRange: 25
@@ -108,6 +107,7 @@ MonoBehaviour:
   myIsCastableWhileMoving: 0
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 0
+  myShouldRotate: 0
   myBuff: {fileID: 11400000, guid: b506188490946c147906e9236849e808, type: 2}
   mySpellSFX:
     myCastSound: {fileID: 0}

@@ -303,7 +303,8 @@ public abstract class Character : MonoBehaviour
     {
         myTargetHUD.SetHealthBarFillAmount(aHealthPercentage);
         myTargetHUD.SetHealthText(aHealthText);
-        myTargetHUD.SetShieldBar(aShieldValue, myTarget.GetComponent<Health>().myCurrentHealth);
+        if (myTarget && myTarget.GetComponent<Health>() != null)
+            myTargetHUD.SetShieldBar(aShieldValue, myTarget.GetComponent<Health>().myCurrentHealth);
     }
     private void ChangeTargetHudResource(float aResourcePercentage, string aResourceText)
     {

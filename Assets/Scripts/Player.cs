@@ -9,7 +9,7 @@ public class Player : Character
 
     private TargetHandler myTargetHandler;
 
-    private UIManager myUIManager;
+    private ErrorMessageManager myErrorMessageManager;
 
     private PlayerControls myPlayerControls;
 
@@ -36,12 +36,13 @@ public class Player : Character
         myDirection = Vector3.zero;
 
         myTargetHandler = GameObject.Find("GameManager").GetComponent<TargetHandler>();
-        myUIManager = GameObject.Find("GameManager").GetComponent<UIManager>();
 
         myController = GetComponent<CharacterController>();
 
         Transform uiHud = GameObject.Find("PlayerUI" + PlayerIndex).transform;
         SetupHud(uiHud);
+
+        myErrorMessageManager = uiHud.GetComponentInChildren<ErrorMessageManager>();
         myClass.SetupSpellHud(CastSpell, uiHud);
     }
 
@@ -221,7 +222,7 @@ public class Player : Character
 
         if (myClass.IsSpellOnCooldown(aKeyIndex))
         {
-            myUIManager.CreateErrorMessage("Can't cast that spell yet");
+            myErrorMessageManager.CreateErrorMessage("Can't cast that spell yet");
             return;
         }
 
@@ -291,19 +292,19 @@ public class Player : Character
     {
         if (myIsCasting)
         {
-            myUIManager.CreateErrorMessage("Already casting another spell!");
+            myErrorMessageManager.CreateErrorMessage("Already casting another spell!");
             return false;
         }
 
         if (GetComponent<Resource>().myCurrentResource < aSpellScript.myResourceCost)
         {
-            myUIManager.CreateErrorMessage("Not enough resource to cast");
+            myErrorMessageManager.CreateErrorMessage("Not enough resource to cast");
             return false;
         }
 
         if (!aSpellScript.IsCastableWhileMoving() && IsMoving())
         {
-            myUIManager.CreateErrorMessage("Can't cast while moving!");
+            myErrorMessageManager.CreateErrorMessage("Can't cast while moving!");
             return false;
         }
 
@@ -318,45 +319,45 @@ public class Player : Character
             }
             else
             {
-                myUIManager.CreateErrorMessage("No Target!");
+                myErrorMessageManager.CreateErrorMessage("No Target!");
                 return false;
             }
         }
 
         if (!myTarget.GetComponent<Health>().IsDead() && aSpellScript.mySpellType == SpellType.Ressurect)
         {
-            myUIManager.CreateErrorMessage("That target is not dead!");
+            myErrorMessageManager.CreateErrorMessage("That target is not dead!");
             return false;
         }
 
         if (!CanRaycastToTarget())
         {
-            myUIManager.CreateErrorMessage("Target not in line of sight!");
+            myErrorMessageManager.CreateErrorMessage("Target not in line of sight!");
             return false;
         }
 
         float distance = Vector3.Distance(transform.position, myTarget.transform.position);
         if (distance > aSpellScript.myRange)
         {
-            myUIManager.CreateErrorMessage("Out of range!");
+            myErrorMessageManager.CreateErrorMessage("Out of range!");
             return false;
         }
 
         if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && myTarget.tag == "Enemy")
         {
-            myUIManager.CreateErrorMessage("Can't cast friendly spells on enemies");
+            myErrorMessageManager.CreateErrorMessage("Can't cast friendly spells on enemies");
             return false;
         }
 
         if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && myTarget.tag == "Player")
         {
-            myUIManager.CreateErrorMessage("Can't cast hostile spells on friends.");
+            myErrorMessageManager.CreateErrorMessage("Can't cast hostile spells on friends.");
             return false;
         }
 
         if (!aSpellScript.myCanCastOnSelf && myTarget == transform.gameObject)
         {
-            myUIManager.CreateErrorMessage("Can't be cast on self!");
+            myErrorMessageManager.CreateErrorMessage("Can't be cast on self!");
             return false;
         }
 

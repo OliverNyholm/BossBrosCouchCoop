@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: 150 damage
-  myName: Belly Slam
+  myName: Strike
   mySpellType: 0
   mySpellTarget: 4
   myDamage: 150
@@ -100,13 +100,14 @@ MonoBehaviour:
   myThreatModifier: 3
   mySpeed: 0
   myCastTime: 0
-  myCooldown: 10
+  myCooldown: 0.3
   myRange: 4
   myCastbarColor: {r: 1, g: 0.55655974, b: 0, a: 1}
   mySpellIcon: {fileID: 21300000, guid: e6f95c52d821cd642b6eb586a59d889b, type: 3}
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
+  myShouldRotate: 0
   myBuff: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}

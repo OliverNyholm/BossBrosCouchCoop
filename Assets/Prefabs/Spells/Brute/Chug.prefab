@@ -191,7 +191,7 @@ MonoBehaviour:
   myName: Chug
   mySpellType: 2
   mySpellTarget: 2
-  myDamage: 0
+  myDamage: 200
   myResourceCost: 20
   myThreatModifier: 1
   mySpeed: 0
@@ -203,7 +203,8 @@ MonoBehaviour:
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 1
-  myBuff: {fileID: 0}
+  myShouldRotate: 0
+  myBuff: {fileID: 11400000, guid: bdd43f20341e3794eafcfb69be65418a, type: 2}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}

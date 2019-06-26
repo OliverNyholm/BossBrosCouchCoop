@@ -44,9 +44,11 @@ public class CharacterHUD : MonoBehaviour
 
     public void SetShieldBar(int aShieldValue, int aCurrentHealth)
     {
-        //float width = myHealthbarImage.rectTransform.rect.width;
-        //float x = (myHealthbarImage.transform.position.x - (width / 2f)) + (width * myHealthbarImage.fillAmount) - myShieldBarImage.rectTransform.rect.width / 2;
-        //myShieldBarImage.transform.position = new Vector2(x, myShieldBarImage.transform.position.y);
+        float width = myHealthbarImage.rectTransform.rect.width;
+
+        float pivotX = myHealthbarImage.rectTransform.anchoredPosition.x;
+        float x = pivotX - (width / 2f) + (width * myHealthbarImage.fillAmount) - myShieldBarImage.rectTransform.rect.width / 2;
+        myShieldBarImage.rectTransform.anchoredPosition = new Vector2(x, myShieldBarImage.rectTransform.anchoredPosition.y);
 
         float fillAmount = (float)aShieldValue / aCurrentHealth;
 

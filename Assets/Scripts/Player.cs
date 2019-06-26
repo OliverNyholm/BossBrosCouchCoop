@@ -219,9 +219,6 @@ public class Player : Character
     {
         myClass.SpellPressed(aKeyIndex);
 
-        if (GetComponent<Health>().IsDead())
-            return;
-
         if (myClass.IsSpellOnCooldown(aKeyIndex))
         {
             myUIManager.CreateErrorMessage("Can't cast that spell yet");
@@ -230,6 +227,9 @@ public class Player : Character
 
         GameObject spell = myClass.GetSpell(aKeyIndex);
         Spell spellScript = spell.GetComponent<Spell>();
+
+        if (GetComponent<Health>().IsDead() && spellScript.mySpellType != SpellType.Ressurect)
+            return;
 
         if (!IsAbleToCastSpell(spellScript))
             return;
@@ -323,9 +323,9 @@ public class Player : Character
             }
         }
 
-        if (myTarget.GetComponent<Health>().IsDead())
+        if (!myTarget.GetComponent<Health>().IsDead() && aSpellScript.mySpellType == SpellType.Ressurect)
         {
-            myUIManager.CreateErrorMessage("That target is dead!");
+            myUIManager.CreateErrorMessage("That target is not dead!");
             return false;
         }
 

@@ -452,7 +452,6 @@ public abstract class Character : MonoBehaviour
 
         GetComponent<AudioSource>().Stop();
         myAnimator.SetTrigger("Death");
-        myHealth.EventOnHealthZero -= OnDeath;
     }
 
     public void SetAvatar(Sprite aSprite)

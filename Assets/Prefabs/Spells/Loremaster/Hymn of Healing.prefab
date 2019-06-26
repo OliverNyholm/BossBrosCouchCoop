@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4822057767249848}
   - component: {fileID: 33637974575897462}
   - component: {fileID: 23270370434887666}
-  - component: {fileID: 114081146117024262}
+  - component: {fileID: 3438986200312422790}
   - component: {fileID: 5087510029794061131}
   m_Layer: 0
   m_Name: Hymn of Healing
@@ -49,7 +49,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1385395385526390}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -79,7 +79,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114081146117024262
+--- !u!114 &3438986200312422790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,33 +88,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 1385395385526390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4148e1b28d969ae4aa67f15be58c979c, type: 3}
+  m_Script: {fileID: 11500000, guid: 23648361723a74744bb5525f4648fc8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: Heals allies around
   myName: Hymn of Healing
   mySpellType: 2
   mySpellTarget: 2
-  myDamage: 150
-  myResourceCost: 120
+  myDamage: 400
+  myResourceCost: 300
   myThreatModifier: 1
   mySpeed: 0
-  myCastTime: 1
-  myCooldown: 7
-  myRange: 25
-  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
+  myCastTime: 0
+  myCooldown: 2
+  myRange: 10
+  myCastbarColor: {r: 0.4376203, g: 1, b: 0.4009434, a: 1}
   mySpellIcon: {fileID: 21300000, guid: 915c7c7a2ea9c4a4fb282a6c31bdd5b6, type: 3}
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 1
-  myIsOnlySelfCast: 0
+  myIsOnlySelfCast: 1
   myShouldRotate: 0
   myBuff: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 0}
-  mySpellVFX: {fileID: 2989814573608996187, guid: b3e288b451638e845a75f5ac1c747a5f,
+  mySpellVFX: {fileID: 5093301705617495361, guid: b933f8f728a83d6448e4c25790051d0d,
     type: 3}
+  myChannelTime: 7
 --- !u!82 &5087510029794061131
 AudioSource:
   m_ObjectHideFlags: 0

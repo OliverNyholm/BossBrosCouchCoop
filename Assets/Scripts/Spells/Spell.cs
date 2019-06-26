@@ -384,12 +384,12 @@ public class Spell : MonoBehaviour
         return mySpellSFX;
     }
 
-    protected void SpawnVFX(float aDuration)
+    protected GameObject SpawnVFX(float aDuration)
     {
         if(!mySpellVFX)
         {
             Debug.Log("Missing VFX for spell: " + myName);
-            return;
+            return null;
         }
 
         GameObject vfxGO = Instantiate(mySpellVFX, myTarget.transform);
@@ -397,6 +397,8 @@ public class Spell : MonoBehaviour
         vfxGO.GetComponent<AudioSource>().Play();
 
         Destroy(vfxGO, aDuration);
+
+        return vfxGO;
     }
 
     private void Destroy()

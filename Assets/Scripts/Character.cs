@@ -128,9 +128,9 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    public IEnumerator SpellChannelRoutine(float aDuration, GameObject aChannelGO)
+    public IEnumerator SpellChannelRoutine(float aDuration, GameObject aChannelGO, float aStunDuration)
     {
-        myStunDuration = aDuration;
+        myStunDuration = aStunDuration;
         myIsCasting = true;
         float castSpeed = aDuration;
         float rate = 1.0f / castSpeed;
@@ -162,7 +162,7 @@ public abstract class Character : MonoBehaviour
             Destroy(aChannelGO);
     }
 
-    public void StartChannel(float aDuration, Spell aSpellScript, GameObject aChannelGO)
+    public void StartChannel(float aDuration, Spell aSpellScript, GameObject aChannelGO, float aStunDuration = 1.0f)
     {
         myCastbar.ShowCastbar();
         myCastbar.SetCastbarFillAmount(1.0f);
@@ -174,7 +174,7 @@ public abstract class Character : MonoBehaviour
         GetComponent<AudioSource>().clip = aSpellScript.GetSpellSFX().myCastSound;
         GetComponent<AudioSource>().Play();
 
-        myCastingRoutine = StartCoroutine(SpellChannelRoutine(aDuration, aChannelGO));
+        myCastingRoutine = StartCoroutine(SpellChannelRoutine(aDuration, aChannelGO, aStunDuration));
     }
 
     protected void SpawnSpell(int aKeyIndex, Vector3 aSpawnPosition)

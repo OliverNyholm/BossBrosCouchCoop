@@ -14,7 +14,7 @@ public class FallingBoulder : Spell
 
     List<int> myTargetsHit = new List<int>();
 
-    void Start()
+    protected override void Start()
     {
         RaycastHit hit;
         Ray ray = new Ray(transform.position, Vector3.down);

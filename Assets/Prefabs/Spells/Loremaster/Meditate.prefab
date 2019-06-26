@@ -55,7 +55,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myQuickInfo: Gain mana
   myName: Meditate
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
   mySpellType: 10
   mySpellTarget: 2
   myDamage: 0
@@ -70,6 +69,7 @@ MonoBehaviour:
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 1
+  myShouldRotate: 0
   myBuff: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
@@ -77,7 +77,7 @@ MonoBehaviour:
     myHitSound: {fileID: 0}
   mySpellVFX: {fileID: 6220241127409226430, guid: 817ed3a4e2fef5644b9ce1876226fb4f,
     type: 3}
-  myRegenerationPercentage: 20
+  myRegenerationPercentage: 40
   myChannelTime: 8
 --- !u!82 &6713724109169117104
 AudioSource:

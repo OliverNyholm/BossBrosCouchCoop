@@ -14,15 +14,16 @@ public class Meditate : Spell
     private float myIntervalTimer;
     private float myCurrentIntervalTimer;
     private int myResourcePerTick;
-
-    private void Start()
+    
+    protected override void Start()
     {
         const int NrOfTicks = 10;
 
-        myIntervalTimer = NrOfTicks / myChannelTime;
+        myIntervalTimer = myChannelTime / NrOfTicks;
         myCurrentIntervalTimer = 0.0f;
 
-        myResourcePerTick = myParent.GetComponent<Resource>().MaxResource / myRegenerationPercentage;
+        myResourcePerTick = (int)(myParent.GetComponent<Resource>().MaxResource * (myRegenerationPercentage * 0.01f));
+        myResourcePerTick /= NrOfTicks;
 
         myChannelTime += 0.02f;
 
@@ -36,7 +37,7 @@ public class Meditate : Spell
         if (myCurrentIntervalTimer >= myIntervalTimer)
         {
             myCurrentIntervalTimer -= myIntervalTimer;
-            myParent.GetComponent<Resource>().GainResource(myResourcePerTick); ;
+            myParent.GetComponent<Resource>().GainResource(myResourcePerTick);
         }
 
         myChannelTime -= Time.deltaTime;
@@ -46,7 +47,7 @@ public class Meditate : Spell
 
     private void StartCoroutine()
     {
-        myParent.GetComponent<Player>().StartChannel(myChannelTime, this, null);
+        myParent.GetComponent<Player>().StartChannel(myChannelTime, this, null, myChannelTime);
     }
 
     protected override string GetSpellDetail()

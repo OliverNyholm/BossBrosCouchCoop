@@ -6,16 +6,13 @@ using UnityEngine.EventSystems;
 
 public class ActionKey : MonoBehaviour
 {
-    [SerializeField]
-    private Button myButton;
-
     [Header("Text to show cooldown")]
     [SerializeField]
-    private Text myCooldownText;
+    private Text myCooldownText = null;
 
     [Header("Text to show info about spell")]
     [SerializeField]
-    private Text myInfoText;
+    private Text myInfoText = null;
 
     [Header("The target scale multiplier of spellIcon on use")]
     [SerializeField]

@@ -40,7 +40,7 @@ public class Health : MonoBehaviour
         }
 
         OnHealthChanged();
-        SpawnFloatingText(damageText, aDamagerColor);
+        SpawnFloatingText(damageText, aDamagerColor, CalculateSizeModifier(damage));
 
         return damage;
     }
@@ -54,7 +54,7 @@ public class Health : MonoBehaviour
         }
 
         OnHealthChanged();
-        SpawnFloatingText(aValue.ToString(), Color.yellow);
+        SpawnFloatingText(aValue.ToString(), Color.yellow, CalculateSizeModifier(aValue));
     }
 
     public bool IsDead()
@@ -81,7 +81,7 @@ public class Health : MonoBehaviour
     {
         myShields.Add(aShield);
         OnHealthChanged();
-        SpawnFloatingText("Shield, " + aShield.GetRemainingShieldHealth().ToString(), Color.yellow);
+        SpawnFloatingText("Shield, " + aShield.GetRemainingShieldHealth().ToString(), Color.yellow, 1.0f);
     }
 
     public void RemoveShield()
@@ -96,7 +96,7 @@ public class Health : MonoBehaviour
         }
 
         OnHealthChanged();
-        SpawnFloatingText("Shield faded", Color.yellow);
+        SpawnFloatingText("Shield faded", Color.yellow, 1.0f);
     }
 
     public void GenerateThreat(int aThreatValue, int anID)
@@ -114,7 +114,7 @@ public class Health : MonoBehaviour
         EventOnHealthZero?.Invoke();
     }
 
-    private void SpawnFloatingText(string aText, Color aColor)
+    private void SpawnFloatingText(string aText, Color aColor, float aSizeModifier)
     {
         Vector3 randomOffset = new Vector2(Random.Range(-2.0f, 2.0f), Random.Range(0.0f, 2.0f));
 
@@ -122,7 +122,17 @@ public class Health : MonoBehaviour
         floatingHealthGO.transform.position += randomOffset;
 
         FloatingHealth floatingHealth = floatingHealthGO.GetComponent<FloatingHealth>();
-        floatingHealth.SetText(aText, aColor);
+        floatingHealth.SetText(aText, aColor, aSizeModifier);
+    }
+
+    public float CalculateSizeModifier(int aDamage)
+    {
+        const float startDamage = 100;
+        const float modifier = 0.002f;
+        if (aDamage > startDamage)
+            return 1.0f + aDamage * modifier;
+
+        return 1.0f;
     }
 
     public int CalculateMitigations(int anIncomingDamageValue)

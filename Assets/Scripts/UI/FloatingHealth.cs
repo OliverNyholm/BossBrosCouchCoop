@@ -34,10 +34,12 @@ public class FloatingHealth : MonoBehaviour
         transform.position += Vector3.up * mySpeed * Time.deltaTime;
     }
 
-    public void SetText(string aText, Color aColor)
+    public void SetText(string aText, Color aColor, float aSizeModifier)
     {
         myTextMesh.text = aText;
         myOutLineTextMesh.text = aText;
         myTextMesh.color = aColor;
+
+        myTextMesh.characterSize *= aSizeModifier;
     }
 }

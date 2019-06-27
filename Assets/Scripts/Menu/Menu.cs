@@ -28,6 +28,8 @@ public class Menu : MonoBehaviour
     private PlayerControls myKeyboardListener;
     private PlayerControls myJoystickListener;
 
+    private bool myFirstUpdate;
+
     void Start()
     {
         myButtons = new List<Button>
@@ -41,10 +43,18 @@ public class Menu : MonoBehaviour
         NextButton(1);
         myKeyboardListener = PlayerControls.CreateWithKeyboardBindings();
         myJoystickListener = PlayerControls.CreateWithJoystickBindings();
+
+        myFirstUpdate = true;
     }
 
     private void Update()
     {
+        if(myFirstUpdate)
+        {
+            myFirstUpdate = false;
+            return;
+        }
+
         if (WasUpClicked())
             NextButton(-1);
         if (WasDownClicked())
@@ -56,7 +66,7 @@ public class Menu : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("CharacterSelect");
+        SceneManager.LoadScene("LevelSelect");
     }
 
     public void QuitGame()

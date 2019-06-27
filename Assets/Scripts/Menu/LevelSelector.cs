@@ -19,18 +19,30 @@ public class LevelSelector : MonoBehaviour
     private PlayerControls myKeyboardListener;
     private PlayerControls myJoystickListener;
 
-    // Start is called before the first frame update
+    private bool myFirstUpdate;
     void Start()
     {
         myKeyboardListener = PlayerControls.CreateWithKeyboardBindings();
         myJoystickListener = PlayerControls.CreateWithJoystickBindings();
 
         myCamera = Camera.main.GetComponent<LevelSelectCamera>();
+        myFirstUpdate = true;
+
+        CharacterGameData gameData = FindObjectOfType<CharacterGameData>();
+        myCurrentLevelIndex = gameData.myCurrentLevelIndex;
+        myCamera.SetTargetPositionInstant(myLevels[myCurrentLevelIndex].transform);
+        myLevelInfoCanvas.SetCanvasData(myLevels[myCurrentLevelIndex]);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (myFirstUpdate)
+        {
+            myFirstUpdate = false;
+            return;
+        }
+
         if (WasRightClicked())
             NextLevel(1);
         if (WasLeftClicked())
@@ -43,6 +55,11 @@ public class LevelSelector : MonoBehaviour
             gameData.myCurrentLevelIndex = myCurrentLevelIndex;
 
             SceneManager.LoadScene("CharacterSelect");
+        }
+
+        if(WasBackClicked())
+        {
+            SceneManager.LoadScene("Menu");
         }
     }
 
@@ -62,6 +79,14 @@ public class LevelSelector : MonoBehaviour
     private bool WasStartClicked()
     {
         if (myKeyboardListener.Start.WasPressed || myKeyboardListener.Action1.WasPressed || myJoystickListener.Action1.WasPressed || myJoystickListener.Start.WasPressed)
+            return true;
+
+        return false;
+    }
+
+    private bool WasBackClicked()
+    {
+        if (myKeyboardListener.Action2.WasPressed || myKeyboardListener.Action3.WasPressed || myJoystickListener.Action1.WasPressed || myJoystickListener.Action2.WasPressed)
             return true;
 
         return false;

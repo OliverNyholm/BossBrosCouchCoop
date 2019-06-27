@@ -31,6 +31,8 @@ public class CharacterSelectManager : MonoBehaviour
     [SerializeField]
     private string myNextLevel = "Coop";
 
+    private bool myFirstUpdate;
+
     void Start()
     {
         myPlayerClassIndex = new List<int>();
@@ -53,6 +55,7 @@ public class CharacterSelectManager : MonoBehaviour
         myCharacterGameData.ClearPlayerData();
 
         myNextLevel = myCharacterGameData.mySceneToLoad;
+        myFirstUpdate = true;
     }
 
     private void OnDisable()
@@ -64,6 +67,13 @@ public class CharacterSelectManager : MonoBehaviour
 
     void Update()
     {
+        if(myFirstUpdate)
+        {
+            myFirstUpdate = false;
+            return;
+        }
+        
+
         if (JoinButtonWasPressedOnListener(myJoystickListener))
         {
             InputDevice inputDevice = InputManager.ActiveDevice;
@@ -79,6 +89,22 @@ public class CharacterSelectManager : MonoBehaviour
                 return;
 
             SetupCharacterSelector(GetAvailableCharacterSelector(), null);
+        }
+
+        if(ExitButtonWasPressedOnListener(myJoystickListener))
+        {
+            InputDevice inputDevice = InputManager.ActiveDevice;
+            if(IsInputDeviceAvailable(inputDevice))
+            {
+                SceneManager.LoadScene("LevelSelect");
+            }
+        }
+        if (ExitButtonWasPressedOnListener(myKeyboardListener))
+        {
+            if (IsKeyboardAvailable())
+            {
+                SceneManager.LoadScene("LevelSelect");
+            }
         }
     }
 
@@ -107,9 +133,14 @@ public class CharacterSelectManager : MonoBehaviour
         return true;
     }
 
-    bool JoinButtonWasPressedOnListener(PlayerControls actions)
+    bool JoinButtonWasPressedOnListener(PlayerControls aPlayerControls)
     {
-        return actions.Action1.WasPressed || actions.Start.WasPressed;
+        return aPlayerControls.Action1.WasPressed || aPlayerControls.Start.WasPressed;
+    }
+
+    bool ExitButtonWasPressedOnListener(PlayerControls aPlayerControls)
+    {
+        return aPlayerControls.Action2.WasPressed || aPlayerControls.Action3.WasPressed;
     }
 
     CharacterSelector GetAvailableCharacterSelector()

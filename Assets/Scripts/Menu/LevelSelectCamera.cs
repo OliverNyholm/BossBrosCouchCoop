@@ -15,7 +15,7 @@ public class LevelSelectCamera : MonoBehaviour
 
     private Coroutine myMovementRoutine;
 
-    void Start()
+    void Awake()
     {
         myBaseRotation = transform.rotation;
     }
@@ -34,7 +34,23 @@ public class LevelSelectCamera : MonoBehaviour
         if (duration < 1.5f)
             duration = 1.5f;
 
+        if (myMovementRoutine != null)
+            StopCoroutine(myMovementRoutine);
         myMovementRoutine = StartCoroutine(LerpToNextLevel(targetPosition, targetRotation, duration));
+    }
+
+    public void SetTargetPositionInstant(Transform aTargetTransform)
+    {
+        Vector3 targetPosition = aTargetTransform.position;
+        Quaternion targetRotation = aTargetTransform.rotation;
+
+        Vector3 movement = myOffset.x * aTargetTransform.forward + myOffset.y * aTargetTransform.up + myOffset.z * aTargetTransform.forward;
+        targetPosition += movement;
+
+        targetRotation = aTargetTransform.rotation * myBaseRotation;
+
+        transform.position = targetPosition;
+        transform.rotation = targetRotation;
     }
 
     IEnumerator LerpToNextLevel(Vector3 aTargetPosition, Quaternion aTargetRotation, float aDuration)

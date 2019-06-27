@@ -48,6 +48,9 @@ public class Player : Character
 
     protected override void Update()
     {
+        if (PauseMenu.ourIsGamePaused)
+            return;
+
         base.Update();
 
         myDirection.y -= myGravity * Time.deltaTime;

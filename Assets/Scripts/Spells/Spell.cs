@@ -29,8 +29,8 @@ public class Spell : MonoBehaviour
 
     public bool myShouldRotate;
 
-    private float myRotationSpeed;
-    private Vector3 myRandomRotation;
+    protected float myRotationSpeed;
+    protected Vector3 myRandomRotation;
 
     public Buff myBuff;
 

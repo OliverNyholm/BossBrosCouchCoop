@@ -23,6 +23,9 @@ public class CharacterGameData : MonoBehaviour
 {
     private List<CharacterSelectData> mySelectedCharacters;
 
+    public int myCurrentLevelIndex;
+    public string mySceneToLoad;
+
     private static CharacterGameData ourCharacterGameDataInstance;
     private void Awake()
     {

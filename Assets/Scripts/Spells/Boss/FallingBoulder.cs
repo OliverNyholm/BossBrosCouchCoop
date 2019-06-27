@@ -9,8 +9,6 @@ public class FallingBoulder : Spell
     private Transform myMeshTransform = null;
 
     private Vector3 myLandPosition;
-    private Vector3 myRandomRotation;
-    private float myRotationSpeed;
 
     List<int> myTargetsHit = new List<int>();
 

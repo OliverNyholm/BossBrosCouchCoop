@@ -51,6 +51,8 @@ public class CharacterSelectManager : MonoBehaviour
 
         myCharacterGameData = FindObjectOfType<CharacterGameData>();
         myCharacterGameData.ClearPlayerData();
+
+        myNextLevel = myCharacterGameData.mySceneToLoad;
     }
 
     private void OnDisable()

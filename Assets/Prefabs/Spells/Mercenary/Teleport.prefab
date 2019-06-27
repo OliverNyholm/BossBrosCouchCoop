@@ -93,7 +93,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myQuickInfo: Teleport 10m
   myName: Teleport
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
   mySpellType: 10
   mySpellTarget: 2
   myDamage: 0
@@ -108,10 +107,11 @@ MonoBehaviour:
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 1
+  myShouldRotate: 0
   myBuff: {fileID: 0}
   mySpellSFX:
-    myCastSound: {fileID: 0}
-    mySpawnSound: {fileID: 0}
+    myCastSound: {fileID: 8300000, guid: 0bc6d9f63e30ba4448d46f4f4aa5ba8d, type: 3}
+    mySpawnSound: {fileID: 8300000, guid: 0bc6d9f63e30ba4448d46f4f4aa5ba8d, type: 3}
     myHitSound: {fileID: 0}
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}

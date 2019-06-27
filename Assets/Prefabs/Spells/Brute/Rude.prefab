@@ -93,7 +93,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myQuickInfo: Taunt
   myName: Rude
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
   mySpellType: 6
   mySpellTarget: 4
   myDamage: 0
@@ -108,11 +107,12 @@ MonoBehaviour:
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
+  myShouldRotate: 0
   myBuff: {fileID: 0}
   mySpellSFX:
-    myCastSound: {fileID: 0}
-    mySpawnSound: {fileID: 0}
-    myHitSound: {fileID: 0}
+    myCastSound: {fileID: 8300000, guid: f98f145d42bd9aa47abb30c7b087cbac, type: 3}
+    mySpawnSound: {fileID: 8300000, guid: f98f145d42bd9aa47abb30c7b087cbac, type: 3}
+    myHitSound: {fileID: 8300000, guid: f98f145d42bd9aa47abb30c7b087cbac, type: 3}
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
 --- !u!82 &2380167774674227379

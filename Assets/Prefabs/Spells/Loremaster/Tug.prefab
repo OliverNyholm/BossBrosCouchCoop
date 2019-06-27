@@ -93,7 +93,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myQuickInfo: Pull target to you
   myName: Tug
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
   mySpellType: 10
   mySpellTarget: 2
   myDamage: 0
@@ -108,9 +107,10 @@ MonoBehaviour:
   myIsCastableWhileMoving: 0
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
+  myShouldRotate: 0
   myBuff: {fileID: 0}
   mySpellSFX:
-    myCastSound: {fileID: 0}
+    myCastSound: {fileID: 8300000, guid: ed92d21ce15695940838a436cdb67d30, type: 3}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 0}
   mySpellVFX: {fileID: 2989814573608996187, guid: b3e288b451638e845a75f5ac1c747a5f,

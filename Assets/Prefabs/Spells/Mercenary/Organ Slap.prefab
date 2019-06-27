@@ -93,7 +93,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myQuickInfo: damage 500
   myName: Organ Punch
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
   mySpellType: 0
   mySpellTarget: 4
   myDamage: 500
@@ -108,11 +107,12 @@ MonoBehaviour:
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
+  myShouldRotate: 0
   myBuff: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
-    myHitSound: {fileID: 0}
+    myHitSound: {fileID: 8300000, guid: a4c14f6bb9424bd46a4c5a8a63f15003, type: 3}
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
 --- !u!82 &-7549963756373708671

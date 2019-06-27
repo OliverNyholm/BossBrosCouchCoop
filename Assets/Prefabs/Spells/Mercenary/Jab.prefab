@@ -93,7 +93,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myQuickInfo: Damage 150
   myName: Jab
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
   mySpellType: 0
   mySpellTarget: 4
   myDamage: 150
@@ -108,11 +107,12 @@ MonoBehaviour:
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
+  myShouldRotate: 0
   myBuff: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
-    myHitSound: {fileID: 0}
+    myHitSound: {fileID: 8300000, guid: 9bb18b6a1a81bd84888cd763d0677c45, type: 3}
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
 --- !u!82 &4419037672812535998

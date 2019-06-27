@@ -93,7 +93,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myQuickInfo: Increase damage
   myName: Furious
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
   mySpellType: 8
   mySpellTarget: 2
   myDamage: 0
@@ -108,10 +107,11 @@ MonoBehaviour:
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 1
+  myShouldRotate: 0
   myBuff: {fileID: 11400000, guid: 21b3dd135ff01964e8988ba76d6369b8, type: 2}
   mySpellSFX:
     myCastSound: {fileID: 0}
-    mySpawnSound: {fileID: 0}
+    mySpawnSound: {fileID: 8300000, guid: 8abc334c8a4b8d6448e03a528e8db829, type: 3}
     myHitSound: {fileID: 0}
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}

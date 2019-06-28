@@ -3156,6 +3156,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7029072713658123490, guid: a3d8be0d10881004ba90d1d48b33946a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8528769867836796886, guid: a3d8be0d10881004ba90d1d48b33946a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -8675,6 +8680,7 @@ MonoBehaviour:
   mySpeed: 0
   myPlayers: []
   myAggroList: 
+  myAggroRange: 15
 --- !u!114 &1106713476812670441
 MonoBehaviour:
   m_ObjectHideFlags: 0

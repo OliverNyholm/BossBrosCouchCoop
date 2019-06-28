@@ -105,7 +105,6 @@ public class PauseMenu : MonoBehaviour
 
     public void LoadCharacterSelect()
     {
-        ourIsGamePaused = false;
         Resume();
         SceneManager.LoadScene("CharacterSelect");
     }
@@ -155,7 +154,7 @@ public class PauseMenu : MonoBehaviour
 
     private bool WasPausePressed()
     {
-        if (myKeyboardListener.Start.WasPressed || myKeyboardListener.Pause.WasPressed || myJoystickListener.Pause.WasPressed || myJoystickListener.Start.WasPressed)
+        if (myKeyboardListener.Pause.WasPressed || myJoystickListener.Pause.WasPressed || myJoystickListener.Start.WasPressed)
             return true;
 
         return false;

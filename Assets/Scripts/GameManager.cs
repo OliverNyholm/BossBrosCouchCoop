@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("The spawn points for player. Loops around when last reached")]
+    [SerializeField]
+    private List<Transform> mySpawnPoints = new List<Transform>();
+
     private void Awake()
     {
         PostMaster.Create();
@@ -22,7 +26,11 @@ public class GameManager : MonoBehaviour
         List<CharacterSelectData> characters = characterGameData.GetPlayerData();
         for (int index = 0; index < characters.Count; index++)
         {
-            GameObject playerGO = Instantiate(characters[index].myClassData.myClass, new Vector3(-1.5f + index * 1.0f, 0.0f, -3.0f), Quaternion.identity);
+            Vector3 spawnPoint = new Vector3(-1.5f + index * 1.0f, 0.0f, -3.0f);
+            if (mySpawnPoints.Count > 0)
+                spawnPoint = mySpawnPoints[index % mySpawnPoints.Count].position;
+
+            GameObject playerGO = Instantiate(characters[index].myClassData.myClass, spawnPoint, Quaternion.identity);
             playerGO.name = characters[index].myName;
             playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material.mainTexture = characters[index].myColorScheme.myTexture;
 

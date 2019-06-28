@@ -14,7 +14,9 @@ public class Enemy : Character
     public List<GameObject> myPlayers = new List<GameObject>();
     public List<int> myAggroList = new List<int>();
 
-
+    [Header("Aggro range")]
+    [SerializeField]
+    private float myAggroRange = 15.0f;
     private int myTargetIndex;
 
     private Vector3 mySpawnPosition;
@@ -272,12 +274,11 @@ public class Enemy : Character
 
     private bool IsTargetCloseBy()
     {
-        const float aggroRange = 15.0f;
         for (int index = 0; index < myPlayers.Count; index++)
         {
             Vector3 playerPosition = myPlayers[index].transform.position;
-            float distance = Vector3.Distance(playerPosition, transform.position);
-            if (distance < aggroRange)
+            float distanceSqr = (playerPosition - transform.position).sqrMagnitude;
+            if (distanceSqr < myAggroRange * myAggroRange)
             {
                 SetTarget(index);
                 return true;

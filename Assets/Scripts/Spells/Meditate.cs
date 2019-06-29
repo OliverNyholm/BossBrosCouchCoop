@@ -9,11 +9,13 @@ public class Meditate : Spell
     private int myRegenerationPercentage = 1;
 
     [SerializeField]
-    private float myChannelTime;
+    private float myChannelTime = 1.0f;
 
     private float myIntervalTimer;
     private float myCurrentIntervalTimer;
     private int myResourcePerTick;
+
+    private GameObject myVFX;
     
     protected override void Start()
     {
@@ -28,7 +30,13 @@ public class Meditate : Spell
         myChannelTime += 0.02f;
 
         StartCoroutine();
-        SpawnVFX(myChannelTime + 1.5f);
+        myVFX = SpawnVFX(myChannelTime + 1.5f);
+    }
+
+    private void OnDestroy()
+    {
+        myVFX.GetComponent<ParticleSystem>().Stop();
+        myVFX.transform.parent = null;
     }
 
     protected override void Update()
@@ -47,7 +55,7 @@ public class Meditate : Spell
 
     private void StartCoroutine()
     {
-        myParent.GetComponent<Player>().StartChannel(myChannelTime, this, null, 2);
+        myParent.GetComponent<Player>().StartChannel(myChannelTime, this, gameObject, 2);
     }
 
     protected override string GetSpellDetail()

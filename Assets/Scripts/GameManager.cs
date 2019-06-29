@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<Transform> mySpawnPoints = new List<Transform>();
 
+    private PlayerControls myKeyboardListener;
+    private PlayerControls myJoystickListener;
+
     private void Awake()
     {
         PostMaster.Create();
@@ -48,11 +51,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        myKeyboardListener = PlayerControls.CreateWithKeyboardBindings();
+        myJoystickListener = PlayerControls.CreateWithJoystickBindings();
+    }
+
+    private void OnDestroy()
+    {
+        myJoystickListener.Destroy();
+        myKeyboardListener.Destroy();
+    }
+
     private void Update()
     {
         PostMaster.Instance.DelegateMessages();
 
-        if (Input.GetButtonDown("Restart"))
+        if (myKeyboardListener.Restart.WasPressed || myJoystickListener.Restart.WasPressed)
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

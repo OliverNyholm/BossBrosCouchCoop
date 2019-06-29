@@ -47,6 +47,12 @@ public class Menu : MonoBehaviour
         myFirstUpdate = true;
     }
 
+    private void OnDestroy()
+    {
+        myJoystickListener.Destroy();
+        myKeyboardListener.Destroy();
+    }
+
     private void Update()
     {
         if(myFirstUpdate)

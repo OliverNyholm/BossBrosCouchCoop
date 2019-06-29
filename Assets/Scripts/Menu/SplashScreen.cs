@@ -21,7 +21,13 @@ public class SplashScreen : MonoBehaviour
         myKeyboardListener = PlayerControls.CreateWithKeyboardBindings();
         myJoystickListener = PlayerControls.CreateWithJoystickBindings();
     }
-    
+
+    private void OnDestroy()
+    {
+        myJoystickListener.Destroy();
+        myKeyboardListener.Destroy();
+    }
+
     void Update()
     {
         float value = Mathf.Abs(Mathf.Sin(Time.time * 0.7f)); 

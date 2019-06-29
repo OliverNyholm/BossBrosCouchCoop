@@ -73,6 +73,13 @@ public class PauseMenu : MonoBehaviour
             myButtons[myCurrentButtonIndex].onClick.Invoke();
     }
 
+    private void OnDestroy()
+    {
+        myJoystickListener.Destroy();
+        myKeyboardListener.Destroy();
+        Resume();
+    }
+
     private void Pause()
     {
         Time.timeScale = 0.0f;

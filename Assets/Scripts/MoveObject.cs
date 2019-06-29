@@ -26,6 +26,6 @@ public class MoveObject : MonoBehaviour
     {
         transform.Rotate(myEulerRotation * Time.deltaTime, Space.World);
 
-        transform.position += myDirection * Time.deltaTime;
+        transform.position += myDirection * myMovementSpeed * Time.deltaTime;
     }
 }

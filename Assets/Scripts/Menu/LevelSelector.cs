@@ -34,7 +34,12 @@ public class LevelSelector : MonoBehaviour
         myLevelInfoCanvas.SetCanvasData(myLevels[myCurrentLevelIndex]);
     }
 
-    // Update is called once per frame
+    private void OnDestroy()
+    {
+        myJoystickListener.Destroy();
+        myKeyboardListener.Destroy();
+    }
+    
     void Update()
     {
         if (myFirstUpdate)
@@ -86,7 +91,7 @@ public class LevelSelector : MonoBehaviour
 
     private bool WasBackClicked()
     {
-        if (myKeyboardListener.Action2.WasPressed || myKeyboardListener.Action3.WasPressed || myJoystickListener.Action1.WasPressed || myJoystickListener.Action2.WasPressed)
+        if (myKeyboardListener.Action2.WasPressed || myKeyboardListener.Action3.WasPressed || myJoystickListener.Action3.WasPressed || myJoystickListener.Action2.WasPressed)
             return true;
 
         return false;

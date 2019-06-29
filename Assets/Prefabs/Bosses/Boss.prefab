@@ -1428,7 +1428,7 @@ MonoBehaviour:
   myDamageIncrease: 1
   myDamageMitigator: 1
   myAutoAttackRange: 5
-  myAutoAttackDamage: 150
+  myAutoAttackDamage: 80
 --- !u!114 &2695556951504777829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1446,10 +1446,11 @@ MonoBehaviour:
   myJumpSpeed: 0
   myGravity: 0
   myName: BigMan
-  myCharacterColor: {r: 0.59111667, g: 0, b: 0.7264151, a: 1}
+  myCharacterColor: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
   mySpeed: 8
   myPlayers: []
   myAggroList: 
+  myAggroRange: 15
 --- !u!195 &2695556951504777833
 NavMeshAgent:
   m_ObjectHideFlags: 0

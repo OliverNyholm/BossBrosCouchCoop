@@ -6,11 +6,11 @@ public class AreaDamage : MonoBehaviour
 {
     [Header("Damage per tick")]
     [SerializeField]
-    private int myTickDamage;
+    private int myTickDamage = 100;
 
     [Header("Duration between each tick")]
     [SerializeField]
-    private float myDurationPerTick;
+    private float myDurationPerTick = 1.0f;
     private float myTimer;
 
     private List<GameObject> myObjectsInTrigger;

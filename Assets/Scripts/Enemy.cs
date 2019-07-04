@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using BehaviorDesigner.Runtime;
 
 public class Enemy : Character
 {
@@ -26,14 +27,17 @@ public class Enemy : Character
 
     private bool myIsTaunted;
 
-    enum State
+    public int PhaseIndex { get; set; }
+    public float AutoAttackTimer { get { return myAutoAttackCooldown; } }
+
+    public enum CombatState
     {
         Idle,
         Combat,
         Disengage
     };
 
-    private State myState;
+    public CombatState State { get; set; }
 
     // Use this for initialization
     protected override void Start()
@@ -50,7 +54,8 @@ public class Enemy : Character
         mySpawnPosition = transform.position;
         mySpawnRotation = transform.rotation;
 
-        myState = State.Idle;
+        State = CombatState.Idle;
+        PhaseIndex = 1;
 
         SetupHud(transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").transform);
 
@@ -97,23 +102,24 @@ public class Enemy : Character
                 myIsTaunted = false;
         }
 
-        switch (myState)
+        switch (State)
         {
-            case State.Idle:
-                if (IsTargetCloseBy())
-                {
-                    SetState(State.Combat);
-                    AddThreat(10, myPlayers[myTargetIndex].GetInstanceID());
-                }
+            case CombatState.Idle:
+                //if (IsTargetCloseBy())
+                //{
+                //    SetState(CombatState.Combat);
+                //    AddThreat(10, myPlayers[myTargetIndex].GetInstanceID());
+                //}
                 break;
-            case State.Combat:
-                Behaviour();
+            case CombatState.Combat:
+                //Behaviour();
+                DetermineTarget();
                 if (myAutoAttackCooldown > 0.0f)
                 {
                     myAutoAttackCooldown -= Time.deltaTime * myStats.myAttackSpeed;
                 }
                 break;
-            case State.Disengage:
+            case CombatState.Disengage:
                 MoveBackToSpawn();
                 break;
             default:
@@ -157,11 +163,11 @@ public class Enemy : Character
         if (aSpellScript.myIsOnlySelfCast)
             return true;
 
-        if (!myTarget)
+        if (!Target)
         {
             if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) != 0)
             {
-                myTarget = gameObject;
+                Target = gameObject;
             }
             else
             {
@@ -169,7 +175,7 @@ public class Enemy : Character
             }
         }
 
-        if (myTarget.GetComponent<Health>().IsDead())
+        if (Target.GetComponent<Health>().IsDead())
         {
             return false;
         }
@@ -179,23 +185,23 @@ public class Enemy : Character
             return false;
         }
 
-        float distance = Vector3.Distance(transform.position, myTarget.transform.position);
+        float distance = Vector3.Distance(transform.position, Target.transform.position);
         if (distance > aSpellScript.myRange)
         {
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && myTarget.tag == "Enemy")
+        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && Target.tag == "Enemy")
         {
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && myTarget.tag == "Player")
+        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && Target.tag == "Player")
         {
             return false;
         }
 
-        if (!aSpellScript.myCanCastOnSelf && myTarget == transform.gameObject)
+        if (!aSpellScript.myCanCastOnSelf && Target == transform.gameObject)
         {
             return false;
         }
@@ -221,6 +227,16 @@ public class Enemy : Character
         return highestAggro;
     }
 
+    private void DetermineTarget()
+    {
+        int target = GetHighestAggro();
+
+        if (myTargetIndex != target)
+        {
+            SetTarget(target);
+        }
+    }
+
     private void Behaviour()
     {
         int target = GetHighestAggro();
@@ -232,7 +248,7 @@ public class Enemy : Character
 
 
         const float attackRangeOffset = 1.0f;
-        float distanceSqr = (myTarget.transform.position - transform.position).sqrMagnitude;
+        float distanceSqr = (Target.transform.position - transform.position).sqrMagnitude;
         float autoAttackRange = GetComponent<Stats>().myAutoAttackRange;
         float moveMinDistance = autoAttackRange - attackRangeOffset;
         if (distanceSqr > moveMinDistance * moveMinDistance)
@@ -250,7 +266,7 @@ public class Enemy : Character
         {
             myNavmeshAgent.destination = transform.position;
             myAnimator.SetBool("IsRunning", false);
-            Attack();
+            AutoAttack();
         }
 
         if (myClass.myCooldownTimers[0] <= 0.0f)
@@ -293,15 +309,15 @@ public class Enemy : Character
         myNavmeshAgent.destination = aTargetPosition;
     }
 
-    private void Attack()
+    public void AutoAttack()
     {
-        if (!myTarget)
+        if (!Target)
             return;
 
         if (myAutoAttackCooldown > 0.0f)
             return;
 
-        transform.LookAt(new Vector3(myTarget.transform.position.x, transform.position.y, myTarget.transform.position.z));
+        transform.LookAt(new Vector3(Target.transform.position.x, transform.position.y, Target.transform.position.z));
 
         myAnimator.SetTrigger("Attack");
         myAutoAttackCooldown = 1.5f;
@@ -309,7 +325,19 @@ public class Enemy : Character
         SpawnSpell(-1, GetSpellSpawnPosition(myClass.GetAutoAttack().GetComponent<Spell>()));
     }
 
+    public void SpawnSpell(GameObject aSpell, GameObject aTarget, Vector3 aSpawnPosition)
+    {
+        GameObject instance = Instantiate(aSpell, aSpawnPosition, transform.rotation);
 
+        Spell spellScript = instance.GetComponent<Spell>();
+        spellScript.SetParent(transform.gameObject);
+        spellScript.AddDamageIncrease(myStats.myDamageIncrease);
+
+        spellScript.SetTarget(aTarget);
+
+        if (aSpawnPosition != aTarget.transform.position)
+            GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
+    }
 
     public void SetTaunt(int aTaunterID, float aDuration)
     {
@@ -339,7 +367,7 @@ public class Enemy : Character
         myPlayers.RemoveAt(anIndex);
 
         if (myPlayers.Count == 0)
-            SetState(State.Disengage);
+            SetState(CombatState.Disengage);
     }
 
     protected void ReceiveMessage(Message anAiMessage)
@@ -356,6 +384,7 @@ public class Enemy : Character
                 break;
             case MessageType.PlayerDied:
                 {
+                    GetComponent<BehaviorTree>().SendEvent("PlayerDied");
                     int id = anAiMessage.Data.myInt;
                     for (int index = 0; index < myPlayers.Count; index++)
                     {
@@ -377,7 +406,7 @@ public class Enemy : Character
 
     private void AddThreat(int aThreatValue, int anID)
     {
-        if (myState != State.Combat)
+        if (State != CombatState.Combat)
             return;
 
         for (int index = 0; index < myPlayers.Count; index++)
@@ -392,27 +421,27 @@ public class Enemy : Character
 
     private void DropTarget()
     {
-        myTarget = null;
+        Target = null;
         myTargetIndex = -1;
         myNavmeshAgent.destination = transform.position;
 
         SetTarget(null);
     }
 
-    private void SetState(State aState)
+    public void SetState(CombatState aState)
     {
-        myState = aState;
+        State = aState;
 
-        switch (myState)
+        switch (State)
         {
-            case State.Idle:
+            case CombatState.Idle:
                 transform.rotation = mySpawnRotation;
                 myAnimator.SetBool("IsRunning", false);
                 myHealth.GainHealth(100000);
                 break;
-            case State.Combat:
+            case CombatState.Combat:
                 break;
-            case State.Disengage:
+            case CombatState.Disengage:
                 myNavmeshAgent.destination = mySpawnPosition;
                 myAnimator.SetBool("IsRunning", true);
                 break;
@@ -422,14 +451,24 @@ public class Enemy : Character
     private void MoveBackToSpawn()
     {
         if (!myNavmeshAgent.hasPath)
-            SetState(State.Idle);
+            SetState(CombatState.Idle);
+    }
+
+    public void PlayerSpotted(GameObject aGameObject)
+    {
+        SetState(CombatState.Combat);
+        AddThreat(10, aGameObject.GetInstanceID());
+        SetTarget(GetHighestAggro());
     }
 
     protected override void ChangeMyHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
     {
         base.ChangeMyHudHealth(aHealthPercentage, aHealthText, aShieldValue);
 
-        if (myState != State.Combat && myHealth.GetHealthPercentage() < 1.0f)
-            SetState(State.Combat);
+        if (State != CombatState.Combat && myHealth.GetHealthPercentage() < 1.0f)
+        {
+            GetComponent<BehaviorTree>().SendEvent("TakeDamage");
+            SetState(CombatState.Combat);
+        }
     }
 }

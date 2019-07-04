@@ -15,7 +15,7 @@ public class EnemyTargetDummy : Enemy
 
         myBuffs = new List<BuffSpell>();
 
-        myTarget = null;
+        Target = null;
         myIsCasting = false;
 
         SetupHud(transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").transform);

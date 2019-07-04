@@ -15,7 +15,6 @@ public class Health : MonoBehaviour
     public delegate void ThreatGenerated(int aThreatPercentage, int anID);
     public delegate void HealthZero();
 
-
     public event HealthChanged EventOnHealthChange;
     public event ThreatGenerated EventOnThreatGenerated;
     public event HealthZero EventOnHealthZero;

@@ -17,7 +17,7 @@ public abstract class Character : MonoBehaviour
 
     protected Animator myAnimator;
 
-    protected GameObject myTarget;
+    public GameObject Target { get; protected set; }
 
     protected CharacterHUD myCharacterHUD;
     protected CharacterHUD myTargetHUD;
@@ -50,7 +50,7 @@ public abstract class Character : MonoBehaviour
 
         myBuffs = new List<BuffSpell>();
 
-        myTarget = null;
+        Target = null;
         myIsCasting = false;
     }
 
@@ -193,8 +193,8 @@ public abstract class Character : MonoBehaviour
 
         if (spellScript.myIsOnlySelfCast)
             spellScript.SetTarget(transform.gameObject);
-        else if (myTarget)
-            spellScript.SetTarget(myTarget);
+        else if (Target)
+            spellScript.SetTarget(Target);
         else
             spellScript.SetTarget(transform.gameObject);
 
@@ -206,9 +206,9 @@ public abstract class Character : MonoBehaviour
 
     protected Vector3 GetSpellSpawnPosition(Spell aSpellScript)
     {
-        if (aSpellScript.mySpeed <= 0.0f && !aSpellScript.myIsOnlySelfCast && myTarget != null)
+        if (aSpellScript.mySpeed <= 0.0f && !aSpellScript.myIsOnlySelfCast && Target != null)
         {
-            return myTarget.transform.position;
+            return Target.transform.position;
         }
 
         return transform.position;
@@ -218,10 +218,10 @@ public abstract class Character : MonoBehaviour
     {
         Vector3 hardcodedEyePosition = new Vector3(0.0f, 0.7f, 0.0f);
         Vector3 infrontOfPlayer = (transform.position + hardcodedEyePosition) + transform.forward;
-        Vector3 direction = (myTarget.transform.position + hardcodedEyePosition) - infrontOfPlayer;
+        Vector3 direction = (Target.transform.position + hardcodedEyePosition) - infrontOfPlayer;
 
         Ray ray = new Ray(infrontOfPlayer, direction);
-        float distance = Vector3.Distance(infrontOfPlayer, myTarget.transform.position + hardcodedEyePosition);
+        float distance = Vector3.Distance(infrontOfPlayer, Target.transform.position + hardcodedEyePosition);
         LayerMask layerMask = LayerMask.GetMask("Terrain");
 
         if (Physics.Raycast(ray, distance, layerMask))
@@ -258,15 +258,15 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void SetTarget(GameObject aTarget)
     {
-        if (myTarget != null)
+        if (Target != null)
         {
-            myTarget.GetComponent<Health>().EventOnHealthChange -= ChangeTargetHudHealth;
-            if (myTarget.GetComponent<Resource>() != null)
-                myTarget.GetComponent<Resource>().EventOnResourceChange -= ChangeTargetHudResource;
+            Target.GetComponent<Health>().EventOnHealthChange -= ChangeTargetHudHealth;
+            if (Target.GetComponent<Resource>() != null)
+                Target.GetComponent<Resource>().EventOnResourceChange -= ChangeTargetHudResource;
         }
 
-        myTarget = aTarget;
-        if (myTarget)
+        Target = aTarget;
+        if (Target)
         {
             SetTargetHUD();
         }
@@ -277,41 +277,41 @@ public abstract class Character : MonoBehaviour
     private void SetTargetHUD()
     {
         myTargetHUD.Show();
-        myTarget.GetComponent<Health>().EventOnHealthChange += ChangeTargetHudHealth;
-        ChangeTargetHudHealth(myTarget.GetComponent<Health>().GetHealthPercentage(),
-            myTarget.GetComponent<Health>().myCurrentHealth.ToString() + "/" + myTarget.GetComponent<Health>().MaxHealth,
-            myTarget.GetComponent<Health>().GetTotalShieldValue());
+        Target.GetComponent<Health>().EventOnHealthChange += ChangeTargetHudHealth;
+        ChangeTargetHudHealth(Target.GetComponent<Health>().GetHealthPercentage(),
+            Target.GetComponent<Health>().myCurrentHealth.ToString() + "/" + Target.GetComponent<Health>().MaxHealth,
+            Target.GetComponent<Health>().GetTotalShieldValue());
 
-        if (myTarget.GetComponent<Resource>() != null)
+        if (Target.GetComponent<Resource>() != null)
         {
-            myTarget.GetComponent<Resource>().EventOnResourceChange += ChangeTargetHudResource;
-            ChangeTargetHudResource(myTarget.GetComponent<Resource>().GetResourcePercentage(),
-                myTarget.GetComponent<Resource>().myCurrentResource.ToString() + "/" + myTarget.GetComponent<Resource>().MaxResource);
-            myTargetHUD.SetResourceBarColor(myTarget.GetComponent<Resource>().myResourceColor);
+            Target.GetComponent<Resource>().EventOnResourceChange += ChangeTargetHudResource;
+            ChangeTargetHudResource(Target.GetComponent<Resource>().GetResourcePercentage(),
+                Target.GetComponent<Resource>().myCurrentResource.ToString() + "/" + Target.GetComponent<Resource>().MaxResource);
+            myTargetHUD.SetResourceBarColor(Target.GetComponent<Resource>().myResourceColor);
         }
         else
         {
             ChangeTargetHudResource(0.0f, "0/0");
         }
 
-        myTargetHUD.SetAvatarSprite(myTarget.GetComponent<Character>().GetAvatar());
-        myTargetHUD.SetClassSprite(myTarget.GetComponent<Class>().mySprite);
-        myTargetHUD.SetHudColor(myTarget.GetComponent<Character>().myCharacterColor);
-        myTargetHUD.SetName(myTarget.GetComponent<Character>().myName);
+        myTargetHUD.SetAvatarSprite(Target.GetComponent<Character>().GetAvatar());
+        myTargetHUD.SetClassSprite(Target.GetComponent<Class>().mySprite);
+        myTargetHUD.SetHudColor(Target.GetComponent<Character>().myCharacterColor);
+        myTargetHUD.SetName(Target.GetComponent<Character>().myName);
     }
     private void ChangeTargetHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
     {
         myTargetHUD.SetHealthBarFillAmount(aHealthPercentage);
         myTargetHUD.SetHealthText(aHealthText);
-        if (myTarget && myTarget.GetComponent<Health>() != null)
-            myTargetHUD.SetShieldBar(aShieldValue, myTarget.GetComponent<Health>().myCurrentHealth);
+        if (Target && Target.GetComponent<Health>() != null)
+            myTargetHUD.SetShieldBar(aShieldValue, Target.GetComponent<Health>().myCurrentHealth);
     }
     private void ChangeTargetHudResource(float aResourcePercentage, string aResourceText)
     {
         myTargetHUD.SetResourceBarFillAmount(aResourcePercentage);
         myTargetHUD.SetResourceText(aResourceText);
-        if (myTarget && myTarget.GetComponent<Resource>() != null)
-            myTargetHUD.SetResourceBarColor(myTarget.GetComponent<Resource>().myResourceColor);
+        if (Target && Target.GetComponent<Resource>() != null)
+            myTargetHUD.SetResourceBarColor(Target.GetComponent<Resource>().myResourceColor);
     }
 
     protected virtual void ChangeMyHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
@@ -323,7 +323,7 @@ public abstract class Character : MonoBehaviour
 
     public GameObject GetTarget()
     {
-        return myTarget;
+        return Target;
     }
 
     private void ChangeMyHudResource(float aResourcePercentage, string aResourceText)

@@ -266,12 +266,12 @@ public class Player : Character
             return false;
         }
 
-        if (!myTarget)
+        if (!Target)
         {
             return false;
         }
 
-        if (myTarget.GetComponent<Health>().IsDead())
+        if (Target.GetComponent<Health>().IsDead())
         {
             myShouldAutoAttack = false;
             return false;
@@ -282,7 +282,7 @@ public class Player : Character
             return false;
         }
 
-        float distance = Vector3.Distance(transform.position, myTarget.transform.position);
+        float distance = Vector3.Distance(transform.position, Target.transform.position);
         if (distance > GetComponent<Stats>().myAutoAttackRange)
         {
             return false;
@@ -314,11 +314,11 @@ public class Player : Character
         if (aSpellScript.myIsOnlySelfCast)
             return true;
 
-        if (!myTarget)
+        if (!Target)
         {
             if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) != 0)
             {
-                myTarget = gameObject;
+                Target = gameObject;
             }
             else
             {
@@ -327,9 +327,15 @@ public class Player : Character
             }
         }
 
-        if (!myTarget.GetComponent<Health>().IsDead() && aSpellScript.mySpellType == SpellType.Ressurect)
+        bool isDead = Target.GetComponent<Health>().IsDead();
+        if (!isDead && aSpellScript.mySpellType == SpellType.Ressurect)
         {
             myErrorMessageManager.CreateErrorMessage("That target is not dead!");
+            return false;
+        }
+        if(isDead && aSpellScript.mySpellType != SpellType.Ressurect)
+        {
+            myErrorMessageManager.CreateErrorMessage("Can't cast spell on dead target!");
             return false;
         }
 
@@ -339,26 +345,26 @@ public class Player : Character
             return false;
         }
 
-        float distance = Vector3.Distance(transform.position, myTarget.transform.position);
+        float distance = Vector3.Distance(transform.position, Target.transform.position);
         if (distance > aSpellScript.myRange)
         {
             myErrorMessageManager.CreateErrorMessage("Out of range!");
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && myTarget.tag == "Enemy")
+        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && Target.tag == "Enemy")
         {
             myErrorMessageManager.CreateErrorMessage("Can't cast friendly spells on enemies");
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && myTarget.tag == "Player")
+        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && Target.tag == "Player")
         {
             myErrorMessageManager.CreateErrorMessage("Can't cast hostile spells on friends.");
             return false;
         }
 
-        if (!aSpellScript.myCanCastOnSelf && myTarget == transform.gameObject)
+        if (!aSpellScript.myCanCastOnSelf && Target == transform.gameObject)
         {
             myErrorMessageManager.CreateErrorMessage("Can't be cast on self!");
             return false;
@@ -387,7 +393,7 @@ public class Player : Character
         myDirection = aVelocity;
 
         if (aShouldLookAtDirection)
-            transform.LookAt(myTarget.transform);
+            transform.LookAt(Target.transform);
     }
 
     public void SetPosition(Vector3 aPosition)
@@ -397,16 +403,16 @@ public class Player : Character
 
     protected override void SetTarget(GameObject aTarget)
     {
-        if(myTarget)
-            myTarget.GetComponentInChildren<TargetProjector>().DropTargetProjection(PlayerIndex);
+        if(Target)
+            Target.GetComponentInChildren<TargetProjector>().DropTargetProjection(PlayerIndex);
 
         base.SetTarget(aTarget);
 
-        if (myTarget)
-            myTarget.GetComponentInChildren<TargetProjector>().AddTargetProjection(myCharacterColor, PlayerIndex);
+        if (Target)
+            Target.GetComponentInChildren<TargetProjector>().AddTargetProjection(myCharacterColor, PlayerIndex);
 
         myShouldAutoAttack = false;
-        if (myTarget && myTarget.tag == "Enemy")
+        if (Target && Target.tag == "Enemy")
             myShouldAutoAttack = true;
     }
 

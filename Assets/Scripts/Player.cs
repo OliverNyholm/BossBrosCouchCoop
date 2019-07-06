@@ -61,6 +61,9 @@ public class Player : Character
         if (!myAnimator.GetBool("IsGrounded") && myIsGrounded)
             myAnimator.SetBool("IsGrounded", true);
 
+        //Gör en kommentar ändå, puss på dig Oliver <3. Saknar dig.
+        myAnimator.SetLayerWeight(1, 1);
+
         DetectTargetingInput();
         if (GetComponent<Health>().IsDead())
             return;

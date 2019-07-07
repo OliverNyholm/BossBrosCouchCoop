@@ -52,10 +52,15 @@ public class MoveTo : Action
             targetPosition = myGameObject.transform.position;
         }
 
+
+
         myNavmeshAgent.destination = targetPosition;
-        float distanceSqr = (targetPosition - transform.position).sqrMagnitude;
-        if (distanceSqr <= myStopDistance * myStopDistance)
+        float distanceSqr = (new VectorXZ(targetPosition) - new VectorXZ(transform.position)).sqrMagnitude;
+        if (distanceSqr <= myStopDistance * myStopDistance && myNavmeshAgent.remainingDistance <= myStopDistance)
+        {
+            myNavmeshAgent.destination = transform.position;
             return TaskStatus.Success;
+        }
 
         return TaskStatus.Running;
     }

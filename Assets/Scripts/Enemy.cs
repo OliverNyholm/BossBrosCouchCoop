@@ -325,6 +325,68 @@ public class Enemy : Character
         SpawnSpell(-1, GetSpellSpawnPosition(myClass.GetAutoAttack().GetComponent<Spell>()));
     }
 
+    public bool CastSpell(GameObject aSpell, GameObject aTarget, Vector3 aSpawnPosition, bool myShouldIgnoreCastability = false)
+    {
+        Spell spellScript = aSpell.GetComponent<Spell>();
+
+        if (!myShouldIgnoreCastability && !IsAbleToCastSpell(spellScript))
+            return false;
+
+        if (spellScript.myCastTime <= 0.0f)
+        {
+            SpawnSpell(aSpell, aTarget, aSpawnPosition);
+            GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
+            myAnimator.SetTrigger("CastingDone");
+            return true;
+        }
+
+        myAnimator.SetBool("IsCasting", true);
+
+        myCastbar.ShowCastbar();
+        myCastbar.SetCastbarFillAmount(0.0f);
+        myCastbar.SetSpellName(spellScript.myName);
+        myCastbar.SetCastbarColor(spellScript.myCastbarColor);
+        myCastbar.SetSpellIcon(spellScript.mySpellIcon);
+        myCastbar.SetCastTimeText(spellScript.myCastTime.ToString());
+
+        myCastingRoutine = StartCoroutine(CastbarProgress(aSpell, aTarget, aSpawnPosition));
+
+        return true;
+    }
+
+    protected IEnumerator CastbarProgress(GameObject aSpell, GameObject aTarget, Vector3 aSpawnPosition)
+    {
+        Spell spellScript = aSpell.GetComponent<Spell>();
+
+        GetComponent<AudioSource>().clip = spellScript.GetSpellSFX().myCastSound;
+        GetComponent<AudioSource>().Play();
+
+
+        myIsCasting = true;
+        float castSpeed = spellScript.myCastTime / myStats.myAttackSpeed;
+        float rate = 1.0f / castSpeed;
+        float progress = 0.0f;
+
+        while (progress <= 1.0f)
+        {
+            myCastbar.SetCastbarFillAmount(Mathf.Lerp(0, 1, progress));
+            myCastbar.SetCastTimeText((castSpeed - (progress * castSpeed)).ToString("0.0"));
+
+            progress += rate * Time.deltaTime;
+
+            yield return null;
+        }
+
+        StopCasting();
+
+        if (IsAbleToCastSpell(spellScript))
+        {
+            SpawnSpell(aSpell, aTarget, aSpawnPosition);
+            GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
+            myAnimator.SetTrigger("CastingDone");
+        }
+    }
+
     public void SpawnSpell(GameObject aSpell, GameObject aTarget, Vector3 aSpawnPosition)
     {
         GameObject instance = Instantiate(aSpell, aSpawnPosition, transform.rotation);
@@ -337,6 +399,8 @@ public class Enemy : Character
 
         if (aSpawnPosition != aTarget.transform.position)
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
+
+        GetComponent<BehaviorTree>().SendEvent("SpellSpawned");
     }
 
     public void SetTaunt(int aTaunterID, float aDuration)
@@ -437,7 +501,6 @@ public class Enemy : Character
             case CombatState.Idle:
                 transform.rotation = mySpawnRotation;
                 myAnimator.SetBool("IsRunning", false);
-                myHealth.GainHealth(100000);
                 break;
             case CombatState.Combat:
                 break;

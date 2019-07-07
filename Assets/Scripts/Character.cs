@@ -84,6 +84,9 @@ public abstract class Character : MonoBehaviour
     protected virtual void Update()
     {
         HandleBuffs();
+
+        //Gör en kommentar ändå, puss på dig Oliver <3. Saknar dig.
+        myAnimator.SetLayerWeight(1, 1);
     }
 
     protected IEnumerator CastbarProgress(int aKeyIndex)

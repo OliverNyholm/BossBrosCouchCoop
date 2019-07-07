@@ -37,6 +37,9 @@ public class PlayersInSight : Conditional
 
     public bool InSight(Transform targetTransform)
     {
+        if (targetTransform.GetComponent<Health>().IsDead())
+            return false;
+
         Vector3 direction = targetTransform.position - transform.position;
         if(direction.sqrMagnitude > myRange * myRange)
             return false;

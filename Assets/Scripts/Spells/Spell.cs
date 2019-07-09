@@ -384,7 +384,7 @@ public class Spell : MonoBehaviour
         return mySpellSFX;
     }
 
-    protected GameObject SpawnVFX(float aDuration)
+    protected GameObject SpawnVFX(float aDuration, GameObject aTarget = null)
     {
         if(!mySpellVFX)
         {
@@ -392,7 +392,11 @@ public class Spell : MonoBehaviour
             return null;
         }
 
-        GameObject vfxGO = Instantiate(mySpellVFX, myTarget.transform);
+        GameObject target = aTarget;
+        if (target == null)
+            target = myTarget;
+
+        GameObject vfxGO = Instantiate(mySpellVFX, target.transform);
         vfxGO.GetComponent<AudioSource>().clip = mySpellSFX.myHitSound;
         vfxGO.GetComponent<AudioSource>().Play();
 

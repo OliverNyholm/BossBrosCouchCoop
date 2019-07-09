@@ -2,15 +2,16 @@
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 
-public class SpawnSpell : Action
+public class SpawnSpellMultiplePositions : Action
 {
-    public SharedGameObject myTarget;
     public GameObject mySpell;
 
-    public SharedTransform mySpawnTransform;
+    public SharedGameObjectList mySpawnObjects;
 
     [BehaviorDesigner.Runtime.Tasks.Tooltip("Enable if you want the spell to spawn without vision, resource, etc checks.")]
     public bool myShouldIgnoreCastability;
+
+    private int myNumberOfSpellsSpawned;
 
     private bool myCanCastSpell;
     private bool myHasRegisteredForEvent;
@@ -25,8 +26,15 @@ public class SpawnSpell : Action
             myHasRegisteredForEvent = true;
         }
 
+        myNumberOfSpellsSpawned = 0;
         myHasSpawnedSpell = false;
-        myCanCastSpell = GetComponent<Enemy>().CastSpell(mySpell, myTarget.Value, mySpawnTransform.Value, myShouldIgnoreCastability);
+
+        for (int index = 0; index < mySpawnObjects.Value.Count; index++)
+        {
+            myCanCastSpell = GetComponent<Enemy>().CastSpell(mySpell, mySpawnObjects.Value[index], mySpawnObjects.Value[index].transform, myShouldIgnoreCastability);
+            if (!myCanCastSpell)
+                break;
+        }
     }
 
     public override TaskStatus OnUpdate()
@@ -48,6 +56,7 @@ public class SpawnSpell : Action
             myHasRegisteredForEvent = false;
         }
         myHasSpawnedSpell = false;
+        myNumberOfSpellsSpawned = 0;
     }
 
     public override void OnBehaviorComplete()
@@ -57,10 +66,13 @@ public class SpawnSpell : Action
         myHasRegisteredForEvent = true;
 
         myHasSpawnedSpell = false;
+        myNumberOfSpellsSpawned = 0;
     }
 
     private void ReceivedEvent()
     {
-        myHasSpawnedSpell = true;
+        myNumberOfSpellsSpawned++;
+        if (myNumberOfSpellsSpawned >= mySpawnObjects.Value.Count)
+            myHasSpawnedSpell = true;
     }
 }

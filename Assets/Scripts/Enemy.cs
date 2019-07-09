@@ -147,16 +147,19 @@ public class Enemy : Character
     {
         if (myIsCasting)
         {
+            Debug.Log(myName + " failed to cast spell due to already casting spell");
             return false;
         }
 
         if (GetComponent<Resource>().myCurrentResource < aSpellScript.myResourceCost)
         {
+            Debug.Log(myName + " failed to cast spell due to no resources");
             return false;
         }
 
         if (!aSpellScript.IsCastableWhileMoving() && IsMoving())
         {
+            Debug.Log(myName + " failed to cast spell while moving");
             return false;
         }
 
@@ -171,38 +174,45 @@ public class Enemy : Character
             }
             else
             {
+                Debug.Log(myName + " failed to cast spell due to no target");
                 return false;
             }
         }
 
         if (Target.GetComponent<Health>().IsDead())
         {
+            Debug.Log(myName + " failed to cast spell due to target being dead");
             return false;
         }
 
         if (!CanRaycastToTarget())
         {
+            Debug.Log(myName + " failed to cast spell due to no vision of target");
             return false;
         }
 
         float distance = Vector3.Distance(transform.position, Target.transform.position);
         if (distance > aSpellScript.myRange)
         {
+            Debug.Log(myName + " failed to cast spell due to target being without of range");
             return false;
         }
 
         if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && Target.tag == "Enemy")
         {
+            Debug.Log(myName + " failed to cast spell due to target being of type Enemy");
             return false;
         }
 
         if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && Target.tag == "Player")
         {
+            Debug.Log(myName + " failed to cast spell due to target being of type Player");
             return false;
         }
 
         if (!aSpellScript.myCanCastOnSelf && Target == transform.gameObject)
         {
+            Debug.Log(myName + " failed to cast spell due to spell not castable on self");
             return false;
         }
 
@@ -325,7 +335,7 @@ public class Enemy : Character
         SpawnSpell(-1, GetSpellSpawnPosition(myClass.GetAutoAttack().GetComponent<Spell>()));
     }
 
-    public bool CastSpell(GameObject aSpell, GameObject aTarget, Vector3 aSpawnPosition, bool myShouldIgnoreCastability = false)
+    public bool CastSpell(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform, bool myShouldIgnoreCastability = false)
     {
         Spell spellScript = aSpell.GetComponent<Spell>();
 
@@ -334,7 +344,7 @@ public class Enemy : Character
 
         if (spellScript.myCastTime <= 0.0f)
         {
-            SpawnSpell(aSpell, aTarget, aSpawnPosition);
+            SpawnSpell(aSpell, aTarget, aSpawnTransform);
             GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
             myAnimator.SetTrigger("CastingDone");
             return true;
@@ -349,12 +359,12 @@ public class Enemy : Character
         myCastbar.SetSpellIcon(spellScript.mySpellIcon);
         myCastbar.SetCastTimeText(spellScript.myCastTime.ToString());
 
-        myCastingRoutine = StartCoroutine(CastbarProgress(aSpell, aTarget, aSpawnPosition));
+        myCastingRoutine = StartCoroutine(CastbarProgress(aSpell, aTarget, aSpawnTransform));
 
         return true;
     }
 
-    protected IEnumerator CastbarProgress(GameObject aSpell, GameObject aTarget, Vector3 aSpawnPosition)
+    protected IEnumerator CastbarProgress(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform)
     {
         Spell spellScript = aSpell.GetComponent<Spell>();
 
@@ -381,15 +391,15 @@ public class Enemy : Character
 
         if (IsAbleToCastSpell(spellScript))
         {
-            SpawnSpell(aSpell, aTarget, aSpawnPosition);
+            SpawnSpell(aSpell, aTarget, aSpawnTransform);
             GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
             myAnimator.SetTrigger("CastingDone");
         }
     }
 
-    public void SpawnSpell(GameObject aSpell, GameObject aTarget, Vector3 aSpawnPosition)
+    public void SpawnSpell(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform)
     {
-        GameObject instance = Instantiate(aSpell, aSpawnPosition, transform.rotation);
+        GameObject instance = Instantiate(aSpell, aSpawnTransform.position, aSpawnTransform.rotation);
 
         Spell spellScript = instance.GetComponent<Spell>();
         spellScript.SetParent(transform.gameObject);
@@ -397,7 +407,7 @@ public class Enemy : Character
 
         spellScript.SetTarget(aTarget);
 
-        if (aSpawnPosition != aTarget.transform.position)
+        if (aTarget && aSpawnTransform.position != aTarget.transform.position)
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
 
         GetComponent<BehaviorTree>().SendEvent("SpellSpawned");

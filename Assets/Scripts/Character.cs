@@ -236,11 +236,12 @@ public abstract class Character : MonoBehaviour
     }
 
 
-    protected void StopCasting()
+    protected virtual void StopCasting()
     {
         if (myCastingRoutine != null)
             StopCoroutine(myCastingRoutine);
         myIsCasting = false;
+        myCastbar.SetSpellName("Interrupted");
         myCastbar.FadeOutCastbar();
         GetComponent<AudioSource>().Stop();
         myAnimator.SetBool("IsCasting", false);

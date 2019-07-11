@@ -11,13 +11,18 @@ public class AoeAttack : Spell
     [SerializeField]
     private string myAttackTag = "Enemy";
 
+    protected override void Start()
+    {
+        base.Start();
+        SpawnVFX(2.5f);
+    }
+
     protected override void Update()
     {
         myLifeTime -= Time.deltaTime;
         if (myLifeTime <= 0.0f)
         {
             Destroy(gameObject);
-            SpawnVFX(2.5f);
         }
     }
 

@@ -25,7 +25,7 @@ public class AreaDamage : MonoBehaviour
     void Update()
     {
         myTimer -= Time.deltaTime;
-        if(myTimer <= 0.0f)
+        if (myTimer <= 0.0f)
         {
             myTimer = myDurationPerTick;
             for (int index = 0; index < myObjectsInTrigger.Count; index++)
@@ -43,8 +43,11 @@ public class AreaDamage : MonoBehaviour
 
     private void OnTriggerEnter(Collider aOther)
     {
-        if(aOther.tag == "Player")
+        if (aOther.tag == "Player")
         {
+            if (aOther.gameObject.GetComponent<Health>().IsDead())
+                return;
+
             myObjectsInTrigger.Add(aOther.gameObject);
             aOther.gameObject.GetComponent<Health>().TakeDamage(myTickDamage, Color.red);
         }

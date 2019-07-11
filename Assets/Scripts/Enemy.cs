@@ -413,6 +413,12 @@ public class Enemy : Character
         GetComponent<BehaviorTree>().SendEvent("SpellSpawned");
     }
 
+    protected override void StopCasting()
+    {
+        base.StopCasting();
+        GetComponent<BehaviorTree>().SendEvent("SpellSpawned");
+    }
+
     public void SetTaunt(int aTaunterID, float aDuration)
     {
         myIsTaunted = true;

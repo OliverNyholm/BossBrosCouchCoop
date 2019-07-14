@@ -12,7 +12,7 @@ public class Enemy : Character
 
     private NavMeshAgent myNavmeshAgent;
 
-    public List<GameObject> myPlayers = new List<GameObject>();
+    public List<GameObject> Players { get; set; } = new List<GameObject>();
     public List<int> myAggroList = new List<int>();
 
     [Header("Aggro range")]
@@ -230,7 +230,7 @@ public class Enemy : Character
 
         for (int index = 1; index < myAggroList.Count; index++)
         {
-            if (myAggroList[index] > myAggroList[highestAggro] && !myPlayers[index].GetComponent<Health>().IsDead())
+            if (myAggroList[index] > myAggroList[highestAggro] && !Players[index].GetComponent<Health>().IsDead())
                 highestAggro = index;
         }
 
@@ -263,7 +263,7 @@ public class Enemy : Character
         float moveMinDistance = autoAttackRange - attackRangeOffset;
         if (distanceSqr > moveMinDistance * moveMinDistance)
         {
-            Move(myPlayers[myTargetIndex].transform.position);
+            Move(Players[myTargetIndex].transform.position);
             myAnimator.SetBool("IsRunning", true);
         }
         else
@@ -281,9 +281,9 @@ public class Enemy : Character
 
         if (myClass.myCooldownTimers[0] <= 0.0f)
         {
-            int randomPlayer = Random.Range(0, myPlayers.Count - 1);
+            int randomPlayer = Random.Range(0, Players.Count - 1);
 
-            Vector3 playerPosition = myPlayers[randomPlayer].transform.position;
+            Vector3 playerPosition = Players[randomPlayer].transform.position;
             Vector3 offsetAbove = Vector3.up * 80.0f;
 
             SpawnSpell(0, playerPosition + offsetAbove);
@@ -295,14 +295,14 @@ public class Enemy : Character
     private void SetTarget(int aTargetIndex)
     {
         myTargetIndex = aTargetIndex;
-        SetTarget(myPlayers[myTargetIndex].gameObject);
+        SetTarget(Players[myTargetIndex].gameObject);
     }
 
     private bool IsTargetCloseBy()
     {
-        for (int index = 0; index < myPlayers.Count; index++)
+        for (int index = 0; index < Players.Count; index++)
         {
-            Vector3 playerPosition = myPlayers[index].transform.position;
+            Vector3 playerPosition = Players[index].transform.position;
             float distanceSqr = (playerPosition - transform.position).sqrMagnitude;
             if (distanceSqr < myAggroRange * myAggroRange)
             {
@@ -423,9 +423,9 @@ public class Enemy : Character
     {
         myIsTaunted = true;
         myTauntDuration = aDuration;
-        for (int index = 0; index < myPlayers.Count; index++)
+        for (int index = 0; index < Players.Count; index++)
         {
-            if (myPlayers[index].GetInstanceID() == aTaunterID)
+            if (Players[index].GetInstanceID() == aTaunterID)
             {
                 myTargetIndex = index;
                 SetTarget(myTargetIndex);
@@ -437,16 +437,16 @@ public class Enemy : Character
 
     public void AddPlayer(GameObject aPlayer)
     {
-        myPlayers.Add(aPlayer);
+        Players.Add(aPlayer);
         myAggroList.Add(0);
     }
 
     public void RemovePlayer(int anIndex)
     {
         myAggroList.RemoveAt(anIndex);
-        myPlayers.RemoveAt(anIndex);
+        Players.RemoveAt(anIndex);
 
-        if (myPlayers.Count == 0)
+        if (Players.Count == 0)
             SetState(CombatState.Disengage);
     }
 
@@ -466,9 +466,9 @@ public class Enemy : Character
                 {
                     GetComponent<BehaviorTree>().SendEvent("PlayerDied");
                     int id = anAiMessage.Data.myInt;
-                    for (int index = 0; index < myPlayers.Count; index++)
+                    for (int index = 0; index < Players.Count; index++)
                     {
-                        if (myPlayers[index].GetInstanceID() == id)
+                        if (Players[index].GetInstanceID() == id)
                         {
                             if (index == myTargetIndex)
                                 DropTarget();
@@ -489,9 +489,9 @@ public class Enemy : Character
         if (State != CombatState.Combat)
             return;
 
-        for (int index = 0; index < myPlayers.Count; index++)
+        for (int index = 0; index < Players.Count; index++)
         {
-            if (myPlayers[index].GetInstanceID() == anID)
+            if (Players[index].GetInstanceID() == anID)
             {
                 myAggroList[index] += aThreatValue;
                 break;

@@ -2,6 +2,7 @@
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 
+[TaskDescription("Will spawn an INSTANT spell at multiple GameObjects positions.")]
 public class SpawnSpellMultiplePositions : Action
 {
     public GameObject mySpell;

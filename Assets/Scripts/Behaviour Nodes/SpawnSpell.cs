@@ -4,13 +4,16 @@ using BehaviorDesigner.Runtime.Tasks;
 
 public class SpawnSpell : Action
 {
-    public SharedGameObject myTarget;
-    public GameObject mySpell;
+    public SharedGameObject myTarget = null;
+    public GameObject mySpell = null;
 
-    public SharedTransform mySpawnTransform;
+    public SharedTransform mySpawnTransform = null;
 
     [BehaviorDesigner.Runtime.Tasks.Tooltip("Enable if you want the spell to spawn without vision, resource, etc checks.")]
-    public bool myShouldIgnoreCastability;
+    public bool myShouldIgnoreCastability = true;
+
+    [BehaviorDesigner.Runtime.Tasks.Tooltip("Enable if you want the spell to be interruptable.")]
+    public bool myIsInterruptable = true;
 
     private bool myCanCastSpell;
     private bool myHasRegisteredForEvent;
@@ -26,7 +29,9 @@ public class SpawnSpell : Action
         }
 
         myHasSpawnedSpell = false;
-        myCanCastSpell = GetComponent<Enemy>().CastSpell(mySpell, myTarget.Value, mySpawnTransform.Value, myShouldIgnoreCastability);
+        Enemy enemyComponent = GetComponent<Enemy>();
+        enemyComponent.IsInterruptable = myIsInterruptable;
+        myCanCastSpell = enemyComponent.CastSpell(mySpell, myTarget.Value, mySpawnTransform.Value, myShouldIgnoreCastability);
     }
 
     public override TaskStatus OnUpdate()

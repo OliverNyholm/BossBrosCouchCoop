@@ -9,7 +9,7 @@ public class GetRandomPlayer : Action
 
     public override TaskStatus OnUpdate()
     {
-        List<GameObject> players = GetComponent<Enemy>().myPlayers;
+        List<GameObject> players = GetComponent<Enemy>().Players;
         if (players.Count == 0)
             return TaskStatus.Failure;
 

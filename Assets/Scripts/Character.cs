@@ -38,6 +38,7 @@ public abstract class Character : MonoBehaviour
     protected float myAutoAttackCooldownReset = 1.0f;
 
     protected bool myIsCasting;
+    public bool IsInterruptable { get; set; }
 
     protected virtual void Start()
     {
@@ -52,6 +53,7 @@ public abstract class Character : MonoBehaviour
 
         Target = null;
         myIsCasting = false;
+        IsInterruptable = true;
     }
 
     protected virtual void SetupHud(Transform aUIParent)
@@ -254,7 +256,7 @@ public abstract class Character : MonoBehaviour
 
     public void InterruptSpellCast()
     {
-        if (myIsCasting)
+        if (myIsCasting && IsInterruptable)
         {
             StopCasting();
         }

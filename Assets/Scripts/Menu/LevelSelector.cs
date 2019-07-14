@@ -64,7 +64,7 @@ public class LevelSelector : MonoBehaviour
 
         if(WasBackClicked())
         {
-            SceneManager.LoadScene("Menu");
+            SceneManager.LoadScene("PlayerSelect");
         }
     }
 

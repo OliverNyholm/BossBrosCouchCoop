@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 
 
         CharacterGameData characterGameData = characterGameDataGO.GetComponent<CharacterGameData>();
-        List<CharacterSelectData> characters = characterGameData.GetPlayerData();
+        List<PlayerSelectData> characters = characterGameData.GetPlayerData();
         for (int index = 0; index < characters.Count; index++)
         {
             SpawnPlayer(targetHandler, characters[index], index);
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private void SpawnPlayer(TargetHandler aTargetHandler, CharacterSelectData aCharacter, int aIndex)
+    private void SpawnPlayer(TargetHandler aTargetHandler, PlayerSelectData aCharacter, int aIndex)
     {
         Vector3 spawnPoint = new Vector3(-1.5f + aIndex * 1.0f, 0.0f, -3.0f);
         if (mySpawnPoints.Count > 0)

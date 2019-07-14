@@ -14,9 +14,9 @@ public class CharacterSelector : MonoBehaviour
     [SerializeField]
     private Image myClassIcon = null;
 
-    [Header("Text to show class color")]
+    [Header("Text to show player name")]
     [SerializeField]
-    private Text myColorText = null;
+    private Text myNameText = null;
 
     [Header("Text to show class name")]
     [SerializeField]
@@ -36,11 +36,9 @@ public class CharacterSelector : MonoBehaviour
     float myPreviousLeftAxis;
     float myPreviousRightAxis;
 
-    bool myIsInitialized;
-
     public enum SelectionState
     {
-        Idle,
+        Leave,
         Class,
         Color,
         Ready
@@ -62,17 +60,9 @@ public class CharacterSelector : MonoBehaviour
         if (PlayerControls == null)
             return;
 
-        if (myIsInitialized)
-        {
-            myIsInitialized = false;
-            return;
-        }
-
         if (PlayerControls.Action2.WasPressed || PlayerControls.Action3.WasPressed)
         {
             myManager.PlayerSetState(this, --State);
-            if (State == SelectionState.Idle)
-                return;
         }
 
         if (PlayerControls.Action1.WasPressed || PlayerControls.Start.WasPressed)
@@ -115,20 +105,19 @@ public class CharacterSelector : MonoBehaviour
         myPreviousRightAxis = PlayerControls.Right.RawValue > 0.0f ? 1.0f : 0.0f;
     }
 
-    public void Show(PlayerControls aPlayerControls, CharacterSelectManager aManager)
+    public void Show(PlayerControls aPlayerControls, string aName, CharacterSelectManager aManager)
     {
         PlayerControls = aPlayerControls;
         myManager = aManager;
+        myNameText.text = aName;
 
         myAvatar.enabled = true;
         myClassIcon.enabled = true;
-        myColorText.enabled = true;
+        myNameText.enabled = true;
         myClassNameText.enabled = true;
         myDescriptionText.enabled = true;
 
         State = SelectionState.Class;
-
-        myIsInitialized = true;
     }
 
     public void Hide()
@@ -138,14 +127,14 @@ public class CharacterSelector : MonoBehaviour
 
         myAvatar.enabled = false;
         myClassIcon.enabled = false;
-        myColorText.enabled = false;
+        myNameText.enabled = false;
         myClassNameText.enabled = false;
         myDescriptionText.enabled = false;
     }
 
     public void SetColor(ColorScheme aColorScheme)
     {
-        myColorText.color = aColorScheme.myColor;
+        myNameText.color = aColorScheme.myColor;
         myAvatar.sprite = aColorScheme.myAvatar;
     }
 
@@ -163,6 +152,6 @@ public class CharacterSelector : MonoBehaviour
 
     public string GetName()
     {
-        return myColorText.text;
+        return myNameText.text;
     }
 }

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using InControl;
 
-public struct CharacterSelectData
+public class PlayerSelectData
 {
     public PlayerControls myPlayerControls;
     public ClassData myClassData;
     public ColorScheme myColorScheme;
     public string myName;
 
-    public CharacterSelectData(PlayerControls aPlayerControls, ClassData aClassData, ColorScheme aColorScheme, string aName)
+    public PlayerSelectData(PlayerControls aPlayerControls, ClassData aClassData, ColorScheme aColorScheme, string aName)
     {
         myPlayerControls = aPlayerControls;
         myClassData = aClassData;
@@ -21,7 +21,7 @@ public struct CharacterSelectData
 
 public class CharacterGameData : MonoBehaviour
 {
-    private List<CharacterSelectData> mySelectedCharacters;
+    private List<PlayerSelectData> mySelectedCharacters;
 
     public int myCurrentLevelIndex;
     public string mySceneToLoad;
@@ -35,12 +35,25 @@ public class CharacterGameData : MonoBehaviour
         else
             ourCharacterGameDataInstance = this;
 
-        mySelectedCharacters = new List<CharacterSelectData>();
+        mySelectedCharacters = new List<PlayerSelectData>();
     }
 
-    public void AddPlayerData(PlayerControls aPlayerControls, ClassData aClassData, ColorScheme aColorScheme, string aName)
+    public void AddPlayerData(PlayerControls aPlayerControls, string aName)
     {
-        mySelectedCharacters.Add(new CharacterSelectData(aPlayerControls, aClassData, aColorScheme, aName));
+        mySelectedCharacters.Add(new PlayerSelectData(aPlayerControls, null, null, aName));
+    }
+
+    public void AddCharacterData(PlayerControls aPlayerControls, ClassData aClassData, ColorScheme aColorScheme)
+    {
+        for (int index = 0; index < mySelectedCharacters.Count; index++)
+        {
+            if (mySelectedCharacters[index].myPlayerControls.Device == aPlayerControls.Device)
+            {
+                mySelectedCharacters[index].myClassData = aClassData;
+                mySelectedCharacters[index].myColorScheme = aColorScheme;
+                break;
+            }
+        }
     }
 
     public bool RemovePlayerData(PlayerControls aPlayerControls)
@@ -57,7 +70,7 @@ public class CharacterGameData : MonoBehaviour
         return false;
     }
 
-    public List<CharacterSelectData> GetPlayerData()
+    public List<PlayerSelectData> GetPlayerData()
     {
         return mySelectedCharacters;
     }          

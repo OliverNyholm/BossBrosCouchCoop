@@ -72,7 +72,7 @@ public class Menu : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("LevelSelect");
+        SceneManager.LoadScene("PlayerSelect");
     }
 
     public void QuitGame()

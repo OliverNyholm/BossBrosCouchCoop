@@ -57,6 +57,7 @@ public class PlayerControls : PlayerActionSet
 
         actions.Action1.AddDefaultBinding(Key.Key1);
         actions.Action2.AddDefaultBinding(Key.Key3);
+        actions.Action2.AddDefaultBinding(Key.Backspace);
         actions.Action3.AddDefaultBinding(Key.Key2);
         actions.Action4.AddDefaultBinding(Key.Key4);
 

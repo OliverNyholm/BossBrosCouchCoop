@@ -8652,6 +8652,7 @@ GameObject:
   - component: {fileID: 1955740398984810206}
   - component: {fileID: 1106713476812670441}
   - component: {fileID: 1106713476812670440}
+  - component: {fileID: 1106713476812670442}
   m_Layer: 9
   m_Name: EnemyDummy
   m_TagString: Enemy
@@ -8678,7 +8679,6 @@ MonoBehaviour:
   myName: EnemyDummy
   myCharacterColor: {r: 1, g: 0, b: 0, a: 1}
   mySpeed: 0
-  myPlayers: []
   myAggroList: 
   myAggroRange: 15
 --- !u!114 &1106713476812670441
@@ -8714,6 +8714,46 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+--- !u!114 &1106713476812670442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106713476812670439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startWhenEnabled: 1
+  pauseWhenDisabled: 0
+  restartWhenComplete: 0
+  logTaskChanges: 0
+  group: 0
+  resetValuesOnRestart: 0
+  externalBehavior: {fileID: 0}
+  mBehaviorSource:
+    behaviorName: Behavior
+    behaviorDescription: 
+    mTaskData:
+      types:
+      - BehaviorDesigner.Runtime.Tasks.EntryTask
+      - BehaviorDesigner.Runtime.Tasks.Selector
+      - BehaviorDesigner.Runtime.Tasks.Idle
+      parentIndex: ffffffff0000000001000000
+      startIndex: 000000000a00000015000000
+      variableStartIndex: 
+      JSONSerialization: 
+      fieldSerializationData:
+        typeName: []
+        fieldNameHash: 2944782b951203e811c37978c4a37522ae07a096e44d14616fd219c3a5f3b63149269a1caac4f9012944782b951203e811c37978c4a37522ae07a096e44d14616fd219c3a5f3b63149269a1caac4f9018690b4b22944782b951203e811c37978c4a37522ae07a096e44d14616fd219c3a5f3b63149269a1caac4f901
+        startIndex: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000015000000160000001700000018000000190000001a0000001b0000001c0000001d0000001e000000
+        dataPosition: 0000000004000000090000000a0000000b00000013000000130000001400000015000000190000001d00000021000000290000002a0000002b00000033000000330000003400000035000000390000003d0000004100000045000000490000004a0000004b0000005300000053000000540000005500000059000000
+        unityObjects: []
+        byteData: 00000000456e747279010000400e4400008841000000000000000000000100000053656c6563746f720100000080bf0000ea4200000000000000000000000000000200000049646c650100000080400000ee4200000000000000000000
+        byteDataArray: 
+      Version: 1.6.2
 --- !u!1 &1106717162099024651
 GameObject:
   m_ObjectHideFlags: 0

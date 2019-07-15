@@ -51,6 +51,15 @@ public class CharacterSelectManager : MonoBehaviour
             SetupCharacterSelector(GetAvailableCharacterSelector(), characters[index]);
             myPlayers[index].SetActive(true);
         }
+
+        if(characters.Count == 0)
+        {
+            PlayerSelectData selectData = new PlayerSelectData(PlayerControls.CreateWithKeyboardBindings(), null, null, "DebugPlayer");
+            SetupCharacterSelector(GetAvailableCharacterSelector(), selectData);
+            myPlayers[0].SetActive(true);
+
+            myCharacterGameData.AddPlayerData(selectData.myPlayerControls, "DebugPlayer");
+        }
         
         myNextLevel = myCharacterGameData.mySceneToLoad;
     }

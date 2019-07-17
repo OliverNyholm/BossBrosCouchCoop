@@ -53,6 +53,11 @@ public class LevelSelector : MonoBehaviour
         if (WasLeftClicked())
             NextLevel(-1);
 
+        if(WasBossInfoClicked())
+        {
+            FindObjectOfType<BossDetailsPanel>().ToggleBossDetails(myLevels[myCurrentLevelIndex]);
+        }
+
         if (WasStartClicked())
         {
             CharacterGameData gameData = FindObjectOfType<CharacterGameData>();
@@ -77,6 +82,7 @@ public class LevelSelector : MonoBehaviour
             return;
         }
 
+        FindObjectOfType<BossDetailsPanel>().HideBossDetails();
         myCamera.SetTargetPosition(myLevels[myCurrentLevelIndex].transform);
         myLevelInfoCanvas.SetCanvasData(myLevels[myCurrentLevelIndex]);
     }
@@ -108,6 +114,14 @@ public class LevelSelector : MonoBehaviour
     private bool WasLeftClicked()
     {
         if (myKeyboardListener.Left.WasPressed || myJoystickListener.Left.WasPressed)
+            return true;
+
+        return false;
+    }
+
+    private bool WasBossInfoClicked()
+    {
+        if (myKeyboardListener.ToggleInfo.WasPressed || myJoystickListener.ToggleInfo.WasPressed)
             return true;
 
         return false;

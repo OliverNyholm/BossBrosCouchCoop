@@ -132,6 +132,7 @@ public class Enemy : Character
         base.OnDeath();
 
         transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").gameObject.SetActive(false);
+        GetComponent<BehaviorTree>().enabled = false;
         myNavmeshAgent.isStopped = true;
     }
 

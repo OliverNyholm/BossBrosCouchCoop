@@ -123,7 +123,7 @@ public class Player : Character
         if (myPlayerControls.Shift.WasReleased)
             myClass.ShiftInteracted(false);
 
-        if (myPlayerControls.ToggleSpellInfo.WasPressed)
+        if (myPlayerControls.ToggleInfo.WasPressed)
             myClass.ToggleSpellInfo();
 
         bool isShiftDown = myPlayerControls.Shift.RawValue > 0.0f;

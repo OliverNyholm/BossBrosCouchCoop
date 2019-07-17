@@ -21,7 +21,7 @@ public class PlayerControls : PlayerActionSet
     public PlayerAction Start;
     public PlayerAction Pause;
     public PlayerAction Restart;
-    public PlayerAction ToggleSpellInfo;
+    public PlayerAction ToggleInfo;
     public PlayerTwoAxisAction Movement;
 
 
@@ -46,7 +46,7 @@ public class PlayerControls : PlayerActionSet
         Start = CreatePlayerAction("Start");
         Pause = CreatePlayerAction("Pause");
         Restart = CreatePlayerAction("Restart");
-        ToggleSpellInfo = CreatePlayerAction("ToggleSpellInfo");
+        ToggleInfo = CreatePlayerAction("ToggleSpellInfo");
         Movement = CreateTwoAxisPlayerAction(Left, Right, Down, Up);
     }
 
@@ -82,7 +82,7 @@ public class PlayerControls : PlayerActionSet
         actions.Pause.AddDefaultBinding(Key.Escape);
         actions.Restart.AddDefaultBinding(Key.R);
 
-        actions.ToggleSpellInfo.AddDefaultBinding(Key.I);
+        actions.ToggleInfo.AddDefaultBinding(Key.I);
 
         return actions;
     }
@@ -119,7 +119,7 @@ public class PlayerControls : PlayerActionSet
 
         actions.Restart.AddDefaultBinding(InputControlType.Back);
 
-        actions.ToggleSpellInfo.AddDefaultBinding(InputControlType.DPadUp);
+        actions.ToggleInfo.AddDefaultBinding(InputControlType.DPadUp);
 
         return actions;
     }

@@ -27,6 +27,8 @@ public class Enemy : Character
 
     private bool myIsTaunted;
 
+    private GameObject mySpellTarget;
+
     public int PhaseIndex { get; set; }
     public float AutoAttackTimer { get { return myAutoAttackCooldown; } }
 
@@ -199,15 +201,15 @@ public class Enemy : Character
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && Target.tag == "Enemy")
+        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && Target.tag == "Player")
         {
-            Debug.Log(myName + " failed to cast spell due to target being of type Enemy");
+            Debug.Log(myName + " can't cast friendly spells on players");
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && Target.tag == "Player")
+        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && Target.tag == "Enemy")
         {
-            Debug.Log(myName + " failed to cast spell due to target being of type Player");
+            Debug.Log(myName + " can't cast hostile spells on friends");
             return false;
         }
 
@@ -240,6 +242,9 @@ public class Enemy : Character
 
     private void DetermineTarget()
     {
+        if (myIsCasting)
+            return;
+
         int target = GetHighestAggro();
 
         if (myTargetIndex != target)
@@ -295,8 +300,21 @@ public class Enemy : Character
 
     private void SetTarget(int aTargetIndex)
     {
+        SetTarget(Players[aTargetIndex].gameObject);
         myTargetIndex = aTargetIndex;
-        SetTarget(Players[myTargetIndex].gameObject);
+    }
+
+    public void SetSpellTarget(GameObject aTarget)
+    {
+        myTargetIndex = -1;
+        mySpellTarget = aTarget;
+        if (myHUDTarget)
+            UnsubscribePreviousTargetHUD();
+
+        if (mySpellTarget)
+            SetTargetHUD(mySpellTarget);
+        else
+            myTargetHUD.Hide();
     }
 
     private bool IsTargetCloseBy()
@@ -372,6 +390,7 @@ public class Enemy : Character
         GetComponent<AudioSource>().clip = spellScript.GetSpellSFX().myCastSound;
         GetComponent<AudioSource>().Play();
 
+        SetSpellTarget(aTarget);
 
         myIsCasting = true;
         float castSpeed = spellScript.myCastTime / myStats.myAttackSpeed;
@@ -392,7 +411,7 @@ public class Enemy : Character
 
         if (IsAbleToCastSpell(spellScript))
         {
-            SpawnSpell(aSpell, aTarget, aSpawnTransform);
+            SpawnSpell(aSpell, mySpellTarget, aSpawnTransform);
             GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
             myAnimator.SetTrigger("CastingDone");
         }

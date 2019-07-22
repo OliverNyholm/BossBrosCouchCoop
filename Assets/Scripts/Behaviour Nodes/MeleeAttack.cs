@@ -52,4 +52,10 @@ public class MeleeAttack : Action
 
         return TaskStatus.Running;
     }
+
+    public override void OnEnd()
+    {
+        myNavmeshAgent.destination = transform.position;
+        myAnimator.SetBool("IsRunning", false);
+    }
 }

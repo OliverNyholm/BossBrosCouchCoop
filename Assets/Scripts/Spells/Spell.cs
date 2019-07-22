@@ -54,7 +54,7 @@ public class Spell : MonoBehaviour
 
     protected virtual void Start()
     {
-        if(myShouldRotate)
+        if (myShouldRotate)
         {
             myRotationSpeed = Random.Range(0.7f, 2.5f);
             myRandomRotation = Random.rotation.eulerAngles;
@@ -69,7 +69,7 @@ public class Spell : MonoBehaviour
 
         if (distanceSqr > 1.0f)
         {
-            if(myShouldRotate)
+            if (myShouldRotate)
                 transform.Rotate(myRandomRotation * myRotationSpeed * Time.deltaTime);
 
             Vector3 direction = myTarget.transform.position - transform.position;
@@ -386,7 +386,7 @@ public class Spell : MonoBehaviour
 
     protected GameObject SpawnVFX(float aDuration, GameObject aTarget = null)
     {
-        if(!mySpellVFX)
+        if (!mySpellVFX)
         {
             Debug.Log("Missing VFX for spell: " + myName);
             return null;
@@ -396,7 +396,12 @@ public class Spell : MonoBehaviour
         if (target == null)
             target = myTarget;
 
-        GameObject vfxGO = Instantiate(mySpellVFX, target.transform);
+        GameObject vfxGO = null;
+        if (target)
+            vfxGO = Instantiate(mySpellVFX, target.transform);
+        else
+            vfxGO = Instantiate(mySpellVFX, transform.position, Quaternion.Euler(-90f, 0.0f, 0.0f));
+
         vfxGO.GetComponent<AudioSource>().clip = mySpellSFX.myHitSound;
         vfxGO.GetComponent<AudioSource>().Play();
 

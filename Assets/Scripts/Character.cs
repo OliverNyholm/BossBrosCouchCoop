@@ -18,6 +18,7 @@ public abstract class Character : MonoBehaviour
     protected Animator myAnimator;
 
     public GameObject Target { get; protected set; }
+    protected GameObject myHUDTarget = null;
 
     protected CharacterHUD myCharacterHUD;
     protected CharacterHUD myTargetHUD;
@@ -262,48 +263,58 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    protected virtual void SetTarget(GameObject aTarget)
+    public virtual void SetTarget(GameObject aTarget)
     {
-        if (Target != null)
+        if (myHUDTarget)
         {
-            Target.GetComponent<Health>().EventOnHealthChange -= ChangeTargetHudHealth;
-            if (Target.GetComponent<Resource>() != null)
-                Target.GetComponent<Resource>().EventOnResourceChange -= ChangeTargetHudResource;
+            UnsubscribePreviousTargetHUD();
         }
 
         Target = aTarget;
         if (Target)
         {
-            SetTargetHUD();
+            SetTargetHUD(Target);
         }
         else
+        {
+            myHUDTarget = null;
             myTargetHUD.Hide();
+        }
     }
 
-    private void SetTargetHUD()
+    protected void UnsubscribePreviousTargetHUD()
     {
-        myTargetHUD.Show();
-        Target.GetComponent<Health>().EventOnHealthChange += ChangeTargetHudHealth;
-        ChangeTargetHudHealth(Target.GetComponent<Health>().GetHealthPercentage(),
-            Target.GetComponent<Health>().myCurrentHealth.ToString() + "/" + Target.GetComponent<Health>().MaxHealth,
-            Target.GetComponent<Health>().GetTotalShieldValue());
+        myHUDTarget.GetComponent<Health>().EventOnHealthChange -= ChangeTargetHudHealth;
+        if (myHUDTarget.GetComponent<Resource>() != null)
+            myHUDTarget.GetComponent<Resource>().EventOnResourceChange -= ChangeTargetHudResource;
+    }
 
-        if (Target.GetComponent<Resource>() != null)
+    protected void SetTargetHUD(GameObject aTarget)
+    {
+        myHUDTarget = aTarget;
+
+        myTargetHUD.Show();
+        aTarget.GetComponent<Health>().EventOnHealthChange += ChangeTargetHudHealth;
+        ChangeTargetHudHealth(aTarget.GetComponent<Health>().GetHealthPercentage(),
+            aTarget.GetComponent<Health>().myCurrentHealth.ToString() + "/" + aTarget.GetComponent<Health>().MaxHealth,
+            aTarget.GetComponent<Health>().GetTotalShieldValue());
+
+        if (aTarget.GetComponent<Resource>() != null)
         {
-            Target.GetComponent<Resource>().EventOnResourceChange += ChangeTargetHudResource;
-            ChangeTargetHudResource(Target.GetComponent<Resource>().GetResourcePercentage(),
-                Target.GetComponent<Resource>().myCurrentResource.ToString() + "/" + Target.GetComponent<Resource>().MaxResource);
-            myTargetHUD.SetResourceBarColor(Target.GetComponent<Resource>().myResourceColor);
+            aTarget.GetComponent<Resource>().EventOnResourceChange += ChangeTargetHudResource;
+            ChangeTargetHudResource(aTarget.GetComponent<Resource>().GetResourcePercentage(),
+                aTarget.GetComponent<Resource>().myCurrentResource.ToString() + "/" + aTarget.GetComponent<Resource>().MaxResource);
+            myTargetHUD.SetResourceBarColor(aTarget.GetComponent<Resource>().myResourceColor);
         }
         else
         {
             ChangeTargetHudResource(0.0f, "0/0");
         }
 
-        myTargetHUD.SetAvatarSprite(Target.GetComponent<Character>().GetAvatar());
-        myTargetHUD.SetClassSprite(Target.GetComponent<Class>().mySprite);
-        myTargetHUD.SetHudColor(Target.GetComponent<Character>().myCharacterColor);
-        myTargetHUD.SetName(Target.GetComponent<Character>().myName);
+        myTargetHUD.SetAvatarSprite(aTarget.GetComponent<Character>().GetAvatar());
+        myTargetHUD.SetClassSprite(aTarget.GetComponent<Class>().mySprite);
+        myTargetHUD.SetHudColor(aTarget.GetComponent<Character>().myCharacterColor);
+        myTargetHUD.SetName(aTarget.GetComponent<Character>().myName);
     }
     private void ChangeTargetHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
     {

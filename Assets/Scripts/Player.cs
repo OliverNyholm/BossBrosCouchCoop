@@ -401,7 +401,7 @@ public class Player : Character
         transform.position = aPosition;
     }
 
-    protected override void SetTarget(GameObject aTarget)
+    public override void SetTarget(GameObject aTarget)
     {
         if(Target)
             Target.GetComponentInChildren<TargetProjector>().DropTargetProjection(PlayerIndex);

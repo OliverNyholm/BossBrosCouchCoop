@@ -176,9 +176,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myQuickInfo: Spawn a boulder that will fall down and damage 250 on collision
   myName: Falling Boulder
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
   mySpellType: 0
-  mySpellTarget: 2
+  mySpellTarget: 4
   myDamage: 250
   myResourceCost: 10
   myThreatModifier: 1
@@ -191,6 +190,7 @@ MonoBehaviour:
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
+  myShouldRotate: 0
   myBuff: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}

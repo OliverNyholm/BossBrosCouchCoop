@@ -98,6 +98,8 @@ public class GameManager : MonoBehaviour
 
         myKeyboardListener = PlayerControls.CreateWithKeyboardBindings();
 
+        playerGO.GetComponent<Stats>().myDamageMitigator = 0.0f;
+
         Player player = playerGO.GetComponent<Player>();
         player.SetPlayerControls(myKeyboardListener);
         player.myName = "DebugPlayer";

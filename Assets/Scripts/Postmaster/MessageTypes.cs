@@ -8,5 +8,6 @@ public enum MessageType
     PlayerDied,
     RegisterPlayer,
     DamageDealt,
+    EnteredCombat,
     Count
 }

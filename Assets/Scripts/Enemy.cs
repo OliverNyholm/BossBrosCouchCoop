@@ -80,6 +80,7 @@ public class Enemy : Character
         mySubscriber.EventOnReceivedMessage += ReceiveMessage;
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.SpellSpawned);
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.EnteredCombat);
     }
 
     void Unsubscribe()
@@ -87,6 +88,7 @@ public class Enemy : Character
         mySubscriber.EventOnReceivedMessage -= ReceiveMessage;
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.SpellSpawned);
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.EnteredCombat);
     }
 
     // Update is called once per frame
@@ -169,11 +171,11 @@ public class Enemy : Character
         if (aSpellScript.myIsOnlySelfCast)
             return true;
 
-        if (!Target)
+        if (!mySpellTarget)
         {
             if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) != 0)
             {
-                Target = gameObject;
+                mySpellTarget = gameObject;
             }
             else
             {
@@ -182,7 +184,7 @@ public class Enemy : Character
             }
         }
 
-        if (Target.GetComponent<Health>().IsDead())
+        if (mySpellTarget.GetComponent<Health>().IsDead())
         {
             Debug.Log(myName + " failed to cast spell due to target being dead");
             return false;
@@ -194,26 +196,26 @@ public class Enemy : Character
             return false;
         }
 
-        float distance = Vector3.Distance(transform.position, Target.transform.position);
+        float distance = Vector3.Distance(transform.position, mySpellTarget.transform.position);
         if (distance > aSpellScript.myRange)
         {
             Debug.Log(myName + " failed to cast spell due to target being without of range");
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && Target.tag == "Player")
+        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && mySpellTarget.tag == "Player")
         {
             Debug.Log(myName + " can't cast friendly spells on players");
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && Target.tag == "Enemy")
+        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && mySpellTarget.tag == "Enemy")
         {
             Debug.Log(myName + " can't cast hostile spells on friends");
             return false;
         }
 
-        if (!aSpellScript.myCanCastOnSelf && Target == transform.gameObject)
+        if (!aSpellScript.myCanCastOnSelf && mySpellTarget == transform.gameObject)
         {
             Debug.Log(myName + " failed to cast spell due to spell not castable on self");
             return false;
@@ -436,7 +438,7 @@ public class Enemy : Character
     protected override void StopCasting()
     {
         base.StopCasting();
-        GetComponent<BehaviorTree>().SendEvent("SpellSpawned");
+        GetComponent<BehaviorTree>().SendEvent("SpellInterrupted");
     }
 
     public void SetTaunt(int aTaunterID, float aDuration)
@@ -499,6 +501,10 @@ public class Enemy : Character
                     }
                 }
                 break;
+            case MessageType.EnteredCombat:
+                if (State == CombatState.Idle)
+                    SetState(CombatState.Combat);
+                break;
             default:
                 break;
         }
@@ -539,6 +545,7 @@ public class Enemy : Character
                 myAnimator.SetBool("IsRunning", false);
                 break;
             case CombatState.Combat:
+                PostMaster.Instance.PostMessage(new Message(MessageType.EnteredCombat));
                 break;
             case CombatState.Disengage:
                 myNavmeshAgent.destination = mySpawnPosition;

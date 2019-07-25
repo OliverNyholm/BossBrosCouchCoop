@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 
-public class SpawnSpell : Action
+public class SpawnSpellMultipleTargets : Action
 {
-    public SharedGameObject myTarget = null;
+    public SharedGameObjectList myTargets = null;
     public GameObject mySpell = null;
 
     public SharedTransform mySpawnTransform = null;
@@ -36,7 +38,7 @@ public class SpawnSpell : Action
         myHasSpawnedSpell = false;
         Enemy enemyComponent = GetComponent<Enemy>();
         enemyComponent.IsInterruptable = myIsInterruptable;
-        myCanCastSpell = enemyComponent.CastSpell(mySpell, myTarget.Value, mySpawnTransform.Value, myShouldIgnoreCastability);
+        myCanCastSpell = enemyComponent.CastSpell(mySpell, myTargets.Value[0], mySpawnTransform.Value, myShouldIgnoreCastability);
     }
 
     public override TaskStatus OnUpdate()
@@ -73,7 +75,14 @@ public class SpawnSpell : Action
 
     private void ReceivedEvent()
     {
+        if (myHasSpawnedSpell)
+            return;
+
         myHasSpawnedSpell = true;
+        for (int index = 1; index < myTargets.Value.Count; index++)
+        {
+            GetComponent<Enemy>().SpawnSpell(mySpell, myTargets.Value[index], mySpawnTransform.Value);
+        }
     }
 
     private void ReceivedEventInterrupted()

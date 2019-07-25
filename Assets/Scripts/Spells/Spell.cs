@@ -19,6 +19,7 @@ public class Spell : MonoBehaviour
     public float myCastTime;
     public float myCooldown;
     public float myRange;
+    public float myStunDuration;
 
     public Color myCastbarColor;
     public Sprite mySpellIcon;
@@ -131,6 +132,9 @@ public class Spell : MonoBehaviour
                 DealDamage(myDamage);
             }
         }
+
+        if (myStunDuration > 0.0f)
+            myTarget.GetComponent<Character>().Stun(myStunDuration);
 
         if (mySpellType == SpellType.Interrupt)
         {

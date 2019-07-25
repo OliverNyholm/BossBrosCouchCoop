@@ -29,6 +29,8 @@ public class Enemy : Character
 
     private GameObject mySpellTarget;
 
+    private TargetHandler myTargetHandler;
+
     public int PhaseIndex { get; set; }
     public float AutoAttackTimer { get { return myAutoAttackCooldown; } }
 
@@ -59,6 +61,8 @@ public class Enemy : Character
         State = CombatState.Idle;
         PhaseIndex = 1;
 
+        myTargetHandler = FindObjectOfType<TargetHandler>();
+
         SetupHud(transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").transform);
 
         Subscribe();
@@ -81,6 +85,7 @@ public class Enemy : Character
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.SpellSpawned);
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.EnteredCombat);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.EnemyDied);
     }
 
     void Unsubscribe()
@@ -89,6 +94,7 @@ public class Enemy : Character
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.SpellSpawned);
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.EnteredCombat);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.EnemyDied);
     }
 
     // Update is called once per frame
@@ -138,6 +144,8 @@ public class Enemy : Character
         transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").gameObject.SetActive(false);
         GetComponent<BehaviorTree>().enabled = false;
         myNavmeshAgent.isStopped = true;
+
+        PostMaster.Instance.PostMessage(new Message(MessageType.EnemyDied, gameObject.GetInstanceID()));
     }
 
     protected override bool IsMoving()
@@ -504,6 +512,9 @@ public class Enemy : Character
             case MessageType.EnteredCombat:
                 if (State == CombatState.Idle)
                     SetState(CombatState.Combat);
+                break;
+            case MessageType.EnemyDied:
+                GetComponent<BehaviorTree>().SendEvent(myTargetHandler.GetEnemyName(anAiMessage.Data.myInt) +"Died");
                 break;
             default:
                 break;

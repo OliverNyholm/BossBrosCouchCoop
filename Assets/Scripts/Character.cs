@@ -467,7 +467,7 @@ public abstract class Character : MonoBehaviour
         }
 
         StopAllCoroutines();
-
+        StopCasting();
         GetComponent<AudioSource>().Stop();
         myAnimator.SetTrigger("Death");
     }

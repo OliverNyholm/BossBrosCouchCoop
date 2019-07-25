@@ -66,4 +66,15 @@ public class TargetHandler : MonoBehaviour
 
         return myEnemies[aTargetIndex];
     }
+
+    public string GetEnemyName(int aInstanceID)
+    {
+        for (int index = 0; index < myEnemies.Count; index++)
+        {
+            if (myEnemies[index].GetInstanceID() == aInstanceID)
+                return myEnemies[index].GetComponent<Character>().name;
+        }
+
+        return "Null";
+    }
 }

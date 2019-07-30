@@ -5,18 +5,20 @@ using UnityEngine.UI;
 
 public class LevelInfo : MonoBehaviour
 {
-    public Transform myCanvasPosition;
-    public string mySceneNameToLoad;
-    public string myLevelName;
+    public Transform myCanvasPosition = null;
+    public string mySceneNameToLoad = "";
+    public string myLevelName = "";
+
+    public List<GameObject> myLevelsToUnlock = new List<GameObject>();
 
     [Header("Information about boss fight")]
-    public Sprite myBossSprite;
-    public string myBossName;
+    public Sprite myBossSprite = null;
+    public string myBossName = "NO BOSS";
 
     [TextArea(6, 15)]
-    public string myBossLore;
+    public string myBossLore = "Shit lore";
 
-    public List<PhaseData> myPhaseData;
+    public List<PhaseData> myPhaseData = new List<PhaseData>();
 }
 
 [System.Serializable]

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3448170462930489303}
   - component: {fileID: 3448170462930489257}
   - component: {fileID: 3448170462930489302}
+  - component: {fileID: 4553508730877760498}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -61,3 +62,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myPlayers: []
   myEnemies: []
+--- !u!114 &4553508730877760498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3448170462930489301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43f836fdc797c6545bd41e54781dd5c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myGoals: []

@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class EnemyTargetDummy : Enemy
 {
-    protected override void Start()
-    {
-        myAnimator = GetComponent<Animator>();
-
-        myHealth = GetComponent<Health>();
-        myResource = GetComponent<Resource>();
-        myStats = GetComponent<Stats>();
-        myClass = GetComponent<Class>();
-
-        myBuffs = new List<BuffSpell>();
-
-        Target = null;
-        myIsCasting = false;
-
-        SetupHud(transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").transform);
-
-        mySubscriber = new Subscriber();
-        mySubscriber.EventOnReceivedMessage += ReceiveMessage;
-    }
+    //protected override void Start()
+    //{
+    //    myAnimator = GetComponent<Animator>();
+    //
+    //    myHealth = GetComponent<Health>();
+    //    myResource = GetComponent<Resource>();
+    //    myStats = GetComponent<Stats>();
+    //    myClass = GetComponent<Class>();
+    //
+    //    myBuffs = new List<BuffSpell>();
+    //
+    //    Target = null;
+    //    myIsCasting = false;
+    //
+    //    SetupHud(transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").transform);
+    //
+    //    mySubscriber = new Subscriber();
+    //    mySubscriber.EventOnReceivedMessage += ReceiveMessage;
+    //}
 
     protected override void Update()
     {

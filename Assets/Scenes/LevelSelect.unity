@@ -576,6 +576,51 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &331996490
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 331996492}
+  - component: {fileID: 331996491}
+  m_Layer: 0
+  m_Name: LevelProgression
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &331996491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331996490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47fe74edfadaffa468e0e5132d146c9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myLevelProgression: 1
+  myLevelsToUnlock: 
+--- !u!4 &331996492
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331996490}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -220.10818, y: 15.963857, z: -61.774837}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &348508175
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,6 +1067,8 @@ MonoBehaviour:
   myCanvasPosition: {fileID: 1394905873}
   mySceneNameToLoad: Firewall
   myLevelName: Firewall
+  myLevelsToUnlock:
+  - {fileID: 1588106032}
   myBossSprite: {fileID: 0}
   myBossName: Lord of Fire
   myBossLore: 
@@ -1312,7 +1359,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 605898776}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.731, y: 17.9, z: -1.116}
+  m_LocalPosition: {x: 1.016, y: 10.96, z: -0.526}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1588106034}
@@ -1629,6 +1676,7 @@ RectTransform:
   m_LocalScale: {x: 0.5000001, y: 0.5, z: 1}
   m_Children:
   - {fileID: 1916256926}
+  - {fileID: 2005160293}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0.633, z: 0}
@@ -1651,6 +1699,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myLevelText: {fileID: 762040735}
   myBossText: {fileID: 1276673185}
+  myUnavailableText: {fileID: 2005160292}
 --- !u!1 &762040732
 GameObject:
   m_ObjectHideFlags: 0
@@ -2044,7 +2093,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 921189489}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.09, y: 15.1, z: -0.83}
+  m_LocalPosition: {x: 1.09, y: 10.9, z: -0.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2058187676}
@@ -3655,7 +3704,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394905872}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25, y: 31.1, z: -2.3}
+  m_LocalPosition: {x: 25, y: 21.9, z: -2.3}
   m_LocalScale: {x: 8.795103, y: 1.0176913, z: 8.795103}
   m_Children: []
   m_Father: {fileID: 436174539}
@@ -4006,6 +4055,8 @@ MonoBehaviour:
   myCanvasPosition: {fileID: 605898777}
   mySceneNameToLoad: Executioner
   myLevelName: River of Blood
+  myLevelsToUnlock:
+  - {fileID: 2058187674}
   myBossSprite: {fileID: 21300000, guid: e6f95c52d821cd642b6eb586a59d889b, type: 3}
   myBossName: Executioner
   myBossLore: The Executioner does not execute due to duty, he executes because he
@@ -4098,6 +4149,8 @@ MonoBehaviour:
   myCanvasPosition: {fileID: 816182348}
   mySceneNameToLoad: Coop
   myLevelName: Dungeons of PAIN
+  myLevelsToUnlock:
+  - {fileID: 1716670735}
   myBossSprite: {fileID: 0}
   myBossName: BigMan
   myBossLore: 
@@ -4632,6 +4685,8 @@ MonoBehaviour:
   myCanvasPosition: {fileID: 150225451}
   mySceneNameToLoad: LavaTriangle
   myLevelName: Lava Triangle
+  myLevelsToUnlock:
+  - {fileID: 436174537}
   myBossSprite: {fileID: 21300000, guid: a7465d5b00e446148b3b08972e05fda7, type: 3}
   myBossName: BigMan TWO
   myBossLore: The Baron once controlled the cavern before Bur'ethz overtook the palace.
@@ -5037,6 +5092,8 @@ MonoBehaviour:
   myCanvasPosition: {fileID: 1292480856}
   mySceneNameToLoad: Sandbox
   myLevelName: Sandbox for testing
+  myLevelsToUnlock:
+  - {fileID: 1602224042}
   myBossSprite: {fileID: 0}
   myBossName: Target dummies!
   myBossLore: 
@@ -5393,6 +5450,101 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1996569793}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2005160292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2005160293}
+  - component: {fileID: 2005160296}
+  - component: {fileID: 2005160295}
+  - component: {fileID: 2005160294}
+  m_Layer: 5
+  m_Name: Unavailable
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2005160293
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005160292}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1}
+  m_LocalScale: {x: 0.090201564, y: 0.09109413, z: 0.7029846}
+  m_Children: []
+  m_Father: {fileID: 743728247}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.20435646, y: 0.4148511}
+  m_AnchorMax: {x: 0.46, y: 0.72458726}
+  m_AnchoredPosition: {x: 0.000092983, y: 0.000087261}
+  m_SizeDelta: {x: 515.7, y: 247.24}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2005160294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005160292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
+--- !u!114 &2005160295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005160292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0.07817793, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: deae1b3c8e7942543871ea8b6998cd38, type: 3}
+    m_FontSize: 18
+    m_FontStyle: 0
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 300
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Unavailable
+--- !u!222 &2005160296
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005160292}
+  m_CullTransparentMesh: 0
 --- !u!1 &2008632429
 GameObject:
   m_ObjectHideFlags: 0
@@ -5517,6 +5669,7 @@ MonoBehaviour:
   myCanvasPosition: {fileID: 921189490}
   mySceneNameToLoad: Twins
   myLevelName: Tower of the Twins
+  myLevelsToUnlock: []
   myBossSprite: {fileID: 21300000, guid: 69a3351fe4a31f249bf946e5ed6a8049, type: 3}
   myBossName: Brintool and Rul'greeb
   myBossLore: Watchers of the top most tower, the Twins guard their hostess. Always
@@ -5539,7 +5692,7 @@ MonoBehaviour:
     myAbilities:
     - myDescription: Rul'greeb is the sister and prefers to use her weapons in combat.
       myAbilityImage: {fileID: 0}
-    - myDescription: Will target a random player and throw an axe at them, ccausing
+    - myDescription: Will target a random player and throw an axe at them, causing
         them to bleed over time
       myAbilityImage: {fileID: 21300000, guid: 729dbe5b80de3984a88167386c4505a8, type: 3}
     - myDescription: Sister's Shield is a shield placed on the twin with the lowest

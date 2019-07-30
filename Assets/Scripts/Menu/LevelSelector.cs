@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.SceneManagement;
 
 public class LevelSelector : MonoBehaviour
@@ -16,6 +17,8 @@ public class LevelSelector : MonoBehaviour
 
     private LevelSelectCamera myCamera;
 
+    private LevelProgression myLevelProgression;
+
     private PlayerControls myKeyboardListener;
     private PlayerControls myJoystickListener;
 
@@ -28,10 +31,12 @@ public class LevelSelector : MonoBehaviour
         myCamera = Camera.main.GetComponent<LevelSelectCamera>();
         myFirstUpdate = true;
 
+        myLevelProgression = FindObjectOfType<LevelProgression>();
+
         CharacterGameData gameData = FindObjectOfType<CharacterGameData>();
         myCurrentLevelIndex = gameData.myCurrentLevelIndex;
         myCamera.SetTargetPositionInstant(myLevels[myCurrentLevelIndex].transform);
-        myLevelInfoCanvas.SetCanvasData(myLevels[myCurrentLevelIndex]);
+        myLevelInfoCanvas.SetCanvasData(myLevels[myCurrentLevelIndex], myLevelProgression.IsLevelAvailable(myCurrentLevelIndex));
     }
 
     private void OnDestroy()
@@ -58,12 +63,14 @@ public class LevelSelector : MonoBehaviour
             FindObjectOfType<BossDetailsPanel>().ToggleBossDetails(myLevels[myCurrentLevelIndex]);
         }
 
-        if (WasStartClicked())
+        if (WasStartClicked() && myLevelProgression.IsLevelAvailable(myCurrentLevelIndex))
         {
             CharacterGameData gameData = FindObjectOfType<CharacterGameData>();
             gameData.mySceneToLoad = myLevels[myCurrentLevelIndex].mySceneNameToLoad;
             gameData.myCurrentLevelIndex = myCurrentLevelIndex;
 
+            SetLevelsToUnlock(myLevels[myCurrentLevelIndex]);
+            
             SceneManager.LoadScene("CharacterSelect");
         }
 
@@ -84,7 +91,7 @@ public class LevelSelector : MonoBehaviour
 
         FindObjectOfType<BossDetailsPanel>().HideBossDetails();
         myCamera.SetTargetPosition(myLevels[myCurrentLevelIndex].transform);
-        myLevelInfoCanvas.SetCanvasData(myLevels[myCurrentLevelIndex]);
+        myLevelInfoCanvas.SetCanvasData(myLevels[myCurrentLevelIndex], myLevelProgression.IsLevelAvailable(myCurrentLevelIndex));
     }
 
     private bool WasStartClicked()
@@ -125,5 +132,25 @@ public class LevelSelector : MonoBehaviour
             return true;
 
         return false;
+    }
+
+    private void SetLevelsToUnlock(LevelInfo aLevelInfo)
+    {
+        List<int> levelIndexes = new List<int>(aLevelInfo.myLevelsToUnlock.Count);
+
+        for (int unlockIndex = 0; unlockIndex < aLevelInfo.myLevelsToUnlock.Count; unlockIndex++)
+        {
+            GameObject levelToUnlock = aLevelInfo.myLevelsToUnlock[unlockIndex];
+            for (int levelIndex = 0; levelIndex < myLevels.Count; levelIndex++)
+            {
+                if(myLevels[levelIndex].gameObject == levelToUnlock)
+                {
+                    levelIndexes.Add(levelIndex);
+                    break;
+                }
+            }
+        }
+
+        myLevelProgression.SetLevelsToUnlock(levelIndexes);
     }
 }

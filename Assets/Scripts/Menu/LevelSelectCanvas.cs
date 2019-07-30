@@ -11,10 +11,15 @@ public class LevelSelectCanvas : MonoBehaviour
     [SerializeField]
     private Text myBossText = null;
 
-    public void SetCanvasData(LevelInfo aLevelInfo)
+    [SerializeField]
+    private GameObject myUnavailableText = null;
+
+    public void SetCanvasData(LevelInfo aLevelInfo, bool aIsAvailable)
     {
         GetComponent<RectTransform>().localPosition = aLevelInfo.myCanvasPosition.position;
         myLevelText.text = aLevelInfo.myLevelName;
         myBossText.text = aLevelInfo.myBossName;
+
+        myUnavailableText.SetActive(!aIsAvailable);
     }
 }

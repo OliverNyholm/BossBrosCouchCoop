@@ -46,7 +46,7 @@ public class CharacterSelector : MonoBehaviour
 
     public SelectionState State { get; set; }
 
-    private void Start()
+    private void Awake()
     {
         Hide();
     }

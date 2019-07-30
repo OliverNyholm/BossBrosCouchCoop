@@ -404,6 +404,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4553508730877760498, guid: 503cc89a2de43d243aca431dd077b45f,
+        type: 3}
+      propertyPath: myGoals.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4553508730877760498, guid: 503cc89a2de43d243aca431dd077b45f,
+        type: 3}
+      propertyPath: myGoals.Array.data[0].myGameObject
+      value: 
+      objectReference: {fileID: 1106713476812670439}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 503cc89a2de43d243aca431dd077b45f, type: 3}
 --- !u!1 &205819055
@@ -7160,8 +7170,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myFloatingHealthPrefab: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca,
     type: 3}
-  myMaxHealth: 200000
-  myCurrentHealth: 200000
+  myMaxHealth: 5000
+  myCurrentHealth: 5000
 --- !u!114 &1066126327403314803
 MonoBehaviour:
   m_ObjectHideFlags: 0

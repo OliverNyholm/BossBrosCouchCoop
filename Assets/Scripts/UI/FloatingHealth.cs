@@ -2,32 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FloatingHealth : MonoBehaviour
+public class FloatingHealth : PoolableObject
 {
     private TextMesh myTextMesh;
     private TextMesh myOutLineTextMesh;
     public float myDuration;
     public float mySpeed;
 
+    private Camera myMainCamera;
+
+    private float myLifeTime;
+
     private void Awake()
     {
         myTextMesh = transform.GetComponent<TextMesh>();
         myOutLineTextMesh = transform.Find("Outline").gameObject.GetComponent<TextMesh>();
+
+        myMainCamera = Camera.main;
     }
 
     void Update()
     {
-        myTextMesh.transform.rotation = Camera.main.transform.rotation;
-        myOutLineTextMesh.transform.rotation = Camera.main.transform.rotation;
+        myTextMesh.transform.rotation = myMainCamera.transform.rotation;
+        myOutLineTextMesh.transform.rotation = myMainCamera.transform.rotation;
 
-        myDuration -= Time.deltaTime;
-        if (myDuration <= 0.0f)
-            Destroy(gameObject);
-        else if (myDuration <= 1.0f)
+        myLifeTime -= Time.deltaTime;
+        if (myLifeTime <= 0.0f)
+            ReturnToPool();
+
+        else if (myLifeTime <= 1.0f)
         {
-            Color fadeColor = new Color(myTextMesh.color.r, myTextMesh.color.g, myTextMesh.color.b, myDuration);
+            Color fadeColor = new Color(myTextMesh.color.r, myTextMesh.color.g, myTextMesh.color.b, myLifeTime);
             myTextMesh.color = fadeColor;
-            fadeColor = new Color(myOutLineTextMesh.color.r, myOutLineTextMesh.color.g, myOutLineTextMesh.color.b, myDuration);
+            fadeColor = new Color(myOutLineTextMesh.color.r, myOutLineTextMesh.color.g, myOutLineTextMesh.color.b, myLifeTime);
             myOutLineTextMesh.color = fadeColor;
         }
 
@@ -41,5 +48,10 @@ public class FloatingHealth : MonoBehaviour
         myTextMesh.color = aColor;
 
         myTextMesh.characterSize *= aSizeModifier;
+    }
+
+    public override void Reset()
+    {
+        myLifeTime = myDuration;
     }
 }

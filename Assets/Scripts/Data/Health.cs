@@ -117,8 +117,12 @@ public class Health : MonoBehaviour
     {
         Vector3 randomOffset = new Vector2(Random.Range(-2.0f, 2.0f), Random.Range(0.0f, 2.0f));
 
-        GameObject floatingHealthGO = Instantiate(myFloatingHealthPrefab, transform);
-        floatingHealthGO.transform.position += randomOffset;
+        //GameObject floatingHealthGO = Instantiate(myFloatingHealthPrefab, transform);
+        //floatingHealthGO.transform.position += randomOffset;
+
+        GameObject floatingHealthGO = PoolManager.Instance.GetFloatingHealth();
+        floatingHealthGO.transform.parent = transform;
+        floatingHealthGO.transform.position = transform.position + randomOffset;
 
         FloatingHealth floatingHealth = floatingHealthGO.GetComponent<FloatingHealth>();
         floatingHealth.SetText(aText, aColor, aSizeModifier);

@@ -20,6 +20,8 @@ public abstract class Character : MonoBehaviour
     public GameObject Target { get; protected set; }
     protected GameObject myHUDTarget = null;
 
+    private GameObject myChannelGameObject;
+
     protected CharacterHUD myCharacterHUD;
     protected CharacterHUD myTargetHUD;
     protected Castbar myCastbar;
@@ -134,7 +136,7 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    public IEnumerator SpellChannelRoutine(float aDuration, GameObject aChannelGO, float aStunDuration)
+    public IEnumerator SpellChannelRoutine(float aDuration, float aStunDuration)
     {
         myStunDuration = aStunDuration;
         myIsCasting = true;
@@ -151,12 +153,12 @@ public abstract class Character : MonoBehaviour
 
             progress += rate * Time.deltaTime;
 
-            if (IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && aChannelGO != null))
+            if (IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
             {
                 myCastbar.SetCastTimeText("Cancelled");
                 myStunDuration = 0.0f;
                 StopCasting();
-                Destroy(aChannelGO);
+                Destroy(myChannelGameObject);
                 yield break;
             }
 
@@ -164,8 +166,8 @@ public abstract class Character : MonoBehaviour
         }
 
         StopCasting();
-        if (aChannelGO != null)
-            Destroy(aChannelGO);
+        if (myChannelGameObject != null)
+            Destroy(myChannelGameObject);
     }
 
     public void StartChannel(float aDuration, Spell aSpellScript, GameObject aChannelGO, float aStunDuration = 1.0f)
@@ -180,7 +182,8 @@ public abstract class Character : MonoBehaviour
         GetComponent<AudioSource>().clip = aSpellScript.GetSpellSFX().myCastSound;
         GetComponent<AudioSource>().Play();
 
-        myCastingRoutine = StartCoroutine(SpellChannelRoutine(aDuration, aChannelGO, aStunDuration));
+        myChannelGameObject = aChannelGO;
+        myCastingRoutine = StartCoroutine(SpellChannelRoutine(aDuration, aStunDuration));
     }
 
     protected void SpawnSpell(int aKeyIndex, Vector3 aSpawnPosition)
@@ -470,6 +473,9 @@ public abstract class Character : MonoBehaviour
         StopCasting();
         GetComponent<AudioSource>().Stop();
         myAnimator.SetTrigger("Death");
+
+        if (myChannelGameObject)
+            Destroy(myChannelGameObject);
     }
 
     public void SetAvatar(Sprite aSprite)

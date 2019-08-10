@@ -36,7 +36,7 @@ public class FallingBoulder : Spell
         if (transform.position.y <= myLandPosition.y)
         {
             SpawnVFX(2.5f);
-            Destroy(gameObject);
+            ReturnToPool();
         }
     }
 

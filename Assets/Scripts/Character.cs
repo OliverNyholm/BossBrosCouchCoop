@@ -159,6 +159,7 @@ public abstract class Character : MonoBehaviour
                 myStunDuration = 0.0f;
                 StopCasting();
                 Destroy(myChannelGameObject);
+                myChannelGameObject = null;
                 yield break;
             }
 
@@ -167,7 +168,10 @@ public abstract class Character : MonoBehaviour
 
         StopCasting();
         if (myChannelGameObject != null)
+        {
             Destroy(myChannelGameObject);
+            myChannelGameObject = null;
+        }
     }
 
     public void StartChannel(float aDuration, Spell aSpellScript, GameObject aChannelGO, float aStunDuration = 1.0f)
@@ -194,7 +198,10 @@ public abstract class Character : MonoBehaviour
         else
             spell = myClass.GetSpell(aKeyIndex);
 
-        GameObject instance = Instantiate(spell, aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f), transform.rotation);
+        //GameObject instance = Instantiate(spell, aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f), transform.rotation);
+        GameObject instance = spell.GetComponent<PoolableObject>().GetPool().GetPooled();
+        instance.transform.position = aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f);
+        instance.transform.rotation = transform.rotation;
 
         Spell spellScript = instance.GetComponent<Spell>();
         spellScript.SetParent(transform.gameObject);
@@ -475,7 +482,10 @@ public abstract class Character : MonoBehaviour
         myAnimator.SetTrigger("Death");
 
         if (myChannelGameObject)
+        {
             Destroy(myChannelGameObject);
+            myChannelGameObject = null;
+        }
     }
 
     public void SetAvatar(Sprite aSprite)

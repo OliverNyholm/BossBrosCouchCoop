@@ -13,9 +13,17 @@ public abstract class PoolableObject : MonoBehaviour
         myObjectPool = aObjectPool;
     }
 
+    public ObjectPool GetPool()
+    {
+        return myObjectPool;
+    }
+
     public virtual void ReturnToPool()
     {
         gameObject.SetActive(false);
-        myObjectPool.ReturnObject(gameObject);
+        if (myObjectPool)
+            myObjectPool.ReturnObject(gameObject);
+        else
+            Destroy(gameObject);
     }
 }

@@ -24,7 +24,7 @@ public class DirectionalSpell : Spell
         myLifeTime -= Time.deltaTime;
         if (myLifeTime <= 0.0f)
         {
-            Destroy(gameObject);
+            ReturnToPool();
         }
 
         transform.position += transform.forward * mySpeed * Time.deltaTime;
@@ -40,7 +40,7 @@ public class DirectionalSpell : Spell
         
         if(other.gameObject.tag == "Terrain")
         {
-            Destroy(gameObject);
+            ReturnToPool();
             SpawnVFX(2.5f, other.gameObject);
         }
     }

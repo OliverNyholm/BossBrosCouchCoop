@@ -9,8 +9,8 @@ public class ShieldWall : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Spell")
-            Destroy(other.gameObject);        
+        if (other.tag == "Spell")
+            other.GetComponent<PoolableObject>().ReturnToPool();     
     }
 
     void Update()

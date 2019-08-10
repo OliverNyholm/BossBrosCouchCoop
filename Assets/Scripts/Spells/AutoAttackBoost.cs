@@ -24,7 +24,7 @@ public class AutoAttackBoost : Spell
         myLifeTime -= Time.deltaTime;
         if(myLifeTime <= 0.0f)
         {
-            Destroy(gameObject);
+            ReturnToPool();
         }
 
         if (myParentAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "AutoAtk")
@@ -39,8 +39,8 @@ public class AutoAttackBoost : Spell
             transform.localPosition = Vector3.zero;
 
             SpawnVFX(2.5f);
-            
-            Destroy(gameObject);
+
+            ReturnToPool();
         }
     }
 

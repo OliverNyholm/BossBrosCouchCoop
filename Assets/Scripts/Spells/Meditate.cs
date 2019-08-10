@@ -50,7 +50,7 @@ public class Meditate : Spell
 
         myChannelTime -= Time.deltaTime;
         if (myChannelTime <= 0.0f)
-            Destroy(gameObject);
+            ReturnToPool();
     }
 
     private void StartCoroutine()

@@ -14,7 +14,7 @@ public class ObjectPool : MonoBehaviour
 
     private Queue<GameObject> myPool;
 
-    private void Awake()
+    private void Start()
     {
         myPool = new Queue<GameObject>(myPoolSize);
 
@@ -49,5 +49,15 @@ public class ObjectPool : MonoBehaviour
     {
         myPool.Enqueue(aGameObject);
         aGameObject.transform.parent = transform;
+    }
+
+    public void SetPrefab(GameObject aGameObject)
+    {
+        myPrefabObject = aGameObject;
+    }
+
+    public void SetPoolSize(int aSize)
+    {
+        myPoolSize = aSize;
     }
 }

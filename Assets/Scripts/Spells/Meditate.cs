@@ -16,7 +16,7 @@ public class Meditate : Spell
     private int myResourcePerTick;
 
     private GameObject myVFX;
-    
+
     protected override void Start()
     {
         const int NrOfTicks = 10;
@@ -33,10 +33,13 @@ public class Meditate : Spell
         myVFX = SpawnVFX(myChannelTime + 1.5f);
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        myVFX.GetComponent<ParticleSystem>().Stop();
-        myVFX.transform.parent = null;
+        if (myVFX)
+        {
+            myVFX.GetComponent<ParticleSystem>().Stop();
+            myVFX.transform.parent = null;
+        }
     }
 
     protected override void Update()

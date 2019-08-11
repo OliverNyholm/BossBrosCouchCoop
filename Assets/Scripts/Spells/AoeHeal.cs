@@ -41,8 +41,11 @@ public class AoeHeal : Spell
 
     private void OnDisable()
     {
-        myVFX.GetComponent<ParticleSystem>().Stop();
-        myVFX.transform.parent = null;
+        if (myVFX)
+        {
+            myVFX.GetComponent<ParticleSystem>().Stop();
+            myVFX.transform.parent = null;
+        }
     }
 
     protected override void Update()

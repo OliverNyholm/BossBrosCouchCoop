@@ -205,7 +205,10 @@ public abstract class Character : MonoBehaviour
 
         GameObject instance = spell.GetComponent<PoolableObject>().GetPool().GetPooled();
         instance.transform.position = aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f);
-        instance.transform.rotation = transform.rotation;
+        if (Target)
+            instance.transform.LookAt(Target.transform);
+        else
+            instance.transform.rotation = transform.rotation;
 
         Spell spellScript = instance.GetComponent<Spell>();
         spellScript.SetParent(transform.gameObject);

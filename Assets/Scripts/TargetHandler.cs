@@ -50,6 +50,22 @@ public class TargetHandler : MonoBehaviour
         return myPlayers[aIndex];
     }
 
+    public void AddEnemy(GameObject aGameObject)
+    {
+        myEnemies.Add(aGameObject);
+        for (int playerIndex = 0; playerIndex < myPlayers.Count; playerIndex++)
+        {
+            if (!aGameObject.GetComponent<Enemy>())
+                continue;
+            aGameObject.GetComponent<Enemy>().AddPlayer(myPlayers[playerIndex]);
+        }
+    }
+
+    public void RemoveEnemy(GameObject aGameObject)
+    {
+        myEnemies.Remove(aGameObject);
+    }
+
     public GameObject GetEnemy(int aPlayerIndex)
     {
         int playerIndex = aPlayerIndex - 1;

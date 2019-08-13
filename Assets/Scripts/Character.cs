@@ -43,6 +43,9 @@ public abstract class Character : MonoBehaviour
     protected bool myIsCasting;
     public bool IsInterruptable { get; set; }
 
+    public delegate void EventOnSpellSpawned(GameObject aPlayer, GameObject aSpell, int aSpellIndex);
+    public event EventOnSpellSpawned myEventOnSpellSpawned;
+
     protected virtual void Start()
     {
         myAnimator = GetComponent<Animator>();
@@ -198,7 +201,8 @@ public abstract class Character : MonoBehaviour
         else
             spell = myClass.GetSpell(aKeyIndex);
 
-        //GameObject instance = Instantiate(spell, aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f), transform.rotation);
+        myEventOnSpellSpawned?.Invoke(gameObject, spell, aKeyIndex);
+
         GameObject instance = spell.GetComponent<PoolableObject>().GetPool().GetPooled();
         instance.transform.position = aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f);
         instance.transform.rotation = transform.rotation;

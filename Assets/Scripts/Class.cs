@@ -44,6 +44,9 @@ public class Class : MonoBehaviour
 
     private float myResource;
 
+    public delegate void EventOnInfoToggle(GameObject aPlayer);
+    public event EventOnInfoToggle myEventOnInfoToggle;
+
     public Class()
     {
         const int mySpellSize = 8;
@@ -120,6 +123,7 @@ public class Class : MonoBehaviour
 
     public void ToggleSpellInfo()
     {
+        myEventOnInfoToggle?.Invoke(gameObject);
         for (int index = 0; index < myActionButtons.Length; index++)
         {
             myActionButtons[index].GetComponent<ActionKey>().ToggleInfo();

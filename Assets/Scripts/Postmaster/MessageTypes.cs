@@ -6,6 +6,7 @@ public enum MessageType
 {
     SpellSpawned,
     PlayerDied,
+    PlayerResucitated,
     RegisterPlayer,
     DamageDealt,
     EnteredCombat,

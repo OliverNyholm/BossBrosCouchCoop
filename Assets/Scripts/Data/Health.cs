@@ -3,10 +3,6 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject myFloatingHealthPrefab = null;
-
-
     public int myMaxHealth = 100;
 
     public int myCurrentHealth = 100;
@@ -116,9 +112,6 @@ public class Health : MonoBehaviour
     private void SpawnFloatingText(string aText, Color aColor, float aSizeModifier)
     {
         Vector3 randomOffset = new Vector2(Random.Range(-2.0f, 2.0f), Random.Range(0.0f, 2.0f));
-
-        //GameObject floatingHealthGO = Instantiate(myFloatingHealthPrefab, transform);
-        //floatingHealthGO.transform.position += randomOffset;
 
         GameObject floatingHealthGO = PoolManager.Instance.GetFloatingHealth();
         floatingHealthGO.transform.parent = transform;

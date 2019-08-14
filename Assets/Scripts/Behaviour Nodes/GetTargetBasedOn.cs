@@ -55,6 +55,10 @@ public class GetTargetBasedOn : Action
 
         for (int index = 0; index < myListOfGameObjects.Value.Count; index++)
         {
+            Health health = myListOfGameObjects.Value[index].GetComponent<Health>();
+            if (health.IsDead())
+                continue;
+
             float sqrDistance = (myListOfGameObjects.Value[index].transform.position - transform.position).sqrMagnitude;
             if (IsBetterTarget(sqrDistance, bestDistanceSqr))
             {
@@ -73,11 +77,15 @@ public class GetTargetBasedOn : Action
 
         for (int index = 0; index < myListOfGameObjects.Value.Count; index++)
         {
-            int health = myListOfGameObjects.Value[index].GetComponent<Health>().myCurrentHealth;
-            if (IsBetterTarget(health, bestHealth))
+            Health health = myListOfGameObjects.Value[index].GetComponent<Health>();
+            if (health.IsDead())
+                continue;
+
+            int currentHealth = health.myCurrentHealth;
+            if (IsBetterTarget(currentHealth, bestHealth))
             {
                 target = myListOfGameObjects.Value[index];
-                bestHealth = health;
+                bestHealth = currentHealth;
             }
         }
 

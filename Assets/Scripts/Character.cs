@@ -201,8 +201,6 @@ public abstract class Character : MonoBehaviour
         else
             spell = myClass.GetSpell(aKeyIndex);
 
-        myEventOnSpellSpawned?.Invoke(gameObject, spell, aKeyIndex);
-
         GameObject instance = spell.GetComponent<PoolableObject>().GetPool().GetPooled();
         instance.transform.position = aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f);
         if (Target)
@@ -223,6 +221,8 @@ public abstract class Character : MonoBehaviour
 
         if (aSpawnPosition == transform.position)
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
+
+        myEventOnSpellSpawned?.Invoke(gameObject, spell, aKeyIndex);
     }
 
     protected abstract bool IsAbleToCastSpell(Spell aSpellScript);

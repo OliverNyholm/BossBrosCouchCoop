@@ -1258,7 +1258,7 @@ Transform:
   m_Father: {fileID: 2089693813767273275}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5458677048042105067
+--- !u!1 &5572081419203891452
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1266,9 +1266,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7895695228614480147}
-  - component: {fileID: 8641236519767456823}
-  - component: {fileID: 3479109845489181550}
+  - component: {fileID: 2060352766908570273}
+  - component: {fileID: 3655088836863650165}
+  - component: {fileID: 6722319356559372748}
   m_Layer: 9
   m_Name: TargetProjector
   m_TagString: Untagged
@@ -1276,51 +1276,54 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7895695228614480147
+--- !u!4 &2060352766908570273
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5458677048042105067}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.4, z: 0}
+  m_GameObject: {fileID: 5572081419203891452}
+  m_LocalRotation: {x: -0.483787, y: -0.51570356, z: 0.51570356, w: -0.483787}
+  m_LocalPosition: {x: 0, y: -3.53, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7263016341853182540}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!119 &8641236519767456823
-Projector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5458677048042105067}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_NearClipPlane: 0.1
-  m_FarClipPlane: 10
-  m_FieldOfView: 30
-  m_AspectRatio: 1
-  m_Orthographic: 1
-  m_OrthographicSize: 2
-  m_Material: {fileID: 2100000, guid: d04f0c25d60fae4428dde7b14a3f84fa, type: 2}
-  m_IgnoreLayers:
-    serializedVersion: 2
-    m_Bits: 512
---- !u!114 &3479109845489181550
+--- !u!114 &3655088836863650165
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5458677048042105067}
+  m_GameObject: {fileID: 5572081419203891452}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f228b14211501ff449b7af432f2f3f8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6722319356559372748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5572081419203891452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: bda66cd6d51e58d4e9580e7c9cc240b8, type: 2}
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_AffectsTransparency: 0
+  m_Offset: {x: 0, y: 0, z: 0.5000001}
+  m_Size: {x: 3, y: 3, z: 8}
+  m_FadeFactor: 1
+  m_Version: 1
 --- !u!1 &5612123871648346226
 GameObject:
   m_ObjectHideFlags: 0
@@ -1589,11 +1592,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7268288696070191918}
   m_LocalRotation: {x: 0, y: 0.9878245, z: 0, w: 0.15557247}
-  m_LocalPosition: {x: 1.9599998, y: 0, z: -0.5499973}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3001704431998284565}
-  - {fileID: 7895695228614480147}
+  - {fileID: 2060352766908570273}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 162.1, z: 0}
@@ -1753,8 +1756,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d2c069978184cd4788cd4ddd56cf980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myFloatingHealthPrefab: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca,
-    type: 3}
   myMaxHealth: 1000
   myCurrentHealth: 1000
 --- !u!114 &4785834534412229874

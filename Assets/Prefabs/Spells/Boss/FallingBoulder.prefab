@@ -86,7 +86,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6992732683682337594}
-  - component: {fileID: 8895699418371161630}
+  - component: {fileID: 8469159922612825915}
   m_Layer: 0
   m_Name: TargetProjectorBase
   m_TagString: Untagged
@@ -102,31 +102,34 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5141162934048058050}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.418, z: 0}
+  m_LocalPosition: {x: 0, y: -3.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7972479889462565182}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!119 &8895699418371161630
-Projector:
+--- !u!114 &8469159922612825915
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5141162934048058050}
   m_Enabled: 1
-  serializedVersion: 2
-  m_NearClipPlane: 0.1
-  m_FarClipPlane: 200
-  m_FieldOfView: 30
-  m_AspectRatio: 1
-  m_Orthographic: 1
-  m_OrthographicSize: 4.46
-  m_Material: {fileID: 2100000, guid: 5f03bfe1d216094438aeec8e3d6f843b, type: 2}
-  m_IgnoreLayers:
-    serializedVersion: 2
-    m_Bits: 2560
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 7395d161147d831429344e9e213781f0, type: 2}
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_AffectsTransparency: 0
+  m_Offset: {x: 0, y: 0, z: 0.5}
+  m_Size: {x: 7.5, y: 7.5, z: 1.1}
+  m_FadeFactor: 1
+  m_Version: 1
 --- !u!1 &5798900349582130512
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,6 +188,7 @@ MonoBehaviour:
   myCastTime: 0
   myCooldown: 8
   myRange: 0
+  myStunDuration: 0
   myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
   mySpellIcon: {fileID: 0}
   myIsCastableWhileMoving: 1
@@ -199,6 +203,7 @@ MonoBehaviour:
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
   myMeshTransform: {fileID: 1408294203}
+  myDecalTransform: {fileID: 6992732683682337594}
 --- !u!135 &5798900349582130513
 SphereCollider:
   m_ObjectHideFlags: 0

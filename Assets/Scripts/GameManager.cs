@@ -104,6 +104,7 @@ public class GameManager : MonoBehaviour
         player.SetPlayerControls(myKeyboardListener);
         player.myName = "DebugPlayer";
         player.PlayerIndex = 1;
+        player.myCharacterColor = Color.red;
 
         Vector3 rgb = new Vector3(player.myCharacterColor.r, player.myCharacterColor.g, player.myCharacterColor.b);
         PostMaster.Instance.PostMessage(new Message(MessageType.RegisterPlayer, playerGO.GetInstanceID(), rgb));

@@ -8,6 +8,9 @@ public class FallingBoulder : Spell
     [SerializeField]
     private Transform myMeshTransform = null;
 
+    [SerializeField]
+    private Transform myDecalTransform = null;
+
     private Vector3 myLandPosition;
 
     List<int> myTargetsHit = new List<int>();
@@ -26,6 +29,7 @@ public class FallingBoulder : Spell
 
         myRotationSpeed = Random.Range(0.3f, 1.5f);
         myRandomRotation = Random.rotation.eulerAngles;
+        myDecalTransform.transform.position = myLandPosition;
     }
 
     protected override void Update()
@@ -33,6 +37,7 @@ public class FallingBoulder : Spell
         myMeshTransform.Rotate(myRandomRotation * myRotationSpeed * Time.deltaTime);
 
         transform.position += Vector3.down * mySpeed * Time.deltaTime;
+        myDecalTransform.transform.position = myLandPosition;
         if (transform.position.y <= myLandPosition.y)
         {
             SpawnVFX(2.5f);

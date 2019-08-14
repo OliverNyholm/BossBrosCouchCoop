@@ -20,7 +20,8 @@ public class Resuscitate : Spell
         {
             myTarget.GetComponent<Health>().GainHealth(myDamage);
             myTarget.GetComponent<Animator>().SetTrigger("Attack");
-            Destroy(gameObject);
+            PostMaster.Instance.PostMessage(new Message(MessageType.PlayerResucitated, myTarget.GetInstanceID()));
+            ReturnToPool();
         }
     }
 

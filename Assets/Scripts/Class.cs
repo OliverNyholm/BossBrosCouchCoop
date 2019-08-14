@@ -44,6 +44,9 @@ public class Class : MonoBehaviour
 
     private float myResource;
 
+    public delegate void EventOnInfoToggle(GameObject aPlayer);
+    public event EventOnInfoToggle myEventOnInfoToggle;
+
     public Class()
     {
         const int mySpellSize = 8;
@@ -55,6 +58,26 @@ public class Class : MonoBehaviour
         {
             myCooldownTimers[index] = 0.0f;
         }
+    }
+
+    public void Start()
+    {
+        Transform poolManagerTransform = PoolManager.Instance.transform;
+        GameObject poolPrefab = PoolManager.Instance.GetPoolPrefab();
+
+        for (int index = 0; index < mySpells.Length; index++)
+        {
+            if (mySpells[index] == null)
+                continue;
+
+            GameObject pool = Instantiate(poolPrefab, poolManagerTransform);
+            pool.name = mySpells[index].name + " Pool";
+            pool.GetComponent<ObjectPool>().SetPrefab(mySpells[index]);
+
+            mySpells[index].GetComponent<PoolableObject>().SetParentPool(pool.GetComponent<ObjectPool>());
+        }
+
+        myAutoAttack.GetComponent<PoolableObject>().SetParentPool(PoolManager.Instance.GetAutoAttackPool());
     }
 
     private void FindActionBar(Transform aUIParent)
@@ -100,6 +123,7 @@ public class Class : MonoBehaviour
 
     public void ToggleSpellInfo()
     {
+        myEventOnInfoToggle?.Invoke(gameObject);
         for (int index = 0; index < myActionButtons.Length; index++)
         {
             myActionButtons[index].GetComponent<ActionKey>().ToggleInfo();

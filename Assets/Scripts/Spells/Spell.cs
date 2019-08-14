@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Spell : MonoBehaviour
+public class Spell : PoolableObject
 {
     public string myQuickInfo;
 
@@ -62,6 +62,11 @@ public class Spell : MonoBehaviour
         }
     }
 
+    public override void Reset()
+    {
+        myTarget = null;
+    }
+
     protected virtual void Update()
     {
         float distanceSqr = 0.0f;
@@ -72,6 +77,8 @@ public class Spell : MonoBehaviour
         {
             if (myShouldRotate)
                 transform.Rotate(myRandomRotation * myRotationSpeed * Time.deltaTime);
+
+            transform.LookAt(myTarget.transform);
 
             Vector3 direction = myTarget.transform.position - transform.position;
             transform.position += direction.normalized * mySpeed * Time.deltaTime;
@@ -86,7 +93,7 @@ public class Spell : MonoBehaviour
                 SpawnBuff();
             }
 
-            Destroy();
+            ReturnToPool();
         }
     }
     private void SpawnBuff()
@@ -412,10 +419,5 @@ public class Spell : MonoBehaviour
         Destroy(vfxGO, aDuration);
 
         return vfxGO;
-    }
-
-    private void Destroy()
-    {
-        Destroy(gameObject);
     }
 }

@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
         PostMaster.Create();
 
         TargetHandler targetHandler = GetComponent<TargetHandler>();
-        GameObject characterGameDataGO = GameObject.Find("CharacterGameData");
+        GameObject characterGameDataGO = GameObject.Find("GameData");
         if (characterGameDataGO == null)
         {
             Debug.Log("No CharacterGameData to find, default player created.");

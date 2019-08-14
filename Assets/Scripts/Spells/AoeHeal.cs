@@ -39,10 +39,13 @@ public class AoeHeal : Spell
         particleSystem.Play();
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        myVFX.GetComponent<ParticleSystem>().Stop();
-        myVFX.transform.parent = null;
+        if (myVFX)
+        {
+            myVFX.GetComponent<ParticleSystem>().Stop();
+            myVFX.transform.parent = null;
+        }
     }
 
     protected override void Update()
@@ -56,7 +59,7 @@ public class AoeHeal : Spell
 
         myChannelTime -= Time.deltaTime;
         if (myChannelTime <= 0.0f)
-            Destroy(gameObject);
+            ReturnToPool();
     }
 
     private void StartCoroutine()

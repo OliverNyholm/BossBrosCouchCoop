@@ -331,6 +331,9 @@ public class Enemy : Character
     {
         for (int index = 0; index < Players.Count; index++)
         {
+            if (Players[index].GetComponent<Health>().IsDead())
+                continue;
+
             Vector3 playerPosition = Players[index].transform.position;
             float distanceSqr = (playerPosition - transform.position).sqrMagnitude;
             if (distanceSqr < myAggroRange * myAggroRange)
@@ -471,6 +474,17 @@ public class Enemy : Character
         myAggroList.Add(0);
     }
 
+    private bool AreAllPlayersDead()
+    {
+        for (int index = 0; index < Players.Count; index++)
+        {
+            if (!Players[index].GetComponent<Health>().IsDead())
+                return false;
+        }
+
+        return true;
+    }
+
     public void RemovePlayer(int anIndex)
     {
         myAggroList.RemoveAt(anIndex);
@@ -503,7 +517,10 @@ public class Enemy : Character
                             if (index == myTargetIndex)
                                 DropTarget();
 
-                            RemovePlayer(index);
+                            if(AreAllPlayersDead())
+                                SetState(CombatState.Disengage);
+
+                            //RemovePlayer(index);
                             break;
                         }
                     }
@@ -561,6 +578,10 @@ public class Enemy : Character
             case CombatState.Disengage:
                 myNavmeshAgent.destination = mySpawnPosition;
                 myAnimator.SetBool("IsRunning", true);
+
+                BehaviorTree tree = GetComponent<BehaviorTree>();
+                tree.DisableBehavior();
+                tree.EnableBehavior();
                 break;
         }
     }

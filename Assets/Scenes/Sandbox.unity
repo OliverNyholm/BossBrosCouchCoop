@@ -225,6 +225,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 38139239}
   m_CullTransparentMesh: 0
+--- !u!1001 &73129409
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 57349179144140621, guid: c3734a616dfffaa449753af3203ffdae,
+        type: 3}
+      propertyPath: m_Name
+      value: PoolManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 57349179144140623, guid: c3734a616dfffaa449753af3203ffdae,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 57349179144140623, guid: c3734a616dfffaa449753af3203ffdae,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 57349179144140623, guid: c3734a616dfffaa449753af3203ffdae,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 57349179144140623, guid: c3734a616dfffaa449753af3203ffdae,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 57349179144140623, guid: c3734a616dfffaa449753af3203ffdae,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 57349179144140623, guid: c3734a616dfffaa449753af3203ffdae,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 57349179144140623, guid: c3734a616dfffaa449753af3203ffdae,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 57349179144140623, guid: c3734a616dfffaa449753af3203ffdae,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 57349179144140623, guid: c3734a616dfffaa449753af3203ffdae,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 57349179144140623, guid: c3734a616dfffaa449753af3203ffdae,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 57349179144140623, guid: c3734a616dfffaa449753af3203ffdae,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c3734a616dfffaa449753af3203ffdae, type: 3}
 --- !u!1 &95652224
 GameObject:
   m_ObjectHideFlags: 0
@@ -806,7 +875,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myClassName: Dummy
   mySprite: {fileID: 21300000, guid: b8a8052f67b060c43915aca9d609bd1c, type: 3}
-  myAutoAttack: {fileID: 0}
+  myAutoAttack: {fileID: 1076349553557202, guid: 58da3294e821ee7409b6b1de5bd92427,
+    type: 3}
   mySpells:
   - {fileID: 0}
   - {fileID: 0}
@@ -8705,7 +8775,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myClassName: Dummy
   mySprite: {fileID: 21300000, guid: b8a8052f67b060c43915aca9d609bd1c, type: 3}
-  myAutoAttack: {fileID: 0}
+  myAutoAttack: {fileID: 1076349553557202, guid: 58da3294e821ee7409b6b1de5bd92427,
+    type: 3}
   mySpells:
   - {fileID: 0}
   - {fileID: 0}
@@ -8762,7 +8833,7 @@ MonoBehaviour:
         dataPosition: 0000000004000000090000000a0000000b00000013000000130000001400000015000000190000001d00000021000000290000002a0000002b00000033000000330000003400000035000000390000003d0000004100000045000000490000004a0000004b0000005300000053000000540000005500000059000000
         unityObjects: []
         byteData: 00000000456e747279010000400e4400008841000000000000000000000100000053656c6563746f720100000080bf0000ea4200000000000000000000000000000200000049646c650100000080400000ee4200000000000000000000
-        byteDataArray: 
+        byteDataArray: 00000000456e747279010000400e4400008841000000000000000000000100000053656c6563746f720100000080bf0000ea4200000000000000000000000000000200000049646c650100000080400000ee4200000000000000000000
       Version: 1.6.2
 --- !u!1 &1106717162099024651
 GameObject:

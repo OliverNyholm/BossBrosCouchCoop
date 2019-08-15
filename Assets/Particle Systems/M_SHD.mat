@@ -7,11 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_test
-  m_Shader: {fileID: -6465566751694194690, guid: 4b6e0223003fadf459bd0f8527bdc7d4,
+  m_Name: M_SHD
+  m_Shader: {fileID: -6465566751694194690, guid: c1dd220f4eaa115479905748be3cb605,
     type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 1
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -22,8 +22,16 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_23DD87FD:
-        m_Texture: {fileID: 2800000, guid: 2c61754497628794e875bbe56640e5b6, type: 3}
+    - Texture2D_785FB14A:
+        m_Texture: {fileID: 2800000, guid: 92ee3b4a61eafed4a9a60010c7643bb9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_96C90431:
+        m_Texture: {fileID: 2800000, guid: 42151967076cd104f9bd7f68337caf38, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_AB765B11:
+        m_Texture: {fileID: 2800000, guid: 96a8b801969c9f740a002d176e980720, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
@@ -111,9 +119,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_1050007D: 1.2
-    - Vector1_44693569: 2.9
-    - Vector1_A04849B3: -0.8
+    - Vector1_41D1799D: 0
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
@@ -239,11 +245,12 @@ Material:
     - _ZTestModeDistortion: 8
     - _ZWrite: 1
     m_Colors:
-    - Color_2742451A: {r: 1, g: 0.44275084, b: 0, a: 0}
-    - Color_591A2AFF: {r: 0.8159415, g: 0.8113208, b: 1, a: 0}
-    - Color_A46DA391: {r: 3.0433211, g: 4.8978443, b: 8.701996, a: 0}
-    - Color_D8F9B981: {r: 0, g: 0.670157, b: 63.999992, a: 0}
-    - Color_DA246D39: {r: 0.99056596, g: 0.9372121, b: 0, a: 0}
+    - Color_15CEEE42: {r: 2.682353, g: 2.556863, b: 2.556863, a: 0}
+    - Color_9C4285C6: {r: 256, g: 136.1962, b: 70.03773, a: 0}
+    - Vector2_13BEE3BE: {r: 1, g: 1, b: 0, a: 0}
+    - Vector2_61DD45D4: {r: 1, g: -1, b: 0, a: 0}
+    - Vector2_873008F5: {r: 1.5, g: 0, b: 0, a: 0}
+    - Vector2_8C7A8732: {r: 0.5, g: 0.2, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

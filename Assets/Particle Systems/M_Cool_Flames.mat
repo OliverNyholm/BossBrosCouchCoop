@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_test
-  m_Shader: {fileID: -6465566751694194690, guid: 4b6e0223003fadf459bd0f8527bdc7d4,
+  m_Name: M_Cool_Flames
+  m_Shader: {fileID: -6465566751694194690, guid: 09ad9b5a89167d144b870319965ae25f,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 1
@@ -22,10 +22,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_23DD87FD:
-        m_Texture: {fileID: 2800000, guid: 2c61754497628794e875bbe56640e5b6, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -86,6 +82,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_18FEA479_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 92ee3b4a61eafed4a9a60010c7643bb9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_A77656A3_Texture_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -102,6 +106,18 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_3A163F38_Out_0:
+        m_Texture: {fileID: 2800000, guid: 92ee3b4a61eafed4a9a60010c7643bb9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_876CDF47_Out_0:
+        m_Texture: {fileID: 2800000, guid: b3668690f6c2e9d45952d1345660caf1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_8F649310_Out_0:
+        m_Texture: {fileID: 2800000, guid: 92ee3b4a61eafed4a9a60010c7643bb9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ThicknessMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -111,9 +127,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_1050007D: 1.2
-    - Vector1_44693569: 2.9
-    - Vector1_A04849B3: -0.8
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
@@ -239,11 +252,10 @@ Material:
     - _ZTestModeDistortion: 8
     - _ZWrite: 1
     m_Colors:
-    - Color_2742451A: {r: 1, g: 0.44275084, b: 0, a: 0}
-    - Color_591A2AFF: {r: 0.8159415, g: 0.8113208, b: 1, a: 0}
-    - Color_A46DA391: {r: 3.0433211, g: 4.8978443, b: 8.701996, a: 0}
-    - Color_D8F9B981: {r: 0, g: 0.670157, b: 63.999992, a: 0}
-    - Color_DA246D39: {r: 0.99056596, g: 0.9372121, b: 0, a: 0}
+    - Color_19B8C42: {r: 2, g: 0.08627451, b: 0, a: 0}
+    - Color_8E46ABEA: {r: 0.950211, g: 1, b: 0, a: 0}
+    - Color_B43B2C3: {r: 0.99056596, g: 0.855338, b: 0, a: 0}
+    - Color_D4747239: {r: 1, g: 0, b: 0.090671994, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

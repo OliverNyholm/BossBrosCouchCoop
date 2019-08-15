@@ -73,7 +73,7 @@ public class GetTargetBasedOn : Action
     private GameObject FindHealth()
     {
         GameObject target = null;
-        int bestHealth = myOperator == BasedOperator.Highest ? int.MinValue : int.MaxValue;
+        float bestHealth = myOperator == BasedOperator.Highest ? float.MinValue : float.MaxValue;
 
         for (int index = 0; index < myListOfGameObjects.Value.Count; index++)
         {
@@ -81,11 +81,11 @@ public class GetTargetBasedOn : Action
             if (health.IsDead())
                 continue;
 
-            int currentHealth = health.myCurrentHealth;
-            if (IsBetterTarget(currentHealth, bestHealth))
+            float currentHealthPercentage = health.GetHealthPercentage();
+            if (IsBetterTarget(currentHealthPercentage, bestHealth))
             {
                 target = myListOfGameObjects.Value[index];
-                bestHealth = currentHealth;
+                bestHealth = currentHealthPercentage;
             }
         }
 

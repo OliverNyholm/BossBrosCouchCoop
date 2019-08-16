@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_ENV_Lava_Lit_VFX 1
+  m_Name: M_ENV_Lava_Lit_VFX
   m_Shader: {fileID: -6465566751694194690, guid: 03304c08bf57c724cbc530ad86adc1ea,
     type: 3}
   m_ShaderKeywords: 
@@ -42,6 +42,11 @@ Material:
         m_Texture: {fileID: 2800000, guid: 86636087f491991428e081cac0fe03d0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats: []
+    - _SampleTexture2D_FA0D092A_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 342b1a13414a80140a19c5441f4674e1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_2F8970B4: 0.2
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}

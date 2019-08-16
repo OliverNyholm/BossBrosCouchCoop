@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65a5a1b02a5a90a44948464619d928fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myQuickInfo: Heal 200 Lose 200
+  myQuickInfo: Give Health
   myName: Sacrifice
   mySpellType: 2
   mySpellTarget: 2
@@ -102,6 +102,7 @@ MonoBehaviour:
   myCastTime: 1
   myCooldown: 0.2
   myRange: 25
+  myStunDuration: 0
   myCastbarColor: {r: 0.3207547, g: 0.06079097, b: 0, a: 1}
   mySpellIcon: {fileID: 21300000, guid: 83d07cce5fc6f1e449f83555e63feeed, type: 3}
   myIsCastableWhileMoving: 0

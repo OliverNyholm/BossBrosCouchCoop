@@ -367,11 +367,11 @@ public class Enemy : Character
         SpawnSpell(-1, GetSpellSpawnPosition(myClass.GetAutoAttack().GetComponent<Spell>()));
     }
 
-    public bool CastSpell(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform, bool myShouldIgnoreCastability = false)
+    public bool CastSpell(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform, bool aShouldIgnoreCastability = false)
     {
         Spell spellScript = aSpell.GetComponent<Spell>();
 
-        if (!myShouldIgnoreCastability && !IsAbleToCastSpell(spellScript))
+        if (!aShouldIgnoreCastability && !IsAbleToCastSpell(spellScript))
             return false;
 
         if (spellScript.myCastTime <= 0.0f)
@@ -391,12 +391,12 @@ public class Enemy : Character
         myCastbar.SetSpellIcon(spellScript.mySpellIcon);
         myCastbar.SetCastTimeText(spellScript.myCastTime.ToString());
 
-        myCastingRoutine = StartCoroutine(CastbarProgress(aSpell, aTarget, aSpawnTransform));
+        myCastingRoutine = StartCoroutine(CastbarProgress(aSpell, aTarget, aSpawnTransform, aShouldIgnoreCastability));
 
         return true;
     }
 
-    protected IEnumerator CastbarProgress(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform)
+    protected IEnumerator CastbarProgress(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform, bool aShouldIgnoreCastability)
     {
         Spell spellScript = aSpell.GetComponent<Spell>();
 
@@ -422,7 +422,7 @@ public class Enemy : Character
 
         StopCasting();
 
-        if (IsAbleToCastSpell(spellScript))
+        if (aShouldIgnoreCastability || IsAbleToCastSpell(spellScript))
         {
             SpawnSpell(aSpell, mySpellTarget, aSpawnTransform);
             GetComponent<Resource>().LoseResource(spellScript.myResourceCost);

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1233940432947236
+--- !u!1 &1060916130889568
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4784012104435578}
-  - component: {fileID: 33211461906033036}
-  - component: {fileID: 23304676113358796}
-  - component: {fileID: 114885515029122190}
-  - component: {fileID: -7847056222641772689}
+  - component: {fileID: 4173703178595908}
+  - component: {fileID: 33279017630249994}
+  - component: {fileID: 23217180022871858}
+  - component: {fileID: 114266327557053464}
+  - component: {fileID: 5825257179494069947}
   m_Layer: 0
-  m_Name: Blurred Vision
+  m_Name: Wring Mind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4784012104435578
+--- !u!4 &4173703178595908
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1233940432947236}
+  m_GameObject: {fileID: 1060916130889568}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.891592, y: 1.9179764e-17, z: -9.209526}
+  m_LocalPosition: {x: 25.051636, y: 3.7353157e-17, z: -16.002716}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &33211461906033036
+--- !u!33 &33279017630249994
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1233940432947236}
+  m_GameObject: {fileID: 1060916130889568}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &23304676113358796
+--- !u!23 &23217180022871858
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1233940432947236}
+  m_GameObject: {fileID: 1060916130889568}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4ab96d49cf9927a47abc165f26aebb20, type: 2}
+  - {fileID: 2100000, guid: f422daac75b75ce40bad5d08ace9243b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,49 +79,52 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114885515029122190
+--- !u!114 &114266327557053464
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1233940432947236}
+  m_GameObject: {fileID: 1060916130889568}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4148e1b28d969ae4aa67f15be58c979c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myQuickInfo: 
-  myName: Blurred Vision
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
-  mySpellType: 7
+  myQuickInfo: DoT
+  myTutorialInfo: Wring Mind is a DoT (Damage over time) spell. Casting it on your
+    target will cause the enemy to take damage over a few seconds time.
+  myName: Wring Mind
+  mySpellType: 8
   mySpellTarget: 4
   myDamage: 50
-  myResourceCost: 30
+  myResourceCost: 0
   myThreatModifier: 1
-  mySpeed: 50
+  mySpeed: 40
   myCastTime: 1
   myCooldown: 1
   myRange: 25
-  myCastbarColor: {r: 0.8207547, g: 0.8025097, b: 0.2748754, a: 1}
-  mySpellIcon: {fileID: 21300000, guid: d2e7dc1794061664aa47812f10d39bc3, type: 3}
+  myStunDuration: 0
+  myCastbarColor: {r: 0.3308662, g: 0.7830189, b: 0.31394625, a: 1}
+  mySpellIcon: {fileID: 21300000, guid: 2d26b3575658c3848a7b7432a6389434, type: 3}
   myIsCastableWhileMoving: 0
-  myCanCastOnSelf: 0
+  myCanCastOnSelf: 1
   myIsOnlySelfCast: 0
-  myBuff: {fileID: 0}
+  myShouldRotate: 0
+  myBuff: {fileID: 11400000, guid: b506188490946c147906e9236849e808, type: 2}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
-    myHitSound: {fileID: 8300000, guid: 1a3b2407ad019844daa17f229a3c7d69, type: 3}
+    myHitSound: {fileID: 8300000, guid: c1bf768bf19329147ba4e571efbbf852, type: 3}
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
---- !u!82 &-7847056222641772689
+--- !u!82 &5825257179494069947
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1233940432947236}
+  m_GameObject: {fileID: 1060916130889568}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}

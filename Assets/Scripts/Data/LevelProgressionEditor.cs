@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(LevelProgression))]
 public class LevelProgressionEditor : Editor
 {
@@ -43,3 +44,4 @@ public class LevelProgressionEditor : Editor
         }
     }
 }
+#endif

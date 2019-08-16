@@ -6,6 +6,8 @@ using UnityEngine;
 public class Spell : PoolableObject
 {
     public string myQuickInfo;
+    [TextArea(2,5)]
+    public string myTutorialInfo;
 
     public string myName;
     public SpellType mySpellType;

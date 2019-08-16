@@ -25,6 +25,9 @@ public class TutorialCompletion : MonoBehaviour
 
     private bool myHasStarted = false;
 
+    protected delegate IEnumerator FinishRoutine();
+    protected FinishRoutine myFinishRoutine;
+
     private void Awake()
     {
         myTutorialPanel = FindObjectOfType<TutorialPanel>();
@@ -34,6 +37,7 @@ public class TutorialCompletion : MonoBehaviour
     private void Start()
     {
         myPlayers = new List<GameObject>(myTargetHandler.GetAllPlayers());
+        myFinishRoutine = LowerGateRoutine;
     }
 
     protected virtual bool StartTutorial()
@@ -52,7 +56,7 @@ public class TutorialCompletion : MonoBehaviour
     protected void EndTutorial()
     {
         myTutorialPanel.gameObject.SetActive(false);
-        StartCoroutine(LowerGateRoutine());
+        StartCoroutine(myFinishRoutine());
     }
 
     protected void SetPlayerCompleted(GameObject aPlayer)

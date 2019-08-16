@@ -91,9 +91,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422a93d14e091d84c9b4453b8f68d454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myQuickInfo: Orb reduce damage
+  myQuickInfo: Damage Reduction
+  myTutorialInfo: Barrier is a strong shield that is channeled around the Wizard.
+    The Wizard and any ally within the barrier will have incoming damage reduces.
   myName: Barrier
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
   mySpellType: 10
   mySpellTarget: 2
   myDamage: 0
@@ -103,11 +104,13 @@ MonoBehaviour:
   myCastTime: 0
   myCooldown: 30
   myRange: 0
+  myStunDuration: 0
   myCastbarColor: {r: 1, g: 0.88335323, b: 0, a: 1}
   mySpellIcon: {fileID: 21300000, guid: 3bf1b6c2b1634ef4da726e57c4bdaf9d, type: 3}
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 1
+  myShouldRotate: 0
   myBuff: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 8300000, guid: 25fb6c7899bc2ab40b13d65ae269084b, type: 3}

@@ -14,6 +14,8 @@ public class TutorialPanel : MonoBehaviour
     private Image myKeyToPress = null;
 
     [SerializeField]
+    private List<GameObject> mySpellInfoPanels = new List<GameObject>();
+    [SerializeField]
     private GameObject myPlayersReadyParent = null;
     [SerializeField]
     private Image myHighlightSpells = null;
@@ -21,6 +23,7 @@ public class TutorialPanel : MonoBehaviour
     private Image myHighlightSecondSpells = null;
     [SerializeField]
     private Image myHighlighError = null;
+
 
     [Header("Prefab and Sprites")]
     [SerializeField]
@@ -33,6 +36,9 @@ public class TutorialPanel : MonoBehaviour
     private Sprite myCompletedSprite = null;
     [SerializeField]
     private Sprite myUncompletedSprite = null;
+
+
+    private int myCurrentTutorialSpellIndex;
 
     private void Start()
     {
@@ -96,9 +102,29 @@ public class TutorialPanel : MonoBehaviour
         }
     }
 
+    public void SetSpellData(Spell aSpell, Resource aResource, int aPlayerIndex)
+    {
+        mySpellInfoPanels[aPlayerIndex].GetComponent<TutorialSpellUI>().SetDetails(aSpell, aResource);
+        mySpellInfoPanels[aPlayerIndex].SetActive(true);
+        myCurrentTutorialSpellIndex = aPlayerIndex;
+    }
+
+    public List<Spell> GetTutorialSpells()
+    {
+        List<Spell> spells = new List<Spell>(myPlayersReadyParent.transform.childCount);
+
+        for (int index = 0; index < spells.Capacity; index++)
+        {
+            spells.Add(mySpellInfoPanels[index].GetComponent<TutorialSpellUI>().GetCurrentSpell());
+        }
+
+        return spells;
+    }
+
     public void SetCompletedAtIndex(int aPlayerIndex)
     {
         myPlayersReadyParent.transform.GetChild(aPlayerIndex).GetComponentInChildren<Image>().sprite = myCompletedSprite;
+        mySpellInfoPanels[aPlayerIndex].SetActive(false);
     }
 
     private void SetUncompletedAtIndex(int aPlayerIndex)

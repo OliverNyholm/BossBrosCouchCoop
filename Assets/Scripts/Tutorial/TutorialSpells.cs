@@ -28,8 +28,10 @@ public class TutorialSpells : TutorialCompletion
                 myCompletedPlayers.Add(player);
                 SetPlayerCompleted(player);
                 if (myPlayers.Count == 1)
+                {
                     EndTutorial();
-
+                    return true;
+                }
             }
         }
 

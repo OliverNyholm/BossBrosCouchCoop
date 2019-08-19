@@ -11,5 +11,6 @@ public enum MessageType
     DamageDealt,
     EnteredCombat,
     EnemyDied,
+    UITextToggle,
     Count
 }

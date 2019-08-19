@@ -65,6 +65,11 @@ public class TargetHandler : MonoBehaviour
     {
         myEnemies.Remove(aGameObject);
     }
+    
+    public void ClearAllEnemies()
+    {
+        myEnemies.Clear();
+    }
 
     public GameObject GetEnemy(int aPlayerIndex)
     {

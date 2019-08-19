@@ -10,12 +10,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<Transform> mySpawnPoints = new List<Transform>();
 
-    private PlayerControls myKeyboardListener;
-    private PlayerControls myJoystickListener;
-
     [Header("The player to be spawned if level started without character select")]
     public GameObject myPlayerPrefab;
-    private bool myIsPlayerPrefabSpawned;
 
     private void Awake()
     {
@@ -39,25 +35,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        if (!myIsPlayerPrefabSpawned)
-            myKeyboardListener = PlayerControls.CreateWithKeyboardBindings();
-        myJoystickListener = PlayerControls.CreateWithJoystickBindings();
-    }
-
-    private void OnDestroy()
-    {
-        myJoystickListener.Destroy();
-        myKeyboardListener.Destroy();
-    }
-
     private void Update()
     {
         PostMaster.Instance.DelegateMessages();
+    }
 
-        if (myKeyboardListener.Restart.WasPressed || myJoystickListener.Restart.WasPressed)
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void SpawnPlayer(TargetHandler aTargetHandler, PlayerSelectData aCharacter, int aIndex)
@@ -96,12 +81,12 @@ public class GameManager : MonoBehaviour
         GameObject playerGO = Instantiate(aPrefab, spawnPoint, Quaternion.identity);
         playerGO.name = "DebugPlayer";
 
-        myKeyboardListener = PlayerControls.CreateWithKeyboardBindings();
+        PlayerControls keyboardListener = PlayerControls.CreateWithKeyboardBindings();
 
         playerGO.GetComponent<Stats>().myDamageMitigator = 0.0f;
 
         Player player = playerGO.GetComponent<Player>();
-        player.SetPlayerControls(myKeyboardListener);
+        player.SetPlayerControls(keyboardListener);
         player.myName = "DebugPlayer";
         player.PlayerIndex = 1;
         player.myCharacterColor = Color.red;
@@ -110,6 +95,5 @@ public class GameManager : MonoBehaviour
         PostMaster.Instance.PostMessage(new Message(MessageType.RegisterPlayer, playerGO.GetInstanceID(), rgb));
 
         aTargetHandler.AddPlayer(playerGO);
-        myIsPlayerPrefabSpawned = true;
     }
 }

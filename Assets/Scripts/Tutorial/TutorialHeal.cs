@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class TutorialHeal : TutorialCompletion
 {
-    private List<GameObject> myCompletedPlayers = new List<GameObject>();
-
     protected override bool StartTutorial()
     {
         if (!base.StartTutorial())

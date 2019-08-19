@@ -10,6 +10,9 @@ public class TutorialCompletion : MonoBehaviour
     private string myTutorialText = "No tutorial text set!";
 
     [SerializeField]
+    private Sprite myTutorialImageSprite = null;
+
+    [SerializeField]
     private Sprite myTutorialKeySprite = null;
 
     [Header("Tutorial Area")]
@@ -20,6 +23,7 @@ public class TutorialCompletion : MonoBehaviour
     private Collider myStartCollider = null;
 
     protected List<GameObject> myPlayers;
+    protected List<GameObject> myCompletedPlayers = new List<GameObject>();
     protected TutorialPanel myTutorialPanel;
     protected TargetHandler myTargetHandler;
 
@@ -48,7 +52,7 @@ public class TutorialCompletion : MonoBehaviour
         myHasStarted = true;
 
         myTutorialPanel.gameObject.SetActive(true);
-        myTutorialPanel.SetData(myTutorialText, myTutorialKeySprite);
+        myTutorialPanel.SetData(myTutorialText, myTutorialImageSprite, myTutorialKeySprite);
 
         return true;
     }

@@ -10,8 +10,6 @@ public class TutorialAutoAttack : TutorialCompletion
     [SerializeField]
     private List<GameObject> myTargetsToHit = new List<GameObject>();
 
-    private List<GameObject> myCompletedPlayers = new List<GameObject>();
-
     protected override bool StartTutorial()
     {
         if (!base.StartTutorial())

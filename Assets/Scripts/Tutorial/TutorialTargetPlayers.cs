@@ -2,24 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorialSpellInfo : TutorialCompletion
+public class TutorialTargetPlayers : TutorialCompletion
 {
     protected override bool StartTutorial()
     {
         if (!base.StartTutorial())
             return false;
 
-        foreach (GameObject player in myPlayers)
+        for (int index = 0; index < myPlayers.Count; index++)
         {
-            player.GetComponent<Class>().myEventOnInfoToggle += OnInfoToggled;
+            GameObject player = myPlayers[index];
+            player.GetComponent<Player>().myEventOnTargetPlayer += OnTargetPlayer;
         }
-
-        myTutorialPanel.SetErrorHightlight(true);
 
         return true;
     }
 
-    public void OnInfoToggled(GameObject aPlayer)
+    public void OnTargetPlayer(GameObject aPlayer)
     {
         if (myCompletedPlayers.Contains(aPlayer))
             return;
@@ -30,7 +29,8 @@ public class TutorialSpellInfo : TutorialCompletion
         {
             foreach (GameObject player in myPlayers)
             {
-                player.GetComponent<Class>().myEventOnInfoToggle -= OnInfoToggled;
+                Player playerScript = player.GetComponent<Player>();
+                playerScript.myEventOnTargetPlayer -= OnTargetPlayer;
             }
 
             EndTutorial();

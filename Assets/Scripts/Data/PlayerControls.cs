@@ -22,6 +22,7 @@ public class PlayerControls : PlayerActionSet
     public PlayerAction Pause;
     public PlayerAction Restart;
     public PlayerAction ToggleInfo;
+    public PlayerAction ToggleUIText;
     public PlayerTwoAxisAction Movement;
 
 
@@ -47,6 +48,7 @@ public class PlayerControls : PlayerActionSet
         Pause = CreatePlayerAction("Pause");
         Restart = CreatePlayerAction("Restart");
         ToggleInfo = CreatePlayerAction("ToggleSpellInfo");
+        ToggleUIText = CreatePlayerAction("ToggleUIText");
         Movement = CreateTwoAxisPlayerAction(Left, Right, Down, Up);
     }
 
@@ -83,6 +85,7 @@ public class PlayerControls : PlayerActionSet
         actions.Restart.AddDefaultBinding(Key.R);
 
         actions.ToggleInfo.AddDefaultBinding(Key.I);
+        actions.ToggleUIText.AddDefaultBinding(Key.U);
 
         return actions;
     }
@@ -107,10 +110,10 @@ public class PlayerControls : PlayerActionSet
 
         actions.Jump.AddDefaultBinding(InputControlType.RightBumper);
 
-        actions.PlayerOne.AddDefaultBinding(InputControlType.RightStickUp);
-        actions.PlayerTwo.AddDefaultBinding(InputControlType.RightStickRight);
+        actions.PlayerOne.AddDefaultBinding(InputControlType.RightStickLeft);
+        actions.PlayerTwo.AddDefaultBinding(InputControlType.RightStickUp);
         actions.PlayerThree.AddDefaultBinding(InputControlType.RightStickDown);
-        actions.PlayerFour.AddDefaultBinding(InputControlType.RightStickLeft);
+        actions.PlayerFour.AddDefaultBinding(InputControlType.RightStickRight);
         actions.TargetEnemy.AddDefaultBinding(InputControlType.LeftBumper);
         actions.TargetSelf.AddDefaultBinding(InputControlType.RightStickButton);
 
@@ -120,6 +123,7 @@ public class PlayerControls : PlayerActionSet
         actions.Restart.AddDefaultBinding(InputControlType.Back);
 
         actions.ToggleInfo.AddDefaultBinding(InputControlType.DPadUp);
+        actions.ToggleUIText.AddDefaultBinding(InputControlType.DPadRight);
 
         return actions;
     }

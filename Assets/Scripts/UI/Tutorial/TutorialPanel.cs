@@ -29,10 +29,6 @@ public class TutorialPanel : MonoBehaviour
     [SerializeField]
     private GameObject myPlayersReadyPrefab = null;
     [SerializeField]
-    private Sprite myControllerSprite = null;
-    [SerializeField]
-    private Sprite myInfoSprite = null;
-    [SerializeField]
     private Sprite myCompletedSprite = null;
     [SerializeField]
     private Sprite myUncompletedSprite = null;
@@ -81,18 +77,18 @@ public class TutorialPanel : MonoBehaviour
         }
     }
 
-    public void SetData(string aTutorialText, Sprite aKeyToPressSprite)
+    public void SetData(string aTutorialText, Sprite aTutorialImageSprite, Sprite aKeyToPressSprite)
     {
         myTutorialText.text = aTutorialText;
+        myInfoImage.sprite = aTutorialImageSprite;
+
         if (aKeyToPressSprite)
         {
-            myInfoImage.sprite = myControllerSprite;
             myKeyToPress.sprite = aKeyToPressSprite;
             myKeyToPress.enabled = true;
         }
         else
         {
-            myInfoImage.sprite = myInfoSprite;
             myKeyToPress.enabled = false;
         }
 

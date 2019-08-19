@@ -14,19 +14,11 @@ public class TutorialLearnSpell : TutorialCompletion
     [SerializeField]
     private GameObject myBurningDummyVFX = null;
 
-    [SerializeField]
-    private Transform myNextTutorial = null;
-
-    private List<GameObject> myCompletedPlayers = new List<GameObject>();
-
 
     protected override bool StartTutorial()
     {
         if (!base.StartTutorial())
             return false;
-
-        if (mySpellIndexToCast < 7)
-            myFinishRoutine = RaiseNextTutorialRoutine;
 
         for (int index = 0; index < myPlayers.Count; index++)
         {
@@ -35,12 +27,25 @@ public class TutorialLearnSpell : TutorialCompletion
             myTutorialPanel.SetSpellData(player.GetComponent<Class>().mySpells[mySpellIndexToCast].GetComponent<Spell>(), player.GetComponent<Resource>(), index);
         }
 
+        for (int index = 0; index < myPlayers.Count; index++)
+        {
+            Character character = myPlayers[index].GetComponent<Character>();
+            if (character.Target != null && character.Target.tag == "Enemy")
+            {
+                character.SetTarget(null);
+                break;
+            }
+        }
+
+        myTargetHandler.ClearAllEnemies();
         for (int index = 0; index < myTargetsToHit.Count; index++)
         {
             myTargetHandler.AddEnemy(myTargetsToHit[index]);
         }
 
         myTutorialPanel.SetSpellsHightlight(true, mySpellIndexToCast > 3);
+        if (mySpellIndexToCast == 0)
+            myTutorialPanel.SetErrorHightlight(true);
 
         return true;
     }
@@ -61,28 +66,20 @@ public class TutorialLearnSpell : TutorialCompletion
             {
                 Character character = player.GetComponent<Character>();
                 character.myEventOnSpellSpawned -= OnSpellSpawned;
-
-                for (int targetIndex = 0; targetIndex < myTargetsToHit.Count; targetIndex++)
-                {
-                    if (character.Target == myTargetsToHit[targetIndex])
-                    {
-                        player.GetComponent<Character>().SetTarget(null);
-                        break;
-                    }
-                }
             }
 
             for (int index = 0; index < myTargetsToHit.Count; index++)
             {
-                myTargetHandler.RemoveEnemy(myTargetsToHit[index]);
-
                 GameObject fireVFX = Instantiate(myBurningDummyVFX, myTargetsToHit[index].transform);
                 fireVFX.transform.position += Vector3.up;
                 fireVFX.transform.rotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
             }
             myTutorialPanel.SetSpellsHightlight(false, mySpellIndexToCast > 3);
-            EndTutorial();
+            if (mySpellIndexToCast == 0)
+                myTutorialPanel.SetErrorHightlight(true);
+
             DeactivateTargetDummies();
+            EndTutorial();
         }
     }
 
@@ -102,27 +99,5 @@ public class TutorialLearnSpell : TutorialCompletion
             myTargetsToHit[index].GetComponent<BehaviorTree>().SendEvent("Deactivate");
             myTargetsToHit[index].GetComponent<BehaviorTree>().enabled = false;
         }
-    }
-
-    private IEnumerator RaiseNextTutorialRoutine()
-    {
-        Vector3 targetOffset = new Vector3(0.0f, 20.0f, 0.0f);
-        Vector3 startPosition = myNextTutorial.position;
-        Vector3 endPosition = startPosition + targetOffset;
-        float duration = 4.0f;
-        float timer = duration;
-
-        while (timer > 0.0f)
-        {
-            timer -= Time.deltaTime;
-
-            float interpolation = 1.0f - (timer / duration);
-            myNextTutorial.position = Vector3.Lerp(startPosition, endPosition, interpolation);
-            transform.position = Vector3.Lerp(startPosition + targetOffset, endPosition + targetOffset, interpolation);
-
-            yield return null;
-        }
-
-        myNextTutorial.GetComponent<TutorialLearnSpell>().ActivateTargetDummies();
     }
 }

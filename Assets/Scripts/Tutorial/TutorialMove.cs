@@ -7,8 +7,6 @@ public class TutorialMove : TutorialCompletion
     [SerializeField]
     private Collider myMoveToCollider = null;
 
-    private List<GameObject> myCompletedPlayers = new List<GameObject>();
-
     public override void OnChildTriggerEnter(Collider aChildCollider, Collider aHit)
     {
         base.OnChildTriggerEnter(aChildCollider, aHit);

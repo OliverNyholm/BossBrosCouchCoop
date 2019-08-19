@@ -19,6 +19,9 @@ public class Player : Character
     private bool myIsGrounded;
     private bool myShouldAutoAttack;
 
+    public delegate void EventOnTargetPlayer(GameObject aPlayer);
+    public event EventOnTargetPlayer myEventOnTargetPlayer;
+
     public int PlayerIndex { get; set; }
 
     protected override void Start()
@@ -68,8 +71,7 @@ public class Player : Character
         if (IsStunned())
             return;
 
-        DetectMovementInput();
-        DetectSpellInput();
+        DetectInput();
 
         if (myShouldAutoAttack)
             AutoAttack();
@@ -116,15 +118,28 @@ public class Player : Character
             myAnimator.SetTrigger("Jump");
         }
     }
+
+    private void DetectInput()
+    {
+        DetectMovementInput();
+        DetectSpellInput();
+
+        if (myPlayerControls.ToggleInfo.WasPressed)
+            myClass.ToggleSpellInfo();
+
+        if (myPlayerControls.ToggleUIText.WasPressed)
+            myCharacterHUD.ToggleUIText(gameObject.GetInstanceID());
+
+        if (myPlayerControls.Restart.WasPressed)
+            FindObjectOfType<GameManager>().RestartLevel();
+    }
+
     private void DetectSpellInput()
     {
         if (myPlayerControls.Shift.WasPressed)
             myClass.ShiftInteracted(true);
         if (myPlayerControls.Shift.WasReleased)
             myClass.ShiftInteracted(false);
-
-        if (myPlayerControls.ToggleInfo.WasPressed)
-            myClass.ToggleSpellInfo();
 
         bool isShiftDown = myPlayerControls.Shift.RawValue > 0.0f;
 
@@ -164,6 +179,8 @@ public class Player : Character
         if (targetIndex != -1)
         {
             SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetPlayer(targetIndex));
+            if (Target)
+                myEventOnTargetPlayer?.Invoke(gameObject);
             return;
         }
 
@@ -333,7 +350,7 @@ public class Player : Character
             myErrorMessageManager.CreateErrorMessage("That target is not dead!");
             return false;
         }
-        if(isDead && aSpellScript.mySpellType != SpellType.Ressurect)
+        if (isDead && aSpellScript.mySpellType != SpellType.Ressurect)
         {
             myErrorMessageManager.CreateErrorMessage("Can't cast spell on dead target!");
             return false;
@@ -392,7 +409,7 @@ public class Player : Character
         myStunDuration = 0.2f;
         myDirection = aVelocity;
 
-        if (aShouldLookAtDirection)
+        if (aShouldLookAtDirection && Target)
             transform.LookAt(Target.transform);
     }
 
@@ -403,7 +420,7 @@ public class Player : Character
 
     public override void SetTarget(GameObject aTarget)
     {
-        if(Target)
+        if (Target)
             Target.GetComponentInChildren<TargetProjector>().DropTargetProjection(PlayerIndex);
 
         base.SetTarget(aTarget);

@@ -122,4 +122,12 @@ public class CharacterHUD : MonoBehaviour
         Destroy(myBuffs[anIndex]);
         myBuffs.RemoveAt(anIndex);
     }
+
+    public void ToggleUIText(int aPlayerID)
+    {
+        myHealthText.enabled = !myHealthText.enabled;
+        myResourceText.enabled = !myResourceText.enabled;
+
+        PostMaster.Instance.PostMessage(new Message(MessageType.UITextToggle, aPlayerID));
+    }
 }

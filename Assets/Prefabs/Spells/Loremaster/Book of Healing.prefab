@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: Heal 200
+  myTutorialInfo: Healing is the Loremasters job. By throwing your book of healing
+    onto an ally, they will be healed.
   myName: Book of Healing
   mySpellType: 2
   mySpellTarget: 2
@@ -56,6 +58,7 @@ MonoBehaviour:
   myCastTime: 3
   myCooldown: 0.2
   myRange: 30
+  myStunDuration: 0
   myCastbarColor: {r: 1, g: 0.9544131, b: 0, a: 1}
   mySpellIcon: {fileID: 21300000, guid: ad86df8db84c4c5419f48c8de311d3c4, type: 3}
   myIsCastableWhileMoving: 0
@@ -172,6 +175,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4876655138131858}
     m_Modifications:
+    - target: {fileID: 8653303124189684200, guid: ec216a3c4c4bb3842a7a0d79f8fe073f,
+        type: 3}
+      propertyPath: m_Name
+      value: BookMesh
+      objectReference: {fileID: 0}
     - target: {fileID: 7560069541533119496, guid: ec216a3c4c4bb3842a7a0d79f8fe073f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -226,11 +234,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8653303124189684200, guid: ec216a3c4c4bb3842a7a0d79f8fe073f,
-        type: 3}
-      propertyPath: m_Name
-      value: BookMesh
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec216a3c4c4bb3842a7a0d79f8fe073f, type: 3}

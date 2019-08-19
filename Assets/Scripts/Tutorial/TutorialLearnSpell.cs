@@ -12,6 +12,9 @@ public class TutorialLearnSpell : TutorialCompletion
     private List<GameObject> myTargetsToHit = new List<GameObject>();
 
     [SerializeField]
+    private GameObject myBurningDummyVFX = null;
+
+    [SerializeField]
     private Transform myNextTutorial = null;
 
     private List<GameObject> myCompletedPlayers = new List<GameObject>();
@@ -56,12 +59,26 @@ public class TutorialLearnSpell : TutorialCompletion
         {
             foreach (GameObject player in myPlayers)
             {
-                player.GetComponent<Character>().myEventOnSpellSpawned -= OnSpellSpawned;
-                player.GetComponent<Character>().SetTarget(null);
+                Character character = player.GetComponent<Character>();
+                character.myEventOnSpellSpawned -= OnSpellSpawned;
+
+                for (int targetIndex = 0; targetIndex < myTargetsToHit.Count; targetIndex++)
+                {
+                    if (character.Target == myTargetsToHit[targetIndex])
+                    {
+                        player.GetComponent<Character>().SetTarget(null);
+                        break;
+                    }
+                }
             }
+
             for (int index = 0; index < myTargetsToHit.Count; index++)
             {
                 myTargetHandler.RemoveEnemy(myTargetsToHit[index]);
+
+                GameObject fireVFX = Instantiate(myBurningDummyVFX, myTargetsToHit[index].transform);
+                fireVFX.transform.position += Vector3.up;
+                fireVFX.transform.rotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
             }
             myTutorialPanel.SetSpellsHightlight(false, mySpellIndexToCast > 3);
             EndTutorial();
@@ -73,6 +90,7 @@ public class TutorialLearnSpell : TutorialCompletion
     {
         for (int index = 0; index < myTargetsToHit.Count; index++)
         {
+            myTargetsToHit[index].GetComponent<BehaviorTree>().enabled = true;
             myTargetsToHit[index].GetComponent<BehaviorTree>().SendEvent("Activate");
         }
     }
@@ -82,6 +100,7 @@ public class TutorialLearnSpell : TutorialCompletion
         for (int index = 0; index < myTargetsToHit.Count; index++)
         {
             myTargetsToHit[index].GetComponent<BehaviorTree>().SendEvent("Deactivate");
+            myTargetsToHit[index].GetComponent<BehaviorTree>().enabled = false;
         }
     }
 
@@ -105,6 +124,5 @@ public class TutorialLearnSpell : TutorialCompletion
         }
 
         myNextTutorial.GetComponent<TutorialLearnSpell>().ActivateTargetDummies();
-        Destroy(gameObject);
     }
 }

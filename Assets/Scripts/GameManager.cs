@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
         GameObject playerGO = Instantiate(aCharacter.myClassData.myClass, spawnPoint, Quaternion.identity);
         playerGO.name = aCharacter.myName;
-        playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material.mainTexture = aCharacter.myColorScheme.myTexture;
+        playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material = aCharacter.myColorScheme.myMaterial;
 
         Player player = playerGO.GetComponent<Player>();
         player.SetPlayerControls(aCharacter.myPlayerControls);

@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ColorScheme", menuName = "Scriptables/ColorScheme")]
 public class ColorScheme : ScriptableObject
 {
-    public Texture myTexture;
+    public Material myMaterial;
     public Sprite myAvatar;
     public Color myColor;
 }

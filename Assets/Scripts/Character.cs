@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,6 +34,7 @@ public abstract class Character : MonoBehaviour
     protected Stats myStats;
     protected Class myClass;
 
+    private int[] myAnimationHashes;
 
     protected List<BuffSpell> myBuffs;
 
@@ -56,6 +58,7 @@ public abstract class Character : MonoBehaviour
         myClass = GetComponent<Class>();
 
         myBuffs = new List<BuffSpell>();
+        FillAnimationHashes();
 
         Target = null;
         myIsCasting = false;
@@ -503,5 +506,19 @@ public abstract class Character : MonoBehaviour
     public Sprite GetAvatar()
     {
         return myAvatarSprite;
+    }
+
+    private void FillAnimationHashes()
+    {
+        myAnimationHashes = new int[(int)SpellAnimationType.Count];
+        foreach (SpellAnimationType type in Enum.GetValues(typeof(SpellAnimationType)))
+        {
+            myAnimationHashes[(int)type] = Animator.StringToHash(type.ToString());
+        }
+    }
+
+    protected int GetAnimationHash(SpellAnimationType aSpellAnimationType)
+    {
+        return myAnimationHashes[(int)aSpellAnimationType];
     }
 }

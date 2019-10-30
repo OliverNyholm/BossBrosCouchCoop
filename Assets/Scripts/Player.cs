@@ -230,7 +230,7 @@ public class Player : Character
             return;
         }
 
-        myAnimator.SetTrigger("Attack");
+        myAnimator.SetTrigger("AutoAttack");
         myAutoAttackCooldown = 1.2f;
 
         SpawnSpell(-1, GetSpellSpawnPosition(spellScript));
@@ -255,12 +255,14 @@ public class Player : Character
         if (!IsAbleToCastSpell(spellScript))
             return;
 
+        myAnimator.SetTrigger(GetAnimationHash(spellScript.GetAnimationType()));
+
         if (spellScript.myCastTime <= 0.0f)
         {
             SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
             GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
-            myAnimator.SetTrigger("CastingDone");
+            //myAnimator.SetTrigger("CastingDone");
             return;
         }
 

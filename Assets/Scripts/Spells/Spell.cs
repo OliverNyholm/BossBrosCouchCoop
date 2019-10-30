@@ -12,6 +12,7 @@ public class Spell : PoolableObject
     public string myName;
     public SpellType mySpellType;
     public SpellTarget mySpellTarget;
+    public SpellAnimationType myAnimationType;
 
     public int myDamage;
     public int myResourceCost;
@@ -395,6 +396,20 @@ public class Spell : PoolableObject
     public SpellSFX GetSpellSFX()
     {
         return mySpellSFX;
+    }
+
+    public SpellAnimationType GetAnimationType()
+    {
+        if (myAnimationType == SpellAnimationType.DefaultChannel && myCastTime == 0.0f)
+            return SpellAnimationType.DefaultCast;
+        else if (myAnimationType == SpellAnimationType.DefaultCast && myCastTime > 0.0f)
+            return SpellAnimationType.DefaultChannel;
+        else if (myAnimationType == SpellAnimationType.OverheadChannel && myCastTime == 0.0f)
+            return SpellAnimationType.DefaultCast;
+        else if (myAnimationType == SpellAnimationType.DefaultCast && myCastTime > 0.0f)
+            return SpellAnimationType.OverheadChannel;
+
+        return myAnimationType;
     }
 
     protected GameObject SpawnVFX(float aDuration, GameObject aTarget = null)

@@ -361,7 +361,7 @@ public class Enemy : Character
 
         transform.LookAt(new Vector3(Target.transform.position.x, transform.position.y, Target.transform.position.z));
 
-        myAnimator.SetTrigger("Attack");
+        myAnimator.SetTrigger("AutoAttack");
         myAutoAttackCooldown = 1.5f;
 
         SpawnSpell(-1, GetSpellSpawnPosition(myClass.GetAutoAttack().GetComponent<Spell>()));

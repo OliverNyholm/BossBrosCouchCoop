@@ -513,6 +513,9 @@ public abstract class Character : MonoBehaviour
         myAnimationHashes = new int[(int)SpellAnimationType.Count];
         foreach (SpellAnimationType type in Enum.GetValues(typeof(SpellAnimationType)))
         {
+            if (type == SpellAnimationType.Count)
+                break;
+
             myAnimationHashes[(int)type] = Animator.StringToHash(type.ToString());
         }
     }

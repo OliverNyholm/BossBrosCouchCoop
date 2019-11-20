@@ -13,7 +13,7 @@ public class Player : Character
 
     private PlayerControls myPlayerControls;
 
-    private Vector3 myDirection;
+    private Vector3 myVelocity;
     private CameraXZTransform myCameraXZTransform;
 
     private bool myIsGrounded;
@@ -36,7 +36,7 @@ public class Player : Character
         myCameraXZTransform.myRight.y = 0.0f;
         myCameraXZTransform.myRight.Normalize();
 
-        myDirection = Vector3.zero;
+        myVelocity = Vector3.zero;
 
         myTargetHandler = GameObject.Find("GameManager").GetComponent<TargetHandler>();
 
@@ -56,8 +56,8 @@ public class Player : Character
 
         base.Update();
 
-        myDirection.y -= myGravity * Time.deltaTime;
-        myController.Move(myDirection * Time.deltaTime);
+        myVelocity.y -= myGravity * Time.deltaTime;
+        myController.Move(myVelocity * Time.deltaTime);
 
         //myController.isGrounded unstable further ahead is seems...
         myIsGrounded = IsGrounded();
@@ -71,6 +71,7 @@ public class Player : Character
         if (IsStunned())
             return;
 
+        DetectLanding();
         DetectInput();
 
         if (myShouldAutoAttack)
@@ -79,7 +80,7 @@ public class Player : Character
 
     bool IsGrounded()
     {
-        if (myDirection.y > 0.0f)
+        if (myVelocity.y > 0.0f)
             return false;
 
         Ray ray = new Ray(transform.position, Vector3.down);
@@ -102,8 +103,8 @@ public class Player : Character
 
         Vector2 leftStickAxis = myPlayerControls.Movement;
 
-        myDirection = (leftStickAxis.x * myCameraXZTransform.myRight + leftStickAxis.y * myCameraXZTransform.myForwards).normalized;
-        myDirection *= myBaseSpeed * GetComponent<Stats>().mySpeedMultiplier;
+        myVelocity = (leftStickAxis.x * myCameraXZTransform.myRight + leftStickAxis.y * myCameraXZTransform.myForwards).normalized;
+        myVelocity *= myBaseSpeed * GetComponent<Stats>().mySpeedMultiplier;
 
         bool isMoving = IsMoving();
         if (isMoving)
@@ -113,7 +114,8 @@ public class Player : Character
 
         if (myPlayerControls.Jump.WasPressed)
         {
-            myDirection.y = myJumpSpeed;
+            myVelocity.y = myJumpSpeed;
+            myAnimator.ResetTrigger("Land");
             myAnimator.SetBool("IsGrounded", false);
             myAnimator.SetTrigger("Jump");
         }
@@ -188,13 +190,33 @@ public class Player : Character
             SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetEnemy(PlayerIndex));
     }
 
+    private void DetectLanding()
+    {
+        if (myIsGrounded)
+            return;
+
+        if (myVelocity.y > 0.0f)
+            return;
+
+        Ray ray = new Ray(transform.position, Vector3.down);
+        float distance = Mathf.Abs(myVelocity.y) * 0.15f;
+        LayerMask layerMask = LayerMask.GetMask("Terrain");
+
+        //Debug.DrawLine(transform.position, transform.position + Vector3.down * distance);
+
+        if (Physics.Raycast(ray, distance, layerMask))
+        {
+            myAnimator.SetTrigger("Land");
+        }
+    }
+
     private void RotatePlayer()
     {
-        transform.rotation = Quaternion.LookRotation(myDirection, Vector3.up);
+        transform.rotation = Quaternion.LookRotation(myVelocity, Vector3.up);
     }
     protected override bool IsMoving()
     {
-        if (myDirection.x != 0 || myDirection.z != 0)
+        if (myVelocity.x != 0 || myVelocity.z != 0)
             return true;
 
         if (!myIsGrounded)
@@ -402,14 +424,14 @@ public class Player : Character
     {
         base.Stun(aDuration);
 
-        myDirection.x = 0.0f;
-        myDirection.z = 0.0f;
+        myVelocity.x = 0.0f;
+        myVelocity.z = 0.0f;
     }
 
     public void GiveImpulse(Vector3 aVelocity, bool aShouldLookAtDirection)
     {
         myStunDuration = 0.2f;
-        myDirection = aVelocity;
+        myVelocity = aVelocity;
 
         if (aShouldLookAtDirection && Target)
             transform.LookAt(Target.transform);
@@ -439,8 +461,8 @@ public class Player : Character
     {
         base.OnDeath();
 
-        myDirection.x = 0.0f;
-        myDirection.z = 0.0f;
+        myVelocity.x = 0.0f;
+        myVelocity.z = 0.0f;
         myShouldAutoAttack = false;
         PostMaster.Instance.PostMessage(new Message(MessageType.PlayerDied, gameObject.GetInstanceID()));
     }

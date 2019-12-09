@@ -71,6 +71,7 @@ public class Player : Character
         if (IsStunned())
             return;
 
+        SlideOnAngledSurface();
         DetectLanding();
         DetectInput();
 
@@ -83,15 +84,71 @@ public class Player : Character
         if (myVelocity.y > 0.0f)
             return false;
 
-        Ray ray = new Ray(transform.position, Vector3.down);
-        float distance = 0.2f;
+        const float offsetLength = 0.3f;
+        Vector3 offset = new Vector3(0.0f, offsetLength, 0.0f);
+
+        float distance = 0.3f + offsetLength;
+        Ray ray = new Ray(transform.position + offset, Vector3.down);
         LayerMask layerMask = LayerMask.GetMask("Terrain");
 
-        //Debug.DrawLine(transform.position, transform.position + Vector3.down * distance);
+        RaycastHit hitInfo;
+        if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
+        {
+            if (Vector3.Dot(hitInfo.normal, Vector3.down) < -0.5f)
+                return true;
+        }
 
-        if (Physics.Raycast(ray, distance, layerMask))
-            return true;
+        return false;
+    }
 
+    private void SlideOnAngledSurface()
+    {
+        if (myIsGrounded)
+            return;
+
+        const float offsetLength = 0.3f;
+        Vector3 offset = new Vector3(0.0f, offsetLength, 0.0f);
+
+        float distance = 0.3f + offsetLength;
+        Ray ray = new Ray(transform.position + offset, Vector3.down);
+        LayerMask layerMask = LayerMask.GetMask("Terrain");
+
+        Vector3 pushDirection = Vector3.zero;
+        Vector3 horizontalSlopeNormal = Vector3.zero;
+        if(DoesRayHitSlope(ray, distance, layerMask, ref horizontalSlopeNormal))
+        {
+            pushDirection += horizontalSlopeNormal;
+        }
+
+        const int circlePoints = 7;
+        float radius = myController.radius;
+        for (int index = 0; index < circlePoints; index++)
+        {
+            float angle = (Mathf.PI * 2.0f) / circlePoints * index;
+            ray.origin = transform.position + new Vector3(radius * Mathf.Cos(angle), offsetLength, radius * Mathf.Sin(angle));
+            if (DoesRayHitSlope(ray, distance, layerMask, ref horizontalSlopeNormal))
+            {
+                pushDirection += horizontalSlopeNormal;
+            }
+        }
+
+        myVelocity += pushDirection.normalized;
+    }
+
+    public bool DoesRayHitSlope(Ray aRay, float aDistance, LayerMask aLayermask, ref Vector3 outNormal)
+    {
+        Debug.DrawLine(aRay.origin, aRay.origin + Vector3.down * aDistance);
+
+        RaycastHit hitInfo;
+        if (Physics.Raycast(aRay, out hitInfo, aDistance, (int)aLayermask))
+        {
+            if (Vector3.Dot(hitInfo.normal, Vector3.up) < 0.5f)
+            {
+                outNormal = hitInfo.normal;
+                outNormal.y = 0.0f;
+                return true;
+            }
+        }
 
         return false;
     }
@@ -201,6 +258,8 @@ public class Player : Character
         Ray ray = new Ray(transform.position, Vector3.down);
         float distance = Mathf.Abs(myVelocity.y) * 0.15f;
         LayerMask layerMask = LayerMask.GetMask("Terrain");
+
+        //If needed for future - predict actual landing position with curves and speed.
 
         //Debug.DrawLine(transform.position, transform.position + Vector3.down * distance);
 

@@ -195,22 +195,7 @@ public class Player : Character
 
     private void DetectSpellInput()
     {
-        if (myPlayerControls.Shift.WasPressed)
-            myClass.ShiftInteracted(true);
-        if (myPlayerControls.Shift.WasReleased)
-            myClass.ShiftInteracted(false);
-
-        bool isShiftDown = myPlayerControls.Shift.RawValue > 0.0f;
-
-        if (isShiftDown && myPlayerControls.Action1.WasPressed)
-            CastSpell(4);
-        else if (isShiftDown && myPlayerControls.Action2.WasPressed)
-            CastSpell(5);
-        else if (isShiftDown && myPlayerControls.Action3.WasPressed)
-            CastSpell(6);
-        else if (isShiftDown && myPlayerControls.Action4.WasPressed)
-            CastSpell(7);
-        else if (myPlayerControls.Action1.WasPressed)
+        if (myPlayerControls.Action1.WasPressed)
             CastSpell(0);
         else if (myPlayerControls.Action2.WasPressed)
             CastSpell(1);
@@ -222,26 +207,9 @@ public class Player : Character
 
     private void DetectTargetingInput()
     {
-        int targetIndex = -1;
-        if (myPlayerControls.PlayerOne.RawValue > 0.5f)
-            targetIndex = 0;
-        if (myPlayerControls.PlayerTwo.RawValue > 0.5f)
-            targetIndex = 1;
-        if (myPlayerControls.PlayerThree.RawValue > 0.5f)
-            targetIndex = 2;
-        if (myPlayerControls.PlayerFour.RawValue > 0.5f)
-            targetIndex = 3;
-
-        if (myPlayerControls.TargetSelf.WasPressed)
-            targetIndex = PlayerIndex - 1;
-
-        if (targetIndex != -1)
-        {
-            SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetPlayer(targetIndex));
-            if (Target)
-                myEventOnTargetPlayer?.Invoke(gameObject);
-            return;
-        }
+        //SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetPlayer(targetIndex));
+        //if (Target)
+            //myEventOnTargetPlayer?.Invoke(gameObject);
 
         if (myPlayerControls.TargetEnemy.WasPressed)
             SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetEnemy(PlayerIndex));

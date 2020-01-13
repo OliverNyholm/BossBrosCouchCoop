@@ -10,14 +10,8 @@ public class PlayerControls : PlayerActionSet
     public PlayerAction Right;
     public PlayerAction Up;
     public PlayerAction Down;
-    public PlayerAction Shift;
     public PlayerAction Jump;
-    public PlayerAction PlayerOne;
-    public PlayerAction PlayerTwo;
-    public PlayerAction PlayerThree;
-    public PlayerAction PlayerFour;
     public PlayerAction TargetEnemy;
-    public PlayerAction TargetSelf;
     public PlayerAction Start;
     public PlayerAction Pause;
     public PlayerAction Restart;
@@ -36,14 +30,8 @@ public class PlayerControls : PlayerActionSet
         Right = CreatePlayerAction("Right");
         Up = CreatePlayerAction("Up");
         Down = CreatePlayerAction("Down");
-        Shift = CreatePlayerAction("Shift");
         Jump = CreatePlayerAction("Jump");
-        PlayerOne = CreatePlayerAction("PlayerOne");
-        PlayerTwo = CreatePlayerAction("PlayerTwo");
-        PlayerThree = CreatePlayerAction("PlayerThree");
-        PlayerFour = CreatePlayerAction("PlayerFour");
         TargetEnemy = CreatePlayerAction("TargetEnemy");
-        TargetSelf = CreatePlayerAction("TargetSelf");
         Start = CreatePlayerAction("Start");
         Pause = CreatePlayerAction("Pause");
         Restart = CreatePlayerAction("Restart");
@@ -70,15 +58,9 @@ public class PlayerControls : PlayerActionSet
         actions.Left.AddDefaultBinding(Key.A);
         actions.Right.AddDefaultBinding(Key.D);
 
-        actions.Shift.AddDefaultBinding(Key.Shift);
         actions.Jump.AddDefaultBinding(Key.Space);
 
-        actions.PlayerOne.AddDefaultBinding(Key.F1);
-        actions.PlayerTwo.AddDefaultBinding(Key.F2);
-        actions.PlayerThree.AddDefaultBinding(Key.F3);
-        actions.PlayerFour.AddDefaultBinding(Key.F4);
         actions.TargetEnemy.AddDefaultBinding(Key.Tab);
-        actions.TargetSelf.AddDefaultBinding(Key.G);
 
         actions.Start.AddDefaultBinding(Key.Return);
         actions.Pause.AddDefaultBinding(Key.Escape);
@@ -105,17 +87,11 @@ public class PlayerControls : PlayerActionSet
         actions.Left.AddDefaultBinding(InputControlType.LeftStickLeft);
         actions.Right.AddDefaultBinding(InputControlType.LeftStickRight);
 
-        actions.Shift.AddDefaultBinding(InputControlType.LeftTrigger);
-        actions.Shift.AddDefaultBinding(InputControlType.RightTrigger);
-
-        actions.Jump.AddDefaultBinding(InputControlType.RightBumper);
-
-        actions.PlayerOne.AddDefaultBinding(InputControlType.RightStickLeft);
-        actions.PlayerTwo.AddDefaultBinding(InputControlType.RightStickUp);
-        actions.PlayerThree.AddDefaultBinding(InputControlType.RightStickDown);
-        actions.PlayerFour.AddDefaultBinding(InputControlType.RightStickRight);
+        actions.TargetEnemy.AddDefaultBinding(InputControlType.LeftTrigger);
         actions.TargetEnemy.AddDefaultBinding(InputControlType.LeftBumper);
-        actions.TargetSelf.AddDefaultBinding(InputControlType.RightStickButton);
+
+        actions.Jump.AddDefaultBinding(InputControlType.RightTrigger);
+        actions.Jump.AddDefaultBinding(InputControlType.RightBumper);
 
         actions.Start.AddDefaultBinding(InputControlType.Start);
         actions.Pause.AddDefaultBinding(InputControlType.Start);

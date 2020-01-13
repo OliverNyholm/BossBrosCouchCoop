@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
 
     [Header("The player to be spawned if level started without character select")]
     public GameObject myPlayerPrefab;
+    private Player myDebugPlayer = null;
+
+    private PlayerControls myControllerListener = null;
 
     private void Awake()
     {
@@ -23,6 +26,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("No CharacterGameData to find, default player created.");
             SpawnPlayer(targetHandler, myPlayerPrefab);
+
+            myControllerListener = PlayerControls.CreateWithJoystickBindings();
             return;
         }
 
@@ -35,9 +40,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        if(myControllerListener != null)
+            myControllerListener.Destroy();
+    }
+
     private void Update()
     {
         PostMaster.Instance.DelegateMessages();
+
+        if (myControllerListener != null)
+        {
+            if(ControllerInputDetected())
+            {
+                PlayerControls playerControls = PlayerControls.CreateWithJoystickBindings();
+                playerControls.Device = InputManager.ActiveDevice;
+                myDebugPlayer.SetPlayerControls(playerControls);
+
+                myControllerListener = null;
+            }
+        }
+
     }
 
     public void RestartLevel()
@@ -85,15 +109,26 @@ public class GameManager : MonoBehaviour
 
         playerGO.GetComponent<Stats>().myDamageMitigator = 0.0f;
 
-        Player player = playerGO.GetComponent<Player>();
-        player.SetPlayerControls(keyboardListener);
-        player.myName = "DebugPlayer";
-        player.PlayerIndex = 1;
-        player.myCharacterColor = Color.red;
+        myDebugPlayer = playerGO.GetComponent<Player>();
+        myDebugPlayer.SetPlayerControls(keyboardListener);
+        myDebugPlayer.myName = "DebugPlayer";
+        myDebugPlayer.PlayerIndex = 1;
+        myDebugPlayer.myCharacterColor = Color.red;
 
-        Vector3 rgb = new Vector3(player.myCharacterColor.r, player.myCharacterColor.g, player.myCharacterColor.b);
+        Vector3 rgb = new Vector3(myDebugPlayer.myCharacterColor.r, myDebugPlayer.myCharacterColor.g, myDebugPlayer.myCharacterColor.b);
         PostMaster.Instance.PostMessage(new Message(MessageType.RegisterPlayer, playerGO.GetInstanceID(), rgb));
 
         aTargetHandler.AddPlayer(playerGO);
+    }
+
+    private bool ControllerInputDetected()
+    {
+        if (myControllerListener.Action1.WasPressed || myControllerListener.Action2.WasPressed || myControllerListener.Action3.WasPressed || myControllerListener.Action4.WasPressed)
+            return true;
+
+        if (myControllerListener.Movement.X != 0 || myControllerListener.Movement.Y != 0)
+            return true;
+
+        return false;
     }
 }

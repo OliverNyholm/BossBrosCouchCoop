@@ -18,13 +18,9 @@ public class ActionKey : MonoBehaviour
     [SerializeField]
     private float mySizeMultiplier = 1.1f;
     private Vector3 myLerpInitScale;
-
-    [Header("The target scale multiplier of spellIcon when holding shift/trigger")]
-    [SerializeField]
-    private float myShiftMultiplier = 1.2f;
     private Vector3 myStartScale;
 
-    [Header("The target size where the button will scale in size on use")]
+    [Header("The target color where the button will scale in size on use")]
     [SerializeField]
     private Color myTargetColor = Color.grey;
     private Color myStartColor;
@@ -73,17 +69,6 @@ public class ActionKey : MonoBehaviour
             StopCoroutine(myCoroutine);
 
         myCoroutine = StartCoroutine(ButtonPressedCoroutine());
-    }
-
-    public void ShiftInteracted(bool aIsDown)
-    {
-        RectTransform spellRect = GetComponent<RectTransform>();
-        if (aIsDown)
-            spellRect.localScale = myStartScale * myShiftMultiplier;
-        else
-            spellRect.localScale = myStartScale;
-
-        myLerpInitScale = spellRect.localScale;
     }
 
     private IEnumerator ButtonPressedCoroutine()

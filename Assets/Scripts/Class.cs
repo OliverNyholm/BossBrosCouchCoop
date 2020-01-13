@@ -49,7 +49,7 @@ public class Class : MonoBehaviour
 
     public Class()
     {
-        const int mySpellSize = 8;
+        const int mySpellSize = 4;
         mySpells = new GameObject[mySpellSize];
         myActionButtons = new GameObject[mySpellSize];
         myCooldownTimers = new float[mySpellSize];
@@ -111,14 +111,6 @@ public class Class : MonoBehaviour
     public void SpellPressed(int anIndex)
     {
         myActionButtons[anIndex].GetComponent<ActionKey>().SpellPressed();
-    }
-
-    public void ShiftInteracted(bool aIsDown)
-    {
-        for (int index = 4; index < mySpells.Length; index++)
-        {
-            myActionButtons[index].GetComponent<ActionKey>().ShiftInteracted(aIsDown);
-        }
     }
 
     public void ToggleSpellInfo()

@@ -9,7 +9,7 @@ public class Player : Character
 
     private TargetHandler myTargetHandler;
 
-    private ErrorMessageManager myErrorMessageManager;
+    private SpellErrorHandler mySpellErrorHandler;
 
     private PlayerControls myPlayerControls;
 
@@ -42,10 +42,10 @@ public class Player : Character
 
         myController = GetComponent<CharacterController>();
 
-        Transform uiHud = GameObject.Find("PlayerUI" + PlayerIndex).transform;
+        Transform uiHud = GameObject.Find("PlayerHud" + PlayerIndex).transform;
         SetupHud(uiHud);
 
-        myErrorMessageManager = uiHud.GetComponentInChildren<ErrorMessageManager>();
+        mySpellErrorHandler = uiHud.GetComponentInChildren<SpellErrorHandler>();
         myClass.SetupSpellHud(CastSpell, uiHud);
     }
 
@@ -323,7 +323,7 @@ public class Player : Character
 
         if (myClass.IsSpellOnCooldown(aKeyIndex))
         {
-            myErrorMessageManager.CreateErrorMessage("Can't cast that spell yet");
+            mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.Cooldown);
             return;
         }
 
@@ -395,19 +395,19 @@ public class Player : Character
     {
         if (myIsCasting)
         {
-            myErrorMessageManager.CreateErrorMessage("Already casting another spell!");
+            mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.AlreadyCasting);
             return false;
         }
 
         if (GetComponent<Resource>().myCurrentResource < aSpellScript.myResourceCost)
         {
-            myErrorMessageManager.CreateErrorMessage("Not enough resource to cast");
+            mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.OutOfResources);
             return false;
         }
 
         if (!aSpellScript.IsCastableWhileMoving() && IsMoving())
         {
-            myErrorMessageManager.CreateErrorMessage("Can't cast while moving!");
+            mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.CantMoveWhileCasting);
             return false;
         }
 
@@ -422,7 +422,7 @@ public class Player : Character
             }
             else
             {
-                myErrorMessageManager.CreateErrorMessage("No Target!");
+                mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.NoTarget);
                 return false;
             }
         }
@@ -430,43 +430,43 @@ public class Player : Character
         bool isDead = Target.GetComponent<Health>().IsDead();
         if (!isDead && aSpellScript.mySpellType == SpellType.Ressurect)
         {
-            myErrorMessageManager.CreateErrorMessage("That target is not dead!");
+                mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.NotDead);
             return false;
         }
         if (isDead && aSpellScript.mySpellType != SpellType.Ressurect)
         {
-            myErrorMessageManager.CreateErrorMessage("Can't cast spell on dead target!");
+                mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.IsDead);
             return false;
         }
 
         if (!CanRaycastToTarget())
         {
-            myErrorMessageManager.CreateErrorMessage("Target not in line of sight!");
+                mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.NoVision);
             return false;
         }
 
         float distance = Vector3.Distance(transform.position, Target.transform.position);
         if (distance > aSpellScript.myRange)
         {
-            myErrorMessageManager.CreateErrorMessage("Out of range!");
+            mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.OutOfRange);
             return false;
         }
 
         if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && Target.tag == "Enemy")
         {
-            myErrorMessageManager.CreateErrorMessage("Can't cast friendly spells on enemies");
+            mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.WrongTargetEnemy);
             return false;
         }
 
         if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && Target.tag == "Player")
         {
-            myErrorMessageManager.CreateErrorMessage("Can't cast hostile spells on friends.");
+            mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.WrongTargetPlayer);
             return false;
         }
 
         if (!aSpellScript.myCanCastOnSelf && Target == transform.gameObject)
         {
-            myErrorMessageManager.CreateErrorMessage("Can't be cast on self!");
+            mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.NotSelfCast);
             return false;
         }
 

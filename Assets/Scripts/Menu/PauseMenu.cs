@@ -12,6 +12,10 @@ public class PauseMenu : MonoBehaviour
     [SerializeField]
     private GameObject myPauseObject = null;
 
+    [Header("The parent gameobject to pause menu")]
+    [SerializeField]
+    private List<GameObject> myButtonIcons = new List<GameObject>();
+
     [Header("The Play Button")]
     [SerializeField]
     private Button myResumeButton = null;
@@ -83,7 +87,12 @@ public class PauseMenu : MonoBehaviour
     private void Pause()
     {
         Time.timeScale = 0.0f;
-        myPauseObject.SetActive(true);
+
+        foreach (GameObject button in myButtonIcons)
+        {
+            button.SetActive(true);
+        }
+        //myPauseObject.SetActive(true);
         ourIsGamePaused = true;
 
         List<GameObject> players = FindObjectOfType<TargetHandler>().GetAllPlayers();
@@ -107,7 +116,11 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         ourIsGamePaused = false;
-        myPauseObject.SetActive(false);
+        for (int index = 0; index < transform.childCount; index++)
+        {
+            myPauseObject.transform.GetChild(index).gameObject.SetActive(false);
+        }
+        //myPauseObject.SetActive(false);
     }
 
     public void LoadCharacterSelect()

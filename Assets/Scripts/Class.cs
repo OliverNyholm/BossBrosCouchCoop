@@ -29,6 +29,7 @@ public enum SpellTarget
 public class Class : MonoBehaviour
 {
     public string myClassName;
+    public ClassRole myClassRole;
 
     [Header("Image to show on hud")]
     public Sprite mySprite;
@@ -46,6 +47,14 @@ public class Class : MonoBehaviour
 
     public delegate void EventOnInfoToggle(GameObject aPlayer);
     public event EventOnInfoToggle myEventOnInfoToggle;
+
+    public enum ClassRole
+    {
+        MeleeDps,
+        RangedDps,
+        Healer,
+        Tank
+    }
 
     public Class()
     {
@@ -113,6 +122,21 @@ public class Class : MonoBehaviour
         myActionButtons[anIndex].GetComponent<ActionKey>().SpellPressed();
     }
 
+    public void SpellHeldDown(int anIndex)
+    {
+        myActionButtons[anIndex].GetComponent<ActionKey>().SpellHeldDown();
+    }
+
+    public void SpellReleased(int anIndex)
+    {
+        myActionButtons[anIndex].GetComponent<ActionKey>().SpellReleased();
+    }
+
+    public bool IsSpellCastOnFriends(int anIndex)
+    {
+        return mySpells[anIndex].GetComponent<Spell>().IsCastOnFriends();
+    }
+
     public void ToggleSpellInfo()
     {
         myEventOnInfoToggle?.Invoke(gameObject);
@@ -150,7 +174,7 @@ public class Class : MonoBehaviour
         myActionButtons[anIndex].GetComponent<ActionKey>().SetCooldown(myCooldownTimers[anIndex]);
     }
 
-    public delegate void ActionClick(int anIndex);
+    public delegate void ActionClick(int anIndex, bool aIsPressed);
     public void SetupSpellHud(ActionClick anActionClickFunction, Transform aUIParent)
     {
         FindActionBar(aUIParent);
@@ -172,7 +196,7 @@ public class Class : MonoBehaviour
                 }
             }
 
-            myActionButtons[tempIndex].GetComponent<Button>().onClick.AddListener(delegate { anActionClickFunction(tempIndex); });
+            myActionButtons[tempIndex].GetComponent<Button>().onClick.AddListener(delegate { anActionClickFunction(tempIndex, true); });
         }
     }
 }

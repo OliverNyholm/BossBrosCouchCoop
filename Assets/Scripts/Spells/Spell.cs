@@ -412,6 +412,14 @@ public class Spell : PoolableObject
         return myAnimationType;
     }
 
+    public bool IsCastOnFriends()
+    {
+        if (myIsOnlySelfCast)
+            return false;
+
+        return (mySpellType == SpellType.Heal || mySpellType == SpellType.HOT || mySpellType == SpellType.Shield || mySpellType == SpellType.Buff || mySpellType == SpellType.Ressurect);
+    }
+
     protected GameObject SpawnVFX(float aDuration, GameObject aTarget = null)
     {
         if (!mySpellVFX)

@@ -46,6 +46,17 @@ public class BuffTickSpell : BuffSpell
         return myTickDamage;
     }
 
+    public int CalculateRemainingDamage()
+    {
+        int ticksLeft = (int)((myBuff.myDuration - myDuration) / myIntervalTimer);
+        return ticksLeft * myTickDamage;
+    }
+
+    public float TimeUntilNextTick()
+    {
+        return myInterval - myIntervalTimer;
+    }
+
     public GameObject GetTarget()
     {
         return myTarget;

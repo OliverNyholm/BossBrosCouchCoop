@@ -253,14 +253,14 @@ public abstract class Character : MonoBehaviour
         return transform.position;
     }
 
-    protected bool CanRaycastToTarget()
+    protected bool CanRaycastToObject(GameObject anObject)
     {
         Vector3 hardcodedEyePosition = new Vector3(0.0f, 0.7f, 0.0f);
         Vector3 infrontOfPlayer = (transform.position + hardcodedEyePosition) + transform.forward;
-        Vector3 direction = (Target.transform.position + hardcodedEyePosition) - infrontOfPlayer;
+        Vector3 direction = (anObject.transform.position + hardcodedEyePosition) - infrontOfPlayer;
 
         Ray ray = new Ray(infrontOfPlayer, direction);
-        float distance = Vector3.Distance(infrontOfPlayer, Target.transform.position + hardcodedEyePosition);
+        float distance = Vector3.Distance(infrontOfPlayer, anObject.transform.position + hardcodedEyePosition);
         LayerMask layerMask = LayerMask.GetMask("Terrain");
 
         if (Physics.Raycast(ray, distance, layerMask))
@@ -403,15 +403,7 @@ public abstract class Character : MonoBehaviour
 
     public void AddBuff(BuffSpell aBuffSpell, Sprite aSpellIcon)
     {
-        for (int index = 0; index < myBuffs.Count; index++)
-        {
-            if (myBuffs[index].GetParent() == aBuffSpell.GetParent() &&
-                myBuffs[index].GetBuff() == aBuffSpell.GetBuff())
-            {
-                RemoveBuff(index);
-                break;
-            }
-        }
+        CheckAlreadyHasThatBuff(aBuffSpell, true);
 
         myBuffs.Add(aBuffSpell);
         aBuffSpell.GetBuff().ApplyBuff(ref myStats);
@@ -470,12 +462,28 @@ public abstract class Character : MonoBehaviour
     {
         for (int index = 0; index < myBuffs.Count; index++)
         {
-            if (myBuffs[index].GetName() == aName)
+            if (myBuffs[index].GetName() == aName) //Make unique id for each spell and remove by id intead
             {
                 RemoveBuff(index);
                 return;
             }
         }
+    }
+
+    public bool CheckAlreadyHasThatBuff(BuffSpell aBuffSpell, bool aShouldRemoveOnDuplicate = false)
+    {
+        for (int index = 0; index < myBuffs.Count; index++)
+        {
+            if (myBuffs[index].GetParent() == aBuffSpell.GetParent() &&
+                myBuffs[index].GetBuff() == aBuffSpell.GetBuff())
+            {
+                if(aShouldRemoveOnDuplicate)
+                    RemoveBuff(index);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected virtual void OnDeath()

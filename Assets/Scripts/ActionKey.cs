@@ -71,6 +71,22 @@ public class ActionKey : MonoBehaviour
         myCoroutine = StartCoroutine(ButtonPressedCoroutine());
     }
 
+    public void SpellHeldDown()
+    {
+        if (myCoroutine != null)
+            StopCoroutine(myCoroutine);
+
+        myCoroutine = StartCoroutine(ButtonSpellHeldDownCoroutine());
+    }
+
+    public void SpellReleased()
+    {
+        if (myCoroutine != null)
+            StopCoroutine(myCoroutine);
+
+        myCoroutine = StartCoroutine(ButtonSpellReleasedCoroutine());
+    }
+
     private IEnumerator ButtonPressedCoroutine()
     {
         Image spellIcon = GetComponent<Image>();
@@ -99,6 +115,64 @@ public class ActionKey : MonoBehaviour
 
         float myScaleDownDuration = 0.1f;
         myTimer = myScaleDownDuration;
+
+        while (myTimer > 0.0f)
+        {
+            float interpolation = 1.0f - (myTimer / myScaleDownDuration);
+
+            float multiplier = Mathf.Lerp(mySizeMultiplier, 1.0f, interpolation);
+            spellRect.localScale = myLerpInitScale * multiplier;
+
+            if (!IsSpellOnCooldown)
+                spellIcon.color = Color.Lerp(myTargetColor, myStartColor, interpolation);
+
+            myTimer -= Time.deltaTime;
+            yield return null;
+        }
+
+        if (!IsSpellOnCooldown)
+            spellIcon.color = myStartColor;
+        spellRect.localScale = myLerpInitScale;
+    }
+
+    private IEnumerator ButtonSpellHeldDownCoroutine()
+    {
+        Image spellIcon = GetComponent<Image>();
+        if (!IsSpellOnCooldown)
+            spellIcon.color = myStartColor;
+
+        RectTransform spellRect = GetComponent<RectTransform>();
+        spellRect.localScale = myLerpInitScale;
+
+        float myScaleUpDuration = 0.05f;
+        float myTimer = myScaleUpDuration;
+
+        while (myTimer > 0.0f)
+        {
+            float interpolation = 1.0f - (myTimer / myScaleUpDuration);
+
+            float multiplier = Mathf.Lerp(1.0f, mySizeMultiplier, interpolation);
+            spellRect.localScale = myLerpInitScale * multiplier;
+
+            if (!IsSpellOnCooldown)
+                spellIcon.color = Color.Lerp(myStartColor, myTargetColor, interpolation);
+
+            myTimer -= Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    private IEnumerator ButtonSpellReleasedCoroutine()
+    {
+        Image spellIcon = GetComponent<Image>();
+        if (!IsSpellOnCooldown)
+            spellIcon.color = myStartColor;
+
+        RectTransform spellRect = GetComponent<RectTransform>();
+        spellRect.localScale = myLerpInitScale;
+
+        float myScaleDownDuration = 0.1f;
+        float myTimer = myScaleDownDuration;
 
         while (myTimer > 0.0f)
         {

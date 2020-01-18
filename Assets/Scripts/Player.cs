@@ -19,8 +19,17 @@ public class Player : Character
     private bool myIsGrounded;
     private bool myShouldAutoAttack;
 
+    private float myStartTimeOfHoldingKeyDown;
+    private float myStartTimeOfReleasingHealingKeyDown;
+    private bool myIsFriendlySpellKeyHeldDown;
+    private bool myIsHealTargetingEnabled;
+
     public delegate void EventOnTargetPlayer(GameObject aPlayer);
     public event EventOnTargetPlayer myEventOnTargetPlayer;
+
+    [Header("The duration of holding down a spell button before enabling targeting system")]
+    [SerializeField]
+    private float mySmartTargetHoldDownMaxDuration = 0.35f;
 
     public int PlayerIndex { get; set; }
 
@@ -72,6 +81,7 @@ public class Player : Character
             return;
 
         SlideOnAngledSurface();
+        DetectStartHealTargeting();
         DetectLanding();
         DetectInput();
 
@@ -115,7 +125,7 @@ public class Player : Character
 
         Vector3 pushDirection = Vector3.zero;
         Vector3 horizontalSlopeNormal = Vector3.zero;
-        if(DoesRayHitSlope(ray, distance, layerMask, ref horizontalSlopeNormal))
+        if (DoesRayHitSlope(ray, distance, layerMask, ref horizontalSlopeNormal))
         {
             pushDirection += horizontalSlopeNormal;
         }
@@ -158,6 +168,9 @@ public class Player : Character
         if (!myIsGrounded)
             return;
 
+        if (Time.time - myStartTimeOfReleasingHealingKeyDown < 0.1f)
+            return;
+
         Vector2 leftStickAxis = myPlayerControls.Movement;
 
         myVelocity = (leftStickAxis.x * myCameraXZTransform.myRight + leftStickAxis.y * myCameraXZTransform.myForwards).normalized;
@@ -166,6 +179,13 @@ public class Player : Character
         bool isMoving = IsMoving();
         if (isMoving)
             RotatePlayer();
+
+        if (myIsHealTargetingEnabled)
+        {
+            DetectFriendlyTargetInput(leftStickAxis != Vector2.zero);
+            myVelocity = Vector2.zero;
+            return;
+        }
 
         myAnimator.SetBool("IsRunning", isMoving);
 
@@ -193,26 +213,74 @@ public class Player : Character
             FindObjectOfType<GameManager>().RestartLevel();
     }
 
+    private void DetectFriendlyTargetInput(bool hasJoystickMoved)
+    {
+        if (!hasJoystickMoved)
+            return;
+
+        int indexOfFriendWithinClosestLookingDirection = 0;
+        float closestDotAngle = -1f;
+
+        List<GameObject> players = myTargetHandler.GetAllPlayers();
+        for (int index = 0; index < players.Count; index++)
+        {
+            if (index == (PlayerIndex - 1))
+                continue;
+
+            Vector3 toFriend = (players[index].transform.position - transform.position).normalized;
+            float dotAngle = Vector3.Dot(transform.forward, toFriend);
+            if (dotAngle > closestDotAngle)
+            {
+                closestDotAngle = dotAngle;
+                indexOfFriendWithinClosestLookingDirection = index;
+            }
+        }
+
+        GameObject bestTarget = myTargetHandler.GetPlayer(indexOfFriendWithinClosestLookingDirection);
+        if (Target != bestTarget)
+            SetTarget(bestTarget);
+    }
+
     private void DetectSpellInput()
     {
         if (myPlayerControls.Action1.WasPressed)
-            CastSpell(0);
+            CheckSpellToCast(0);
         else if (myPlayerControls.Action2.WasPressed)
-            CastSpell(1);
+            CheckSpellToCast(1);
         else if (myPlayerControls.Action3.WasPressed)
-            CastSpell(2);
+            CheckSpellToCast(2);
         else if (myPlayerControls.Action4.WasPressed)
-            CastSpell(3);
+            CheckSpellToCast(3);
+
+        if (!myIsFriendlySpellKeyHeldDown)
+            return;
+
+        if (myPlayerControls.Action1.WasReleased)
+            CastFriendlySpell(0);
+        else if (myPlayerControls.Action2.WasReleased)
+            CastFriendlySpell(1);
+        else if (myPlayerControls.Action3.WasReleased)
+            CastFriendlySpell(2);
+        else if (myPlayerControls.Action4.WasReleased)
+            CastFriendlySpell(3);
     }
 
     private void DetectTargetingInput()
     {
-        //SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetPlayer(targetIndex));
-        //if (Target)
-            //myEventOnTargetPlayer?.Invoke(gameObject);
-
-        if (myPlayerControls.TargetEnemy.WasPressed)
+        if (myPlayerControls.TargetEnemy.WasPressed && !myIsFriendlySpellKeyHeldDown)
             SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetEnemy(PlayerIndex));
+    }
+
+    private void DetectStartHealTargeting()
+    {
+        bool wasHealTargetingEnabled = myIsHealTargetingEnabled;
+        myIsHealTargetingEnabled = IsHealTargetingOngoing();
+
+        if (!wasHealTargetingEnabled && myIsHealTargetingEnabled)
+        {
+            SetTarget(myTargetHandler.GetPlayer(PlayerIndex - 1));
+            myAnimator.SetBool("IsRunning", false);
+        }
     }
 
     private void DetectLanding()
@@ -285,9 +353,130 @@ public class Player : Character
         SpawnSpell(-1, GetSpellSpawnPosition(spellScript));
     }
 
-    public void CastSpell(int aKeyIndex)
+    public void CheckSpellToCast(int aKeyIndex)
     {
-        myClass.SpellPressed(aKeyIndex);
+        if (!myClass.IsSpellCastOnFriends(aKeyIndex))
+        {
+            CastSpell(aKeyIndex, true);
+            return;
+        }
+
+        myClass.SpellHeldDown(aKeyIndex);
+        myStartTimeOfHoldingKeyDown = Time.time;
+        myIsFriendlySpellKeyHeldDown = true;
+    }
+
+    public void CastFriendlySpell(int aKeyIndex)
+    {
+        if (Time.time - myStartTimeOfHoldingKeyDown < mySmartTargetHoldDownMaxDuration)
+        {
+            SetTargetWithSmartTargeting(aKeyIndex);
+            CastSpell(aKeyIndex, true);
+        }
+        else
+        {
+            CastSpell(aKeyIndex, false);
+            myStartTimeOfReleasingHealingKeyDown = Time.time;
+        }
+
+        myIsFriendlySpellKeyHeldDown = false;
+        myIsHealTargetingEnabled = false;
+    }
+
+    public void SetTargetWithSmartTargeting(int aKeyIndex)
+    {
+        float bestScore = 0.0f;
+        int bestPlayerTarget = PlayerIndex - 1;
+        List<GameObject> players = myTargetHandler.GetAllPlayers();
+        List<GameObject> enemies = myTargetHandler.GetAllEnemies();
+
+        Spell aSpell = myClass.GetSpell(aKeyIndex).GetComponent<Spell>();
+
+        for (int index = 0; index < players.Count; index++)
+        {
+            float score = 0.0f;
+            GameObject playerGO = players[index];
+
+            if (index == PlayerIndex - 1 && !aSpell.myCanCastOnSelf)
+            {
+                //If there has been no valid target yet, and the current target is the player whom can't cast on self -> put best target to player one or two.
+                if (players.Count > 1 && bestPlayerTarget == PlayerIndex - 1 && index == 0)
+                    bestPlayerTarget = 1;
+                else if (players.Count > 1 && bestPlayerTarget == PlayerIndex - 1 && index > 0)
+                    bestPlayerTarget = 0;
+
+                continue;
+            }
+
+            Player player = playerGO.GetComponent<Player>();
+            if (aSpell.myBuff != null)
+            {
+                if (player.CheckAlreadyHasThatBuff(aSpell.myBuff.InitializeBuff(gameObject))) //SO BAD, redo buff system from networking legacy
+                    continue;
+                else
+                    score += 1.0f;
+            }
+
+            float distance = Vector3.Distance(transform.position, playerGO.transform.position);
+            if (distance > aSpell.myRange || !CanRaycastToObject(playerGO))
+                continue;
+
+            float healthPercentage = playerGO.GetComponent<Health>().GetHealthPercentage();
+            if (playerGO.GetComponent<Class>().myClassRole == Class.ClassRole.Tank)
+            {
+                score += 0.2f;
+                healthPercentage -= 0.15f;
+            }
+
+            score += (1.0f - healthPercentage) * 10.0f;
+
+            score += playerGO.GetComponent<Player>().CalculateBuffSmartDamage();
+
+            foreach (GameObject enemyGO in enemies)
+            {
+                Enemy enemy = enemyGO.GetComponent<Enemy>();
+                if (enemy.Target == playerGO)
+                    score += 3f;
+            }
+
+            if (score > bestScore)
+            {
+                bestScore = score;
+                bestPlayerTarget = index;
+            }
+        }
+
+        GameObject bestTarget = myTargetHandler.GetPlayer(bestPlayerTarget);
+        if (Target != bestTarget)
+            SetTarget(bestTarget);
+    }
+
+    protected float CalculateBuffSmartDamage()
+    {
+        int damageBuffCount = 0;
+        float score = 0.0f;
+        foreach (BuffSpell buff in myBuffs)
+        {
+            if (buff.GetBuff().mySpellType != SpellType.DOT)
+                continue;
+
+            BuffTickSpell dot = buff as BuffTickSpell;
+            score += dot.CalculateRemainingDamage() * 0.05f;
+            const float madeUpMaxTime = 5.0f;
+            score += Mathf.Abs(madeUpMaxTime - dot.TimeUntilNextTick()) + dot.GetTickValue() * 0.1f;
+
+            damageBuffCount++;
+        }
+
+        return score + damageBuffCount;
+    }
+
+    public void CastSpell(int aKeyIndex, bool isPressed)
+    {
+        if (isPressed)
+            myClass.SpellPressed(aKeyIndex);
+        else
+            myClass.SpellReleased(aKeyIndex);
 
         if (myClass.IsSpellOnCooldown(aKeyIndex))
         {
@@ -345,7 +534,7 @@ public class Player : Character
             return false;
         }
 
-        if (!CanRaycastToTarget())
+        if (!CanRaycastToObject(Target))
         {
             return false;
         }
@@ -398,18 +587,12 @@ public class Player : Character
         bool isDead = Target.GetComponent<Health>().IsDead();
         if (!isDead && aSpellScript.mySpellType == SpellType.Ressurect)
         {
-                mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.NotDead);
+            mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.NotDead);
             return false;
         }
         if (isDead && aSpellScript.mySpellType != SpellType.Ressurect)
         {
-                mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.IsDead);
-            return false;
-        }
-
-        if (!CanRaycastToTarget())
-        {
-                mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.NoVision);
+            mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.IsDead);
             return false;
         }
 
@@ -417,6 +600,12 @@ public class Player : Character
         if (distance > aSpellScript.myRange)
         {
             mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.OutOfRange);
+            return false;
+        }
+
+        if (!CanRaycastToObject(Target))
+        {
+            mySpellErrorHandler.HighLightError(SpellErrorHandler.SpellError.NoVision);
             return false;
         }
 
@@ -502,5 +691,10 @@ public class Player : Character
     public void SetPlayerControls(PlayerControls aPlayerControls)
     {
         myPlayerControls = aPlayerControls;
+    }
+
+    private bool IsHealTargetingOngoing()
+    {
+        return myIsFriendlySpellKeyHeldDown && Time.time - myStartTimeOfHoldingKeyDown > mySmartTargetHoldDownMaxDuration;
     }
 }

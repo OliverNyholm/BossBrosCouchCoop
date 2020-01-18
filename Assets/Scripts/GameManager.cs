@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         if (characterGameDataGO == null)
         {
             Debug.Log("No CharacterGameData to find, default player created.");
-            SpawnPlayer(targetHandler, myDebugPlayerPrefab);
+            SpawnPlayer(targetHandler, myDebugPlayerPrefab, 1);
 
             myControllerListener = PlayerControls.CreateWithJoystickBindings();
             return;
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
     /// Spawns a player with the prefab assigned. Use when level started without character select
     /// </summary>
     /// <param name="aPrefab"></param>
-    private void SpawnPlayer(TargetHandler aTargetHandler, GameObject aPrefab)
+    private void SpawnPlayer(TargetHandler aTargetHandler, GameObject aPrefab, int aPlayerIndex)
     {
         Vector3 spawnPoint = new Vector3(-1.5f + 0 * 1.0f, 0.0f, -3.0f);
         if (mySpawnPoints.Count > 0)
@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
         myDebugPlayer = playerGO.GetComponent<Player>();
         myDebugPlayer.SetPlayerControls(keyboardListener);
         myDebugPlayer.myName = "DebugPlayer";
-        myDebugPlayer.PlayerIndex = 1;
+        myDebugPlayer.PlayerIndex = aPlayerIndex;
         myDebugPlayer.myCharacterColor = myDebugColorSchemePrefab.myColor;
         myDebugPlayer.SetAvatar(myDebugColorSchemePrefab.myAvatar);
 
@@ -140,5 +140,15 @@ public class GameManager : MonoBehaviour
             return true;
 
         return false;
+    }
+
+    public void AddExtraDebugPlayer()
+    {
+        TargetHandler targetHandler = GetComponent<TargetHandler>();
+        if (targetHandler.GetAllPlayers().Count == 4)
+            return;
+
+        Debug.Log("Adding another debug player.");
+        SpawnPlayer(targetHandler, myDebugPlayerPrefab, targetHandler.GetAllPlayers().Count + 1);
     }
 }

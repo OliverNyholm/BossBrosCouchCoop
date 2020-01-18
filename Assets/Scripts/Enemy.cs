@@ -196,7 +196,7 @@ public class Enemy : Character
             return false;
         }
 
-        if (!CanRaycastToTarget())
+        if (!CanRaycastToObject(Target))
         {
             Debug.Log(myName + " failed to cast spell due to no vision of target");
             return false;

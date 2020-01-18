@@ -48,7 +48,22 @@ public abstract class Character : MonoBehaviour
     public delegate void EventOnSpellSpawned(GameObject aPlayer, GameObject aSpell, int aSpellIndex);
     public event EventOnSpellSpawned myEventOnSpellSpawned;
 
+    protected virtual void Awake()
+    {
+        if (!myAnimator)
+            SetComponents();
+
+        FillAnimationHashes();
+    }
+
     protected virtual void Start()
+    {
+        Target = null;
+        myIsCasting = false;
+        IsInterruptable = true;
+    }
+
+    private void SetComponents()
     {
         myAnimator = GetComponent<Animator>();
 
@@ -58,11 +73,6 @@ public abstract class Character : MonoBehaviour
         myClass = GetComponent<Class>();
 
         myBuffs = new List<BuffSpell>();
-        FillAnimationHashes();
-
-        Target = null;
-        myIsCasting = false;
-        IsInterruptable = true;
     }
 
     protected virtual void SetupHud(Transform aUIParent)
@@ -72,6 +82,9 @@ public abstract class Character : MonoBehaviour
         myCharacterHUD = aUIParent.transform.Find("CharacterHud").GetComponent<CharacterHUD>();
         myTargetHUD = aUIParent.transform.Find("TargetHud").GetComponent<CharacterHUD>();
         myCastbar = aUIParent.transform.Find("Castbar Background").GetComponent<Castbar>();
+
+        if (!myClass)
+            SetComponents();
 
         myCharacterHUD.SetName(myName);
         myCharacterHUD.SetClassSprite(myClass.mySprite);
@@ -319,22 +332,8 @@ public abstract class Character : MonoBehaviour
             aTarget.GetComponent<Health>().myCurrentHealth.ToString() + "/" + aTarget.GetComponent<Health>().MaxHealth,
             aTarget.GetComponent<Health>().GetTotalShieldValue());
 
-        if (aTarget.GetComponent<Resource>() != null)
-        {
-            aTarget.GetComponent<Resource>().EventOnResourceChange += ChangeTargetHudResource;
-            ChangeTargetHudResource(aTarget.GetComponent<Resource>().GetResourcePercentage(),
-                aTarget.GetComponent<Resource>().myCurrentResource.ToString() + "/" + aTarget.GetComponent<Resource>().MaxResource);
-            myTargetHUD.SetResourceBarColor(aTarget.GetComponent<Resource>().myResourceColor);
-        }
-        else
-        {
-            ChangeTargetHudResource(0.0f, "0/0");
-        }
-
         myTargetHUD.SetAvatarSprite(aTarget.GetComponent<Character>().GetAvatar());
-        myTargetHUD.SetClassSprite(aTarget.GetComponent<Class>().mySprite);
         myTargetHUD.SetHudColor(aTarget.GetComponent<Character>().myCharacterColor);
-        myTargetHUD.SetName(aTarget.GetComponent<Character>().myName);
     }
     private void ChangeTargetHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
     {

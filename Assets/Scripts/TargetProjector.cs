@@ -58,6 +58,7 @@ public class TargetProjector : MonoBehaviour
 
     public void SetPlayerColor(Color aColor)
     {
-        myMaterial.SetColor("_PlayerColor", aColor);
+        if(myMaterial)
+            myMaterial.SetColor("_PlayerColor", aColor);
     }
 }

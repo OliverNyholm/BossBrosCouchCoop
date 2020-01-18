@@ -98,4 +98,9 @@ public class TargetHandler : MonoBehaviour
 
         return "Null";
     }
+
+    public List<GameObject> GetAllEnemies()
+    {
+        return myEnemies;
+    }
 }

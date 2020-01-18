@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
     private List<Transform> mySpawnPoints = new List<Transform>();
 
     [Header("The player to be spawned if level started without character select")]
-    public GameObject myPlayerPrefab;
+    public GameObject myDebugPlayerPrefab;
+    public ColorScheme myDebugColorSchemePrefab;
     private Player myDebugPlayer = null;
 
     private PlayerControls myControllerListener = null;
@@ -20,12 +21,20 @@ public class GameManager : MonoBehaviour
     {
         PostMaster.Create();
 
+        BossHudHandler bossHudHandler = FindObjectsOfType<BossHudHandler>()[0];
         TargetHandler targetHandler = GetComponent<TargetHandler>();
+
+        List<GameObject> bosses = targetHandler.GetAllEnemies();
+        for (int index = 0, count = bosses.Count; index < count; index++)
+        {
+            bossHudHandler.HandoutBossHud(bosses[index], count, index);
+        }
+
         GameObject characterGameDataGO = GameObject.Find("GameData");
         if (characterGameDataGO == null)
         {
             Debug.Log("No CharacterGameData to find, default player created.");
-            SpawnPlayer(targetHandler, myPlayerPrefab);
+            SpawnPlayer(targetHandler, myDebugPlayerPrefab);
 
             myControllerListener = PlayerControls.CreateWithJoystickBindings();
             return;
@@ -113,7 +122,8 @@ public class GameManager : MonoBehaviour
         myDebugPlayer.SetPlayerControls(keyboardListener);
         myDebugPlayer.myName = "DebugPlayer";
         myDebugPlayer.PlayerIndex = 1;
-        myDebugPlayer.myCharacterColor = Color.red;
+        myDebugPlayer.myCharacterColor = myDebugColorSchemePrefab.myColor;
+        myDebugPlayer.SetAvatar(myDebugColorSchemePrefab.myAvatar);
 
         Vector3 rgb = new Vector3(myDebugPlayer.myCharacterColor.r, myDebugPlayer.myCharacterColor.g, myDebugPlayer.myCharacterColor.b);
         PostMaster.Instance.PostMessage(new Message(MessageType.RegisterPlayer, playerGO.GetInstanceID(), rgb));

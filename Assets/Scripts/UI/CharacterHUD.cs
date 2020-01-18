@@ -85,17 +85,20 @@ public class CharacterHUD : MonoBehaviour
 
     public void SetName(string aName)
     {
-        myNameText.text = aName;
+        if(myNameText)
+            myNameText.text = aName;
     }
 
     public void SetNameColor(Color aColor)
     {
-        myNameText.color = aColor;
+        if(myNameText)
+            myNameText.color = aColor;
     }
 
     public void SetHudColor(Color aColor)
     {
-        myNameText.color = aColor;
+        if(myNameText)
+             myNameText.color = aColor;
         myHealthbarImage.color = aColor;
     }
 

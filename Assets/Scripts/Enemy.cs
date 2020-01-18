@@ -63,8 +63,6 @@ public class Enemy : Character
 
         myTargetHandler = FindObjectOfType<TargetHandler>();
 
-        SetupHud(transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").transform);
-
         Subscribe();
     }
 
@@ -377,7 +375,8 @@ public class Enemy : Character
         if (spellScript.myCastTime <= 0.0f)
         {
             SpawnSpell(aSpell, aTarget, aSpawnTransform);
-            GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
+            if(myResource)
+                myResource.LoseResource(spellScript.myResourceCost);
             myAnimator.SetTrigger("CastingDone");
             return true;
         }
@@ -608,5 +607,10 @@ public class Enemy : Character
             GetComponent<BehaviorTree>().SendEvent("TakeDamage");
             SetState(CombatState.Combat);
         }
+    }
+
+    public void SetBossHud(GameObject aBossHudGameObject)
+    {
+        SetupHud(aBossHudGameObject.transform);
     }
 }

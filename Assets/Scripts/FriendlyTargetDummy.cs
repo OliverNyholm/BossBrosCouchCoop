@@ -19,7 +19,7 @@ public class FriendlyTargetDummy : Player
         Target = null;
         myIsCasting = false;
 
-        SetupHud(transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").transform);
+        //SetupHud(transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").transform);
     }
 
     protected override void Update()
@@ -35,5 +35,10 @@ public class FriendlyTargetDummy : Player
     protected override bool IsMoving()
     {
         return false;
+    }
+
+    public void SetBossHud(GameObject aBossHudGameObject)
+    {
+        SetupHud(aBossHudGameObject.transform);
     }
 }

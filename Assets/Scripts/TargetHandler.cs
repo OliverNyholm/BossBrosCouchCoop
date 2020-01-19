@@ -36,6 +36,11 @@ public class TargetHandler : MonoBehaviour
         return myPlayers;
     }
 
+    public void ClearAllPlayers()
+    {
+        myPlayers.Clear();
+    }
+
     public void AddPlayer(GameObject aGameObject)
     {
         myPlayers.Add(aGameObject);

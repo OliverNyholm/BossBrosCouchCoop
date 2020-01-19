@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class TutorialHeal : TutorialCompletion
 {
+    [Header("The class to try out healing with")]
+    [SerializeField]
+    private GameObject myTutorialHealer;
+
+    [SerializeField]
+    private GameManager myGameManager = null;
+
+    [SerializeField]
+    private DynamicCamera myDynamicCamera = null;
+
     protected override bool StartTutorial()
     {
         if (!base.StartTutorial())
             return false;
 
+        myGameManager.ChangeClassInGame(myTutorialHealer);
+        myDynamicCamera.ReplacePlayersToTarget(myTargetHandler);
+
+        myPlayers = new List<GameObject>(myTargetHandler.GetAllPlayers());
+
         foreach (GameObject player in myPlayers)
         {
             Health health = player.GetComponent<Health>();
-            health.TakeDamage(100, Color.red);
             health.EventOnHealthChange += OnHealthChanged;
         }
 

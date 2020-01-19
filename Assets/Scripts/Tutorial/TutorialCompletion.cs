@@ -40,7 +40,6 @@ public class TutorialCompletion : MonoBehaviour
 
     private void Start()
     {
-        myPlayers = new List<GameObject>(myTargetHandler.GetAllPlayers());
 
         if(myGate)
             myFinishRoutine = LowerGateRoutine;
@@ -51,6 +50,7 @@ public class TutorialCompletion : MonoBehaviour
         if (myHasStarted)
             return false;
 
+        myPlayers = new List<GameObject>(myTargetHandler.GetAllPlayers());
         myHasStarted = true;
 
         myTutorialPanel.gameObject.SetActive(true);

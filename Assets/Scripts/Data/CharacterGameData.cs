@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using InControl;
 
+[Serializable]
 public class PlayerSelectData
 {
     public PlayerControls myPlayerControls;

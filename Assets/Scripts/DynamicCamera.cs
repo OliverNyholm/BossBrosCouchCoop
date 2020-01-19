@@ -27,11 +27,7 @@ public class DynamicCamera : MonoBehaviour
     {
         myTargetHandler = FindObjectOfType<TargetHandler>();
 
-        List<GameObject> players = myTargetHandler.GetAllPlayers();
-        for (int index = 0; index < players.Count; index++)
-        {
-            myPlayerTransforms.Add(players[index].transform);
-        }
+        ReplacePlayersToTarget(myTargetHandler);
 
         mySubscriber = new Subscriber();
         mySubscriber.EventOnReceivedMessage += ReceiveMessage;
@@ -43,6 +39,17 @@ public class DynamicCamera : MonoBehaviour
     {
         //PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerResucitated);
+    }
+
+    public void ReplacePlayersToTarget(TargetHandler aTargetHandler)
+    {
+        myPlayerTransforms.Clear();
+
+        List<GameObject> players = myTargetHandler.GetAllPlayers();
+        for (int index = 0; index < players.Count; index++)
+        {
+            myPlayerTransforms.Add(players[index].transform);
+        }
     }
 
     private void FixedUpdate()
@@ -71,7 +78,7 @@ public class DynamicCamera : MonoBehaviour
         else
             aCenterPoint = transform.position;
     }
-    
+
     private void CalculateZoom(Vector3 aCenterPoint)
     {
         Bounds bounds = FindBounds();

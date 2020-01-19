@@ -11,11 +11,18 @@ public class GameManager : MonoBehaviour
     private List<Transform> mySpawnPoints = new List<Transform>();
 
     [Header("The player to be spawned if level started without character select")]
-    public GameObject myDebugPlayerPrefab;
-    public ColorScheme myDebugColorSchemePrefab;
+    public PlayerSelectData myDebugPlayerData;
     private Player myDebugPlayer = null;
 
     private PlayerControls myControllerListener = null;
+
+    private List<PlayerSelectData> myPlayerSelectData = new List<PlayerSelectData>(4);
+    private struct ChangeClassData
+    {
+        public Vector3 myPosition;
+        public float myHealthPercentage;
+    };
+    private List<ChangeClassData> myChangeClassData = new List<ChangeClassData>(4);
 
     private void Awake()
     {
@@ -34,7 +41,8 @@ public class GameManager : MonoBehaviour
         if (characterGameDataGO == null)
         {
             Debug.Log("No CharacterGameData to find, default player created.");
-            SpawnPlayer(targetHandler, myDebugPlayerPrefab, 1);
+            myPlayerSelectData.Add(myDebugPlayerData);
+            SpawnPlayer(targetHandler, 1);
 
             myControllerListener = PlayerControls.CreateWithJoystickBindings();
             return;
@@ -42,10 +50,10 @@ public class GameManager : MonoBehaviour
 
 
         CharacterGameData characterGameData = characterGameDataGO.GetComponent<CharacterGameData>();
-        List<PlayerSelectData> characters = characterGameData.GetPlayerData();
-        for (int index = 0; index < characters.Count; index++)
+        myPlayerSelectData = new List<PlayerSelectData>(characterGameData.GetPlayerData());
+        for (int index = 0; index < myPlayerSelectData.Count; index++)
         {
-            SpawnPlayer(targetHandler, characters[index], index);
+            SpawnPlayer(targetHandler, myPlayerSelectData[index], index);
         }
     }
 
@@ -67,6 +75,7 @@ public class GameManager : MonoBehaviour
                 playerControls.Device = InputManager.ActiveDevice;
                 myDebugPlayer.SetPlayerControls(playerControls);
 
+                myPlayerSelectData[myPlayerSelectData.Count - 1].myPlayerControls = playerControls;
                 myControllerListener = null;
             }
         }
@@ -105,14 +114,14 @@ public class GameManager : MonoBehaviour
     /// Spawns a player with the prefab assigned. Use when level started without character select
     /// </summary>
     /// <param name="aPrefab"></param>
-    private void SpawnPlayer(TargetHandler aTargetHandler, GameObject aPrefab, int aPlayerIndex)
+    private void SpawnPlayer(TargetHandler aTargetHandler, int aPlayerIndex)
     {
         Vector3 spawnPoint = new Vector3(-1.5f + 0 * 1.0f, 0.0f, -3.0f);
         if (mySpawnPoints.Count > 0)
             spawnPoint = mySpawnPoints[0 % mySpawnPoints.Count].position;
 
-        GameObject playerGO = Instantiate(aPrefab, spawnPoint, Quaternion.identity);
-        playerGO.name = "DebugPlayer";
+        GameObject playerGO = Instantiate(myDebugPlayerData.myClassData.myClass, spawnPoint, Quaternion.identity);
+        playerGO.name = myDebugPlayerData.myName;
 
         PlayerControls keyboardListener = PlayerControls.CreateWithKeyboardBindings();
 
@@ -120,13 +129,63 @@ public class GameManager : MonoBehaviour
 
         myDebugPlayer = playerGO.GetComponent<Player>();
         myDebugPlayer.SetPlayerControls(keyboardListener);
-        myDebugPlayer.myName = "DebugPlayer";
+        myDebugPlayer.myName = myDebugPlayerData.myName;
         myDebugPlayer.PlayerIndex = aPlayerIndex;
-        myDebugPlayer.myCharacterColor = myDebugColorSchemePrefab.myColor;
-        myDebugPlayer.SetAvatar(myDebugColorSchemePrefab.myAvatar);
+        myDebugPlayer.myCharacterColor = myDebugPlayerData.myColorScheme.myColor;
+        myDebugPlayer.SetAvatar(myDebugPlayerData.myColorScheme.myAvatar);
+
+        myPlayerSelectData[myPlayerSelectData.Count - 1].myPlayerControls = keyboardListener;
 
         Vector3 rgb = new Vector3(myDebugPlayer.myCharacterColor.r, myDebugPlayer.myCharacterColor.g, myDebugPlayer.myCharacterColor.b);
         PostMaster.Instance.PostMessage(new Message(MessageType.RegisterPlayer, playerGO.GetInstanceID(), rgb));
+
+        aTargetHandler.AddPlayer(playerGO);
+    }
+
+    public void ChangeClassInGame(GameObject aNewClass)
+    {
+        TargetHandler targetHandler = GetComponent<TargetHandler>();
+
+        myChangeClassData.Clear();
+
+        bool hadDebugPlayer = myDebugPlayer != null;
+
+        foreach (GameObject player in targetHandler.GetAllPlayers())
+        {
+            ChangeClassData changeClassData;
+            changeClassData.myHealthPercentage = player.GetComponent<Health>().GetHealthPercentage();
+            changeClassData.myPosition = player.transform.position;
+            myChangeClassData.Add(changeClassData);
+
+            Destroy(player);
+        }
+        targetHandler.ClearAllPlayers();
+
+        for (int index = 0; index < myPlayerSelectData.Count; index++)
+        {
+            ChangePlayerClass(targetHandler, aNewClass, index);
+        }
+
+        if (hadDebugPlayer)
+            myDebugPlayer = targetHandler.GetPlayer(myPlayerSelectData.Count - 1).GetComponent<Player>();
+    }
+
+    private void ChangePlayerClass(TargetHandler aTargetHandler, GameObject aNewClass, int anIndex)
+    {
+        PlayerSelectData originalPlayerSelectData = myPlayerSelectData[anIndex];
+
+        GameObject playerGO = Instantiate(aNewClass, myChangeClassData[anIndex].myPosition, Quaternion.identity);
+        playerGO.name = originalPlayerSelectData.myName;
+        playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material = originalPlayerSelectData.myColorScheme.myMaterial;
+
+        Player player = playerGO.GetComponent<Player>();
+        player.SetPlayerControls(originalPlayerSelectData.myPlayerControls);
+        player.myName = originalPlayerSelectData.myName;
+        player.PlayerIndex = anIndex + 1;
+        player.myCharacterColor = originalPlayerSelectData.myColorScheme.myColor;
+        player.SetAvatar(originalPlayerSelectData.myColorScheme.myAvatar);
+
+        playerGO.GetComponent<Health>().SetHealthPercentage(myChangeClassData[anIndex].myHealthPercentage);
 
         aTargetHandler.AddPlayer(playerGO);
     }
@@ -149,6 +208,7 @@ public class GameManager : MonoBehaviour
             return;
 
         Debug.Log("Adding another debug player.");
-        SpawnPlayer(targetHandler, myDebugPlayerPrefab, targetHandler.GetAllPlayers().Count + 1);
+        myPlayerSelectData.Add(myDebugPlayerData);
+        SpawnPlayer(targetHandler, targetHandler.GetAllPlayers().Count + 1);
     }
 }

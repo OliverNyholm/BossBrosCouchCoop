@@ -13980,7 +13980,7 @@ GameObject:
   - component: {fileID: 400624587}
   - component: {fileID: 400624588}
   m_Layer: 0
-  m_Name: Heal Room
+  m_Name: OLD Heal Room
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14026,6 +14026,9 @@ MonoBehaviour:
     type: 3}
   myGate: {fileID: 1484843823}
   myStartCollider: {fileID: 1353913243}
+  myTutorialHealer: {fileID: 0}
+  myGameManager: {fileID: 0}
+  myDynamicCamera: {fileID: 0}
 --- !u!1 &402069461
 GameObject:
   m_ObjectHideFlags: 0
@@ -21115,6 +21118,7 @@ GameObject:
   - component: {fileID: 625813733}
   - component: {fileID: 625813732}
   - component: {fileID: 625813731}
+  - component: {fileID: 625813734}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -21166,8 +21170,8 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -21187,6 +21191,100 @@ Transform:
   m_Father: {fileID: 2030983144}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
+--- !u!114 &625813734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625813730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearColorMode: 0
+  backgroundColorHDR: {r: 0.025, g: 0.07, b: 0.19, a: 0}
+  clearDepth: 1
+  volumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  volumeAnchorOverride: {fileID: 0}
+  antialiasing: 0
+  SMAAQuality: 2
+  dithering: 0
+  stopNaNs: 0
+  physicalParameters:
+    m_Iso: 200
+    m_ShutterSpeed: 0.005
+    m_Aperture: 16
+    m_BladeCount: 5
+    m_Curvature: {x: 2, y: 11}
+    m_BarrelClipping: 0.25
+    m_Anamorphism: 0
+  flipYMode: 0
+  fullscreenPassthrough: 0
+  customRenderingSettings: 0
+  invertFaceCulling: 0
+  probeLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPathCustomFrameSettings:
+    bitDatas:
+      data1: 69284264410909
+      data2: 4539628424389459968
+  renderingPathCustomFrameSettingsOverrideMask:
+    mask:
+      data1: 0
+      data2: 0
+  defaultFrameSettings: 0
+  m_Version: 5
+  m_ObsoleteRenderingPath: 0
+  m_ObsoleteFrameSettings:
+    overrides: 0
+    enableShadow: 0
+    enableContactShadows: 0
+    enableShadowMask: 0
+    enableSSR: 0
+    enableSSAO: 0
+    enableSubsurfaceScattering: 0
+    enableTransmission: 0
+    enableAtmosphericScattering: 0
+    enableVolumetrics: 0
+    enableReprojectionForVolumetrics: 0
+    enableLightLayers: 0
+    enableExposureControl: 1
+    diffuseGlobalDimmer: 0
+    specularGlobalDimmer: 0
+    shaderLitMode: 0
+    enableDepthPrepassWithDeferredRendering: 0
+    enableTransparentPrepass: 0
+    enableMotionVectors: 0
+    enableObjectMotionVectors: 0
+    enableDecals: 0
+    enableRoughRefraction: 0
+    enableTransparentPostpass: 0
+    enableDistortion: 0
+    enablePostprocess: 0
+    enableOpaqueObjects: 0
+    enableTransparentObjects: 0
+    enableRealtimePlanarReflection: 0
+    enableMSAA: 0
+    enableAsyncCompute: 0
+    runLightListAsync: 0
+    runSSRAsync: 0
+    runSSAOAsync: 0
+    runContactShadowsAsync: 0
+    runVolumeVoxelizationAsync: 0
+    lightLoopSettings:
+      overrides: 0
+      enableDeferredTileAndCluster: 0
+      enableComputeLightEvaluation: 0
+      enableComputeLightVariants: 0
+      enableComputeMaterialVariants: 0
+      enableFptlForForwardOpaque: 0
+      enableBigTilePrepass: 0
+      isFptlEnabled: 0
 --- !u!1 &627228396
 GameObject:
   m_ObjectHideFlags: 0
@@ -21609,17 +21707,17 @@ PrefabInstance:
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -58.65
+      value: -48
       objectReference: {fileID: 0}
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.11
+      value: 6.81
       objectReference: {fileID: 0}
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -118.700005
+      value: 43.75
       objectReference: {fileID: 0}
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
@@ -37871,8 +37969,37 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 471470350278489138, guid: 341876fb4c9edb2449f57b0325fb3e35,
         type: 3}
+    - target: {fileID: 3448170462930489257, guid: 503cc89a2de43d243aca431dd077b45f,
+        type: 3}
+      propertyPath: myDebugPlayerData.myName
+      value: DebugPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448170462930489257, guid: 503cc89a2de43d243aca431dd077b45f,
+        type: 3}
+      propertyPath: myDebugPlayerData.myColorScheme
+      value: 
+      objectReference: {fileID: 11400000, guid: 8d3c2a235a25230488559a9e173bb6c9,
+        type: 2}
+    - target: {fileID: 3448170462930489257, guid: 503cc89a2de43d243aca431dd077b45f,
+        type: 3}
+      propertyPath: myDebugPlayerData.myClassData
+      value: 
+      objectReference: {fileID: 11400000, guid: 027f3f981548233438e7d41da8b3c1e2,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 503cc89a2de43d243aca431dd077b45f, type: 3}
+--- !u!114 &1349165779 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3448170462930489257, guid: 503cc89a2de43d243aca431dd077b45f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1349165778}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32ea9c6f1f5cb9d4c87ef14b0565a6f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1349859742
 GameObject:
   m_ObjectHideFlags: 0
@@ -44921,7 +45048,7 @@ GameObject:
   - component: {fileID: 1484099005}
   - component: {fileID: 1484099006}
   m_Layer: 0
-  m_Name: Target Friend Room
+  m_Name: Heal Room
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44958,20 +45085,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 1484099004}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06498de7a6252b94897793169f02d7d9, type: 3}
+  m_Script: {fileID: 11500000, guid: 31231cdd1f30fe04ea59b252fb3bfc34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myTutorialText: In order to cast spells in the game, you often need to have a target.
-    Targeting players are done with the right stick on the controller. By moving the
-    stick in the four directions, you will target different players as shown on the
-    sign. Try targeting an ally; they will be highlighted with an arc in your color
-    by their feet and also shown below your HUD.
+  myTutorialText: 'Everyone has become a [HEALER]. Try using your spells to heal everyone
+    to full health!
+
+    As healer, if you click fast, "smart healing" will chose the "best" target. If
+    you hold the button down for a bit, you can look towards a target, healing the
+    one who you look towards the most on release. You will see your class color below
+    their feet, and their HUD under your own HUD. If you do not move your joystick,
+    you will heal yourself.'
   myTutorialImageSprite: {fileID: 21300000, guid: 4f5dc8bd7527ea04f81039044e31c782,
     type: 3}
-  myTutorialKeySprite: {fileID: 21300000, guid: 2b693f4fc342b894497276827abb2958,
+  myTutorialKeySprite: {fileID: 21300000, guid: 8699e73f3ce2242448d7ce45739f7c67,
     type: 3}
   myGate: {fileID: 760441784}
   myStartCollider: {fileID: 1159546769}
+  myTutorialHealer: {fileID: 471470350278489138, guid: 41d0975b70ca3ba4a9a4e58f637be57f,
+    type: 3}
+  myGameManager: {fileID: 1349165779}
+  myDynamicCamera: {fileID: 2030983143}
 --- !u!1 &1484843823
 GameObject:
   m_ObjectHideFlags: 0

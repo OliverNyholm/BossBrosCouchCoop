@@ -70,6 +70,11 @@ public class Health : MonoBehaviour
         return (float)myCurrentHealth / myMaxHealth;
     }
 
+    public void SetHealthPercentage(float aHealthPercentage)
+    {
+        myCurrentHealth = (int)(myMaxHealth * aHealthPercentage);
+    }
+
     public int MaxHealth
     {
         get { return myMaxHealth; }
@@ -166,5 +171,10 @@ public class Health : MonoBehaviour
         }
 
         return shieldValue;
+    }
+
+    private void OnValidate()
+    {
+        OnHealthChanged();
     }
 }

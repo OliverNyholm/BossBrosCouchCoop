@@ -18,6 +18,7 @@ public class ReviveDeadListener : MonoBehaviour
     private List<int> myDeadPlayerIds = new List<int>();
     private Subscriber mySubscriber;
 
+
     private void Awake()
     {
         mySubscriber = new Subscriber();
@@ -33,7 +34,10 @@ public class ReviveDeadListener : MonoBehaviour
     {
         if(myShouldReviveInstantly)
         {
-            GameObject player = myPlayers[aMessage.Data.myInt];
+            myPlayers.TryGetValue(aMessage.Data.myInt, out GameObject player);
+            if (!player)
+                return;
+
             StartCoroutine(InstantReviveCoroutine(player, 0));
             return;
         }
@@ -41,7 +45,7 @@ public class ReviveDeadListener : MonoBehaviour
         myDeadPlayerIds.Add(aMessage.Data.myInt);
         if(myDeadPlayerIds.Count == myPlayers.Count)
         {
-        int count = 0;
+            int count = 0;
             foreach (KeyValuePair<int, GameObject> player in myPlayers)
             {
                 StartCoroutine(InstantReviveCoroutine(player.Value, count));
@@ -90,13 +94,6 @@ public class ReviveDeadListener : MonoBehaviour
 
     public void ListenToDeaths()
     {
-        TargetHandler targetHandler = FindObjectOfType<TargetHandler>();
-        List<GameObject> players = targetHandler.GetAllPlayers();
-        foreach (GameObject player in players)
-        {
-            myPlayers.Add(player.GetInstanceID(), player);
-        }
-
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
     }
 
@@ -105,5 +102,30 @@ public class ReviveDeadListener : MonoBehaviour
         myPlayers.Clear();
         myDeadPlayerIds.Clear();
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            if (myPlayers.Count == 0)
+                ListenToDeaths();
+
+            myPlayers.Add(other.gameObject.GetInstanceID(), other.gameObject);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            if (other.GetComponent<Health>().IsDead())
+                return;
+
+            myPlayers.Remove(other.gameObject.GetInstanceID());
+
+            if (myPlayers.Count == 0)
+                StopListening();
+        }
     }
 }

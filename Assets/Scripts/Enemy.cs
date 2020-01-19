@@ -375,7 +375,7 @@ public class Enemy : Character
         if (spellScript.myCastTime <= 0.0f)
         {
             SpawnSpell(aSpell, aTarget, aSpawnTransform);
-            if(myResource)
+            if (myResource)
                 myResource.LoseResource(spellScript.myResourceCost);
             myAnimator.SetTrigger("CastingDone");
             return true;
@@ -424,7 +424,8 @@ public class Enemy : Character
         if (aShouldIgnoreCastability || IsAbleToCastSpell(spellScript))
         {
             SpawnSpell(aSpell, mySpellTarget, aSpawnTransform);
-            GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
+            if (myResource)
+                GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
             myAnimator.SetTrigger("CastingDone");
         }
     }
@@ -516,7 +517,7 @@ public class Enemy : Character
                             if (index == myTargetIndex)
                                 DropTarget();
 
-                            if(AreAllPlayersDead())
+                            if (AreAllPlayersDead())
                                 SetState(CombatState.Disengage);
 
                             //RemovePlayer(index);
@@ -530,7 +531,7 @@ public class Enemy : Character
                     SetState(CombatState.Combat);
                 break;
             case MessageType.EnemyDied:
-                GetComponent<BehaviorTree>().SendEvent(myTargetHandler.GetEnemyName(anAiMessage.Data.myInt) +"Died");
+                GetComponent<BehaviorTree>().SendEvent(myTargetHandler.GetEnemyName(anAiMessage.Data.myInt) + "Died");
                 break;
             default:
                 break;

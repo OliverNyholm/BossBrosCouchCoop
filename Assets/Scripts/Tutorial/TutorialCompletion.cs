@@ -56,12 +56,6 @@ public class TutorialCompletion : MonoBehaviour
         myTutorialPanel.gameObject.SetActive(true);
         myTutorialPanel.SetData(myTutorialText, myTutorialImageSprite, myTutorialKeySprite);
 
-        ReviveDeadListener reviveDeadListener = GetComponent<ReviveDeadListener>();
-        if(reviveDeadListener)
-        {
-            reviveDeadListener.ListenToDeaths();
-        }
-
         return true;
     }
 
@@ -69,12 +63,6 @@ public class TutorialCompletion : MonoBehaviour
     {
         myTutorialPanel.gameObject.SetActive(false);
         StartCoroutine(myFinishRoutine());
-
-        ReviveDeadListener reviveDeadListener = GetComponent<ReviveDeadListener>();
-        if (reviveDeadListener)
-        {
-            reviveDeadListener.StopListening();
-        }
     }
 
     protected void SetPlayerCompleted(GameObject aPlayer)

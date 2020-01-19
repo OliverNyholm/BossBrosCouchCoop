@@ -202,8 +202,6 @@ public class Spell : PoolableObject
 
     public string GetSpellDescription()
     {
-        string name = myName + "\n";
-
         string target = "Cast spell on ";
         if (myIsOnlySelfCast)
             target += "self ";
@@ -231,7 +229,7 @@ public class Spell : PoolableObject
                 castTime += "Is not castable while moving";
         }
 
-        return name + target + detail + range + cost + castTime;
+        return target + detail + range + cost + castTime;
     }
 
     protected virtual string GetSpellDetail()

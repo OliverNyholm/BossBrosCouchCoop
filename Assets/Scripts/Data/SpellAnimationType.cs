@@ -15,5 +15,6 @@ public enum SpellAnimationType
     HeavyMelee,
     ShieldBlock,
     Meditate,
+    AutoAttack,
     Count
 }

@@ -19,7 +19,7 @@ public class Resuscitate : Spell
         if (myChannelTime <= 0.0f)
         {
             myTarget.GetComponent<Health>().GainHealth(myDamage);
-            myTarget.GetComponent<Animator>().SetTrigger("Attack");
+            myTarget.GetComponent<Player>().OnRevive();
             PostMaster.Instance.PostMessage(new Message(MessageType.PlayerResucitated, myTarget.GetInstanceID()));
             ReturnToPool();
         }

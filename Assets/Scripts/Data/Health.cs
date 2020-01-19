@@ -52,6 +52,14 @@ public class Health : MonoBehaviour
         SpawnFloatingText(aValue.ToString(), Color.yellow, CalculateSizeModifier(aValue));
     }
 
+    public void ReviveToFullHealth()
+    {
+        myCurrentHealth = MaxHealth;
+        OnHealthChanged();
+
+        SpawnFloatingText("Revived", Color.yellow, 1.2f);
+    }
+
     public bool IsDead()
     {
         return myCurrentHealth <= 0;

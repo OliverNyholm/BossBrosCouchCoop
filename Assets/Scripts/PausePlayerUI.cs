@@ -15,22 +15,16 @@ public class PausePlayerUI : MonoBehaviour
 
     [Header("Gameobject that holds spells")]
     [SerializeField]
-    private GameObject mySpellHolder = null;
+    private List<PauseMenuSpellDescription> mySpellDescriptions = new List<PauseMenuSpellDescription>();
 
     public void SetClassDetails(Class aClass)
     {
         myClassIcon.sprite = aClass.mySprite;
         myClassName.text = aClass.myClassName;
 
-        for (int index = 0; index < mySpellHolder.transform.childCount; index++)
+        for (int index = 0; index < mySpellDescriptions.Count; index++)
         {
-            SetSpellDetails(mySpellHolder.transform.GetChild(index).gameObject, aClass.mySpells[index].GetComponent<Spell>());
+            mySpellDescriptions[index].SetSpellDetails(aClass.mySpells[index].GetComponent<Spell>());
         }
-    }
-
-    void SetSpellDetails(GameObject aSpellDescription, Spell aSpell)
-    {
-        aSpellDescription.GetComponentInChildren<Image>().sprite = aSpell.mySpellIcon;
-        aSpellDescription.GetComponentInChildren<Text>().text = aSpell.GetSpellDescription();
     }
 }

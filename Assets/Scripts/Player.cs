@@ -347,7 +347,7 @@ public class Player : Character
             return;
         }
 
-        myAnimator.SetTrigger("AutoAttack");
+        myAnimator.SetTrigger(GetAnimationHash(SpellAnimationType.AutoAttack));
         myAutoAttackCooldown = 1.2f;
 
         SpawnSpell(-1, GetSpellSpawnPosition(spellScript));
@@ -681,6 +681,11 @@ public class Player : Character
         myVelocity.z = 0.0f;
         myShouldAutoAttack = false;
         PostMaster.Instance.PostMessage(new Message(MessageType.PlayerDied, gameObject.GetInstanceID()));
+    }
+
+    public void OnRevive()
+    {
+        myAnimator.SetTrigger(GetAnimationHash(SpellAnimationType.AutoAttack));
     }
 
     public int GetControllerIndex()

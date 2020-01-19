@@ -1205,6 +1205,7 @@ MonoBehaviour:
   myGravity: 30
   myName: 
   myCharacterColor: {r: 0, g: 0, b: 0, a: 0}
+  mySmartTargetHoldDownMaxDuration: 0.35
 --- !u!114 &970385522823552703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1218,14 +1219,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myClassName: Mercenary
+  myClassRole: 0
   mySprite: {fileID: 21300000, guid: 08579bde325e3a244afd7c9b4efc90d4, type: 3}
   myAutoAttack: {fileID: 1076349553557202, guid: 58da3294e821ee7409b6b1de5bd92427,
     type: 3}
   mySpells:
   - {fileID: 1612158453409278, guid: 227f93179118c0645a02616e8c66a6cb, type: 3}
-  - {fileID: 1901770882517180, guid: d1f53adbc2af3954f8dcc5b6e43e346f, type: 3}
   - {fileID: 1159462510580832, guid: d8eea47243456a4488cd8f7a7512086c, type: 3}
-  - {fileID: 1959371134241452, guid: 40ccca5cfcfb4ac4981418043d73d860, type: 3}
+  - {fileID: 1778928993442950, guid: fdbf20a6bdf392348acc2d65960fd9bc, type: 3}
+  - {fileID: 1535284190026568, guid: c74ab07a202ee414daf0342cde4262d9, type: 3}
   myCooldownTimers:
   - 0
   - 0

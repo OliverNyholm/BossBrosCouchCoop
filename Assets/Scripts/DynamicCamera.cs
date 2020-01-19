@@ -35,13 +35,13 @@ public class DynamicCamera : MonoBehaviour
 
         mySubscriber = new Subscriber();
         mySubscriber.EventOnReceivedMessage += ReceiveMessage;
-        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
+        //PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.PlayerResucitated);
     }
 
     private void OnDestroy()
     {
-        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
+        //PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerResucitated);
     }
 

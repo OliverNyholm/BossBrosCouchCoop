@@ -41,7 +41,9 @@ public class TutorialCompletion : MonoBehaviour
     private void Start()
     {
         myPlayers = new List<GameObject>(myTargetHandler.GetAllPlayers());
-        myFinishRoutine = LowerGateRoutine;
+
+        if(myGate)
+            myFinishRoutine = LowerGateRoutine;
     }
 
     protected virtual bool StartTutorial()
@@ -54,6 +56,12 @@ public class TutorialCompletion : MonoBehaviour
         myTutorialPanel.gameObject.SetActive(true);
         myTutorialPanel.SetData(myTutorialText, myTutorialImageSprite, myTutorialKeySprite);
 
+        ReviveDeadListener reviveDeadListener = GetComponent<ReviveDeadListener>();
+        if(reviveDeadListener)
+        {
+            reviveDeadListener.ListenToDeaths();
+        }
+
         return true;
     }
 
@@ -61,6 +69,12 @@ public class TutorialCompletion : MonoBehaviour
     {
         myTutorialPanel.gameObject.SetActive(false);
         StartCoroutine(myFinishRoutine());
+
+        ReviveDeadListener reviveDeadListener = GetComponent<ReviveDeadListener>();
+        if (reviveDeadListener)
+        {
+            reviveDeadListener.StopListening();
+        }
     }
 
     protected void SetPlayerCompleted(GameObject aPlayer)

@@ -33,13 +33,13 @@ public class TutorialUIText : TutorialCompletion
     {
         mySubscriber = new Subscriber();
         mySubscriber.EventOnReceivedMessage += ReceiveMessage;
-        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.UITextToggle);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.UITextToggle);
     }
 
     private void Unsubscribe()
     {
         mySubscriber.EventOnReceivedMessage -= ReceiveMessage;
-        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.UITextToggle);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.UITextToggle);
     }
 
     private void ReceiveMessage(Message aMessage)

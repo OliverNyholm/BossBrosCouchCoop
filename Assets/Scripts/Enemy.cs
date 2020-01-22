@@ -20,6 +20,8 @@ public class Enemy : Character
     private float myAggroRange = 15.0f;
     private int myTargetIndex;
 
+    public bool IsTotemBoss = false;
+
     private Vector3 mySpawnPosition;
     private Quaternion mySpawnRotation;
 
@@ -66,7 +68,7 @@ public class Enemy : Character
         Subscribe();
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         Unsubscribe();
 
@@ -80,19 +82,19 @@ public class Enemy : Character
     {
         mySubscriber = new Subscriber();
         mySubscriber.EventOnReceivedMessage += ReceiveMessage;
-        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.SpellSpawned);
-        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
-        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.EnteredCombat);
-        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.EnemyDied);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.SpellSpawned);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.PlayerDied);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.EnteredCombat);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.EnemyDied);
     }
 
     void Unsubscribe()
     {
         mySubscriber.EventOnReceivedMessage -= ReceiveMessage;
-        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.SpellSpawned);
-        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
-        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.EnteredCombat);
-        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.EnemyDied);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.SpellSpawned);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.PlayerDied);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.EnteredCombat);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.EnemyDied);
     }
 
     // Update is called once per frame
@@ -143,7 +145,7 @@ public class Enemy : Character
         GetComponent<BehaviorTree>().enabled = false;
         myNavmeshAgent.isStopped = true;
 
-        PostMaster.Instance.PostMessage(new Message(MessageType.EnemyDied, gameObject.GetInstanceID()));
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.EnemyDied, gameObject.GetInstanceID()));
     }
 
     protected override bool IsMoving()
@@ -377,7 +379,8 @@ public class Enemy : Character
             SpawnSpell(aSpell, aTarget, aSpawnTransform);
             if (myResource)
                 myResource.LoseResource(spellScript.myResourceCost);
-            myAnimator.SetTrigger("CastingDone");
+            if(myAnimator)
+                myAnimator.SetTrigger("CastingDone");
             return true;
         }
 
@@ -432,9 +435,13 @@ public class Enemy : Character
 
     public void SpawnSpell(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform)
     {
-        GameObject instance = Instantiate(aSpell, aSpawnTransform.position, aSpawnTransform.rotation);
+        //GameObject instance = Instantiate(aSpell, aSpawnTransform.position, aSpawnTransform.rotation);
+        GameObject spellGO = PoolManager.Instance.GetPooledObject(aSpell.GetComponent<UniqueID>().GetID());
+        spellGO.transform.position = aSpawnTransform.position;
+        spellGO.transform.rotation = aSpawnTransform.rotation;
+        spellGO.transform.localScale = aSpawnTransform.localScale;
 
-        Spell spellScript = instance.GetComponent<Spell>();
+        Spell spellScript = spellGO.GetComponent<Spell>();
         spellScript.SetParent(transform.gameObject);
         spellScript.AddDamageIncrease(myStats.myDamageIncrease);
 
@@ -498,7 +505,7 @@ public class Enemy : Character
     {
         switch (anAiMessage.Type)
         {
-            case MessageType.SpellSpawned:
+            case MessageCategory.SpellSpawned:
                 {
                     int id = (int)anAiMessage.Data.myVector2.x;
                     int value = (int)anAiMessage.Data.myVector2.y;
@@ -506,7 +513,7 @@ public class Enemy : Character
                     AddThreat(value, id);
                 }
                 break;
-            case MessageType.PlayerDied:
+            case MessageCategory.PlayerDied:
                 {
                     GetComponent<BehaviorTree>().SendEvent("PlayerDied");
                     int id = anAiMessage.Data.myInt;
@@ -526,11 +533,11 @@ public class Enemy : Character
                     }
                 }
                 break;
-            case MessageType.EnteredCombat:
+            case MessageCategory.EnteredCombat:
                 if (State == CombatState.Idle)
                     SetState(CombatState.Combat);
                 break;
-            case MessageType.EnemyDied:
+            case MessageCategory.EnemyDied:
                 GetComponent<BehaviorTree>().SendEvent(myTargetHandler.GetEnemyName(anAiMessage.Data.myInt) + "Died");
                 break;
             default:
@@ -573,7 +580,7 @@ public class Enemy : Character
                 myAnimator.SetBool("IsRunning", false);
                 break;
             case CombatState.Combat:
-                PostMaster.Instance.PostMessage(new Message(MessageType.EnteredCombat));
+                PostMaster.Instance.PostMessage(new Message(MessageCategory.EnteredCombat));
                 break;
             case CombatState.Disengage:
                 myNavmeshAgent.destination = mySpawnPosition;

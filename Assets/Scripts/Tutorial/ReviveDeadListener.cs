@@ -94,14 +94,14 @@ public class ReviveDeadListener : MonoBehaviour
 
     public void ListenToDeaths()
     {
-        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.PlayerDied);
     }
 
     public void StopListening()
     {
         myPlayers.Clear();
         myDeadPlayerIds.Clear();
-        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.PlayerDied);
     }
 
     private void OnTriggerEnter(Collider other)

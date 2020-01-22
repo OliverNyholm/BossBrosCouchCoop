@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5739013723862484760}
   - component: {fileID: -2269404912705107841}
   - component: {fileID: -4967304088183589908}
+  - component: {fileID: 5756780124623852708}
   m_Layer: 0
   m_Name: Siphon Soul
   m_TagString: Spell
@@ -143,9 +144,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: 
+  myTutorialInfo: 
   myName: Siphon Soul
   mySpellType: 0
   mySpellTarget: 4
+  myAnimationType: 0
   myDamage: 70
   myResourceCost: 0
   myThreatModifier: 1
@@ -212,3 +215,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5756780124623852708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739013723862484767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 4294967295

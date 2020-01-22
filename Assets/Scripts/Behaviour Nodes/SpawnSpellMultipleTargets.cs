@@ -8,6 +8,7 @@ public class SpawnSpellMultipleTargets : Action
 {
     public SharedGameObjectList myTargets = null;
     public GameObject mySpell = null;
+    public int mySpellMaxCount = 4;
 
     public SharedTransform mySpawnTransform = null;
 
@@ -22,6 +23,13 @@ public class SpawnSpellMultipleTargets : Action
     private bool myHasSpawnedSpell;
     private string myEventName = "SpellSpawned";
     private string myEventInterruptedName = "SpellInterrupted";
+
+    public override void OnAwake()
+    {
+        base.OnAwake();
+
+        PoolManager.Instance.AddPoolableObjects(mySpell, mySpell.GetComponent<UniqueID>().GetID(), mySpellMaxCount);
+    }
 
     public override void OnStart()
     {

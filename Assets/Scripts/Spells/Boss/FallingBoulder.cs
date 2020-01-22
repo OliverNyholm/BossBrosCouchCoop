@@ -15,8 +15,10 @@ public class FallingBoulder : Spell
 
     List<int> myTargetsHit = new List<int>();
 
-    protected override void Start()
+    protected override void OnFirstUpdate()
     {
+        base.OnFirstUpdate();
+
         RaycastHit hit;
         Ray ray = new Ray(transform.position, Vector3.down);
         const float maxDistance = 100.0f;
@@ -34,6 +36,9 @@ public class FallingBoulder : Spell
 
     protected override void Update()
     {
+        if (myIsFirstUpdate)
+            OnFirstUpdate();
+
         myMeshTransform.Rotate(myRandomRotation * myRotationSpeed * Time.deltaTime);
 
         transform.position += Vector3.down * mySpeed * Time.deltaTime;

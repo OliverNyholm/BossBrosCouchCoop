@@ -6,6 +6,7 @@ public class SpawnSpell : Action
 {
     public SharedGameObject myTarget = null;
     public GameObject mySpell = null;
+    public int mySpellMaxCount = 4;
 
     public SharedTransform mySpawnTransform = null;
 
@@ -20,6 +21,13 @@ public class SpawnSpell : Action
     private bool myHasSpawnedSpell;
     private string myEventName = "SpellSpawned";
     private string myEventInterruptedName = "SpellInterrupted";
+
+    public override void OnAwake()
+    {
+        base.OnAwake();
+
+        PoolManager.Instance.AddPoolableObjects(mySpell, mySpell.GetComponent<UniqueID>().GetID(), mySpellMaxCount);
+    }
 
     public override void OnStart()
     {

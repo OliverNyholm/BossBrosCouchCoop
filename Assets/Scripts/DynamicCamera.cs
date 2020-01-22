@@ -32,13 +32,13 @@ public class DynamicCamera : MonoBehaviour
         mySubscriber = new Subscriber();
         mySubscriber.EventOnReceivedMessage += ReceiveMessage;
         //PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
-        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.PlayerResucitated);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.PlayerResucitated);
     }
 
     private void OnDestroy()
     {
         //PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerDied);
-        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.PlayerResucitated);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.PlayerResucitated);
     }
 
     public void ReplacePlayersToTarget(TargetHandler aTargetHandler)
@@ -124,7 +124,7 @@ public class DynamicCamera : MonoBehaviour
     {
         switch (aMessage.Type)
         {
-            case MessageType.PlayerDied:
+            case MessageCategory.PlayerDied:
                 for (int index = 0; index < myPlayerTransforms.Count; index++)
                 {
                     if (myPlayerTransforms[index].gameObject.GetInstanceID() == aMessage.Data.myInt)
@@ -134,7 +134,7 @@ public class DynamicCamera : MonoBehaviour
                     }
                 }
                 break;
-            case MessageType.PlayerResucitated:
+            case MessageCategory.PlayerResucitated:
                 myPlayerTransforms.Add(myTargetHandler.GetPlayer(aMessage.Data.myInt).transform);
                 break;
         }

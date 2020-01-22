@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MessageType
+public enum MessageCategory
 {
     SpellSpawned,
     PlayerDied,
@@ -12,5 +12,6 @@ public enum MessageType
     EnteredCombat,
     EnemyDied,
     UITextToggle,
+    TutorialHealFightComplete,
     Count
 }

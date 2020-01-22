@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
         player.SetAvatar(aCharacter.myColorScheme.myAvatar);
 
         Vector3 rgb = new Vector3(player.myCharacterColor.r, player.myCharacterColor.g, player.myCharacterColor.b);
-        PostMaster.Instance.PostMessage(new Message(MessageType.RegisterPlayer, playerGO.GetInstanceID(), rgb));
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.RegisterPlayer, playerGO.GetInstanceID(), rgb));
 
         aTargetHandler.AddPlayer(playerGO);
     }
@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour
         myPlayerSelectData[myPlayerSelectData.Count - 1].myPlayerControls = keyboardListener;
 
         Vector3 rgb = new Vector3(myDebugPlayer.myCharacterColor.r, myDebugPlayer.myCharacterColor.g, myDebugPlayer.myCharacterColor.b);
-        PostMaster.Instance.PostMessage(new Message(MessageType.RegisterPlayer, playerGO.GetInstanceID(), rgb));
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.RegisterPlayer, playerGO.GetInstanceID(), rgb));
 
         aTargetHandler.AddPlayer(playerGO);
     }

@@ -12,7 +12,7 @@ public class Sacrifice : Spell
 
         myParent.GetComponent<Health>().TakeDamage(healthToCast, myParent.GetComponent<Character>().myCharacterColor);
         myTarget.GetComponent<Health>().GainHealth(healthToCast);
-        PostMaster.Instance.PostMessage(new Message(MessageType.SpellSpawned, new MessageData(myParent.GetInstanceID(), myDamage)));
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myDamage)));
     }
 
     protected override string GetSpellDetail()

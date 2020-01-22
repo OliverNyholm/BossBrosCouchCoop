@@ -28,18 +28,18 @@ public class MessageData
 
 public class Message
 {
-    public Message(MessageType aMessageType)
+    public Message(MessageCategory aMessageType)
     {
         Type = aMessageType;
     }
 
-    public Message(MessageType aMessageType, MessageData aAIMessageData)
+    public Message(MessageCategory aMessageType, MessageData aAIMessageData)
     {
         Type = aMessageType;
         Data = aAIMessageData;
     }
 
-    public Message(MessageType aMessageType, int aIntValue)
+    public Message(MessageCategory aMessageType, int aIntValue)
     {
         Type = aMessageType;
         Data = new MessageData
@@ -48,7 +48,7 @@ public class Message
         };
     }
 
-    public Message(MessageType aMessageType, float aFloatValue)
+    public Message(MessageCategory aMessageType, float aFloatValue)
     {
         Type = aMessageType;
         Data = new MessageData
@@ -57,7 +57,7 @@ public class Message
         };
     }
 
-    public Message(MessageType aMessageType, Vector2 aVector2)
+    public Message(MessageCategory aMessageType, Vector2 aVector2)
     {
         Type = aMessageType;
         Data = new MessageData
@@ -66,7 +66,7 @@ public class Message
         };
     }
 
-    public Message(MessageType aMessageType, Vector3 aVector3)
+    public Message(MessageCategory aMessageType, Vector3 aVector3)
     {
         Type = aMessageType;
         Data = new MessageData
@@ -75,13 +75,13 @@ public class Message
         };
     }
 
-    public Message(MessageType aMessageType, int aIntValue, Vector3 aVector3)
+    public Message(MessageCategory aMessageType, int aIntValue, Vector3 aVector3)
     {
         Type = aMessageType;
         Data = new MessageData(aIntValue, aVector3);
     }
 
-    public MessageType Type { get; }
+    public MessageCategory Type { get; }
 
     public MessageData Data { get; }
 }

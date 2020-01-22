@@ -20,7 +20,7 @@ public class TutorialCompletion : MonoBehaviour
     private GameObject myGate = null;
 
     [SerializeField]
-    private Collider myStartCollider = null;
+    protected Collider myStartCollider = null;
 
     protected List<GameObject> myPlayers;
     protected List<GameObject> myCompletedPlayers = new List<GameObject>();

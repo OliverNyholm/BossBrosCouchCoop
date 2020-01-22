@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 6257585334518272511}
   - component: {fileID: 5684514215888146920}
   - component: {fileID: 4428230123010351583}
+  - component: {fileID: 8028502075317223343}
   m_Layer: 0
   m_Name: Fireball
   m_TagString: Spell
@@ -141,9 +142,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: A Fireball spawned from one end moving forwards
+  myTutorialInfo: 
   myName: Fireball
   mySpellType: 0
   mySpellTarget: 4
+  myAnimationType: 0
   myDamage: 250
   myResourceCost: 0
   myThreatModifier: 1
@@ -4996,6 +4999,19 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &8028502075317223343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3681220077701603216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 4294967295
 --- !u!1001 &4543912225682940581
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -17,7 +17,6 @@ public class ObjectPool : MonoBehaviour
     private void Start()
     {
         myPool = new Queue<GameObject>(myPoolSize);
-
         for (int index = 0; index < myPoolSize; index++)
         {
             GameObject instance = Instantiate(myPrefabObject, transform);

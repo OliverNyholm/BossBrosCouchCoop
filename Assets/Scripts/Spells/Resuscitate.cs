@@ -20,7 +20,7 @@ public class Resuscitate : Spell
         {
             myTarget.GetComponent<Health>().GainHealth(myDamage);
             myTarget.GetComponent<Player>().OnRevive();
-            PostMaster.Instance.PostMessage(new Message(MessageType.PlayerResucitated, myTarget.GetInstanceID()));
+            PostMaster.Instance.PostMessage(new Message(MessageCategory.PlayerResucitated, myTarget.GetInstanceID()));
             ReturnToPool();
         }
     }

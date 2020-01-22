@@ -6,7 +6,7 @@ using UnityEngine;
 public class Spell : PoolableObject
 {
     public string myQuickInfo;
-    [TextArea(2,5)]
+    [TextArea(2, 5)]
     public string myTutorialInfo;
 
     public string myName;
@@ -38,6 +38,8 @@ public class Spell : PoolableObject
 
     public Buff myBuff;
 
+    protected bool myIsFirstUpdate = true;
+
     [System.Serializable]
     public struct SpellSFX
     {
@@ -68,10 +70,14 @@ public class Spell : PoolableObject
     public override void Reset()
     {
         myTarget = null;
+        myIsFirstUpdate = true;
     }
 
     protected virtual void Update()
     {
+        if (myIsFirstUpdate)
+            OnFirstUpdate();
+
         float distanceSqr = 0.0f;
         if (mySpeed > 0.0f)
             distanceSqr = (myTarget.transform.position - transform.position).sqrMagnitude;
@@ -99,6 +105,12 @@ public class Spell : PoolableObject
             ReturnToPool();
         }
     }
+
+    protected virtual void OnFirstUpdate()
+    {
+        myIsFirstUpdate = false;
+    }
+
     private void SpawnBuff()
     {
         if (myBuff.mySpellType == SpellType.DOT || myBuff.mySpellType == SpellType.HOT)
@@ -132,7 +144,7 @@ public class Spell : PoolableObject
             if (myDamage > 0.0f)
             {
                 myTarget.GetComponent<Health>().GainHealth(myDamage);
-                PostMaster.Instance.PostMessage(new Message(MessageType.SpellSpawned, new MessageData(myParent.GetInstanceID(), myDamage)));
+                PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myDamage)));
             }
         }
         else
@@ -177,7 +189,7 @@ public class Spell : PoolableObject
         target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID);
 
         if (myParent.tag == "Player")
-            PostMaster.Instance.PostMessage(new Message(MessageType.DamageDealt, new Vector2(parentID, damageDone)));
+            PostMaster.Instance.PostMessage(new Message(MessageCategory.DamageDealt, new Vector2(parentID, damageDone)));
     }
 
     public void SetParent(GameObject aParent)

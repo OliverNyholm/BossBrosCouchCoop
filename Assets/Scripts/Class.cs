@@ -197,6 +197,7 @@ public class Class : MonoBehaviour
             }
 
             myActionButtons[tempIndex].GetComponent<Button>().onClick.AddListener(delegate { anActionClickFunction(tempIndex, true); });
+            myActionButtons[index].GetComponent<ActionKey>().SpellPressed();
         }
     }
 }

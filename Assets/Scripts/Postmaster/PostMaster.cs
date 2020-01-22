@@ -41,9 +41,9 @@ public class PostMaster : ScriptableObject
             return;
         
         myInstance = ScriptableObject.CreateInstance<PostMaster>();
-        myInstance.mySubscribers = new List<List<Subscriber>>((int)MessageType.Count);
+        myInstance.mySubscribers = new List<List<Subscriber>>((int)MessageCategory.Count);
         myInstance.myMessages = new Queue<Message>();
-        for (int i = 0; i < (int)MessageType.Count; i++)
+        for (int i = 0; i < (int)MessageCategory.Count; i++)
         {
             List<Subscriber> subscriberList = new List<Subscriber>();
             myInstance.mySubscribers.Add(subscriberList);
@@ -52,12 +52,12 @@ public class PostMaster : ScriptableObject
         DontDestroyOnLoad(myInstance);
     }
 
-    public void RegisterSubscriber(ref Subscriber aSubscriber, MessageType aMessageType)
+    public void RegisterSubscriber(ref Subscriber aSubscriber, MessageCategory aMessageType)
     {
         mySubscribers[(int)aMessageType].Add(aSubscriber);
     }
 
-    public void UnregisterSubscriber(ref Subscriber aSubscriber, MessageType aMessageType)
+    public void UnregisterSubscriber(ref Subscriber aSubscriber, MessageCategory aMessageType)
     {
         mySubscribers[(int)aMessageType].Remove(aSubscriber);
     }

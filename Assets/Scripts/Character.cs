@@ -393,7 +393,7 @@ public abstract class Character : MonoBehaviour
                 {
                     myHealth.TakeDamage(dot.GetTickValue(), dot.GetParent().GetComponent<Character>().myCharacterColor);
                     if (dot.GetParent().tag == "Player")
-                        PostMaster.Instance.PostMessage(new Message(MessageType.DamageDealt, new Vector2(dot.GetParent().GetInstanceID(), dot.GetTickValue())));
+                        PostMaster.Instance.PostMessage(new Message(MessageCategory.DamageDealt, new Vector2(dot.GetParent().GetInstanceID(), dot.GetTickValue())));
 
                     dot.ShouldDealTickSpellEffect = false;
                 }

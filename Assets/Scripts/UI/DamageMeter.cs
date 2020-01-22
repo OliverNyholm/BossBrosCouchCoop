@@ -46,22 +46,22 @@ public class DamageMeter : MonoBehaviour
     {
         mySubscriber = new Subscriber();
         mySubscriber.EventOnReceivedMessage += ReceiveAIMessage;
-        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.DamageDealt);
-        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.RegisterPlayer);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.DamageDealt);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.RegisterPlayer);
     }
 
     void Unsubscribe()
     {
         mySubscriber.EventOnReceivedMessage -= ReceiveAIMessage;
-        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.DamageDealt);
-        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.RegisterPlayer);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.DamageDealt);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.RegisterPlayer);
     }
 
     private void ReceiveAIMessage(Message aMessage)
     {
         switch (aMessage.Type)
         {
-            case MessageType.DamageDealt:
+            case MessageCategory.DamageDealt:
                 {
                     int id = (int)aMessage.Data.myVector2.x;
                     int value = (int)aMessage.Data.myVector2.y;
@@ -72,7 +72,7 @@ public class DamageMeter : MonoBehaviour
                     SortDamageMeter();
                 }
                 break;
-            case MessageType.RegisterPlayer:
+            case MessageCategory.RegisterPlayer:
                 {
                     int id = aMessage.Data.myInt;
                     Vector3 rgb = aMessage.Data.myVector3;

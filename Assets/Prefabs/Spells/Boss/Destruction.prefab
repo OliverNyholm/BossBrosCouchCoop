@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8803165340018615047}
   - component: {fileID: 8803165340018615042}
   - component: {fileID: 8803165340018615043}
+  - component: {fileID: 4700144320854121638}
   m_Layer: 0
   m_Name: Destruction
   m_TagString: Untagged
@@ -58,9 +59,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: 
+  myTutorialInfo: 
   myName: Destruction
   mySpellType: 0
   mySpellTarget: 4
+  myAnimationType: 0
   myDamage: 350
   myResourceCost: 0
   myThreatModifier: 1
@@ -83,3 +86,16 @@ MonoBehaviour:
   mySpellVFX: {fileID: 1144211659505583100, guid: d353dbfc9b7c5934a86bd59fcd26dfb7,
     type: 3}
   myAttackTag: Player
+--- !u!114 &4700144320854121638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8803165340018615040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 4294967295

@@ -680,7 +680,7 @@ public class Player : Character
         myVelocity.x = 0.0f;
         myVelocity.z = 0.0f;
         myShouldAutoAttack = false;
-        PostMaster.Instance.PostMessage(new Message(MessageType.PlayerDied, gameObject.GetInstanceID()));
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.PlayerDied, gameObject.GetInstanceID()));
     }
 
     public void OnRevive()

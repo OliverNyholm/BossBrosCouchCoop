@@ -44,12 +44,12 @@ public class LevelCompletion : MonoBehaviour
 
     private void Subscribe()
     {
-        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageType.EnemyDied);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.EnemyDied);
     }
 
     private void Unsubscribe()
     {
-        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageType.EnemyDied);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.EnemyDied);
     }
 
     private void ReceiveMessage(Message aMessage)
@@ -58,7 +58,7 @@ public class LevelCompletion : MonoBehaviour
 
         switch (aMessage.Type)
         {
-            case MessageType.EnemyDied:
+            case MessageCategory.EnemyDied:
                 for (int index = 0; index < myGoals.Count; index++)
                 {
                     if (myGoals[index].myType == Goal.GoalType.Death && myGoals[index].myGameObject.GetInstanceID() == aMessage.Data.myInt)

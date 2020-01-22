@@ -131,6 +131,6 @@ public class CharacterHUD : MonoBehaviour
         myHealthText.enabled = !myHealthText.enabled;
         myResourceText.enabled = !myResourceText.enabled;
 
-        PostMaster.Instance.PostMessage(new Message(MessageType.UITextToggle, aPlayerID));
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.UITextToggle, aPlayerID));
     }
 }

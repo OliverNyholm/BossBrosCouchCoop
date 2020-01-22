@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8838085367322804972}
   - component: {fileID: 5382232612251820723}
   - component: {fileID: 6525230371375074637}
+  - component: {fileID: -7160572297236797112}
   m_Layer: 0
   m_Name: SpawnFire
   m_TagString: Untagged
@@ -192,6 +193,7 @@ MonoBehaviour:
   myName: Spawn Flames
   mySpellType: 0
   mySpellTarget: 4
+  myAnimationType: 0
   myDamage: 0
   myResourceCost: 0
   myThreatModifier: 1
@@ -216,3 +218,16 @@ MonoBehaviour:
   myObjectToSpawn: {fileID: 8097369550521473238, guid: 3656979bb8f936c48a6471e86182350b,
     type: 3}
   mySpawnObjectLifetime: 20
+--- !u!114 &-7160572297236797112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8859320039742480474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 4294967295

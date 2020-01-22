@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2945688611049919650}
   - component: {fileID: 8357044485707513507}
   - component: {fileID: 7864843675528193043}
+  - component: {fileID: 7571193276542737127}
   m_Layer: 0
   m_Name: Enrage
   m_TagString: Spell
@@ -141,9 +142,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: 
+  myTutorialInfo: 
   myName: Enrage
   mySpellType: 8
   mySpellTarget: 2
+  myAnimationType: 0
   myDamage: 0
   myResourceCost: 0
   myThreatModifier: 1
@@ -165,3 +168,16 @@ MonoBehaviour:
     myHitSound: {fileID: 8300000, guid: 8abc334c8a4b8d6448e03a528e8db829, type: 3}
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
+--- !u!114 &7571193276542737127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601897403905798348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 4294967295

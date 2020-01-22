@@ -6,6 +6,7 @@ using BehaviorDesigner.Runtime.Tasks;
 public class SpawnSpellMultiplePositions : Action
 {
     public GameObject mySpell;
+    public int mySpellMaxCount = 4;
 
     public SharedGameObjectList mySpawnObjects;
 
@@ -18,6 +19,13 @@ public class SpawnSpellMultiplePositions : Action
     private bool myHasRegisteredForEvent;
     private bool myHasSpawnedSpell;
     private string myEventName = "SpellSpawned";
+
+    public override void OnAwake()
+    {
+        base.OnAwake();
+
+        PoolManager.Instance.AddPoolableObjects(mySpell, mySpell.GetComponent<UniqueID>().GetID(), mySpellMaxCount);
+    }
 
     public override void OnStart()
     {

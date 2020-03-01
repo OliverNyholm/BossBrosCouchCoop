@@ -9,6 +9,10 @@ public class SpawnSpell : Action
     public int mySpellMaxCount = 4;
 
     public SharedTransform mySpawnTransform = null;
+    [Header("If only want to use position, use spawn position")]
+    public SharedVector3 mySpawnPosition = null;
+
+    private GameObject myEmptyTransformHolder;
 
     [BehaviorDesigner.Runtime.Tasks.Tooltip("Enable if you want the spell to spawn without vision, resource, etc checks.")]
     public bool myShouldIgnoreCastability = true;
@@ -26,7 +30,13 @@ public class SpawnSpell : Action
     {
         base.OnAwake();
 
-        PoolManager.Instance.AddPoolableObjects(mySpell, mySpell.GetComponent<UniqueID>().GetID(), mySpellMaxCount);
+        if(mySpell.GetComponent<UniqueID>() == null)
+            Debug.LogError(mySpell.name + " is missing unique ID!");
+
+        PoolManager poolManager = PoolManager.Instance;
+
+        myEmptyTransformHolder = Object.Instantiate(new GameObject("Behaviour[" + ID + "]"), poolManager.GetEmptyTransformHolder());
+        poolManager.AddPoolableObjects(mySpell, mySpell.GetComponent<UniqueID>().GetID(), mySpellMaxCount);
     }
 
     public override void OnStart()
@@ -38,13 +48,25 @@ public class SpawnSpell : Action
             myHasRegisteredForEvent = true;
         }
 
-        if (mySpawnTransform.Value == null)
-            mySpawnTransform.Value = transform;
+        if (mySpawnTransform.Value != null)
+        {
+            myEmptyTransformHolder.transform.position = mySpawnTransform.Value.position;
+            myEmptyTransformHolder.transform.rotation = mySpawnTransform.Value.rotation;
+            myEmptyTransformHolder.transform.localScale = mySpawnTransform.Value.localScale;
+        }
+        else if(mySpawnPosition.Value != null)
+        {
+            myEmptyTransformHolder.transform.position = mySpawnPosition.Value;
+        }
+        else
+        {
+            myEmptyTransformHolder.transform.position = transform.position;
+        }
 
         myHasSpawnedSpell = false;
         Enemy enemyComponent = GetComponent<Enemy>();
         enemyComponent.IsInterruptable = myIsInterruptable;
-        myCanCastSpell = enemyComponent.CastSpell(mySpell, myTarget.Value, mySpawnTransform.Value, myShouldIgnoreCastability);
+        myCanCastSpell = enemyComponent.CastSpell(mySpell, myTarget.Value, myEmptyTransformHolder.transform, myShouldIgnoreCastability);
     }
 
     public override TaskStatus OnUpdate()

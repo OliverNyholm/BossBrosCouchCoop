@@ -16,6 +16,10 @@ public class PoolManager : MonoBehaviour
     [SerializeField]
     private ObjectPool myAutoAttackPool = null;
 
+    [Header("GameObject for Empty Transform Holder")]
+    [SerializeField]
+    private GameObject myEmptyTransformHolder = null;
+
     private Dictionary<uint, ObjectPool> myObjectPoolDictionary = new Dictionary<uint, ObjectPool>();
 
     public static PoolManager Instance { get; private set; }
@@ -40,6 +44,11 @@ public class PoolManager : MonoBehaviour
         return myPoolPrefab;
     }
 
+    public Transform GetEmptyTransformHolder()
+    {
+        return myEmptyTransformHolder.transform;
+    }
+
     public GameObject GetPooledObject(uint anObjectID)
     {
         if(myObjectPoolDictionary.TryGetValue(anObjectID, out ObjectPool pool))
@@ -50,6 +59,18 @@ public class PoolManager : MonoBehaviour
         {
             Debug.LogError("There is no pool with id: " + anObjectID);
             return null;
+        }
+    }
+
+    public void ReturnObject(GameObject aGameObject, uint anObjectID)
+    {
+        if (myObjectPoolDictionary.TryGetValue(anObjectID, out ObjectPool pool))
+        {
+            pool.ReturnObject(aGameObject);
+        }
+        else
+        {
+            Debug.LogError("Can't return " + aGameObject.name + " to pool. There is no pool with id: " + anObjectID);
         }
     }
 

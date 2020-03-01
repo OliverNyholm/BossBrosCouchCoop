@@ -43,11 +43,9 @@ namespace BehaviorDesigner.Runtime.Tasks
             // Remember the start time.
             startTime = Time.time;
             if (randomWait.Value)
-            {
+            if (randomWait.Value) {
                 waitDuration = Random.Range(randomWaitMin.Value, randomWaitMax.Value);
-            }
-            else
-            {
+            } else {
                 waitDuration = waitTime.Value;
             }
 
@@ -71,8 +69,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         public override TaskStatus OnUpdate()
         {
             // The task is done waiting if the time waitDuration has elapsed since the task was started.
-            if (startTime + waitDuration < Time.time)
-            {
+            if (startTime + waitDuration < Time.time) {
                 return TaskStatus.Success;
             }
             // Otherwise we are still waiting.
@@ -81,13 +78,10 @@ namespace BehaviorDesigner.Runtime.Tasks
 
         public override void OnPause(bool paused)
         {
-            if (paused)
-            {
+            if (paused) {
                 // Remember the time that the behavior was paused.
                 pauseTime = Time.time;
-            }
-            else
-            {
+            } else {
                 // Add the difference between Time.time and pauseTime to figure out a new start time.
                 startTime += (Time.time - pauseTime);
             }

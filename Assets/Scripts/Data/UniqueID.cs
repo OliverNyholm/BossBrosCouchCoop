@@ -1,17 +1,13 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using System.IO;
 
+[DisallowMultipleComponent]
 public class UniqueID : MonoBehaviour
 {
     [SerializeField]
     private uint myID = uint.MaxValue;
-
-#if UNITY_EDITOR 
-    //ID to make sure the ID can't be changed from inspector.
-    private uint myEditorID = uint.MaxValue;
-    private bool myCanEditID = false;
-#endif
 
     public uint GetID()
     {
@@ -20,47 +16,32 @@ public class UniqueID : MonoBehaviour
 
 #if UNITY_EDITOR
     //Should not be called by other components. Only used for editor
-    public void GenerateID()
+    public uint GenerateID()
     {
-        myCanEditID = true;
+        uint returnValue = uint.MaxValue;
 
         const string fileName = "highestUniqueID.txt";
         string fullPath = Application.dataPath + "/EditorData/" + fileName;
         StreamReader streamReader = new StreamReader(fullPath);
         if (uint.TryParse(streamReader.ReadToEnd(), out uint data))
         {
-            myID = data + 1;
-            myEditorID = myID;
+            returnValue = data + 1;
         }
         else
         {
             Debug.LogError("Could read data in " + fileName + ". No unique ID generated.");
             streamReader.Close();
-            return;
+            return returnValue;
         }
         streamReader.Close();
 
         StreamWriter writer = new StreamWriter(fullPath, false);
-        writer.Write(myID);
+        writer.Write(returnValue);
         writer.Close();
 
-        myCanEditID = false;
+        return returnValue;
     }
 #endif
-
-    private void OnValidate()
-    {
-#if UNITY_EDITOR
-        if (!myCanEditID)
-        {
-            myID = myEditorID;
-        }
-        else
-        {
-            myEditorID = myID;
-        }
-#endif
-    }
 }
 
 #if UNITY_EDITOR
@@ -83,8 +64,14 @@ public class UniqueIDEditor : Editor
         if (myUniqueID.GetID() == uint.MaxValue)
         {
             if (GUILayout.Button("Generate Unique ID"))
-            {
-                myUniqueID.GenerateID();
+            {                
+
+                SerializedProperty id = serializedObject.FindProperty("myID");
+                id.intValue = (int)myUniqueID.GenerateID();
+                serializedObject.ApplyModifiedProperties();
+
+                EditorUtility.SetDirty(myUniqueID);
+                EditorSceneManager.MarkSceneDirty(myUniqueID.gameObject.scene);
             }
 
             EditorGUILayout.HelpBox("Component has not generated an actual unique ID yet!", MessageType.Warning);

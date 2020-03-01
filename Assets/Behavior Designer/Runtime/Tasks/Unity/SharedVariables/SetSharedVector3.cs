@@ -6,7 +6,9 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity.SharedVariables
     [TaskDescription("Sets the SharedVector3 variable to the specified object. Returns Success.")]
     public class SetSharedVector3 : Action
     {
-        [Tooltip("The value to set the SharedVector3 to")]
+        [Tooltip("The GameObject to set the SharedVector3 to. (Ignores targetValue)")]
+        public SharedGameObject sharedGameObject;
+        [Tooltip("The Vector3 to set the SharedVector3 to. (Ignores sharedGameObject)")]
         public SharedVector3 targetValue;
         [RequiredField]
         [Tooltip("The SharedVector3 to set")]
@@ -14,7 +16,10 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity.SharedVariables
 
         public override TaskStatus OnUpdate()
         {
-            targetVariable.Value = targetValue.Value;
+            if (sharedGameObject.Value == null)
+                targetVariable.Value = targetValue.Value;
+            else
+                targetVariable.Value = sharedGameObject.Value.transform.position;
 
             return TaskStatus.Success;
         }

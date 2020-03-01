@@ -5,24 +5,39 @@ using BehaviorDesigner.Runtime.Tasks;
 public class HighlightArea : Action
 {
     public GameObject myHighlightPrefab = null;
-    private GameObject myHightlightObject = null;
+    public int mySpellMaxCount = 8;
 
-    public SharedTransform mySpawnTransform = null;
+    private GameObject myHightlightObject = null;
+    private uint myUniqueID = uint.MaxValue;
+
+    public SharedVector3 mySpawnPosition = null;
 
     public float myHighlightDuration;
-    public float myTimer;
+    private float myTimer;
+
+    public override void OnAwake()
+    {
+        base.OnAwake();
+
+        myUniqueID = myHighlightPrefab.GetComponent<UniqueID>().GetID();
+        PoolManager.Instance.AddPoolableObjects(myHighlightPrefab, myUniqueID, mySpellMaxCount);
+    }
 
     public override void OnStart()
     {
-        if (mySpawnTransform.Value == null)
-            mySpawnTransform.Value = transform;
-
         myTimer = myHighlightDuration;
+
+        myHightlightObject = PoolManager.Instance.GetPooledObject(myUniqueID);
+        myHightlightObject.transform.position = mySpawnPosition.Value;
+
+        HighlightAreaLogic logic = myHightlightObject.GetComponent<HighlightAreaLogic>();
+        if (logic)
+            logic.SetData(myHighlightDuration);
     }
 
     public override TaskStatus OnUpdate()
     {
-        myTimer -= Time.time;
+        myTimer -= Time.deltaTime;
         if(myTimer <= 0.0f)
             return TaskStatus.Success;
 
@@ -31,11 +46,7 @@ public class HighlightArea : Action
 
     public override void OnEnd()
     {
-
-    }
-
-    public override void OnBehaviorComplete()
-    {
-
+        PoolManager.Instance.ReturnObject(myHightlightObject, myUniqueID);
+        myHightlightObject = null;
     }
 }

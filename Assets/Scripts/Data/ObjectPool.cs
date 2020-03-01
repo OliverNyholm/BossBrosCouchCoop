@@ -48,6 +48,9 @@ public class ObjectPool : MonoBehaviour
     {
         myPool.Enqueue(aGameObject);
         aGameObject.transform.parent = transform;
+
+        if (aGameObject.activeInHierarchy)
+            aGameObject.SetActive(false);
     }
 
     public void SetPrefab(GameObject aGameObject)

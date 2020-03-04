@@ -14,7 +14,19 @@ public class SpawnObjectSpell : Spell
 
     protected override void DealSpellEffect()
     {
-        GameObject spawnObject = Instantiate(myObjectToSpawn, transform.position, Quaternion.identity);
-        Destroy(spawnObject, mySpawnObjectLifetime);
+        PoolManager poolManager = PoolManager.Instance;
+        GameObject spawnObject = poolManager.GetPooledObject(myObjectToSpawn.GetComponent<UniqueID>().GetID());
+
+        spawnObject.transform.localPosition = transform.position;
+        spawnObject.transform.localRotation = Quaternion.identity;
+
+        poolManager.AddTemporaryObject(spawnObject, mySpawnObjectLifetime);
+    }
+
+    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
+    {
+        base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
+
+        aPoolManager.AddPoolableObjects(myObjectToSpawn, myObjectToSpawn.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
     }
 }

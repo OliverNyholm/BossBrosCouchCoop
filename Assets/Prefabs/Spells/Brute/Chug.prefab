@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -165011991730312236}
   - component: {fileID: 2780036389553406639}
   - component: {fileID: 9169980772742402293}
+  - component: {fileID: 7089786059722516994}
   m_Layer: 0
   m_Name: Chug
   m_TagString: Untagged
@@ -193,6 +194,7 @@ MonoBehaviour:
   myName: Chug
   mySpellType: 2
   mySpellTarget: 2
+  myAnimationType: 0
   myDamage: 200
   myResourceCost: 20
   myThreatModifier: 1
@@ -214,3 +216,16 @@ MonoBehaviour:
     myHitSound: {fileID: 8300000, guid: 7fd7796ffba93da4584b4fd38c99ad59, type: 3}
   mySpellVFX: {fileID: 7643320132942334421, guid: 4718dbb07f71ede419cd8ffc6486cca7,
     type: 3}
+--- !u!114 &7089786059722516994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8520828304904293236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 56

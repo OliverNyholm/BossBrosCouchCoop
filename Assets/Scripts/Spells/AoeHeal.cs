@@ -88,4 +88,11 @@ public class AoeHeal : Spell
 
         return detail;
     }
+
+    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
+    {
+        base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
+
+        aPoolManager.AddPoolableObjects(myVFX, myVFX.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
+    }
 }

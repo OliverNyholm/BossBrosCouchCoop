@@ -442,17 +442,36 @@ public class Spell : PoolableObject
         if (target == null)
             target = myTarget;
 
-        GameObject vfxGO = null;
+        PoolManager poolManager = PoolManager.Instance;
+        GameObject vfxGO = poolManager.GetPooledObject(mySpellVFX.GetComponent<UniqueID>().GetID()); ;
         if (target)
-            vfxGO = Instantiate(mySpellVFX, target.transform);
+        {
+            vfxGO.transform.parent = target.transform;
+            vfxGO.transform.localPosition = Vector3.zero;
+            vfxGO.transform.rotation = Quaternion.Euler(-90f, 0.0f, 0.0f);
+        }
         else
-            vfxGO = Instantiate(mySpellVFX, transform.position, Quaternion.Euler(-90f, 0.0f, 0.0f));
+        {
+
+            vfxGO.transform.position = transform.position;
+            vfxGO.transform.rotation = Quaternion.Euler(-90f, 0.0f, 0.0f);
+        }
 
         vfxGO.GetComponent<AudioSource>().clip = mySpellSFX.myHitSound;
         vfxGO.GetComponent<AudioSource>().Play();
 
-        Destroy(vfxGO, aDuration);
+        poolManager.AddTemporaryObject(vfxGO, aDuration);
 
         return vfxGO;
+    }
+
+    public virtual void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
+    {
+        aPoolManager.AddPoolableObjects(gameObject, GetComponent<UniqueID>().GetID(), aSpellMaxCount);
+
+        if(mySpellVFX)
+        {
+            aPoolManager.AddPoolableObjects(mySpellVFX, mySpellVFX.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
+        }
     }
 }

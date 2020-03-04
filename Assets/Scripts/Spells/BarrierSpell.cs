@@ -13,7 +13,7 @@ public class BarrierSpell : Spell
 
     protected override void DealSpellEffect()
     {
-        GameObject barrier = Instantiate(myBarrierPrefab, myParent.transform);
+        GameObject barrier = PoolManager.Instance.GetPooledObject(myBarrierPrefab.GetComponent<UniqueID>().GetID());
 
         SetSpellParent(myParent, barrier);
         StartCoroutine(barrier);
@@ -34,5 +34,14 @@ public class BarrierSpell : Spell
     private void SetSpellParent(GameObject aParent, GameObject aChild)
     {
         aChild.transform.parent = aParent.transform;
+        aChild.transform.localPosition = Vector3.zero;
+        aChild.transform.localRotation = Quaternion.identity;
+    }
+
+    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
+    {
+        base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
+
+        aPoolManager.AddPoolableObjects(myBarrierPrefab, myBarrierPrefab.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
     }
 }

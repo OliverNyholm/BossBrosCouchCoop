@@ -4764,6 +4764,8 @@ GameObject:
   - component: {fileID: 4119063656094898129}
   - component: {fileID: 2386276308461950918}
   - component: {fileID: 5947717933102966769}
+  - component: {fileID: 7964892514456631230}
+  - component: {fileID: -5626616137120472413}
   m_Layer: 0
   m_Name: BurningBall_VFX
   m_TagString: Spell
@@ -9603,6 +9605,31 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &7964892514456631230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6694847203062929854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 74
+--- !u!114 &-5626616137120472413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6694847203062929854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b21e6109fee3ce43b789e174fa20d14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7851350497865731959
 GameObject:
   m_ObjectHideFlags: 0

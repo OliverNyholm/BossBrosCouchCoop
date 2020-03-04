@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(UniqueID))]
 public abstract class PoolableObject : MonoBehaviour
 {
     private ObjectPool myObjectPool;
@@ -24,6 +25,9 @@ public abstract class PoolableObject : MonoBehaviour
         if (myObjectPool)
             myObjectPool.ReturnObject(gameObject);
         else
+        {
+            Debug.LogError(gameObject.name + "is going to be deleted!");
             Destroy(gameObject);
+        }
     }
 }

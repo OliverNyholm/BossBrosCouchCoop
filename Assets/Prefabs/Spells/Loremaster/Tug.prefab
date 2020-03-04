@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23900523106204900}
   - component: {fileID: 114297401084972110}
   - component: {fileID: -2055951927770206000}
+  - component: {fileID: -7708950822744396181}
   m_Layer: 0
   m_Name: Tug
   m_TagString: Untagged
@@ -97,6 +98,7 @@ MonoBehaviour:
   myName: Tug
   mySpellType: 10
   mySpellTarget: 2
+  myAnimationType: 0
   myDamage: 0
   myResourceCost: 70
   myThreatModifier: 1
@@ -215,3 +217,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-7708950822744396181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429279037854398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 40

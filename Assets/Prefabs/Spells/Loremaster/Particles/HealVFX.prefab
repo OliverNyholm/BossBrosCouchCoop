@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 9115148863507398700}
   - component: {fileID: 8982508247812460779}
   - component: {fileID: 7882979766051130689}
+  - component: {fileID: 6646549392846828120}
+  - component: {fileID: -446159309318982562}
   m_Layer: 0
   m_Name: HealVFX
   m_TagString: Untagged
@@ -4849,3 +4851,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6646549392846828120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2989814573608996187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 30
+--- !u!114 &-446159309318982562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2989814573608996187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b21e6109fee3ce43b789e174fa20d14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

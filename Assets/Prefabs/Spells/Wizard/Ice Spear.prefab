@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4586002831502678}
   - component: {fileID: 114496513160579294}
   - component: {fileID: -5337661205673092358}
+  - component: {fileID: 2681934588764537680}
   m_Layer: 0
   m_Name: Ice Spear
   m_TagString: Untagged
@@ -53,6 +54,7 @@ MonoBehaviour:
   myName: Ice Spear
   mySpellType: 0
   mySpellTarget: 4
+  myAnimationType: 0
   myDamage: 200
   myResourceCost: 50
   myThreatModifier: 1
@@ -170,6 +172,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2681934588764537680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125694136323164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 47
 --- !u!1 &681375505583010285
 GameObject:
   m_ObjectHideFlags: 0

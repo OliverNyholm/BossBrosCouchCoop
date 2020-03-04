@@ -435,7 +435,6 @@ public class Enemy : Character
 
     public void SpawnSpell(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform)
     {
-        //GameObject instance = Instantiate(aSpell, aSpawnTransform.position, aSpawnTransform.rotation);
         GameObject spellGO = PoolManager.Instance.GetPooledObject(aSpell.GetComponent<UniqueID>().GetID());
         spellGO.transform.position = aSpawnTransform.position;
         spellGO.transform.rotation = aSpawnTransform.rotation;

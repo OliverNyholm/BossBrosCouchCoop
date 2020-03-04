@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23703719846947000}
   - component: {fileID: 114784976726069702}
   - component: {fileID: 8892797277364096202}
+  - component: {fileID: -673131409886524527}
   m_Layer: 0
   m_Name: Headbutt
   m_TagString: Untagged
@@ -97,6 +98,7 @@ MonoBehaviour:
   myName: Headbutt
   mySpellType: 5
   mySpellTarget: 4
+  myAnimationType: 0
   myDamage: 400
   myResourceCost: 50
   myThreatModifier: 8
@@ -214,3 +216,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-673131409886524527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504369000683004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 57

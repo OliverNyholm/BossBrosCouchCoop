@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23159759953195742}
   - component: {fileID: 114048696720399394}
   - component: {fileID: -7042081472374241871}
+  - component: {fileID: 1150812756593423710}
   m_Layer: 0
   m_Name: God Power
   m_TagString: Untagged
@@ -97,6 +98,7 @@ MonoBehaviour:
   myName: God Power
   mySpellType: 8
   mySpellTarget: 2
+  myAnimationType: 0
   myDamage: 0
   myResourceCost: 80
   myThreatModifier: 1
@@ -214,3 +216,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1150812756593423710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345520433668302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 46

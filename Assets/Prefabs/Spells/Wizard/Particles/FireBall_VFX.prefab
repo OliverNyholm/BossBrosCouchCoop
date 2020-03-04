@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 9144942856888348126}
   - component: {fileID: 9144942856888348127}
   - component: {fileID: 5779688149267132906}
+  - component: {fileID: -6222298235106460653}
+  - component: {fileID: -878580625230096960}
   m_Layer: 0
   m_Name: FireBall_VFX
   m_TagString: Untagged
@@ -4849,3 +4851,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-6222298235106460653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9144942856888348120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 51
+--- !u!114 &-878580625230096960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9144942856888348120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b21e6109fee3ce43b789e174fa20d14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

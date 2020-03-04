@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 65031346234296418}
   - component: {fileID: 114464171052196264}
   - component: {fileID: 54084253920272820}
+  - component: {fileID: -811682326663604003}
   m_Layer: 0
   m_Name: ShieldWall(Wall)
   m_TagString: Spell
@@ -122,3 +123,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-811682326663604003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068469352923482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 62

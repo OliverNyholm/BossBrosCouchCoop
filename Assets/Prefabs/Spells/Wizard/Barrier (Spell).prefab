@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23519293307820428}
   - component: {fileID: 114862396603677272}
   - component: {fileID: 6246725782750733693}
+  - component: {fileID: -5622890541994268371}
   m_Layer: 0
   m_Name: Barrier (Spell)
   m_TagString: Untagged
@@ -97,6 +98,7 @@ MonoBehaviour:
   myName: Barrier
   mySpellType: 10
   mySpellTarget: 2
+  myAnimationType: 0
   myDamage: 0
   myResourceCost: 100
   myThreatModifier: 1
@@ -217,3 +219,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-5622890541994268371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923039765265374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 43

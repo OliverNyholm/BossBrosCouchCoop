@@ -22,11 +22,35 @@ public class PoolManager : MonoBehaviour
 
     private Dictionary<uint, ObjectPool> myObjectPoolDictionary = new Dictionary<uint, ObjectPool>();
 
+    class TemporaryObjectData
+    {
+       public float myLifeTime;
+       public uint myID;
+       public GameObject myGameObject;
+    }
+
+    private List<TemporaryObjectData> myTemporaryObject = new List<TemporaryObjectData>(32);
+
     public static PoolManager Instance { get; private set; }
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Update()
+    {
+        float deltaTime = Time.deltaTime;
+        for (int index = 0; index < myTemporaryObject.Count; index++)
+        {
+            myTemporaryObject[index].myLifeTime -= deltaTime;
+            if(myTemporaryObject[index].myLifeTime <= 0.0f)
+            {
+                myObjectPoolDictionary[myTemporaryObject[index].myID].ReturnObject(myTemporaryObject[index].myGameObject);
+                myTemporaryObject.RemoveAt(index);
+                index--;
+            }
+        }
     }
 
     public GameObject GetFloatingHealth()
@@ -77,7 +101,7 @@ public class PoolManager : MonoBehaviour
     public void AddPoolableObjects(GameObject aPrefab, uint anID, int aSize)
     {
         ObjectPool objectPool;
-        if(!myObjectPoolDictionary.ContainsKey(anID))
+        if(!myObjectPoolDictionary.TryGetValue(anID, out objectPool))
         { 
             GameObject objectPoolGO = Instantiate(myPoolPrefab, transform);
             objectPool = objectPoolGO.GetComponent<ObjectPool>();
@@ -88,5 +112,19 @@ public class PoolManager : MonoBehaviour
 
             myObjectPoolDictionary.Add(anID, objectPool);
         }
+        else
+        {
+            objectPool.IncreasePoolSize(aSize);
+        }
+    }
+
+    public void AddTemporaryObject(GameObject aGameObject, float aDuration)
+    {
+        TemporaryObjectData data = new TemporaryObjectData();
+        data.myLifeTime = aDuration;
+        data.myGameObject = aGameObject;
+        data.myID = aGameObject.GetComponent<UniqueID>().GetID();
+
+        myTemporaryObject.Add(data);
     }
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23659290532304916}
   - component: {fileID: 114044389908569948}
   - component: {fileID: 6160207261214108200}
+  - component: {fileID: 3955796287190003357}
   m_Layer: 0
   m_Name: Shield Wall(Spell)
   m_TagString: Untagged
@@ -97,6 +98,7 @@ MonoBehaviour:
   myName: Shield Wall
   mySpellType: 10
   mySpellTarget: 2
+  myAnimationType: 0
   myDamage: 0
   myResourceCost: 100
   myThreatModifier: 1
@@ -215,3 +217,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3955796287190003357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436276555340398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 61

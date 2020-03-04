@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23380832528937872}
   - component: {fileID: 114081207710235624}
   - component: {fileID: 1838562684178443837}
+  - component: {fileID: 1618172116393657606}
   m_Layer: 0
   m_Name: Fire Blast
   m_TagString: Untagged
@@ -97,6 +98,7 @@ MonoBehaviour:
   myName: Fire Blast
   mySpellType: 0
   mySpellTarget: 4
+  myAnimationType: 0
   myDamage: 200
   myResourceCost: 50
   myThreatModifier: 1
@@ -214,3 +216,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1618172116393657606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954426499067478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 45

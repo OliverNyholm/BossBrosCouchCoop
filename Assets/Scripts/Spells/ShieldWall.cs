@@ -19,6 +19,6 @@ public class ShieldWall : MonoBehaviour
         myCurrentLifeTime += Time.deltaTime;
 
         if (myCurrentLifeTime >= myLifeTime)
-            Destroy(gameObject);
+            PoolManager.Instance.ReturnObject(gameObject, GetComponent<UniqueID>().GetID());
     }
 }

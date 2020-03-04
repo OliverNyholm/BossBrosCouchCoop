@@ -177,7 +177,7 @@ public abstract class Character : MonoBehaviour
                 myCastbar.SetCastTimeText("Cancelled");
                 myStunDuration = 0.0f;
                 StopCasting();
-                Destroy(myChannelGameObject);
+                PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());
                 myChannelGameObject = null;
                 yield break;
             }
@@ -188,7 +188,7 @@ public abstract class Character : MonoBehaviour
         StopCasting();
         if (myChannelGameObject != null)
         {
-            Destroy(myChannelGameObject);
+            PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());
             myChannelGameObject = null;
         }
     }
@@ -217,7 +217,7 @@ public abstract class Character : MonoBehaviour
         else
             spell = myClass.GetSpell(aKeyIndex);
 
-        GameObject instance = spell.GetComponent<PoolableObject>().GetPool().GetPooled();
+        GameObject instance = PoolManager.Instance.GetPooledObject(spell.GetComponent<UniqueID>().GetID());
         instance.transform.position = aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f);
         if (Target)
             instance.transform.LookAt(Target.transform);
@@ -500,7 +500,7 @@ public abstract class Character : MonoBehaviour
 
         if (myChannelGameObject)
         {
-            Destroy(myChannelGameObject);
+            PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());
             myChannelGameObject = null;
         }
     }

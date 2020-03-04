@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1273812743678515254}
   - component: {fileID: 1403638472787888369}
   - component: {fileID: 195631968722425179}
+  - component: {fileID: 9041659323004805165}
+  - component: {fileID: -2020670280235822916}
   m_Layer: 0
   m_Name: HymnOfHealingVFX
   m_TagString: Untagged
@@ -4849,3 +4851,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &9041659323004805165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5093301705617495361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 31
+--- !u!114 &-2020670280235822916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5093301705617495361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b21e6109fee3ce43b789e174fa20d14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -13,6 +13,7 @@ public class ObjectPool : MonoBehaviour
     private int myPoolSize = 10;
 
     private Queue<GameObject> myPool;
+    private bool myHasCreatedPool = false;
 
     private void Start()
     {
@@ -20,11 +21,16 @@ public class ObjectPool : MonoBehaviour
         for (int index = 0; index < myPoolSize; index++)
         {
             GameObject instance = Instantiate(myPrefabObject, transform);
-            instance.GetComponent<PoolableObject>().SetParentPool(this);
+
+            PoolableObject poolableObject = instance.GetComponent<PoolableObject>();
+            if(poolableObject)
+                poolableObject.SetParentPool(this);
+
             instance.SetActive(false);
 
             myPool.Enqueue(instance);
         }
+        myHasCreatedPool = true;
     }
 
     public GameObject GetPooled()
@@ -39,7 +45,12 @@ public class ObjectPool : MonoBehaviour
         myPool.Dequeue();
 
         pooled.SetActive(true);
-        pooled.GetComponent<PoolableObject>().Reset();
+        pooled.transform.localPosition = Vector3.zero;
+        pooled.transform.localRotation = Quaternion.identity;
+
+        PoolableObject poolableObject = pooled.GetComponent<PoolableObject>();
+        if(poolableObject)
+            poolableObject.Reset();
 
         return pooled;
     }
@@ -61,5 +72,17 @@ public class ObjectPool : MonoBehaviour
     public void SetPoolSize(int aSize)
     {
         myPoolSize = aSize;
+    }
+
+    public void IncreasePoolSize(int aSize)
+    {
+        if(!myHasCreatedPool)
+        {
+            myPoolSize += aSize;
+        }
+        else
+        {
+            Debug.LogError("Pool has already been created, size was not increased for: " + myPool.Peek().name);
+        }
     }
 }

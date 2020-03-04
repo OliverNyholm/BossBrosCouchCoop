@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23270370434887666}
   - component: {fileID: 114081146117024262}
   - component: {fileID: 5087510029794061131}
+  - component: {fileID: 3721983586347860365}
   m_Layer: 0
   m_Name: Inspiring Tale
   m_TagString: Untagged
@@ -97,6 +98,7 @@ MonoBehaviour:
   myName: Inspiring Tale
   mySpellType: 2
   mySpellTarget: 2
+  myAnimationType: 0
   myDamage: 150
   myResourceCost: 120
   myThreatModifier: 1
@@ -214,3 +216,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3721983586347860365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385395385526390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 35

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23716427364177180}
   - component: {fileID: 114044364282244742}
   - component: {fileID: 9088086734368364426}
+  - component: {fileID: -1518101963397814658}
   m_Layer: 0
   m_Name: Rush
   m_TagString: Untagged
@@ -92,10 +93,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: Speed boost
+  myTutorialInfo: 
   myName: Rush
-  myTextMesh: {fileID: 1864518658577844, guid: f36714a699a51934ea46e2d82d5a1fca, type: 3}
   mySpellType: 8
   mySpellTarget: 2
+  myAnimationType: 0
   myDamage: 0
   myResourceCost: 50
   myThreatModifier: 1
@@ -103,11 +105,13 @@ MonoBehaviour:
   myCastTime: 0
   myCooldown: 1
   myRange: 25
+  myStunDuration: 0
   myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
   mySpellIcon: {fileID: 21300000, guid: e17cd266fdccfb641bb4961fbb4dfd47, type: 3}
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 1
+  myShouldRotate: 0
   myBuff: {fileID: 11400000, guid: 9c3513f43da15de41b4f4216895df3ad, type: 2}
   mySpellSFX:
     myCastSound: {fileID: 0}
@@ -211,3 +215,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-1518101963397814658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423380903055156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 69

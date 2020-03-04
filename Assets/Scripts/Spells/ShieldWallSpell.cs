@@ -10,7 +10,7 @@ public class ShieldWallSpell : Spell
 
     protected override void DealSpellEffect()
     {
-        GameObject shield = Instantiate(myShieldWallPrefab, myParent.transform);
+        GameObject shield = PoolManager.Instance.GetPooledObject(myShieldWallPrefab.GetComponent<UniqueID>().GetID());
 
         SetSpellParent(myParent, shield);
     }
@@ -25,5 +25,12 @@ public class ShieldWallSpell : Spell
     private void SetSpellParent(GameObject aParent, GameObject aChild)
     {
         aChild.transform.parent = aParent.transform;
+    }
+
+    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
+    {
+        base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
+
+        aPoolManager.AddPoolableObjects(myShieldWallPrefab, myShieldWallPrefab.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
     }
 }

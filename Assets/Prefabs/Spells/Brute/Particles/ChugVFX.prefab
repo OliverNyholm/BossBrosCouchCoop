@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4400280930341913762}
   - component: {fileID: 4595699125101417573}
   - component: {fileID: 3317617996264851919}
+  - component: {fileID: 3850453682985437065}
+  - component: {fileID: 8414571382856272602}
   m_Layer: 0
   m_Name: ChugVFX
   m_TagString: Untagged
@@ -4849,3 +4851,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3850453682985437065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7643320132942334421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 64
+--- !u!114 &8414571382856272602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7643320132942334421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b21e6109fee3ce43b789e174fa20d14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

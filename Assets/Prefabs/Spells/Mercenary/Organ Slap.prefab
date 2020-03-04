@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23783104684869394}
   - component: {fileID: 114671693925793848}
   - component: {fileID: -7549963756373708671}
+  - component: {fileID: 6222842317420569192}
   m_Layer: 0
   m_Name: Organ Slap
   m_TagString: Untagged
@@ -97,6 +98,7 @@ MonoBehaviour:
   myName: Organ Punch
   mySpellType: 0
   mySpellTarget: 4
+  myAnimationType: 0
   myDamage: 500
   myResourceCost: 120
   myThreatModifier: 1
@@ -214,3 +216,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6222842317420569192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159462510580832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 67

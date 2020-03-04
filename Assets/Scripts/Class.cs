@@ -71,22 +71,17 @@ public class Class : MonoBehaviour
 
     public void Start()
     {
-        Transform poolManagerTransform = PoolManager.Instance.transform;
-        GameObject poolPrefab = PoolManager.Instance.GetPoolPrefab();
+        PoolManager poolManager = PoolManager.Instance;
 
         for (int index = 0; index < mySpells.Length; index++)
         {
             if (mySpells[index] == null)
                 continue;
 
-            GameObject pool = Instantiate(poolPrefab, poolManagerTransform);
-            pool.name = mySpells[index].name + " Pool";
-            pool.GetComponent<ObjectPool>().SetPrefab(mySpells[index]);
-
-            mySpells[index].GetComponent<PoolableObject>().SetParentPool(pool.GetComponent<ObjectPool>());
+            mySpells[index].GetComponent<Spell>().CreatePooledObjects(poolManager, 3);
         }
 
-        myAutoAttack.GetComponent<PoolableObject>().SetParentPool(PoolManager.Instance.GetAutoAttackPool());
+        myAutoAttack.GetComponent<Spell>().CreatePooledObjects(poolManager, 4);
     }
 
     private void FindActionBar(Transform aUIParent)

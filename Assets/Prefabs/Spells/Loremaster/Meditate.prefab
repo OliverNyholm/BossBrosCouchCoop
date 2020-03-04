@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33229020919516850}
   - component: {fileID: 114436356734168322}
   - component: {fileID: 6713724109169117104}
+  - component: {fileID: 498867632738760200}
   m_Layer: 0
   m_Name: Meditate
   m_TagString: Untagged
@@ -59,6 +60,7 @@ MonoBehaviour:
   myName: Meditate
   mySpellType: 10
   mySpellTarget: 2
+  myAnimationType: 0
   myDamage: 0
   myResourceCost: 0
   myThreatModifier: 1
@@ -178,3 +180,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &498867632738760200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028730897020040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 36

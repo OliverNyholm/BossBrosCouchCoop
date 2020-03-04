@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 136937635373154268}
   - component: {fileID: 54912764487121144}
   - component: {fileID: 8153939350857595874}
+  - component: {fileID: 1367979812599960636}
   m_Layer: 0
   m_Name: Bum Jump
   m_TagString: Untagged
@@ -99,6 +100,7 @@ MonoBehaviour:
   myName: Bum Jump
   mySpellType: 0
   mySpellTarget: 0
+  myAnimationType: 0
   myDamage: 150
   myResourceCost: 80
   myThreatModifier: 8
@@ -247,3 +249,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1367979812599960636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992501870367618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 55

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4319644148406474}
   - component: {fileID: 114284622595147766}
   - component: {fileID: -5745426637000047865}
+  - component: {fileID: -2695115951383327114}
   m_Layer: 0
   m_Name: Thunder Strike
   m_TagString: Untagged
@@ -50,6 +51,7 @@ MonoBehaviour:
   myName: Thunder Strike
   mySpellType: 0
   mySpellTarget: 4
+  myAnimationType: 0
   myDamage: 500
   myResourceCost: 100
   myThreatModifier: 1
@@ -167,3 +169,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-2695115951383327114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983804006253038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 49

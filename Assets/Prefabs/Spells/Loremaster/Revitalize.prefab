@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23350892302420986}
   - component: {fileID: 114950861995054512}
   - component: {fileID: -3880119373162318382}
+  - component: {fileID: 4981332406135537810}
   m_Layer: 0
   m_Name: Revitalize
   m_TagString: Untagged
@@ -97,6 +98,7 @@ MonoBehaviour:
   myName: Revitalize
   mySpellType: 8
   mySpellTarget: 2
+  myAnimationType: 0
   myDamage: 0
   myResourceCost: 50
   myThreatModifier: 1
@@ -214,3 +216,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4981332406135537810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508935094154108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 37

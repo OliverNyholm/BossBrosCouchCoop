@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BossTimer : MonoBehaviour
+public class BossTimer : PoolableObject
 {
     [SerializeField]
     private Image myIcon = null;
@@ -34,5 +34,9 @@ public class BossTimer : MonoBehaviour
 
         myTimerBar.fillAmount = myTimer / myStartTimer;
         myAttackTimer.text = myTimer.ToString("0.0");
+    }
+
+    public override void Reset()
+    {
     }
 }

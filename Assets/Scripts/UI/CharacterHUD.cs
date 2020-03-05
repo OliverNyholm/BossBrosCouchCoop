@@ -27,6 +27,14 @@ public class CharacterHUD : MonoBehaviour
 
     private List<GameObject> myBuffs = new List<GameObject>();
 
+    private PoolManager myPoolManager;
+
+    private void Awake()
+    {
+        myPoolManager = PoolManager.Instance;
+        myPoolManager.AddPoolableObjects(myBuffPrefab, myBuffPrefab.GetComponent<UniqueID>().GetID(), 6);
+    }
+
     public void Show()
     {
         GetComponent<CanvasGroup>().alpha = 1.0f;
@@ -114,7 +122,8 @@ public class CharacterHUD : MonoBehaviour
 
     public void AddBuff(Sprite aSprite)
     {
-        GameObject buff = Instantiate(myBuffPrefab, myBuffParent.transform);
+        GameObject buff = myPoolManager.GetPooledObject(myBuffPrefab.GetComponent<UniqueID>().GetID());
+        buff.transform.SetParent(myBuffParent.transform, false);
 
         buff.GetComponent<Image>().sprite = aSprite;
         myBuffs.Add(buff);
@@ -122,7 +131,7 @@ public class CharacterHUD : MonoBehaviour
 
     public void RemoveBuff(int anIndex)
     {
-        Destroy(myBuffs[anIndex]);
+        myPoolManager.ReturnObject(myBuffs[anIndex], myBuffPrefab.GetComponent<UniqueID>().GetID());
         myBuffs.RemoveAt(anIndex);
     }
 

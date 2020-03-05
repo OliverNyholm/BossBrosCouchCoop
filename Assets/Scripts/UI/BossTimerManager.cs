@@ -10,9 +10,21 @@ public class BossTimerManager : MonoBehaviour
 
     private List<GameObject> myBossTimers = new List<GameObject>();
 
+    private PoolManager myPoolManager;
+    private uint myTimerPrefabID;
+
+    private void Awake()
+    {
+        myTimerPrefabID = myTimerPrefab.GetComponent<UniqueID>().GetID();
+
+        myPoolManager = PoolManager.Instance;
+        myPoolManager.AddPoolableObjects(myTimerPrefab, myTimerPrefabID, 6);
+    }
+
     public int AddBossTimer(string aName, float aDuration, Sprite aSprite, Color aColor)
     {
-        GameObject instance = Instantiate(myTimerPrefab, transform);
+        GameObject instance = myPoolManager.GetPooledObject(myTimerPrefabID);
+        instance.transform.SetParent(transform, false);
 
         BossTimer bossTimer = instance.GetComponent<BossTimer>();
         bossTimer.SetData(aName, aDuration, aSprite, aColor);
@@ -28,7 +40,8 @@ public class BossTimerManager : MonoBehaviour
         {
             if(myBossTimers[index].GetInstanceID() == aInstanceID)
             {
-                Destroy(myBossTimers[index]);
+                myPoolManager.ReturnObject(myBossTimers[index], myTimerPrefabID);
+                myBossTimers.RemoveAt(index);
                 break;
             }
         }

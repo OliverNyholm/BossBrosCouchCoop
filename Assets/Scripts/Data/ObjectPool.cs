@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(10)]
 public class ObjectPool : MonoBehaviour
 {
     [Header("The Object to pool")]
@@ -58,7 +59,7 @@ public class ObjectPool : MonoBehaviour
     public void ReturnObject(GameObject aGameObject)
     {
         myPool.Enqueue(aGameObject);
-        aGameObject.transform.parent = transform;
+        aGameObject.transform.SetParent(transform, false);
 
         if (aGameObject.activeInHierarchy)
             aGameObject.SetActive(false);

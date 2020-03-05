@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-200)]
 public class PoolManager : MonoBehaviour
 {
     [Header("The Pool prefab that others can use to pool objects")]

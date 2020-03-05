@@ -69,9 +69,9 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: deae1b3c8e7942543871ea8b6998cd38, type: 3}
     m_FontSize: 18
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 1
-    m_MinSize: 5
+    m_MinSize: 12
     m_MaxSize: 25
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.81960785}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
 --- !u!1 &520646460773022372
@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 520646460773022371}
   - component: {fileID: 520646460773022370}
   - component: {fileID: 254723412973194712}
+  - component: {fileID: -4089866425524833612}
   m_Layer: 5
   m_Name: BossAttack
   m_TagString: Untagged
@@ -190,6 +191,19 @@ MonoBehaviour:
   myTimerBar: {fileID: 520646460898847761}
   myAttackName: {fileID: 520646460587189928}
   myAttackTimer: {fileID: 2632968276205430519}
+--- !u!114 &-4089866425524833612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520646460773022372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myID: 78
 --- !u!1 &520646460898847763
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,9 +421,9 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: deae1b3c8e7942543871ea8b6998cd38, type: 3}
     m_FontSize: 18
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 1
-    m_MinSize: 5
+    m_MinSize: 12
     m_MaxSize: 25
     m_Alignment: 5
     m_AlignByGeometry: 0
@@ -430,6 +444,6 @@ MonoBehaviour:
   m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.81960785}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1

@@ -36,7 +36,7 @@ public class SpawnSpell : Action
         PoolManager poolManager = PoolManager.Instance;
 
         myEmptyTransformHolder = Object.Instantiate(new GameObject("Behaviour[" + ID + "]"), poolManager.GetEmptyTransformHolder());
-        poolManager.AddPoolableObjects(mySpell, mySpell.GetComponent<UniqueID>().GetID(), mySpellMaxCount);
+        mySpell.GetComponent<Spell>().CreatePooledObjects(poolManager, mySpellMaxCount);
     }
 
     public override void OnStart()

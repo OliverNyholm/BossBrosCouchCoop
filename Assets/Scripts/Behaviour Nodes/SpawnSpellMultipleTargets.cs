@@ -28,7 +28,7 @@ public class SpawnSpellMultipleTargets : Action
     {
         base.OnAwake();
 
-        PoolManager.Instance.AddPoolableObjects(mySpell, mySpell.GetComponent<UniqueID>().GetID(), mySpellMaxCount);
+        mySpell.GetComponent<Spell>().CreatePooledObjects(PoolManager.Instance, mySpellMaxCount);
     }
 
     public override void OnStart()

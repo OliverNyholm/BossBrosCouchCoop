@@ -1,19 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.HDPipeline;
+using UnityEngine.Rendering.HighDefinition;
 
 public class TargetProjector : MonoBehaviour
 {
     private Material myMaterial;
-    private DecalProjectorComponent myDecalProjector;
+    private DecalProjector myDecalProjector;
 
     private void Awake()
     {
-        myDecalProjector = GetComponent<DecalProjectorComponent>();
-        myMaterial = new Material(myDecalProjector.m_Material);
+        myDecalProjector = GetComponent<DecalProjector>();
+        myMaterial = new Material(myDecalProjector.material);
 
-        myDecalProjector.m_Material = myMaterial;
+        myDecalProjector.material = myMaterial;
     }
     public void AddTargetProjection(Color aColor, int aPlayerIndex)
     {
@@ -32,7 +32,6 @@ public class TargetProjector : MonoBehaviour
                 myMaterial.SetColor("_PlayerFourColor", aColor);
                 break;
         }
-        myDecalProjector.OnValidate();
     }
 
     public void DropTargetProjection(int aPlayerIndex)
@@ -53,7 +52,6 @@ public class TargetProjector : MonoBehaviour
                 myMaterial.SetColor("_PlayerFourColor", off);
                 break;
         }
-        myDecalProjector.OnValidate();
     }
 
     public void SetPlayerColor(Color aColor)

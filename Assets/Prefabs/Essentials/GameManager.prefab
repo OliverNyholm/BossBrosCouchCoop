@@ -46,10 +46,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mySpawnPoints: []
-  myDebugPlayerPrefab: {fileID: 2079121835491590065, guid: 9af091d9950a1c4409eb41eb1c92759a,
-    type: 3}
-  myDebugColorSchemePrefab: {fileID: 11400000, guid: 8d3c2a235a25230488559a9e173bb6c9,
-    type: 2}
+  myDebugPlayerData:
+    myClassData: {fileID: 11400000, guid: 027f3f981548233438e7d41da8b3c1e2, type: 2}
+    myColorScheme: {fileID: 11400000, guid: 8d3c2a235a25230488559a9e173bb6c9, type: 2}
+    myName: DebugPlayer
 --- !u!114 &3448170462930489302
 MonoBehaviour:
   m_ObjectHideFlags: 0

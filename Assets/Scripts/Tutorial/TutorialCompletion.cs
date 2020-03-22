@@ -40,7 +40,6 @@ public class TutorialCompletion : MonoBehaviour
 
     private void Start()
     {
-
         if(myGate)
             myFinishRoutine = LowerGateRoutine;
     }
@@ -104,5 +103,10 @@ public class TutorialCompletion : MonoBehaviour
 
     public virtual void OnChildTriggerExit(Collider aChildCollider, Collider aHit)
     {
+    }
+
+    public void Restart()
+    {
+        myHasStarted = false;
     }
 }

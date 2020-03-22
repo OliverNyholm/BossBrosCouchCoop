@@ -25,6 +25,12 @@ public class ActionKey : MonoBehaviour
     private Color myTargetColor = Color.grey;
     private Color myStartColor;
 
+    [SerializeField]
+    private Color myPulseColor = Color.white;
+    private bool myIsPulsing;
+
+    private Image myImage;
+
     private Coroutine myCoroutine;
 
     public bool IsSpellOnCooldown { get; set; }
@@ -34,7 +40,18 @@ public class ActionKey : MonoBehaviour
         myStartScale = GetComponent<RectTransform>().localScale;
         myLerpInitScale = myStartScale;
 
-        myStartColor = GetComponent<Image>().color;
+        myImage = GetComponent<Image>();
+        myStartColor = myImage.color;
+    }
+
+    private void Update()
+    {
+        if (!myIsPulsing)
+            return;
+
+        float positiveSin = (Mathf.Sin(Time.time * 8.0f) + 1) * 0.5f;
+        float lerpValue = Mathf.Clamp(positiveSin, 0.2f, 1.0f);
+        myImage.color = Color.Lerp(myStartColor, myPulseColor, lerpValue);
     }
 
     public void SetCooldown(float aDuration)
@@ -42,13 +59,13 @@ public class ActionKey : MonoBehaviour
         if (aDuration > 0.0f)
         {
             myCooldownText.text = aDuration.ToString("0.0");
-            GetComponent<Image>().color = new Color(0.8f, 0.3f, 0.3f, 0.5f);
+            myImage.color = new Color(0.8f, 0.3f, 0.3f, 0.5f);
             IsSpellOnCooldown = true;
         }
         else
         {
             myCooldownText.text = "";
-            GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            myImage.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             IsSpellOnCooldown = false;
         }
     }
@@ -61,6 +78,11 @@ public class ActionKey : MonoBehaviour
     public void SetSpellInfo(string aInfo)
     {
         myInfoText.text = aInfo;
+    }
+
+    public void SetPulsation(bool aValue)
+    {
+        myIsPulsing = aValue;
     }
 
     public void SpellPressed()
@@ -89,7 +111,7 @@ public class ActionKey : MonoBehaviour
 
     private IEnumerator ButtonPressedCoroutine()
     {
-        Image spellIcon = GetComponent<Image>();
+        Image spellIcon = myImage;
         if (!IsSpellOnCooldown)
             spellIcon.color = myStartColor;
 
@@ -137,9 +159,8 @@ public class ActionKey : MonoBehaviour
 
     private IEnumerator ButtonSpellHeldDownCoroutine()
     {
-        Image spellIcon = GetComponent<Image>();
         if (!IsSpellOnCooldown)
-            spellIcon.color = myStartColor;
+            myImage.color = myStartColor;
 
         RectTransform spellRect = GetComponent<RectTransform>();
         spellRect.localScale = myLerpInitScale;
@@ -155,7 +176,7 @@ public class ActionKey : MonoBehaviour
             spellRect.localScale = myLerpInitScale * multiplier;
 
             if (!IsSpellOnCooldown)
-                spellIcon.color = Color.Lerp(myStartColor, myTargetColor, interpolation);
+                myImage.color = Color.Lerp(myStartColor, myTargetColor, interpolation);
 
             myTimer -= Time.deltaTime;
             yield return null;
@@ -164,9 +185,8 @@ public class ActionKey : MonoBehaviour
 
     private IEnumerator ButtonSpellReleasedCoroutine()
     {
-        Image spellIcon = GetComponent<Image>();
         if (!IsSpellOnCooldown)
-            spellIcon.color = myStartColor;
+            myImage.color = myStartColor;
 
         RectTransform spellRect = GetComponent<RectTransform>();
         spellRect.localScale = myLerpInitScale;
@@ -182,14 +202,14 @@ public class ActionKey : MonoBehaviour
             spellRect.localScale = myLerpInitScale * multiplier;
 
             if (!IsSpellOnCooldown)
-                spellIcon.color = Color.Lerp(myTargetColor, myStartColor, interpolation);
+                myImage.color = Color.Lerp(myTargetColor, myStartColor, interpolation);
 
             myTimer -= Time.deltaTime;
             yield return null;
         }
 
         if (!IsSpellOnCooldown)
-            spellIcon.color = myStartColor;
+            myImage.color = myStartColor;
         spellRect.localScale = myLerpInitScale;
     }
 }

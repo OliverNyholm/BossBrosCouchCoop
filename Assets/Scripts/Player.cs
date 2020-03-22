@@ -21,11 +21,9 @@ public class Player : Character
 
     private float myStartTimeOfHoldingKeyDown;
     private float myStartTimeOfReleasingHealingKeyDown;
+    private int myFriendlySpellKeyHeldDownIndex;
     private bool myIsFriendlySpellKeyHeldDown;
     private bool myIsHealTargetingEnabled;
-
-    public delegate void EventOnTargetPlayer(GameObject aPlayer);
-    public event EventOnTargetPlayer myEventOnTargetPlayer;
 
     [Header("The duration of holding down a spell button before enabling targeting system")]
     [SerializeField]
@@ -280,6 +278,7 @@ public class Player : Character
         {
             SetTarget(myTargetHandler.GetPlayer(PlayerIndex - 1));
             myAnimator.SetBool("IsRunning", false);
+            EnableManualHealTargeting();
         }
     }
 
@@ -364,6 +363,7 @@ public class Player : Character
         myClass.SpellHeldDown(aKeyIndex);
         myStartTimeOfHoldingKeyDown = Time.time;
         myIsFriendlySpellKeyHeldDown = true;
+        myFriendlySpellKeyHeldDownIndex = aKeyIndex;
     }
 
     public void CastFriendlySpell(int aKeyIndex)
@@ -379,8 +379,7 @@ public class Player : Character
             myStartTimeOfReleasingHealingKeyDown = Time.time;
         }
 
-        myIsFriendlySpellKeyHeldDown = false;
-        myIsHealTargetingEnabled = false;
+        DisableManualHealTargeting();
     }
 
     public void SetTargetWithSmartTargeting(int aKeyIndex)
@@ -701,5 +700,19 @@ public class Player : Character
     private bool IsHealTargetingOngoing()
     {
         return myIsFriendlySpellKeyHeldDown && Time.time - myStartTimeOfHoldingKeyDown > mySmartTargetHoldDownMaxDuration;
+    }
+
+    private void EnableManualHealTargeting()
+    {
+        myClass.HightlightHealTargeting(myFriendlySpellKeyHeldDownIndex, true);
+        GetComponentInChildren<HealTargetArrow>().EnableHealTarget(myCharacterColor);
+    }
+
+    private void DisableManualHealTargeting()
+    {
+        myClass.HightlightHealTargeting(myFriendlySpellKeyHeldDownIndex, false);
+        GetComponentInChildren<HealTargetArrow>().DisableHealTarget();
+        myIsFriendlySpellKeyHeldDown = false;
+        myIsHealTargetingEnabled = false;
     }
 }

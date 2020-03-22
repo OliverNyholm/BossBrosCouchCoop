@@ -13,5 +13,6 @@ public enum MessageCategory
     EnemyDied,
     UITextToggle,
     TutorialHealFightComplete,
+    Wipe,
     Count
 }

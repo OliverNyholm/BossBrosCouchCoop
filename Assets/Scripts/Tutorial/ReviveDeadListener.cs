@@ -45,13 +45,7 @@ public class ReviveDeadListener : MonoBehaviour
         myDeadPlayerIds.Add(aMessage.Data.myInt);
         if(myDeadPlayerIds.Count == myPlayers.Count)
         {
-            int count = 0;
-            foreach (KeyValuePair<int, GameObject> player in myPlayers)
-            {
-                StartCoroutine(InstantReviveCoroutine(player.Value, count));
-                count++;
-            }
-            myDeadPlayerIds.Clear();
+            ReviveAllDeadPlayers();
         }
     }
 
@@ -77,6 +71,8 @@ public class ReviveDeadListener : MonoBehaviour
             count++;
         }
         myDeadPlayerIds.Clear();
+
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.Wipe));
     }
 
     private IEnumerator InstantReviveCoroutine(GameObject aPlayer, int anIndex)

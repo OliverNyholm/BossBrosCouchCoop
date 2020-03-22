@@ -40,11 +40,13 @@ public class TutorialHealWithCombat : TutorialCompletion
         mySubscriber.EventOnReceivedMessage += ReceiveMessage;
 
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.TutorialHealFightComplete);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.Wipe);
     }
 
     private void ReceiveMessage(Message aMessage)
     {
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.TutorialHealFightComplete);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.Wipe);
         mySubscriber.EventOnReceivedMessage -= ReceiveMessage;
 
         myTotemBoss.GetComponent<BehaviorTree>().enabled = true;
@@ -53,7 +55,10 @@ public class TutorialHealWithCombat : TutorialCompletion
         foreach (ParticleSystem burningEyes in myBurningEyes)
             burningEyes.Stop();
 
-        EndTutorial();
+        if (aMessage.Type == MessageCategory.TutorialHealFightComplete)
+            EndTutorial();
+        else if(aMessage.Type == MessageCategory.Wipe)
+            Restart();
     }
 
     public override void OnChildTriggerEnter(Collider aChildCollider, Collider aHit)

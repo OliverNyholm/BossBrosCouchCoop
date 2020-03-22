@@ -127,6 +127,11 @@ public class Class : MonoBehaviour
         myActionButtons[anIndex].GetComponent<ActionKey>().SpellReleased();
     }
 
+    public void HightlightHealTargeting(int anIndex, bool aShouldPulsate)
+    {
+        myActionButtons[anIndex].GetComponent<ActionKey>().SetPulsation(aShouldPulsate);
+    }
+
     public bool IsSpellCastOnFriends(int anIndex)
     {
         return mySpells[anIndex].GetComponent<Spell>().IsCastOnFriends();

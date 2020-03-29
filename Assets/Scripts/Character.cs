@@ -137,6 +137,7 @@ public abstract class Character : MonoBehaviour
             if (!spellScript.IsCastableWhileMoving() && IsMoving() || Input.GetKeyDown(KeyCode.Escape))
             {
                 myCastbar.SetCastTimeText("Cancelled");
+                myAnimator.SetTrigger("CastingCancelled");
                 StopCasting();
                 yield break;
             }
@@ -151,7 +152,6 @@ public abstract class Character : MonoBehaviour
             SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
             GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
-            myAnimator.SetTrigger("CastingDone");
         }
     }
 
@@ -175,6 +175,7 @@ public abstract class Character : MonoBehaviour
             if (IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
             {
                 myCastbar.SetCastTimeText("Cancelled");
+                myAnimator.SetTrigger("CastingCancelled");
                 myStunDuration = 0.0f;
                 StopCasting();
                 PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());
@@ -281,6 +282,7 @@ public abstract class Character : MonoBehaviour
         myCastbar.FadeOutCastbar();
         GetComponent<AudioSource>().Stop();
         myAnimator.SetBool("IsCasting", false);
+        myAnimator.SetTrigger("CastingDone");
     }
 
     public virtual void Stun(float aStunDuration)

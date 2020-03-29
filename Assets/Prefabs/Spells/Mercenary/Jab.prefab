@@ -57,6 +57,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -68,6 +69,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -98,14 +100,14 @@ MonoBehaviour:
   myName: Jab
   mySpellType: 0
   mySpellTarget: 4
-  myAnimationType: 0
+  myAnimationType: 4
   myDamage: 150
   myResourceCost: 50
   myThreatModifier: 1
   mySpeed: 0
   myCastTime: 0
   myCooldown: 0.2
-  myRange: 4
+  myRange: 8.2
   myStunDuration: 0
   myCastbarColor: {r: 1, g: 0.55655974, b: 0, a: 1}
   mySpellIcon: {fileID: 21300000, guid: 18bbcb53e225cce479b88bbb889feaa6, type: 3}

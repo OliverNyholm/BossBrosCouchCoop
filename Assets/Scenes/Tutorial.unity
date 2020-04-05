@@ -50050,6 +50050,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 243438199347220473, guid: 28948b89e410567469f4a4faf824c3a4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.060058594
+      objectReference: {fileID: 0}
     - target: {fileID: 243438199360336877, guid: 28948b89e410567469f4a4faf824c3a4,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -52603,7 +52608,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: 0d29043b4fb1a5e48a9b6140042bb9b3, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &1592007437
 Terrain:
   m_ObjectHideFlags: 0
@@ -52618,7 +52623,7 @@ Terrain:
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
-  m_DetailObjectDistance: 80
+  m_DetailObjectDistance: 140
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
   m_SplatMapDistance: 1000

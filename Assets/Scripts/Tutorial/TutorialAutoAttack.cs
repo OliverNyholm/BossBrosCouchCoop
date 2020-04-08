@@ -22,7 +22,7 @@ public class TutorialAutoAttack : TutorialCompletion
 
         for (int index = 0; index < myTargetsToHit.Count; index++)
         {
-            myTargetHandler.AddEnemy(myTargetsToHit[index]);
+            myTargetHandler.AddEnemy(myTargetsToHit[index], true);
         }
 
         return true;

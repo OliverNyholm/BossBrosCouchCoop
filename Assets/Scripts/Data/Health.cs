@@ -7,7 +7,7 @@ public class Health : MonoBehaviour
 
     public int myCurrentHealth = 100;
 
-    public delegate void HealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue);
+    public delegate void HealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue, bool aIsDamage);
     public delegate void ThreatGenerated(int aThreatPercentage, int anID);
     public delegate void HealthZero();
 
@@ -34,7 +34,7 @@ public class Health : MonoBehaviour
             damageText = damage.ToString() + " (-" + absorbed.ToString() +")";
         }
 
-        OnHealthChanged();
+        OnHealthChanged(true);
         SpawnFloatingText(damageText, aDamagerColor, CalculateSizeModifier(damage));
 
         return damage;
@@ -48,14 +48,14 @@ public class Health : MonoBehaviour
             myCurrentHealth = myMaxHealth;
         }
 
-        OnHealthChanged();
+        OnHealthChanged(false);
         SpawnFloatingText(aValue.ToString(), Color.yellow, CalculateSizeModifier(aValue));
     }
 
     public void ReviveToFullHealth()
     {
         myCurrentHealth = MaxHealth;
-        OnHealthChanged();
+        OnHealthChanged(false);
 
         SpawnFloatingText("Revived", Color.yellow, 1.2f);
     }
@@ -81,14 +81,14 @@ public class Health : MonoBehaviour
         set
         {
             myMaxHealth = value;
-            OnHealthChanged();
+            OnHealthChanged(false);
         }
     }
 
     public void AddShield(BuffShieldSpell aShield)
     {
         myShields.Add(aShield);
-        OnHealthChanged();
+        OnHealthChanged(false);
         SpawnFloatingText("Shield, " + aShield.GetRemainingShieldHealth().ToString(), Color.yellow, 1.0f);
     }
 
@@ -103,7 +103,7 @@ public class Health : MonoBehaviour
             }
         }
 
-        OnHealthChanged();
+        OnHealthChanged(false);
         SpawnFloatingText("Shield faded", Color.yellow, 1.0f);
     }
 
@@ -112,9 +112,9 @@ public class Health : MonoBehaviour
         EventOnThreatGenerated?.Invoke(aThreatValue, anID);
     }
 
-    private void OnHealthChanged()
+    private void OnHealthChanged(bool aIsDamage)
     {
-        EventOnHealthChange?.Invoke(GetHealthPercentage(), myCurrentHealth.ToString() + "/" + MaxHealth, GetTotalShieldValue());
+        EventOnHealthChange?.Invoke(GetHealthPercentage(), myCurrentHealth.ToString() + "/" + MaxHealth, GetTotalShieldValue(), aIsDamage);
     }
 
     private void OnHealthZero()
@@ -175,6 +175,6 @@ public class Health : MonoBehaviour
 
     private void OnValidate()
     {
-        OnHealthChanged();
+        OnHealthChanged(false);
     }
 }

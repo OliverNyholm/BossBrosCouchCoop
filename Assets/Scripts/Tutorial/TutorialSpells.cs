@@ -35,7 +35,7 @@ public class TutorialSpells : TutorialCompletion
 
         for (int index = 0; index < myTargetsToHit.Count; index++)
         {
-            myTargetHandler.AddEnemy(myTargetsToHit[index]);
+            myTargetHandler.AddEnemy(myTargetsToHit[index], true);
         }
 
         myTutorialPanel.SetSpellsHightlight(true, mySpellIndexToExceed > 0);

@@ -33,7 +33,7 @@ public class TutorialHeal : TutorialCompletion
         return true;
     }
 
-    public void OnHealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue)
+    public void OnHealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue, bool aIsDamage)
     {
         foreach (GameObject player in myPlayers)
         {

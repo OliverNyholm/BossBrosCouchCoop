@@ -94,7 +94,7 @@ public abstract class Character : MonoBehaviour
         myHealth.EventOnHealthChange += ChangeMyHudHealth;
         myHealth.EventOnHealthZero += OnDeath;
 
-        ChangeMyHudHealth(myHealth.GetHealthPercentage(), myHealth.myCurrentHealth.ToString() + "/" + myHealth.myMaxHealth.ToString(), GetComponent<Health>().GetTotalShieldValue());
+        ChangeMyHudHealth(myHealth.GetHealthPercentage(), myHealth.myCurrentHealth.ToString() + "/" + myHealth.myMaxHealth.ToString(), GetComponent<Health>().GetTotalShieldValue(), false);
 
         if (myResource)
         {
@@ -110,7 +110,8 @@ public abstract class Character : MonoBehaviour
         HandleBuffs();
 
         //Gör en kommentar ändå, puss på dig Oliver <3. Saknar dig.
-        myAnimator.SetLayerWeight(1, 1);
+        if (myAnimator)
+            myAnimator.SetLayerWeight(1, 1);
     }
 
     protected IEnumerator CastbarProgress(int aKeyIndex)
@@ -281,8 +282,12 @@ public abstract class Character : MonoBehaviour
         myCastbar.SetSpellName("Interrupted");
         myCastbar.FadeOutCastbar();
         GetComponent<AudioSource>().Stop();
-        myAnimator.SetBool("IsCasting", false);
-        myAnimator.SetTrigger("CastingDone");
+
+        if (myAnimator)
+        {
+            myAnimator.SetBool("IsCasting", false);
+            myAnimator.SetTrigger("CastingDone");
+        }
     }
 
     public virtual void Stun(float aStunDuration)
@@ -332,12 +337,12 @@ public abstract class Character : MonoBehaviour
         aTarget.GetComponent<Health>().EventOnHealthChange += ChangeTargetHudHealth;
         ChangeTargetHudHealth(aTarget.GetComponent<Health>().GetHealthPercentage(),
             aTarget.GetComponent<Health>().myCurrentHealth.ToString() + "/" + aTarget.GetComponent<Health>().MaxHealth,
-            aTarget.GetComponent<Health>().GetTotalShieldValue());
+            aTarget.GetComponent<Health>().GetTotalShieldValue(), false);
 
         myTargetHUD.SetAvatarSprite(aTarget.GetComponent<Character>().GetAvatar());
         myTargetHUD.SetHudColor(aTarget.GetComponent<Character>().myCharacterColor);
     }
-    private void ChangeTargetHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
+    private void ChangeTargetHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue, bool aIsDamage)
     {
         myTargetHUD.SetHealthBarFillAmount(aHealthPercentage);
         myTargetHUD.SetHealthText(aHealthText);
@@ -352,7 +357,7 @@ public abstract class Character : MonoBehaviour
             myTargetHUD.SetResourceBarColor(Target.GetComponent<Resource>().myResourceColor);
     }
 
-    protected virtual void ChangeMyHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
+    protected virtual void ChangeMyHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue, bool aIsDamage)
     {
         myCharacterHUD.SetHealthBarFillAmount(aHealthPercentage);
         myCharacterHUD.SetHealthText(aHealthText);
@@ -418,12 +423,14 @@ public abstract class Character : MonoBehaviour
             float currentAnimationSpeed = 1.0f;
             if (currentAnimationSpeed > attackspeed)
             {
-                myAnimator.SetFloat("AutoAttackSpeed", myAnimator.GetFloat("AutoAttackSpeed") + attackspeed / currentAnimationSpeed);
+                if (myAnimator)
+                    myAnimator.SetFloat("AutoAttackSpeed", myAnimator.GetFloat("AutoAttackSpeed") + attackspeed / currentAnimationSpeed);
             }
         }
         else if (aBuffSpell.GetBuff().mySpeedMultiplier != 0.0f)
         {
-            myAnimator.SetFloat("RunSpeed", myStats.mySpeedMultiplier);
+            if (myAnimator)
+                myAnimator.SetFloat("RunSpeed", myStats.mySpeedMultiplier);
         }
     }
 
@@ -444,16 +451,19 @@ public abstract class Character : MonoBehaviour
             float currentAnimationSpeed = 1.0f;
             if (currentAnimationSpeed > attackspeed)
             {
-                myAnimator.SetFloat("AutoAttackSpeed", myAnimator.GetFloat("AutoAttackSpeed") + attackspeed / currentAnimationSpeed);
+                if (myAnimator)
+                    myAnimator.SetFloat("AutoAttackSpeed", myAnimator.GetFloat("AutoAttackSpeed") + attackspeed / currentAnimationSpeed);
             }
             else
             {
-                myAnimator.SetFloat("AutoAttackSpeed", 1.0f);
+                if (myAnimator)
+                    myAnimator.SetFloat("AutoAttackSpeed", 1.0f);
             }
         }
         else if (myBuffs[anIndex].GetBuff().mySpeedMultiplier != 0.0f)
         {
-            myAnimator.SetFloat("RunSpeed", myStats.mySpeedMultiplier);
+            if (myAnimator)
+                myAnimator.SetFloat("RunSpeed", myStats.mySpeedMultiplier);
         }
 
         myBuffs.RemoveAt(anIndex);
@@ -479,7 +489,7 @@ public abstract class Character : MonoBehaviour
             if (myBuffs[index].GetParent() == aBuffSpell.GetParent() &&
                 myBuffs[index].GetBuff() == aBuffSpell.GetBuff())
             {
-                if(aShouldRemoveOnDuplicate)
+                if (aShouldRemoveOnDuplicate)
                     RemoveBuff(index);
                 return true;
             }
@@ -498,7 +508,8 @@ public abstract class Character : MonoBehaviour
         StopAllCoroutines();
         StopCasting();
         GetComponent<AudioSource>().Stop();
-        myAnimator.SetTrigger("Death");
+        if (myAnimator)
+            myAnimator.SetTrigger("Death");
 
         if (myChannelGameObject)
         {

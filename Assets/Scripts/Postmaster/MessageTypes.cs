@@ -8,6 +8,7 @@ public enum MessageCategory
     PlayerDied,
     PlayerResucitated,
     RegisterPlayer,
+    UnregisterPlayer,
     DamageDealt,
     EnteredCombat,
     EnemyDied,

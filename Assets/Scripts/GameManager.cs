@@ -28,15 +28,7 @@ public class GameManager : MonoBehaviour
     {
         PostMaster.Create();
 
-        BossHudHandler bossHudHandler = FindObjectsOfType<BossHudHandler>()[0];
         TargetHandler targetHandler = GetComponent<TargetHandler>();
-
-        List<GameObject> bosses = targetHandler.GetAllEnemies();
-        for (int index = 0, count = bosses.Count; index < count; index++)
-        {
-            bossHudHandler.HandoutBossHud(bosses[index], count, index);
-        }
-
         GameObject characterGameDataGO = GameObject.Find("GameData");
         if (characterGameDataGO == null)
         {
@@ -157,6 +149,7 @@ public class GameManager : MonoBehaviour
             changeClassData.myPosition = player.transform.position;
             myChangeClassData.Add(changeClassData);
 
+            PostMaster.Instance.PostMessage(new Message(MessageCategory.UnregisterPlayer, player.GetInstanceID()));
             Destroy(player);
         }
         targetHandler.ClearAllPlayers();
@@ -187,6 +180,7 @@ public class GameManager : MonoBehaviour
 
         playerGO.GetComponent<Health>().SetHealthPercentage(myChangeClassData[anIndex].myHealthPercentage);
 
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.RegisterPlayer, playerGO.GetInstanceID(), new Vector3(player.myCharacterColor.r, player.myCharacterColor.g, player.myCharacterColor.b)));
         aTargetHandler.AddPlayer(playerGO);
     }
 

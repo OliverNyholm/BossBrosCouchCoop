@@ -12,8 +12,17 @@ public class TargetHandler : MonoBehaviour
     [SerializeField]
     private List<GameObject> myEnemies = new List<GameObject>();
 
+    private BossHudHandler myBossHudHandler;
+
     private void Start()
     {
+        myBossHudHandler = FindObjectsOfType<BossHudHandler>()[0];
+
+        for (int index = 0, count = myEnemies.Count; index < count; index++)
+        {
+            myBossHudHandler.AddBossHud(myEnemies[index]);
+        }
+
         myPlayersTargetIndex = new List<int>(myPlayers.Count);
         for (int index = 0; index < myPlayersTargetIndex.Capacity; index++)
         {
@@ -55,7 +64,7 @@ public class TargetHandler : MonoBehaviour
         return myPlayers[aIndex];
     }
 
-    public void AddEnemy(GameObject aGameObject)
+    public void AddEnemy(GameObject aGameObject, bool aShouldAddUI)
     {
         myEnemies.Add(aGameObject);
         for (int playerIndex = 0; playerIndex < myPlayers.Count; playerIndex++)
@@ -64,11 +73,15 @@ public class TargetHandler : MonoBehaviour
                 continue;
             aGameObject.GetComponent<Enemy>().AddPlayer(myPlayers[playerIndex]);
         }
+
+        if(aShouldAddUI)
+            myBossHudHandler.AddBossHud(aGameObject);
     }
 
     public void RemoveEnemy(GameObject aGameObject)
     {
         myEnemies.Remove(aGameObject);
+        myBossHudHandler.RemoveBossHud(aGameObject);
     }
     
     public void ClearAllEnemies()

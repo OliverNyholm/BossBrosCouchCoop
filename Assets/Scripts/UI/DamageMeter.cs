@@ -80,6 +80,12 @@ public class DamageMeter : MonoBehaviour
                     myDamagers.Add(id, new DamagerData(transform.GetChild(myDamagers.Count), color, 0));
                 }
                 break;
+            case MessageCategory.UnregisterPlayer:
+                {
+                    int id = aMessage.Data.myInt;
+                    myDamagers.Remove(id);
+                }
+                break;
             default:
                 break;
         }

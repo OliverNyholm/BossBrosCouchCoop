@@ -40,7 +40,7 @@ public class TutorialLearnSpell : TutorialCompletion
         myTargetHandler.ClearAllEnemies();
         for (int index = 0; index < myTargetsToHit.Count; index++)
         {
-            myTargetHandler.AddEnemy(myTargetsToHit[index]);
+            myTargetHandler.AddEnemy(myTargetsToHit[index], true);
         }
 
         myTutorialPanel.SetSpellsHightlight(true, mySpellIndexToCast > 3);

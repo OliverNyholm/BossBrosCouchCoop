@@ -11,6 +11,7 @@ public class Enemy : Character
     protected Subscriber mySubscriber;
 
     private NavMeshAgent myNavmeshAgent;
+    private BehaviorTree myBehaviorTree;
 
     public List<GameObject> Players { get; set; } = new List<GameObject>();
     public List<int> myAggroList = new List<int>();
@@ -19,8 +20,6 @@ public class Enemy : Character
     [SerializeField]
     private float myAggroRange = 15.0f;
     private int myTargetIndex;
-
-    public bool IsTotemBoss = false;
 
     private Vector3 mySpawnPosition;
     private Quaternion mySpawnRotation;
@@ -53,7 +52,10 @@ public class Enemy : Character
         myHealth.EventOnThreatGenerated += AddThreat;
 
         myNavmeshAgent = GetComponent<NavMeshAgent>();
-        myNavmeshAgent.speed = mySpeed;
+        if (myNavmeshAgent)
+            myNavmeshAgent.speed = mySpeed;
+
+        myBehaviorTree = GetComponent<BehaviorTree>();
 
         myTargetIndex = -1;
 
@@ -141,16 +143,17 @@ public class Enemy : Character
     {
         base.OnDeath();
 
-        //transform.GetComponentInChildren<Canvas>().transform.Find("EnemyUI").gameObject.SetActive(false);
-        GetComponent<BehaviorTree>().enabled = false;
-        myNavmeshAgent.isStopped = true;
+        if (myBehaviorTree)
+            myBehaviorTree.enabled = false;
+        if (myNavmeshAgent)
+            myNavmeshAgent.isStopped = true;
 
         PostMaster.Instance.PostMessage(new Message(MessageCategory.EnemyDied, gameObject.GetInstanceID()));
     }
 
     protected override bool IsMoving()
     {
-        if (myNavmeshAgent.hasPath)
+        if (myNavmeshAgent && myNavmeshAgent.hasPath)
             return true;
 
         return false;
@@ -379,7 +382,7 @@ public class Enemy : Character
             SpawnSpell(aSpell, aTarget, aSpawnTransform);
             if (myResource)
                 myResource.LoseResource(spellScript.myResourceCost);
-            if(myAnimator)
+            if (myAnimator)
                 myAnimator.SetTrigger("CastingDone");
             return true;
         }
@@ -455,7 +458,9 @@ public class Enemy : Character
     protected override void StopCasting()
     {
         base.StopCasting();
-        GetComponent<BehaviorTree>().SendEvent("SpellInterrupted");
+
+        if (myBehaviorTree)
+            myBehaviorTree.SendEvent("SpellInterrupted");
     }
 
     public void SetTaunt(int aTaunterID, float aDuration)
@@ -514,7 +519,9 @@ public class Enemy : Character
                 break;
             case MessageCategory.PlayerDied:
                 {
-                    GetComponent<BehaviorTree>().SendEvent("PlayerDied");
+                    if (myBehaviorTree)
+                        myBehaviorTree.SendEvent("PlayerDied");
+
                     int id = anAiMessage.Data.myInt;
                     for (int index = 0; index < Players.Count; index++)
                     {
@@ -537,7 +544,8 @@ public class Enemy : Character
                     SetState(CombatState.Combat);
                 break;
             case MessageCategory.EnemyDied:
-                GetComponent<BehaviorTree>().SendEvent(myTargetHandler.GetEnemyName(anAiMessage.Data.myInt) + "Died");
+                if (myBehaviorTree)
+                    myBehaviorTree.SendEvent(myTargetHandler.GetEnemyName(anAiMessage.Data.myInt) + "Died");
                 break;
             default:
                 break;
@@ -563,7 +571,8 @@ public class Enemy : Character
     {
         Target = null;
         myTargetIndex = -1;
-        myNavmeshAgent.destination = transform.position;
+        if (myNavmeshAgent)
+            myNavmeshAgent.destination = transform.position;
 
         SetTarget(null);
     }
@@ -582,19 +591,22 @@ public class Enemy : Character
                 PostMaster.Instance.PostMessage(new Message(MessageCategory.EnteredCombat));
                 break;
             case CombatState.Disengage:
-                myNavmeshAgent.destination = mySpawnPosition;
+                if (myNavmeshAgent)
+                    myNavmeshAgent.destination = mySpawnPosition;
                 myAnimator.SetBool("IsRunning", true);
 
-                BehaviorTree tree = GetComponent<BehaviorTree>();
-                tree.DisableBehavior();
-                tree.EnableBehavior();
+                if (myBehaviorTree)
+                {
+                    myBehaviorTree.DisableBehavior();
+                    myBehaviorTree.EnableBehavior();
+                }
                 break;
         }
     }
 
     private void MoveBackToSpawn()
     {
-        if (!myNavmeshAgent.hasPath)
+        if (myNavmeshAgent && !myNavmeshAgent.hasPath)
             SetState(CombatState.Idle);
     }
 
@@ -605,13 +617,14 @@ public class Enemy : Character
         SetTarget(GetHighestAggro());
     }
 
-    protected override void ChangeMyHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue)
+    protected override void ChangeMyHudHealth(float aHealthPercentage, string aHealthText, int aShieldValue, bool aIsDamage)
     {
-        base.ChangeMyHudHealth(aHealthPercentage, aHealthText, aShieldValue);
+        base.ChangeMyHudHealth(aHealthPercentage, aHealthText, aShieldValue, aIsDamage);
 
-        if (State != CombatState.Combat && myHealth.GetHealthPercentage() < 1.0f)
+        if (State != CombatState.Combat && aIsDamage)
         {
-            GetComponent<BehaviorTree>().SendEvent("TakeDamage");
+            if (myBehaviorTree)
+                myBehaviorTree.SendEvent("TakeDamage");
             SetState(CombatState.Combat);
         }
     }

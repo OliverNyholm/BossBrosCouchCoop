@@ -18,3 +18,16 @@ public enum SpellAnimationType
     AutoAttack,
     Count
 }
+
+public enum AnimationVariable
+{
+    IsRunning,
+    Jump,
+    Land,
+    Death,
+    IsGrounded,
+    IsCasting,
+    CastingDone,
+    CastingCancelled,
+    Count
+}

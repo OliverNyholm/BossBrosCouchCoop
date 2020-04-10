@@ -6,7 +6,7 @@ public class TutorialHeal : TutorialCompletion
 {
     [Header("The class to try out healing with")]
     [SerializeField]
-    private GameObject myTutorialHealer;
+    private GameObject myTutorialHealer = null;
 
     [SerializeField]
     private GameManager myGameManager = null;

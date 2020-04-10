@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class TargetingComponent : MonoBehaviour
 {
     public GameObject Target { get; protected set; }
+    public GameObject SpellTarget { get; set; }
 
     protected TargetHandler myTargetHandler;
 
@@ -16,6 +17,12 @@ public abstract class TargetingComponent : MonoBehaviour
     public virtual void SetTarget(GameObject aTarget)
     {
         Target = aTarget;
+        GetComponent<UIComponent>().SetTargetHUD(aTarget);
+    }
+
+    public virtual void SetSpellTarget(GameObject aTarget)
+    {
+        SpellTarget = aTarget;
         GetComponent<UIComponent>().SetTargetHUD(aTarget);
     }
 }

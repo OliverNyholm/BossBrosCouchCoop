@@ -11,14 +11,9 @@ public class UIComponent : MonoBehaviour
     public Color myCharacterColor;
     public string myName;
 
-    private SpellErrorHandler mySpellErrorHandler;
-
     private CharacterHUD myCharacterHUD;
     private CharacterHUD myTargetHUD;
     private Castbar myCastbar;
-
-    private GameObject myActionBar;
-    private GameObject[] myActionButtons;
 
     private Health myHealth;
     private Resource myResource;
@@ -31,15 +26,7 @@ public class UIComponent : MonoBehaviour
         myResource = GetComponent<Resource>();
     }
 
-    void Start()
-    {
-        Transform uiHud = GameObject.Find("PlayerHud" + GetComponent<Player>().PlayerIndex).transform;
-        SetupHud(uiHud);
-
-        mySpellErrorHandler = uiHud.GetComponentInChildren<SpellErrorHandler>();
-    }
-
-    public void SetupHud(Transform aUIParent)
+    public virtual void SetupHud(Transform aUIParent)
     {
         aUIParent.GetComponent<CanvasGroup>().alpha = 1.0f;
 
@@ -61,16 +48,6 @@ public class UIComponent : MonoBehaviour
         {
             myResource.EventOnResourceChange += ChangeMyHudResource;
             ChangeMyHudResource(myResource.GetResourcePercentage(), myResource.myCurrentResource.ToString() + "/" + myResource.MaxResource.ToString());
-        }
-
-        Class playerClass = GetComponent<Class>();
-        if (playerClass)
-        {
-            GetComponentInChildren<TargetProjector>().SetPlayerColor(myCharacterColor);
-
-            myActionBar = aUIParent.Find("ActionBar").gameObject;
-            myActionBar.GetComponent<CanvasGroup>().alpha = 1.0f;
-            myActionButtons = new GameObject[playerClass.mySpellSize];
         }
     }
 
@@ -184,61 +161,6 @@ public class UIComponent : MonoBehaviour
         myTargetHUD.SetResourceText(aResourceText);
         if (myTargetGO && myTargetGO.GetComponent<Resource>() != null)
             myTargetHUD.SetResourceBarColor(myTargetGO.GetComponent<Resource>().myResourceColor);
-    }
-
-    public void SetSpellCooldownText(int anIndex, float aDuration)
-    {
-        if (myActionButtons[anIndex] == null)
-            return;
-
-        if (aDuration > 0.0f)
-        {
-            myActionButtons[anIndex].GetComponentInChildren<Text>().text = aDuration.ToString("0.0");
-        }
-        else
-        {
-            myActionButtons[anIndex].GetComponent<ActionKey>().SetCooldown(0.0f);
-        }
-    }
-
-    public void SpellPressed(int anIndex)
-    {
-        myActionButtons[anIndex].GetComponent<ActionKey>().SpellPressed();
-    }
-
-    public void SpellHeldDown(int anIndex)
-    {
-        myActionButtons[anIndex].GetComponent<ActionKey>().SpellHeldDown();
-    }
-
-    public void SpellReleased(int anIndex)
-    {
-        myActionButtons[anIndex].GetComponent<ActionKey>().SpellReleased();
-    }
-
-    public void HightlightHealTargeting(int anIndex, bool aShouldPulsate)
-    {
-        myActionButtons[anIndex].GetComponent<ActionKey>().SetPulsation(aShouldPulsate);
-    }
-
-    public void ToggleSpellInfo()
-    {
-        for (int index = 0; index < myActionButtons.Length; index++)
-        {
-            myActionButtons[index].GetComponent<ActionKey>().ToggleInfo();
-        }
-    }
-
-    public void SetSpellHud(Spell aSpell, int anIndex)
-    {
-        myActionButtons[anIndex] = myActionBar.transform.GetChild(anIndex).gameObject;
-        myActionButtons[anIndex].GetComponent<Image>().sprite = aSpell.mySpellIcon;
-        myActionButtons[anIndex].GetComponent<ActionKey>().SetSpellInfo(aSpell.myQuickInfo);
-    }
-
-    public void HighlightSpellError(SpellErrorHandler.SpellError aSpellError)
-    {
-        mySpellErrorHandler.HighLightError(aSpellError);
     }
 
     public void ToggleUIText(int anInstanceID)

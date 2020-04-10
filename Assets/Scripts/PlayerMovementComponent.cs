@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovementComponent : MonoBehaviour
+public class PlayerMovementComponent : MovementComponent
 {
     public float myBaseSpeed;
     public float myJumpSpeed;
@@ -12,6 +12,9 @@ public class PlayerMovementComponent : MonoBehaviour
     private CharacterController myController;
     private PlayerControls myPlayerControls;
     private AnimatorWrapper myAnimatorWrapper;
+    private PlayerCastingComponent myCastingComponent;
+    private PlayerTargetingComponent myTargetingComponent;
+
     private Health myHealth;
     private Stats myStats;
 
@@ -19,6 +22,16 @@ public class PlayerMovementComponent : MonoBehaviour
     private CameraXZTransform myCameraXZTransform;
 
     private bool myIsGrounded;
+
+    private void Awake()
+    {
+        myController = GetComponent<CharacterController>();
+        myAnimatorWrapper = GetComponent<AnimatorWrapper>();
+        myCastingComponent = GetComponent<PlayerCastingComponent>();
+        myTargetingComponent = GetComponent<PlayerTargetingComponent>();
+        myHealth = GetComponent<Health>();
+        myStats = GetComponent<Stats>();
+    }
 
     void Start()
     {
@@ -32,10 +45,8 @@ public class PlayerMovementComponent : MonoBehaviour
         myCameraXZTransform.myRight.Normalize();
 
         myVelocity = Vector3.zero;
-        myController = GetComponent<CharacterController>();
-        myAnimatorWrapper = GetComponent<AnimatorWrapper>();
-        myHealth = GetComponent<Health>();
-        myStats = GetComponent<Stats>();
+
+        myHealth.EventOnHealthZero += OnDeath;
     }
 
     public void SetPlayerController(PlayerControls aPlayerControls)
@@ -70,7 +81,7 @@ public class PlayerMovementComponent : MonoBehaviour
         if (!myIsGrounded)
             return;
 
-        if (Time.time - myStartTimeOfReleasingHealingKeyDown < 0.1f)
+        if (myCastingComponent.HasRecentlyFinishedHealTargeting())
             return;
 
         Vector2 leftStickAxis = myPlayerControls.Movement;
@@ -82,9 +93,8 @@ public class PlayerMovementComponent : MonoBehaviour
         if (isMoving)
             RotatePlayer();
 
-        if (myIsHealTargetingEnabled)
+        if (myTargetingComponent.IsHealTargeting())
         {
-            DetectFriendlyTargetInput(leftStickAxis != Vector2.zero);
             myVelocity = Vector2.zero;
             return;
         }
@@ -201,7 +211,7 @@ public class PlayerMovementComponent : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(myVelocity, Vector3.up);
     }
 
-    public bool IsMoving()
+    public override bool IsMoving()
     {
         if (myVelocity.x != 0 || myVelocity.z != 0)
             return true;
@@ -224,7 +234,7 @@ public class PlayerMovementComponent : MonoBehaviour
         transform.LookAt(aLookAtPosition);
     }
 
-    private void OnDeath()
+    protected override void OnDeath()
     {
         myVelocity.x = 0.0f;
         myVelocity.z = 0.0f;

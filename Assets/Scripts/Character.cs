@@ -11,9 +11,6 @@ public abstract class Character : MonoBehaviour
 
     protected Animator myAnimator;
 
-    public GameObject Target { get; protected set; }
-
-
     protected Health myHealth;
     protected Resource myResource;
     protected Stats myStats;
@@ -29,11 +26,6 @@ public abstract class Character : MonoBehaviour
         if (!myAnimator)
             SetComponents();
 
-    }
-
-    protected virtual void Start()
-    {
-        Target = null;
     }
 
     private void SetComponents()
@@ -61,8 +53,6 @@ public abstract class Character : MonoBehaviour
             myAnimator.SetLayerWeight(1, 1);
     }
 
-    
-
     public bool CanRaycastToObject(GameObject anObject)
     {
         Vector3 hardcodedEyePosition = new Vector3(0.0f, 0.7f, 0.0f);
@@ -79,11 +69,6 @@ public abstract class Character : MonoBehaviour
         }
 
         return true;
-    }
-
-    public GameObject GetTarget()
-    {
-        return Target;
     }
 
     protected void HandleBuffs()
@@ -129,7 +114,7 @@ public abstract class Character : MonoBehaviour
 
         if (aBuffSpell.GetBuff().myAttackSpeed != 0.0f)
         {
-            float attackspeed = myAutoAttackCooldownReset / myStats.myAttackSpeed;
+            float attackspeed = GetComponent<CastingComponent>().myAutoAttackCooldownReset / myStats.myAttackSpeed;
 
             float currentAnimationSpeed = 1.0f;
             if (currentAnimationSpeed > attackspeed)
@@ -157,7 +142,7 @@ public abstract class Character : MonoBehaviour
 
         if (myBuffs[anIndex].GetBuff().myAttackSpeed != 0.0f)
         {
-            float attackspeed = myAutoAttackCooldownReset / myStats.myAttackSpeed;
+            float attackspeed = GetComponent<CastingComponent>().myAutoAttackCooldownReset / myStats.myAttackSpeed;
 
             float currentAnimationSpeed = 1.0f;
             if (currentAnimationSpeed > attackspeed)

@@ -14,11 +14,6 @@ public class PlayerTargetingComponent : TargetingComponent
     [Header("The duration of holding down a spell button before enabling targeting system")]
     [SerializeField]
     private float mySmartTargetHoldDownMaxDuration = 0.35f;
-
-    private float myStartTimeOfHoldingKeyDown;
-    private float myStartTimeOfReleasingHealingKeyDown;
-    private int myFriendlySpellKeyHeldDownIndex;
-    private bool myIsFriendlySpellKeyHeldDown;
     private bool myIsHealTargetingEnabled;
 
     void Awake()
@@ -43,7 +38,13 @@ public class PlayerTargetingComponent : TargetingComponent
         if (myStats.IsStunned())
             return;
 
-        DetectStartHealTargeting();
+        if(myIsHealTargetingEnabled)
+            DetectFriendlyTargetInput(myPlayerControls.Movement != Vector2.zero);
+    }
+
+    public bool IsHealTargeting()
+    {
+        return myIsHealTargetingEnabled;
     }
 
     public void SetPlayerControls(PlayerControls aPlayerControls)
@@ -61,14 +62,12 @@ public class PlayerTargetingComponent : TargetingComponent
         if (Target)
             Target.GetComponentInChildren<TargetProjector>().AddTargetProjection(GetComponent<UIComponent>().myCharacterColor, myPlayer.PlayerIndex);
 
-        myShouldAutoAttack = false;
-        if (Target && Target.tag == "Enemy")
-            myShouldAutoAttack = true;
+        GetComponent<PlayerCastingComponent>().SetShouldAutoAttack(Target && Target.tag == "Enemy");
     }
 
     private void DetectTargetingInput()
     {
-        if (myPlayerControls.TargetEnemy.WasPressed && !myIsFriendlySpellKeyHeldDown)
+        if (myPlayerControls.TargetEnemy.WasPressed && !myIsHealTargetingEnabled)
             SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetEnemy(myPlayer.PlayerIndex));
     }
 
@@ -100,36 +99,21 @@ public class PlayerTargetingComponent : TargetingComponent
             SetTarget(bestTarget);
     }
 
-    private void DetectStartHealTargeting()
+    public void EnableManualHealTargeting(int aSpellIndex)
     {
-        bool wasHealTargetingEnabled = myIsHealTargetingEnabled;
-        myIsHealTargetingEnabled = IsHealTargetingOngoing();
+        myIsHealTargetingEnabled = true;
+        SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
+        myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, false);
 
-        if (!wasHealTargetingEnabled && myIsHealTargetingEnabled)
-        {
-            SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
-            myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, false);
-            EnableManualHealTargeting();
-        }
-    }
-
-    private bool IsHealTargetingOngoing()
-    {
-        return myIsFriendlySpellKeyHeldDown && Time.time - myStartTimeOfHoldingKeyDown > mySmartTargetHoldDownMaxDuration;
-    }
-
-    private void EnableManualHealTargeting()
-    {
-        GetComponent<UIComponent>().HightlightHealTargeting(myFriendlySpellKeyHeldDownIndex, true);
+        GetComponent<PlayerUIComponent>().HightlightHealTargeting(aSpellIndex, true);
         GetComponentInChildren<HealTargetArrow>().EnableHealTarget(GetComponent<UIComponent>().myCharacterColor);
     }
 
-    public void DisableManualHealTargeting()
+    public void DisableManualHealTargeting(int aSpellIndex)
     {
-        GetComponent<UIComponent>().HightlightHealTargeting(myFriendlySpellKeyHeldDownIndex, false);
-        GetComponentInChildren<HealTargetArrow>().DisableHealTarget();
-        myIsFriendlySpellKeyHeldDown = false;
         myIsHealTargetingEnabled = false;
+        GetComponent<PlayerUIComponent>().HightlightHealTargeting(aSpellIndex, false);
+        GetComponentInChildren<HealTargetArrow>().DisableHealTarget();
     }
 
     public void SetTargetWithSmartTargeting(int aKeyIndex)

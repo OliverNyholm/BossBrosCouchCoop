@@ -42,7 +42,7 @@ public class Class : MonoBehaviour
     [HideInInspector]
     public int mySpellSize = 4;
 
-    private UIComponent myUIComponent;
+    private PlayerUIComponent myUIComponent;
 
     public enum ClassRole
     {
@@ -54,7 +54,7 @@ public class Class : MonoBehaviour
 
     public void Awake()
     {
-        myUIComponent = GetComponent<UIComponent>();
+        myUIComponent = GetComponent<PlayerUIComponent>();
     }
 
     public void Start()

@@ -10,7 +10,6 @@ public class Player : Character
 
     private SpellErrorHandler mySpellErrorHandler;
 
-    private bool myShouldAutoAttack;
 
     public int PlayerIndex { get; set; }
 
@@ -32,9 +31,6 @@ public class Player : Character
 
 
         DetectInput();
-
-        if (myShouldAutoAttack)
-            AutoAttack();
     }
 
     protected override bool IsMoving()
@@ -46,46 +42,13 @@ public class Player : Character
     {
 
         if (myPlayerControls.ToggleInfo.WasPressed)
-            GetComponent<UIComponent>().ToggleSpellInfo();
+            GetComponent<PlayerUIComponent>().ToggleSpellInfo();
 
         if (myPlayerControls.ToggleUIText.WasPressed)
             GetComponent<UIComponent>().ToggleUIText(gameObject.GetInstanceID());
 
         if (myPlayerControls.Restart.WasPressed)
             FindObjectOfType<GameManager>().RestartLevel();
-    }
-
-    private bool IsStunned()
-    {
-        myStunDuration -= Time.deltaTime;
-        if (myStunDuration > 0.0f)
-            return true;
-
-        myStunDuration = 0.0f;
-
-        return false;
-    }
-
-    private void AutoAttack()
-    {
-        if (myAutoAttackCooldown > 0.0f)
-        {
-            myAutoAttackCooldown -= Time.deltaTime * GetComponent<Stats>().myAttackSpeed;
-            return;
-        }
-
-        GameObject spell = myClass.GetAutoAttack();
-        Spell spellScript = spell.GetComponent<Spell>();
-
-        if (!IsAbleToAutoAttack())
-        {
-            return;
-        }
-
-        myAnimator.SetTrigger(GetAnimationHash(SpellAnimationType.AutoAttack));
-        myAutoAttackCooldown = 1.2f;
-
-        SpawnSpell(-1, GetSpellSpawnPosition(spellScript));
     }
 
     public float CalculateBuffSmartDamage()
@@ -108,37 +71,7 @@ public class Player : Character
         return score + damageBuffCount;
     }
 
-    private bool IsAbleToAutoAttack()
-    {
-        if (myIsCasting)
-        {
-            return false;
-        }
 
-        if (!Target)
-        {
-            return false;
-        }
-
-        if (Target.GetComponent<Health>().IsDead())
-        {
-            myShouldAutoAttack = false;
-            return false;
-        }
-
-        if (!CanRaycastToObject(Target))
-        {
-            return false;
-        }
-
-        float distance = Vector3.Distance(transform.position, Target.transform.position);
-        if (distance > GetComponent<Stats>().myAutoAttackRange)
-        {
-            return false;
-        }
-
-        return true;
-    }
 
     public void SetPosition(Vector3 aPosition)
     {
@@ -149,7 +82,6 @@ public class Player : Character
     {
         base.OnDeath();
 
-        myShouldAutoAttack = false;
         PostMaster.Instance.PostMessage(new Message(MessageCategory.PlayerDied, gameObject.GetInstanceID()));
     }
 

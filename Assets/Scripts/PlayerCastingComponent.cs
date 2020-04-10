@@ -7,14 +7,15 @@ public class PlayerCastingComponent : CastingComponent
     private PlayerControls myPlayerControls;
 
     private PlayerTargetingComponent myTargetingComponent;
+    private PlayerUIComponent myUIComponent;
     private Class myClass;
-    private Stats myStats;
 
     private float myStartTimeOfHoldingKeyDown;
+    private bool myIsFriendlySpellKeyHeldDown;
     private float myStartTimeOfReleasingHealingKeyDown;
     private int myFriendlySpellKeyHeldDownIndex;
-    private bool myIsFriendlySpellKeyHeldDown;
-    private bool myIsHealTargetingEnabled;
+
+    private bool myShouldAutoAttack;
 
     public delegate void EventOnSpellSpawned(GameObject aPlayer, GameObject aSpell, int aSpellIndex);
     public event EventOnSpellSpawned myEventOnSpellSpawned;
@@ -25,11 +26,48 @@ public class PlayerCastingComponent : CastingComponent
 
         myClass = GetComponent<Class>();
         myTargetingComponent = GetComponent<PlayerTargetingComponent>();
+        myUIComponent = GetComponent<PlayerUIComponent>();
     }
 
     private void Update()
     {
-        
+        if (myHealth.IsDead())
+            return;
+
+        DetectSpellInput();
+
+        if (ShouldHealTargetBeEnabled())
+            myTargetingComponent.EnableManualHealTargeting(myFriendlySpellKeyHeldDownIndex);
+
+        if (myShouldAutoAttack)
+            AutoAttack();
+    }
+
+    public void SetShouldAutoAttack(bool aValue)
+    {
+        myShouldAutoAttack = aValue;
+    }
+
+    private void AutoAttack()
+    {
+        if (myAutoAttackCooldown > 0.0f)
+        {
+            myAutoAttackCooldown -= Time.deltaTime * GetComponent<Stats>().myAttackSpeed;
+            return;
+        }
+
+        GameObject spell = myClass.GetAutoAttack();
+        Spell spellScript = spell.GetComponent<Spell>();
+
+        if (!IsAbleToAutoAttack())
+        {
+            return;
+        }
+
+        myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
+        myAutoAttackCooldown = 1.2f;
+
+        SpawnSpell(-1, GetSpellSpawnPosition(spellScript));
     }
 
     private void DetectSpellInput()
@@ -70,6 +108,16 @@ public class PlayerCastingComponent : CastingComponent
         myFriendlySpellKeyHeldDownIndex = aKeyIndex;
     }
 
+    private bool ShouldHealTargetBeEnabled()
+    {
+        return myIsFriendlySpellKeyHeldDown && Time.time - myStartTimeOfHoldingKeyDown > myTargetingComponent.GetSmartTargetHoldDownMaxDuration();
+    }
+
+    public bool HasRecentlyFinishedHealTargeting()
+    {
+        return Time.time - myStartTimeOfReleasingHealingKeyDown < 0.1f;
+    }
+
     public void CastFriendlySpell(int aKeyIndex)
     {
         if (Time.time - myStartTimeOfHoldingKeyDown < myTargetingComponent.GetSmartTargetHoldDownMaxDuration())
@@ -83,7 +131,7 @@ public class PlayerCastingComponent : CastingComponent
             myStartTimeOfReleasingHealingKeyDown = Time.time;
         }
 
-        myTargetingComponent.DisableManualHealTargeting();
+        myTargetingComponent.DisableManualHealTargeting(myFriendlySpellKeyHeldDownIndex);
     }
 
     public void CastSpell(int aKeyIndex, bool isPressed)
@@ -115,7 +163,7 @@ public class PlayerCastingComponent : CastingComponent
             SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
             GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
-            //myAnimator.SetTrigger("CastingDone");
+            myAnimatorWrapper.SetTrigger(spellScript.myAnimationType);
             return;
         }
 
@@ -126,14 +174,13 @@ public class PlayerCastingComponent : CastingComponent
         myCastingRoutine = StartCoroutine(CastbarProgress(aKeyIndex));
     }
 
-    protected override IEnumerator CastbarProgress(int aKeyIndex)
+    public IEnumerator CastbarProgress(int aKeyIndex)
     {
         GameObject spell = myClass.GetSpell(aKeyIndex);
         Spell spellScript = spell.GetComponent<Spell>();
 
         GetComponent<AudioSource>().clip = spellScript.GetSpellSFX().myCastSound;
         GetComponent<AudioSource>().Play();
-        UIComponent uiComponent = GetComponent<UIComponent>();
 
 
         myIsCasting = true;
@@ -143,7 +190,7 @@ public class PlayerCastingComponent : CastingComponent
 
         while (progress <= 1.0f)
         {
-            uiComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
+            myUIComponent.SetCastbarValues(Mathf.Lerp(0, 1, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
 
             progress += rate * Time.deltaTime;
 
@@ -206,6 +253,7 @@ public class PlayerCastingComponent : CastingComponent
             myChannelGameObject = null;
         }
     }
+
     protected void SpawnSpell(int aKeyIndex, Vector3 aSpawnPosition)
     {
         GameObject spell;
@@ -323,8 +371,47 @@ public class PlayerCastingComponent : CastingComponent
         return true;
     }
 
+    private bool IsAbleToAutoAttack()
+    {
+        if (myIsCasting)
+        {
+            return false;
+        }
+
+        GameObject target = myTargetingComponent.Target;
+        if (!target)
+        {
+            return false;
+        }
+
+        if (target.GetComponent<Health>().IsDead())
+        {
+            myShouldAutoAttack = false;
+            return false;
+        }
+
+        if (!GetComponent<Character>().CanRaycastToObject(target))
+        {
+            return false;
+        }
+
+        float distance = Vector3.Distance(transform.position, target.transform.position);
+        if (distance > GetComponent<Stats>().myAutoAttackRange)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public void SetPlayerControls(PlayerControls aPlayerControls)
     {
         myPlayerControls = aPlayerControls;
+    }
+
+    protected override void OnDeath()
+    {
+        base.OnDeath();
+        myShouldAutoAttack = false;
     }
 }

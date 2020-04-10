@@ -4,35 +4,41 @@ using UnityEngine;
 
 public abstract class CastingComponent : MonoBehaviour
 {
-    protected UIComponent myUIComponent;
     protected AnimatorWrapper myAnimatorWrapper;
+    protected Health myHealth;
+    protected Stats myStats;
 
     protected GameObject myChannelGameObject;
     protected Coroutine myCastingRoutine;
-    protected float myAutoAttackCooldown;
-    protected float myAutoAttackCooldownReset = 1.0f;
 
     protected bool myIsCasting;
     public bool IsInterruptable { get; set; }
 
+    protected float myAutoAttackCooldown;
+    public float myAutoAttackCooldownReset = 1.0f;
+
     protected virtual void Awake()
     {
-        myUIComponent = GetComponent<UIComponent>();
         myAnimatorWrapper = GetComponent<AnimatorWrapper>();
+        myHealth = GetComponent<Health>();
+        myStats = GetComponent<Stats>();
     }
 
     void Start()
     {
         myIsCasting = false;
         IsInterruptable = true;
+
+        myHealth.EventOnHealthZero += OnDeath;
     }
 
     void Update()
     {
-        
+        if (myAutoAttackCooldown > 0.0f)
+        {
+            myAutoAttackCooldown -= Time.deltaTime * myStats.myAttackSpeed;
+        }
     }
-
-    protected abstract IEnumerator CastbarProgress(int aKeyIndex);
 
     public abstract IEnumerator SpellChannelRoutine(float aDuration, float aStunDuration);
 
@@ -82,7 +88,7 @@ public abstract class CastingComponent : MonoBehaviour
         }
     }
 
-    private void OnDeath()
+    protected virtual void OnDeath()
     {
         StopAllCoroutines();
         StopCasting();

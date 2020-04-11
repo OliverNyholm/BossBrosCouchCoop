@@ -8,7 +8,7 @@ public class SetSpellTarget : Action
 
     public override TaskStatus OnUpdate()
     {
-        transform.GetComponent<Enemy>().SetSpellTarget(myTarget.Value);
+        transform.GetComponent<TargetingComponent>().SetSpellTarget(myTarget.Value);
 
         return TaskStatus.Success;
     }

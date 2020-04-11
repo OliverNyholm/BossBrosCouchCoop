@@ -15,7 +15,7 @@ public class BossHudHandler : MonoBehaviour
 
         myBossHuds.Add(aBoss.GetInstanceID(), bossHud);
 
-        Enemy enemy = aBoss.GetComponent<Enemy>();
+        NPCComponent enemy = aBoss.GetComponent<NPCComponent>();
         if (enemy)
             enemy.SetBossHud(bossHud);
         else

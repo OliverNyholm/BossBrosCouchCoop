@@ -100,4 +100,9 @@ public abstract class CastingComponent : MonoBehaviour
             myChannelGameObject = null;
         }
     }
+
+    public bool IsCasting()
+    {
+        return myIsCasting;
+    }
 }

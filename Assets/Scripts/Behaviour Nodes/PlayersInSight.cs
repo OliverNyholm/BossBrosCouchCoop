@@ -27,7 +27,7 @@ public class PlayersInSight : Conditional
         {
             if (InSight(possibleTargets[i]))
             {
-                GetComponent<Enemy>().PlayerSpotted(possibleTargets[i].gameObject);
+                GetComponent<NPCThreatComponent>().PlayerSpotted(possibleTargets[i].gameObject);
                 return TaskStatus.Success;
             }
         }

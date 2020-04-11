@@ -6,7 +6,7 @@ public class IsDisengaged : Conditional
 {
     public override TaskStatus OnUpdate()
     {
-        if (GetComponent<Enemy>().State == Enemy.CombatState.Disengage)
+        if (GetComponent<NPCComponent>().State == NPCComponent.CombatState.Disengage)
             return TaskStatus.Success;
 
         return TaskStatus.Failure;

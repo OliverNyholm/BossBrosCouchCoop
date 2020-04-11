@@ -64,9 +64,9 @@ public class SpawnSpell : Action
         }
 
         myHasSpawnedSpell = false;
-        Enemy enemyComponent = GetComponent<Enemy>();
-        enemyComponent.IsInterruptable = myIsInterruptable;
-        myCanCastSpell = enemyComponent.CastSpell(mySpell, myTarget.Value, myEmptyTransformHolder.transform, myShouldIgnoreCastability);
+        NPCCastingComponent castingComponent = GetComponent<NPCCastingComponent>();
+        castingComponent.IsInterruptable = myIsInterruptable;
+        myCanCastSpell = castingComponent.CastSpell(mySpell, myTarget.Value, myEmptyTransformHolder.transform, myShouldIgnoreCastability);
     }
 
     public override TaskStatus OnUpdate()

@@ -120,7 +120,7 @@ public class Spell : PoolableObject
             if (myTarget.tag == "Player")
                 myTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
             else if (myTarget.tag == "Enemy")
-                myTarget.GetComponent<Enemy>().AddBuff(buffSpell, mySpellIcon);
+                myTarget.GetComponent<NPCComponent>().AddBuff(buffSpell, mySpellIcon);
         }
         else
         {
@@ -129,7 +129,7 @@ public class Spell : PoolableObject
             if (myTarget.tag == "Player")
                 myTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
             else if (myTarget.tag == "Enemy")
-                myTarget.GetComponent<Enemy>().AddBuff(buffSpell, mySpellIcon);
+                myTarget.GetComponent<NPCComponent>().AddBuff(buffSpell, mySpellIcon);
 
             if (buffSpell.GetBuff().mySpellType == SpellType.Shield)
                 myTarget.GetComponent<Health>().AddShield(buffSpell as BuffShieldSpell);
@@ -164,7 +164,7 @@ public class Spell : PoolableObject
         }
         if (mySpellType == SpellType.Taunt)
         {
-            myTarget.GetComponent<Enemy>().SetTaunt(myParent.GetInstanceID(), 3.0f);
+            myTarget.GetComponent<NPCComponent>().SetTaunt(myParent.GetInstanceID(), 3.0f);
         }
     }
 
@@ -400,7 +400,7 @@ public class Spell : PoolableObject
         if (myTarget.tag == "Player")
             myTarget.GetComponent<Player>().InterruptSpellCast();
         else if (myTarget.tag == "Enemy")
-            myTarget.GetComponent<Enemy>().InterruptSpellCast();
+            myTarget.GetComponent<NPCComponent>().InterruptSpellCast();
     }
 
     public SpellSFX GetSpellSFX()

@@ -42,8 +42,6 @@ public abstract class Character : MonoBehaviour
         myHealth.EventOnHealthZero += OnDeath;
     }
 
-    protected abstract bool IsMoving();
-
     protected virtual void Update()
     {
         HandleBuffs();

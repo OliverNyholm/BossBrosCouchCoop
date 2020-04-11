@@ -15,6 +15,7 @@ public class NPCCastingComponent : CastingComponent
         base.Awake();
 
         myResource = GetComponent<Resource>();
+        myBehaviorTree = GetComponent<BehaviorTree>();
         myTargetingComponent = GetComponent<TargetingComponent>();
         myUIComponent = GetComponent<UIComponent>();
     }
@@ -146,6 +147,28 @@ public class NPCCastingComponent : CastingComponent
             myBehaviorTree.SendEvent("SpellInterrupted");
     }
 
+    public void AutoAttack()
+    {
+        if (myAutoAttackCooldown > 0.0f)
+        {
+            myAutoAttackCooldown -= Time.deltaTime * GetComponent<Stats>().myAttackSpeed;
+            return;
+        }
+
+        if (!IsAbleToAutoAttack())
+        {
+            return;
+        }
+
+        GameObject autoAttack = PoolManager.Instance.GetPooledAutoAttack();
+
+        myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
+        myAutoAttackCooldown = 1.2f;
+
+        GameObject target = myTargetingComponent.Target;
+        SpawnSpell(autoAttack, target, target.transform);
+    }
+
     protected override bool IsAbleToCastSpell(Spell aSpellScript)
     {
         if (myIsCasting)
@@ -217,6 +240,38 @@ public class NPCCastingComponent : CastingComponent
         if (!aSpellScript.myCanCastOnSelf && spellTarget == transform.gameObject)
         {
             Debug.Log(gameObject.name + " failed to cast spell due to spell not castable on self");
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool IsAbleToAutoAttack()
+    {
+        if (myIsCasting)
+        {
+            return false;
+        }
+
+        GameObject target = myTargetingComponent.Target;
+        if (!target)
+        {
+            return false;
+        }
+
+        if (target.GetComponent<Health>().IsDead())
+        {
+            return false;
+        }
+
+        if (!GetComponent<Character>().CanRaycastToObject(target))
+        {
+            return false;
+        }
+
+        float distance = Vector3.Distance(transform.position, target.transform.position);
+        if (distance > GetComponent<Stats>().myAutoAttackRange)
+        {
             return false;
         }
 

@@ -8,7 +8,7 @@ public class SetPhase : Action
 
     public override TaskStatus OnUpdate()
     {
-        GetComponent<Enemy>().PhaseIndex = myPhaseIndex;
+        GetComponent<NPCComponent>().PhaseIndex = myPhaseIndex;
         Owner.SendEvent("PhaseChanged");
         return TaskStatus.Success;
     }

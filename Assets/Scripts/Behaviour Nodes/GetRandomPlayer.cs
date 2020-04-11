@@ -11,7 +11,7 @@ public class GetRandomPlayer : Action
 
     public override TaskStatus OnUpdate()
     {
-        List<GameObject> players = GetComponent<Enemy>().Players;
+        List<GameObject> players = GetComponent<NPCThreatComponent>().Players;
         if (players.Count == 0)
             return TaskStatus.Failure;
 

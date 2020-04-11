@@ -44,9 +44,9 @@ public class SpawnSpellMultipleTargets : Action
             mySpawnTransform.Value = transform;
 
         myHasSpawnedSpell = false;
-        Enemy enemyComponent = GetComponent<Enemy>();
-        enemyComponent.IsInterruptable = myIsInterruptable;
-        myCanCastSpell = enemyComponent.CastSpell(mySpell, myTargets.Value[0], mySpawnTransform.Value, myShouldIgnoreCastability);
+        NPCCastingComponent castingComponent = GetComponent<NPCCastingComponent>();
+        castingComponent.IsInterruptable = myIsInterruptable;
+        myCanCastSpell = castingComponent.CastSpell(mySpell, myTargets.Value[0], mySpawnTransform.Value, myShouldIgnoreCastability);
     }
 
     public override TaskStatus OnUpdate()
@@ -89,7 +89,7 @@ public class SpawnSpellMultipleTargets : Action
         myHasSpawnedSpell = true;
         for (int index = 1; index < myTargets.Value.Count; index++)
         {
-            GetComponent<Enemy>().SpawnSpell(mySpell, myTargets.Value[index], mySpawnTransform.Value);
+            GetComponent<NPCCastingComponent>().SpawnSpell(mySpell, myTargets.Value[index], mySpawnTransform.Value);
         }
     }
 

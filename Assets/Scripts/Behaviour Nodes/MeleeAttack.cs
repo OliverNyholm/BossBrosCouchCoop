@@ -47,7 +47,7 @@ public class MeleeAttack : Action
         {
             myNavmeshAgent.destination = transform.position;
             myAnimator.SetBool("IsRunning", false);
-            GetComponent<Enemy>().AutoAttack();
+            GetComponent<NPCCastingComponent>().AutoAttack();
         }
 
         return TaskStatus.Running;

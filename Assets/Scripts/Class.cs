@@ -34,8 +34,6 @@ public class Class : MonoBehaviour
     [Header("Image to show on hud")]
     public Sprite mySprite;
 
-    [SerializeField]
-    private GameObject myAutoAttack = null;
     public GameObject[] mySpells;
     public float[] myCooldownTimers;
 
@@ -71,8 +69,6 @@ public class Class : MonoBehaviour
 
             myUIComponent.SetSpellHud(spell, index);
         }
-
-        myAutoAttack.GetComponent<Spell>().CreatePooledObjects(poolManager, 4);
     }
 
     private void Update()
@@ -98,11 +94,6 @@ public class Class : MonoBehaviour
             return true;
 
         return false;
-    }
-
-    public GameObject GetAutoAttack()
-    {
-        return myAutoAttack;
     }
 
     public GameObject GetSpell(int anIndex)

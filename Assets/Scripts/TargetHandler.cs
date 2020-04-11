@@ -33,9 +33,9 @@ public class TargetHandler : MonoBehaviour
         {
             for (int playerIndex = 0; playerIndex < myPlayers.Count; playerIndex++)
             {
-                if (!myEnemies[index].GetComponent<Enemy>())
+                if (!myEnemies[index].GetComponent<NPCComponent>())
                     continue;
-                myEnemies[index].GetComponent<Enemy>().AddPlayer(myPlayers[playerIndex]);
+                myEnemies[index].GetComponent<NPCComponent>().AddPlayer(myPlayers[playerIndex]);
             }
         }
     }
@@ -69,9 +69,9 @@ public class TargetHandler : MonoBehaviour
         myEnemies.Add(aGameObject);
         for (int playerIndex = 0; playerIndex < myPlayers.Count; playerIndex++)
         {
-            if (!aGameObject.GetComponent<Enemy>())
+            if (!aGameObject.GetComponent<NPCComponent>())
                 continue;
-            aGameObject.GetComponent<Enemy>().AddPlayer(myPlayers[playerIndex]);
+            aGameObject.GetComponent<NPCComponent>().AddPlayer(myPlayers[playerIndex]);
         }
 
         if(aShouldAddUI)

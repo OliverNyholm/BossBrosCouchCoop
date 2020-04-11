@@ -47,7 +47,7 @@ public class PlayerTargetingComponent : TargetingComponent
         return myIsHealTargetingEnabled;
     }
 
-    public void SetPlayerControls(PlayerControls aPlayerControls)
+    public void SetPlayerController(PlayerControls aPlayerControls)
     {
         myPlayerControls = aPlayerControls;
     }
@@ -168,8 +168,8 @@ public class PlayerTargetingComponent : TargetingComponent
 
             foreach (GameObject enemyGO in enemies)
             {
-                Enemy enemy = enemyGO.GetComponent<Enemy>();
-                if (enemy.Target == playerGO)
+                TargetingComponent npcTargetingComponent = enemyGO.GetComponent<TargetingComponent>();
+                if (npcTargetingComponent.Target == playerGO)
                     score += 3f;
             }
 

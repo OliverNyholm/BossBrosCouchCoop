@@ -13,10 +13,8 @@ public class Player : Character
 
     public int PlayerIndex { get; set; }
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-
         myTargetHandler = GameObject.Find("GameManager").GetComponent<TargetHandler>();
     }
 
@@ -27,15 +25,7 @@ public class Player : Character
 
         base.Update();
 
-
-
-
         DetectInput();
-    }
-
-    protected override bool IsMoving()
-    {
-        return false;
     }
 
     private void DetectInput()
@@ -99,5 +89,6 @@ public class Player : Character
     {
         myPlayerControls = aPlayerControls;
         GetComponent<PlayerMovementComponent>().SetPlayerController(aPlayerControls);
+        GetComponent<PlayerTargetingComponent>().SetPlayerController(aPlayerControls);
     }
 }

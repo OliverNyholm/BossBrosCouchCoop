@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovementComponent : MovementComponent
 {
-    public float myBaseSpeed;
     public float myJumpSpeed;
     public float myGravity;
 

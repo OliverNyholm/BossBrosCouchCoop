@@ -56,9 +56,6 @@ public class PlayerCastingComponent : CastingComponent
             return;
         }
 
-        GameObject spell = myClass.GetAutoAttack();
-        Spell spellScript = spell.GetComponent<Spell>();
-
         if (!IsAbleToAutoAttack())
         {
             return;
@@ -67,7 +64,7 @@ public class PlayerCastingComponent : CastingComponent
         myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
         myAutoAttackCooldown = 1.2f;
 
-        SpawnSpell(-1, GetSpellSpawnPosition(spellScript));
+        SpawnSpell(-1, myTargetingComponent.Target.transform.position);
     }
 
     private void DetectSpellInput()
@@ -256,16 +253,19 @@ public class PlayerCastingComponent : CastingComponent
 
     protected void SpawnSpell(int aKeyIndex, Vector3 aSpawnPosition)
     {
-        GameObject spell;
+        GameObject instance = null;
         if (aKeyIndex == -1)
-            spell = myClass.GetAutoAttack();
+        {
+            instance = PoolManager.Instance.GetPooledAutoAttack();
+        }
         else
-            spell = myClass.GetSpell(aKeyIndex);
+        {
+            instance = PoolManager.Instance.GetPooledObject(myClass.GetSpell(aKeyIndex).GetComponent<UniqueID>().GetID());
+        }
+
+        instance.transform.position = aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f);
 
         GameObject target = myTargetingComponent.Target;
-
-        GameObject instance = PoolManager.Instance.GetPooledObject(spell.GetComponent<UniqueID>().GetID());
-        instance.transform.position = aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f);
         if (target)
             instance.transform.LookAt(target.transform);
         else
@@ -285,7 +285,7 @@ public class PlayerCastingComponent : CastingComponent
         if (aSpawnPosition == transform.position)
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
 
-        myEventOnSpellSpawned?.Invoke(gameObject, spell, aKeyIndex);
+        myEventOnSpellSpawned?.Invoke(gameObject, instance, aKeyIndex);
     }
 
     protected override bool IsAbleToCastSpell(Spell aSpellScript)

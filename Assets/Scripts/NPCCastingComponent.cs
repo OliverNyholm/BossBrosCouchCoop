@@ -177,7 +177,8 @@ public class NPCCastingComponent : CastingComponent
             return false;
         }
 
-        if (GetComponent<Resource>().myCurrentResource < aSpellScript.myResourceCost)
+        Resource resource = GetComponent<Resource>();
+        if (resource && resource.myCurrentResource < aSpellScript.myResourceCost)
         {
             Debug.Log(gameObject.name + " failed to cast spell due to no resources");
             return false;

@@ -43,6 +43,11 @@ public class PlayerCastingComponent : CastingComponent
             AutoAttack();
     }
 
+    public void SetPlayerController(PlayerControls aPlayerControls)
+    {
+        myPlayerControls = aPlayerControls;
+    }
+
     public void SetShouldAutoAttack(bool aValue)
     {
         myShouldAutoAttack = aValue;
@@ -128,6 +133,7 @@ public class PlayerCastingComponent : CastingComponent
             myStartTimeOfReleasingHealingKeyDown = Time.time;
         }
 
+        myIsFriendlySpellKeyHeldDown = false;
         myTargetingComponent.DisableManualHealTargeting(myFriendlySpellKeyHeldDownIndex);
     }
 
@@ -195,14 +201,14 @@ public class PlayerCastingComponent : CastingComponent
             {
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
-                StopCasting();
+                StopCasting(true);
                 yield break;
             }
 
             yield return null;
         }
 
-        StopCasting();
+        StopCasting(false);
 
         if (IsAbleToCastSpell(spellScript))
         {
@@ -234,7 +240,7 @@ public class PlayerCastingComponent : CastingComponent
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
                 myStats.SetStunned(0.0f);
-                StopCasting();
+                StopCasting(true);
                 PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());
                 myChannelGameObject = null;
                 yield break;
@@ -243,7 +249,7 @@ public class PlayerCastingComponent : CastingComponent
             yield return null;
         }
 
-        StopCasting();
+        StopCasting(false);
         if (myChannelGameObject != null)
         {
             PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());

@@ -10,6 +10,13 @@ public class PlayerUIComponent : UIComponent
 
     private SpellErrorHandler mySpellErrorHandler;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        myActionButtons = new GameObject[GetComponent<Class>().mySpellSize];
+    }
+
     void Start()
     {
         Transform uiHud = GameObject.Find("PlayerHud" + GetComponent<Player>().PlayerIndex).transform;
@@ -22,12 +29,10 @@ public class PlayerUIComponent : UIComponent
     {
         base.SetupHud(aUIParent);
 
-        Class playerClass = GetComponent<Class>();
         GetComponentInChildren<TargetProjector>().SetPlayerColor(myCharacterColor);
 
         myActionBar = aUIParent.Find("ActionBar").gameObject;
         myActionBar.GetComponent<CanvasGroup>().alpha = 1.0f;
-        myActionButtons = new GameObject[playerClass.mySpellSize];
     }
 
     public void SetSpellCooldownText(int anIndex, float aDuration)

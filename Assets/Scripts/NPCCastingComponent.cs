@@ -69,7 +69,7 @@ public class NPCCastingComponent : CastingComponent
             yield return null;
         }
 
-        StopCasting();
+        StopCasting(false);
 
         if (aShouldIgnoreCastability || IsAbleToCastSpell(spellScript))
         {
@@ -103,7 +103,7 @@ public class NPCCastingComponent : CastingComponent
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
                 stats.SetStunned(0.0f);
-                StopCasting();
+                StopCasting(true);
                 PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());
                 myChannelGameObject = null;
                 yield break;
@@ -112,7 +112,7 @@ public class NPCCastingComponent : CastingComponent
             yield return null;
         }
 
-        StopCasting();
+        StopCasting(false);
         if (myChannelGameObject != null)
         {
             PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());
@@ -139,11 +139,11 @@ public class NPCCastingComponent : CastingComponent
         GetComponent<BehaviorTree>().SendEvent("SpellSpawned");
     }
 
-    protected override void StopCasting()
+    protected override void StopCasting(bool aWasInterruped)
     {
-        base.StopCasting();
+        base.StopCasting(aWasInterruped);
 
-        if (myBehaviorTree)
+        if (myBehaviorTree && aWasInterruped)
             myBehaviorTree.SendEvent("SpellInterrupted");
     }
 

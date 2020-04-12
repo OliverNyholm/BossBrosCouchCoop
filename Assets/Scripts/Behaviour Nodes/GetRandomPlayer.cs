@@ -9,9 +9,18 @@ public class GetRandomPlayer : Action
     public bool myShouldExcludePlayer;
     public SharedInt myPlayerIndexToExclude;
 
+    public SharedGameObjectList myPlayers;
+
+
     public override TaskStatus OnUpdate()
     {
-        List<GameObject> players = GetComponent<NPCThreatComponent>().Players;
+        List<GameObject> players;
+        if(myPlayers.Value != null)
+            players = myPlayers.Value;
+        else
+            players = GetComponent<NPCThreatComponent>().Players;
+
+
         if (players.Count == 0)
             return TaskStatus.Failure;
 

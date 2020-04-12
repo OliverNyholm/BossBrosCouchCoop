@@ -18,14 +18,14 @@ public class TutorialSpells : TutorialCompletion
         if (!base.StartTutorial())
             return false;
 
-        foreach (GameObject player in myPlayers)
+        foreach (GameObject player in Players)
         {
             player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned += OnSpellSpawned;
             if (mySpellIndexToExceed < 3 && player.GetComponent<Class>().myClassName == "Loremaster")
             {
                 myCompletedPlayers.Add(player);
                 SetPlayerCompleted(player);
-                if (myPlayers.Count == 1)
+                if (Players.Count == 1)
                 {
                     EndTutorial();
                     return true;
@@ -53,9 +53,9 @@ public class TutorialSpells : TutorialCompletion
 
         myCompletedPlayers.Add(aPlayer);
         SetPlayerCompleted(aPlayer);
-        if (myCompletedPlayers.Count == myPlayers.Count)
+        if (myCompletedPlayers.Count == Players.Count)
         {
-            foreach (GameObject player in myPlayers)
+            foreach (GameObject player in Players)
             {
                 player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned -= OnSpellSpawned;
                 player.GetComponent<PlayerTargetingComponent>().SetTarget(null);

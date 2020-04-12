@@ -15,7 +15,7 @@ public class Tug : Spell
 
     private Vector3 CalculateTugImpact()
     {
-        float gravity = myParent.GetComponent<Player>().myGravity;
+        float gravity = myParent.GetComponent<PlayerMovementComponent>().myGravity;
         // Selected angle in radians
         float angle = myInitialAngle * Mathf.Deg2Rad;
 

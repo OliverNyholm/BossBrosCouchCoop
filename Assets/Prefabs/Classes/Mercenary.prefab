@@ -1082,14 +1082,19 @@ GameObject:
   m_Component:
   - component: {fileID: 4297319336513959800}
   - component: {fileID: 4316608625606332634}
+  - component: {fileID: 4682851572249918494}
   - component: {fileID: 4201168318579703144}
+  - component: {fileID: 2886223004158841749}
   - component: {fileID: 4243375237653032720}
   - component: {fileID: 2090511274710292135}
   - component: {fileID: 970385522823552703}
   - component: {fileID: 2090511274912838084}
   - component: {fileID: 2090511274912838087}
   - component: {fileID: 2090511274912838086}
-  - component: {fileID: 4682851572249918494}
+  - component: {fileID: 1190581535706158497}
+  - component: {fileID: 2730382254367083222}
+  - component: {fileID: 2731497943279249348}
+  - component: {fileID: 2510328537831070502}
   m_Layer: 9
   m_Name: Mercenary
   m_TagString: Player
@@ -1153,139 +1158,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!143 &4201168318579703144
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4302742793040746010}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.4
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!95 &4243375237653032720
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4302742793040746010}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: ea0d0ca406dd72243a96a640b729b547, type: 3}
-  m_Controller: {fileID: 9100000, guid: 5300dd8dca9628e4f815e6e05d7759c5, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2090511274710292135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4302742793040746010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 147c442137fcf7143b973398fa7e0bb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myAvatarSprite: {fileID: 0}
-  myBaseSpeed: 8
-  myJumpSpeed: 15
-  myGravity: 30
-  myName: 
-  myCharacterColor: {r: 0, g: 0, b: 0, a: 0}
-  mySmartTargetHoldDownMaxDuration: 0.35
---- !u!114 &970385522823552703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4302742793040746010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d622a94a3ce4984d8669a172cc9676c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myClassName: Mercenary
-  myClassRole: 0
-  mySprite: {fileID: 21300000, guid: 08579bde325e3a244afd7c9b4efc90d4, type: 3}
-  myAutoAttack: {fileID: 1076349553557202, guid: 58da3294e821ee7409b6b1de5bd92427,
-    type: 3}
-  mySpells:
-  - {fileID: 1612158453409278, guid: 227f93179118c0645a02616e8c66a6cb, type: 3}
-  - {fileID: 1159462510580832, guid: d8eea47243456a4488cd8f7a7512086c, type: 3}
-  - {fileID: 1778928993442950, guid: fdbf20a6bdf392348acc2d65960fd9bc, type: 3}
-  - {fileID: 1535284190026568, guid: c74ab07a202ee414daf0342cde4262d9, type: 3}
-  myCooldownTimers:
-  - 0
-  - 0
-  - 0
-  - 0
---- !u!114 &2090511274912838084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4302742793040746010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c35b78c8adaa005488649c8354070efd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myResourceName: Energy
-  myResourceColor: {r: 0, g: 0.96862745, b: 1, a: 1}
-  myMaxResource: 200
-  myCurrentResource: 200
-  myRegenerationPerTick: 25
-  myRegenerationTimer: 0.8
---- !u!114 &2090511274912838087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4302742793040746010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d2c069978184cd4788cd4ddd56cf980, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myMaxHealth: 600
-  myCurrentHealth: 600
---- !u!114 &2090511274912838086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4302742793040746010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94435687d56f84f4f8e7785a4fd3cb9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mySpeedMultiplier: 1
-  myAttackSpeed: 1
-  myDamageIncrease: 1
-  myDamageMitigator: 1
-  myAutoAttackRange: 4
-  myAutoAttackDamage: 30
 --- !u!82 &4682851572249918494
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1383,6 +1255,201 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!143 &4201168318579703144
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.4
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &2886223004158841749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 566e392358512804194b3e73ed400c95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &4243375237653032720
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: ea0d0ca406dd72243a96a640b729b547, type: 3}
+  m_Controller: {fileID: 9100000, guid: 5300dd8dca9628e4f815e6e05d7759c5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2090511274710292135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 147c442137fcf7143b973398fa7e0bb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &970385522823552703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d622a94a3ce4984d8669a172cc9676c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myClassName: Mercenary
+  myClassRole: 0
+  mySprite: {fileID: 21300000, guid: 08579bde325e3a244afd7c9b4efc90d4, type: 3}
+  mySpells:
+  - {fileID: 1612158453409278, guid: 227f93179118c0645a02616e8c66a6cb, type: 3}
+  - {fileID: 1159462510580832, guid: d8eea47243456a4488cd8f7a7512086c, type: 3}
+  - {fileID: 1778928993442950, guid: fdbf20a6bdf392348acc2d65960fd9bc, type: 3}
+  - {fileID: 1535284190026568, guid: c74ab07a202ee414daf0342cde4262d9, type: 3}
+  myCooldownTimers:
+  - 0
+  - 0
+  - 0
+  - 0
+  mySpellSize: 4
+--- !u!114 &2090511274912838084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c35b78c8adaa005488649c8354070efd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myResourceName: Energy
+  myResourceColor: {r: 0, g: 0.96862745, b: 1, a: 1}
+  myMaxResource: 200
+  myCurrentResource: 200
+  myRegenerationPerTick: 25
+  myRegenerationTimer: 0.8
+--- !u!114 &2090511274912838087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d2c069978184cd4788cd4ddd56cf980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myMaxHealth: 600
+  myCurrentHealth: 600
+--- !u!114 &2090511274912838086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94435687d56f84f4f8e7785a4fd3cb9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mySpeedMultiplier: 1
+  myAttackSpeed: 1
+  myDamageIncrease: 1
+  myDamageMitigator: 1
+  myAutoAttackRange: 4
+  myAutoAttackDamage: 30
+  myCanBeStunned: 1
+--- !u!114 &1190581535706158497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bf333faaa6a0cc409bb01ea20973fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myAvatarSprite: {fileID: 0}
+  myClassSprite: {fileID: 21300000, guid: 08579bde325e3a244afd7c9b4efc90d4, type: 3}
+  myCharacterColor: {r: 0, g: 0, b: 0, a: 0}
+  myName: 
+--- !u!114 &2730382254367083222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5ccc46deb662e42af6465810de0a4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myAutoAttackCooldownReset: 1
+--- !u!114 &2731497943279249348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e436d2f4e839a4c4596e88f9ba950c36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mySmartTargetHoldDownMaxDuration: 0.35
+--- !u!114 &2510328537831070502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f014485da2492449c9cc1fca71abec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myBaseSpeed: 8
+  myJumpSpeed: 15
+  myGravity: 30
 --- !u!1 &4305123239099748776
 GameObject:
   m_ObjectHideFlags: 0

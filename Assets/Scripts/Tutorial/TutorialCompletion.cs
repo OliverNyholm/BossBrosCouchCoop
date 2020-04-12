@@ -22,7 +22,7 @@ public class TutorialCompletion : MonoBehaviour
     [SerializeField]
     protected Collider myStartCollider = null;
 
-    protected List<GameObject> myPlayers;
+    public List<GameObject> Players { get; set; } = new List<GameObject>();
     protected List<GameObject> myCompletedPlayers = new List<GameObject>();
     protected TutorialPanel myTutorialPanel;
     protected TargetHandler myTargetHandler;
@@ -49,7 +49,7 @@ public class TutorialCompletion : MonoBehaviour
         if (myHasStarted)
             return false;
 
-        myPlayers = new List<GameObject>(myTargetHandler.GetAllPlayers());
+        Players = new List<GameObject>(myTargetHandler.GetAllPlayers());
         myHasStarted = true;
 
         myTutorialPanel.gameObject.SetActive(true);
@@ -66,9 +66,9 @@ public class TutorialCompletion : MonoBehaviour
 
     protected void SetPlayerCompleted(GameObject aPlayer)
     {
-        for (int index = 0; index < myPlayers.Count; index++)
+        for (int index = 0; index < Players.Count; index++)
         {
-            if(aPlayer == myPlayers[index])
+            if(aPlayer == Players[index])
             {
                 myTutorialPanel.SetCompletedAtIndex(index);
                 break;

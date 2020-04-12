@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class TargetingComponent : MonoBehaviour
+public class TargetingComponent : MonoBehaviour
 {
     public GameObject Target { get; protected set; }
     public GameObject SpellTarget { get; set; }

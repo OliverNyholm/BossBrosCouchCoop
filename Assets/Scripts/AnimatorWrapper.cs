@@ -67,7 +67,7 @@ public class AnimatorWrapper : MonoBehaviour
             mySpellAnimationHashes[(int)type] = Animator.StringToHash(type.ToString());
         }
 
-        myAnimationVariableHashes = new int[(int)SpellAnimationType.Count];
+        myAnimationVariableHashes = new int[(int)AnimationVariable.Count];
         foreach (AnimationVariable type in Enum.GetValues(typeof(AnimationVariable)))
         {
             if (type == AnimationVariable.Count)

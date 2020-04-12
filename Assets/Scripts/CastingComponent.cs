@@ -29,7 +29,8 @@ public abstract class CastingComponent : MonoBehaviour
         myIsCasting = false;
         IsInterruptable = true;
 
-        myHealth.EventOnHealthZero += OnDeath;
+        if (myHealth)
+            myHealth.EventOnHealthZero += OnDeath;
     }
 
     void Update()
@@ -65,18 +66,20 @@ public abstract class CastingComponent : MonoBehaviour
         return transform.position;
     }
 
-    protected virtual void StopCasting()
+    protected virtual void StopCasting(bool aWasInterruped)
     {
         if (myCastingRoutine != null)
             StopCoroutine(myCastingRoutine);
         myIsCasting = false;
-        GetComponent<UIComponent>().SetCastbarInterrupted();
         GetComponent<AudioSource>().Stop();
+
+        GetComponent<UIComponent>().FadeCastbar(aWasInterruped);
 
         if (myAnimatorWrapper)
         {
             myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, false);
-            myAnimatorWrapper.SetTrigger(AnimationVariable.CastingDone);
+            if (!aWasInterruped)
+                myAnimatorWrapper.SetTrigger(AnimationVariable.CastingDone);
         }
     }
 
@@ -84,14 +87,14 @@ public abstract class CastingComponent : MonoBehaviour
     {
         if (myIsCasting && IsInterruptable)
         {
-            StopCasting();
+            StopCasting(true);
         }
     }
 
     protected virtual void OnDeath()
     {
         StopAllCoroutines();
-        StopCasting();
+        StopCasting(true);
         GetComponent<AudioSource>().Stop();
 
         if (myChannelGameObject)

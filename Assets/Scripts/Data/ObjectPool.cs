@@ -83,7 +83,7 @@ public class ObjectPool : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Pool has already been created, size was not increased for: " + myPool.Peek().name);
+            Debug.LogWarning("Pool has already been created, size was not increased for: " + myPool.Peek().name);
         }
     }
 }

@@ -5,8 +5,6 @@ using BehaviorDesigner.Runtime;
 
 public class NPCThreatComponent : MonoBehaviour
 {
-
-    private TargetHandler myTargetHandler;
     private TargetingComponent myTargetingComponent;
     private NPCCastingComponent myCastingComponent;
     private NPCComponent myNPCComponent;
@@ -23,7 +21,6 @@ public class NPCThreatComponent : MonoBehaviour
 
     private void Awake()
     {
-        myTargetHandler = FindObjectOfType<TargetHandler>();
         myTargetingComponent = GetComponent<TargetingComponent>();
         myCastingComponent = GetComponent<NPCCastingComponent>();
         myNPCComponent = GetComponent<NPCComponent>();

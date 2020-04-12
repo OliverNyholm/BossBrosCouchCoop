@@ -34,8 +34,6 @@ public class TutorialHealWithCombat : TutorialCompletion
             burningEyes.Play();
         }
 
-        myTotemBoss.GetComponent<NPCThreatComponent>().Players = myPlayers;
-
         mySubscriber = new Subscriber();
         mySubscriber.EventOnReceivedMessage += ReceiveMessage;
 

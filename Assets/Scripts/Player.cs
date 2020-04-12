@@ -93,5 +93,6 @@ public class Player : Character
         myPlayerControls = aPlayerControls;
         GetComponent<PlayerMovementComponent>().SetPlayerController(aPlayerControls);
         GetComponent<PlayerTargetingComponent>().SetPlayerController(aPlayerControls);
+        GetComponent<PlayerCastingComponent>().SetPlayerController(aPlayerControls);
     }
 }

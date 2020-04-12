@@ -20,7 +20,7 @@ public class UIComponent : MonoBehaviour
 
     private GameObject myTargetGO;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         myHealth = GetComponent<Health>();
         myResource = GetComponent<Resource>();
@@ -83,12 +83,14 @@ public class UIComponent : MonoBehaviour
 
     public void SetCastbarValues(float aFillAmount, string aText)
     {
-
+        myCastbar.SetCastbarFillAmount(aFillAmount);
+        myCastbar.SetCastTimeText(aText);
     }
 
-    public void SetCastbarInterrupted()
+    public void FadeCastbar(bool aWasInterruped)
     {
-        myCastbar.SetSpellName("Interrupted");
+        if (aWasInterruped)
+            myCastbar.SetSpellName("Interrupted");
         myCastbar.FadeOutCastbar();
     }
 
@@ -104,14 +106,14 @@ public class UIComponent : MonoBehaviour
 
     public void SetTargetHUD(GameObject aTarget)
     {
-        if(myTargetGO)
+        if (myTargetGO)
         {
             UnsubscribePreviousTargetHUD();
         }
 
         myTargetGO = aTarget;
 
-        if(myTargetGO == null)
+        if (myTargetGO == null)
         {
             myTargetHUD.Hide();
             return;

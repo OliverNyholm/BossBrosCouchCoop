@@ -22,7 +22,7 @@ public class TutorialUIText : TutorialCompletion
 
         myCompletedPlayers.Add(aPlayer);
         SetPlayerCompleted(aPlayer);
-        if (myCompletedPlayers.Count == myPlayers.Count)
+        if (myCompletedPlayers.Count == Players.Count)
         {
             Unsubscribe();
             EndTutorial();
@@ -44,11 +44,11 @@ public class TutorialUIText : TutorialCompletion
 
     private void ReceiveMessage(Message aMessage)
     {
-        for (int index = 0; index < myPlayers.Count; index++)
+        for (int index = 0; index < Players.Count; index++)
         {
-            if (myPlayers[index].GetInstanceID() == aMessage.Data.myInt)
+            if (Players[index].GetInstanceID() == aMessage.Data.myInt)
             {
-                OnInfoToggled(myPlayers[index]);
+                OnInfoToggled(Players[index]);
                 break;
             }
         }

@@ -5,17 +5,11 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    public float myBaseSpeed;
-    public float myJumpSpeed;
-    public float myGravity;
-
     protected AnimatorWrapper myAnimator;
 
     protected Health myHealth;
     protected Resource myResource;
     protected Stats myStats;
-    protected Class myClass;
-
 
     protected List<BuffSpell> myBuffs;
 
@@ -35,7 +29,6 @@ public abstract class Character : MonoBehaviour
         myHealth = GetComponent<Health>();
         myResource = GetComponent<Resource>();
         myStats = GetComponent<Stats>();
-        myClass = GetComponent<Class>();
 
         myBuffs = new List<BuffSpell>();
 

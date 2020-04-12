@@ -24,7 +24,7 @@ public class Health : MonoBehaviour
         if (myCurrentHealth <= 0)
         {
             myCurrentHealth = 0;
-            EventOnHealthZero();
+            OnHealthZero();
         }
 
         string damageText = damage.ToString();

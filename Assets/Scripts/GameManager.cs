@@ -129,6 +129,8 @@ public class GameManager : MonoBehaviour
         uiComponent.myCharacterColor = myDebugPlayerData.myColorScheme.myColor;
         uiComponent.myAvatarSprite = myDebugPlayerData.myColorScheme.myAvatar;
 
+        playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material = myDebugPlayerData.myColorScheme.myMaterial;
+
         myPlayerSelectData[myPlayerSelectData.Count - 1].myPlayerControls = keyboardListener;
 
         PostMaster.Instance.PostMessage(new Message(MessageCategory.RegisterPlayer, playerGO.GetInstanceID(), ColorToRGBVector(uiComponent.myCharacterColor)));

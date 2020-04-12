@@ -8,7 +8,7 @@ public class Health : MonoBehaviour
     public int myCurrentHealth = 100;
 
     public delegate void HealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue, bool aIsDamage);
-    public delegate void ThreatGenerated(int aThreatPercentage, int anID);
+    public delegate void ThreatGenerated(int aThreatPercentage, int anID, bool anIsDamage);
     public delegate void HealthZero();
 
     public event HealthChanged EventOnHealthChange;
@@ -107,9 +107,9 @@ public class Health : MonoBehaviour
         SpawnFloatingText("Shield faded", Color.yellow, 1.0f);
     }
 
-    public void GenerateThreat(int aThreatValue, int anID)
+    public void GenerateThreat(int aThreatValue, int anID, bool anIgnoreCombatState)
     {
-        EventOnThreatGenerated?.Invoke(aThreatValue, anID);
+        EventOnThreatGenerated?.Invoke(aThreatValue, anID, anIgnoreCombatState);
     }
 
     private void OnHealthChanged(bool aIsDamage)

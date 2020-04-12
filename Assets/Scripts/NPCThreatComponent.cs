@@ -7,6 +7,7 @@ public class NPCThreatComponent : MonoBehaviour
 {
     private TargetingComponent myTargetingComponent;
     private NPCCastingComponent myCastingComponent;
+    private BehaviorTree myBehaviorTree;
     private NPCComponent myNPCComponent;
     private Health myHealth;
     public List<GameObject> Players { get; set; } = new List<GameObject>();
@@ -23,6 +24,7 @@ public class NPCThreatComponent : MonoBehaviour
     {
         myTargetingComponent = GetComponent<TargetingComponent>();
         myCastingComponent = GetComponent<NPCCastingComponent>();
+        myBehaviorTree = GetComponent<BehaviorTree>();
         myNPCComponent = GetComponent<NPCComponent>();
         myHealth = GetComponent<Health>();
         myTargetIndex = -1;
@@ -77,13 +79,13 @@ public class NPCThreatComponent : MonoBehaviour
         DetermineTarget();
     }
 
-    private void DetermineTarget()
+    public void DetermineTarget()
     {
         int target = GetHighestAggro();
 
         if (myTargetIndex != target)
         {
-            myTargetingComponent.SetTarget(Players[myTargetIndex]);
+            SetTarget(target);
         }
     }
 
@@ -108,7 +110,7 @@ public class NPCThreatComponent : MonoBehaviour
     public void PlayerSpotted(GameObject aGameObject)
     {
         GetComponent<NPCComponent>().SetState(NPCComponent.CombatState.Combat);
-        AddThreat(10, aGameObject.GetInstanceID());
+        AddThreat(10, aGameObject.GetInstanceID(), true);
         SetTarget(GetHighestAggro());
     }
 
@@ -122,7 +124,7 @@ public class NPCThreatComponent : MonoBehaviour
             {
                 myTargetIndex = index;
                 SetTarget(myTargetIndex);
-                AddThreat(2000, aTaunterID);
+                AddThreat(2000, aTaunterID, true);
                 break;
             }
         }
@@ -168,9 +170,9 @@ public class NPCThreatComponent : MonoBehaviour
         myTargetingComponent.SetTarget(null);
     }
 
-    private void AddThreat(int aThreatValue, int anID)
+    private void AddThreat(int aThreatValue, int anID, bool anIgnoreCombatState)
     {
-        if (myNPCComponent.State != NPCComponent.CombatState.Combat)
+        if (!anIgnoreCombatState && myNPCComponent.State != NPCComponent.CombatState.Combat)
             return;
 
         for (int index = 0; index < Players.Count; index++)
@@ -197,7 +199,7 @@ public class NPCThreatComponent : MonoBehaviour
                     int id = (int)anAiMessage.Data.myVector2.x;
                     int value = (int)anAiMessage.Data.myVector2.y;
 
-                    AddThreat(value, id);
+                    AddThreat(value, id, false);
                 }
                 break;
             case MessageCategory.PlayerDied:

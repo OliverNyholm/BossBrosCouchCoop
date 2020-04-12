@@ -13,6 +13,7 @@ public class PlayerCastingComponent : CastingComponent
     private float myStartTimeOfHoldingKeyDown;
     private bool myIsFriendlySpellKeyHeldDown;
     private float myStartTimeOfReleasingHealingKeyDown;
+    private float myNoMovementDurationAfterManualHealing;
     private int myFriendlySpellKeyHeldDownIndex;
 
     private bool myShouldAutoAttack;
@@ -69,7 +70,8 @@ public class PlayerCastingComponent : CastingComponent
         myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
         myAutoAttackCooldown = 1.2f;
 
-        SpawnSpell(-1, myTargetingComponent.Target.transform.position);
+        myTargetingComponent.SpellTarget = myTargetingComponent.Target;
+        SpawnSpell(-1, myTargetingComponent.SpellTarget.transform.position);
     }
 
     private void DetectSpellInput()
@@ -117,7 +119,7 @@ public class PlayerCastingComponent : CastingComponent
 
     public bool HasRecentlyFinishedHealTargeting()
     {
-        return Time.time - myStartTimeOfReleasingHealingKeyDown < 0.1f;
+        return Time.time - myStartTimeOfReleasingHealingKeyDown < myNoMovementDurationAfterManualHealing;
     }
 
     public void CastFriendlySpell(int aKeyIndex)
@@ -156,6 +158,7 @@ public class PlayerCastingComponent : CastingComponent
         if (GetComponent<Health>().IsDead())
             return;
 
+        myTargetingComponent.SpellTarget = myTargetingComponent.Target;
         if (!IsAbleToCastSpell(spellScript))
             return;
 
@@ -167,13 +170,14 @@ public class PlayerCastingComponent : CastingComponent
             myClass.SetSpellOnCooldown(aKeyIndex);
             GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
             myAnimatorWrapper.SetTrigger(spellScript.myAnimationType);
+            myNoMovementDurationAfterManualHealing = 0.0f;
             return;
         }
 
         myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
 
+        myNoMovementDurationAfterManualHealing = 0.2f;
         myUIComponent.SetCastbarStartValues(spellScript);
-
         myTargetingComponent.SetSpellTarget(myTargetingComponent.Target);
         myCastingRoutine = StartCoroutine(CastbarProgress(aKeyIndex));
     }
@@ -318,7 +322,7 @@ public class PlayerCastingComponent : CastingComponent
         if (aSpellScript.myIsOnlySelfCast)
             return true;
 
-        GameObject target = myTargetingComponent.Target;
+        GameObject target = myTargetingComponent.SpellTarget;
         if (!target)
         {
             if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) != 0)

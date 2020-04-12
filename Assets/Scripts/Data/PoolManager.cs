@@ -65,6 +65,11 @@ public class PoolManager : MonoBehaviour
         return myEmptyTransformHolder.transform;
     }
 
+    public GameObject GetAutoAttackPrefab()
+    {
+        return myAutoAttackPrefab;
+    }
+
     public GameObject GetPooledAutoAttack()
     {
         if (myObjectPoolDictionary.TryGetValue(myAutoAttackPrefab.GetComponent<UniqueID>().GetID(), out ObjectPool pool))

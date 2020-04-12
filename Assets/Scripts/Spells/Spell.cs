@@ -186,7 +186,7 @@ public class Spell : PoolableObject
 
         int parentID = myParent.GetInstanceID();
         int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<UIComponent>().myCharacterColor);
-        target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID);
+        target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID, true);
 
         if (myParent.tag == "Player")
             PostMaster.Instance.PostMessage(new Message(MessageCategory.DamageDealt, new Vector2(parentID, damageDone)));

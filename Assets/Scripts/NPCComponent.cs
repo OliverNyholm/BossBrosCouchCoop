@@ -90,6 +90,11 @@ public class NPCComponent : Character
                 myAnimator.SetBool(AnimationVariable.IsRunning, false);
                 break;
             case CombatState.Combat:
+                NPCThreatComponent threatComponent = GetComponent<NPCThreatComponent>();
+                if(threatComponent)
+                {
+                    threatComponent.DetermineTarget();
+                }
                 PostMaster.Instance.PostMessage(new Message(MessageCategory.EnteredCombat));
                 break;
             case CombatState.Disengage:

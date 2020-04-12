@@ -169,7 +169,7 @@ public class PlayerTargetingComponent : TargetingComponent
             foreach (GameObject enemyGO in enemies)
             {
                 TargetingComponent npcTargetingComponent = enemyGO.GetComponent<TargetingComponent>();
-                if (npcTargetingComponent.Target == playerGO)
+                if (npcTargetingComponent && npcTargetingComponent.Target == playerGO)
                     score += 3f;
             }
 

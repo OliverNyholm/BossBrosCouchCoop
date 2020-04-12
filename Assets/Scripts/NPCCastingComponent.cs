@@ -10,6 +10,8 @@ public class NPCCastingComponent : CastingComponent
     private TargetingComponent myTargetingComponent;
     private UIComponent myUIComponent;
 
+    public float AutoAttackTimer { get { return myAutoAttackCooldown; } }
+
     protected override void Awake()
     {
         base.Awake();
@@ -160,13 +162,11 @@ public class NPCCastingComponent : CastingComponent
             return;
         }
 
-        GameObject autoAttack = PoolManager.Instance.GetPooledAutoAttack();
-
         myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
         myAutoAttackCooldown = 1.2f;
 
         GameObject target = myTargetingComponent.Target;
-        SpawnSpell(autoAttack, target, target.transform);
+        SpawnSpell(PoolManager.Instance.GetAutoAttackPrefab(), target, target.transform);
     }
 
     protected override bool IsAbleToCastSpell(Spell aSpellScript)

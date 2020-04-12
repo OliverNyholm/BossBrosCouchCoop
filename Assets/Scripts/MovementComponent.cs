@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class MovementComponent : MonoBehaviour
 {
-    public float myBaseSpeed;
+    public float myBaseSpeed = 8.0f;
 
     public abstract bool IsMoving();
 

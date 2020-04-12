@@ -23,16 +23,16 @@ public class TutorialLearnSpell : TutorialCompletion
         for (int index = 0; index < myPlayers.Count; index++)
         {
             GameObject player = myPlayers[index];
-            player.GetComponent<Character>().myEventOnSpellSpawned += OnSpellSpawned;
+            player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned += OnSpellSpawned;
             myTutorialPanel.SetSpellData(player.GetComponent<Class>().mySpells[mySpellIndexToCast].GetComponent<Spell>(), player.GetComponent<Resource>(), index);
         }
 
         for (int index = 0; index < myPlayers.Count; index++)
         {
-            Character character = myPlayers[index].GetComponent<Character>();
-            if (character.Target != null && character.Target.tag == "Enemy")
+            PlayerTargetingComponent targetingComponent = myPlayers[index].GetComponent<PlayerTargetingComponent>();
+            if (targetingComponent.Target != null && targetingComponent.Target.tag == "Enemy")
             {
-                character.SetTarget(null);
+                targetingComponent.SetTarget(null);
                 break;
             }
         }
@@ -64,7 +64,7 @@ public class TutorialLearnSpell : TutorialCompletion
         {
             foreach (GameObject player in myPlayers)
             {
-                Character character = player.GetComponent<Character>();
+                PlayerCastingComponent character = player.GetComponent<PlayerCastingComponent>();
                 character.myEventOnSpellSpawned -= OnSpellSpawned;
             }
 

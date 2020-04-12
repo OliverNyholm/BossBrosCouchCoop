@@ -29,5 +29,7 @@ public enum AnimationVariable
     IsCasting,
     CastingDone,
     CastingCancelled,
+    AutoAttackSpeed,
+    RunSpeed,
     Count
 }

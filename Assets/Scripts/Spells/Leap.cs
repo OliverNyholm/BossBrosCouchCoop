@@ -44,7 +44,7 @@ public class Leap : Spell {
     }
     private void LeapPlayer(Vector3 aVelocity)
     {
-        myParent.GetComponent<Player>().GiveImpulse(aVelocity, true);
+        myParent.GetComponent<PlayerMovementComponent>().GiveImpulse(aVelocity, myTarget.transform.position);
     }
 
     protected override string GetSpellDetail()

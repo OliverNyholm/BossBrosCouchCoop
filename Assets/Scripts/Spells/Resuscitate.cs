@@ -27,7 +27,7 @@ public class Resuscitate : Spell
 
     private void StartCoroutine()
     {
-        myParent.GetComponent<Player>().StartChannel(myChannelTime, this, null);
+        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, null);
     }
 
     protected override string GetSpellDetail()

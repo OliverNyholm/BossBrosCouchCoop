@@ -10,7 +10,7 @@ public class Sacrifice : Spell
         if (myDamage > myParent.GetComponent<Health>().myCurrentHealth)
             healthToCast = myParent.GetComponent<Health>().myCurrentHealth - 1;
 
-        myParent.GetComponent<Health>().TakeDamage(healthToCast, myParent.GetComponent<Character>().myCharacterColor);
+        myParent.GetComponent<Health>().TakeDamage(healthToCast, myParent.GetComponent<UIComponent>().myCharacterColor);
         myTarget.GetComponent<Health>().GainHealth(healthToCast);
         PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myDamage)));
     }

@@ -49,7 +49,7 @@ public class Tug : Spell
 
     private void TugPlayer(Vector3 aVelocity)
     {
-        myTarget.GetComponent<Player>().GiveImpulse(aVelocity, false);
+        myTarget.GetComponent<PlayerMovementComponent>().GiveImpulse(aVelocity);
     }
 
     protected override string GetSpellDetail()

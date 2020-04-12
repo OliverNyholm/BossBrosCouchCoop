@@ -20,7 +20,7 @@ public class TutorialSpells : TutorialCompletion
 
         foreach (GameObject player in myPlayers)
         {
-            player.GetComponent<Character>().myEventOnSpellSpawned += OnSpellSpawned;
+            player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned += OnSpellSpawned;
             if (mySpellIndexToExceed < 3 && player.GetComponent<Class>().myClassName == "Loremaster")
             {
                 myCompletedPlayers.Add(player);
@@ -57,8 +57,8 @@ public class TutorialSpells : TutorialCompletion
         {
             foreach (GameObject player in myPlayers)
             {
-                player.GetComponent<Character>().myEventOnSpellSpawned -= OnSpellSpawned;
-                player.GetComponent<Character>().SetTarget(null);
+                player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned -= OnSpellSpawned;
+                player.GetComponent<PlayerTargetingComponent>().SetTarget(null);
             }
             for (int index = 0; index < myTargetsToHit.Count; index++)
             {

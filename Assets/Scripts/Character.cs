@@ -9,7 +9,7 @@ public abstract class Character : MonoBehaviour
     public float myJumpSpeed;
     public float myGravity;
 
-    protected Animator myAnimator;
+    protected AnimatorWrapper myAnimator;
 
     protected Health myHealth;
     protected Resource myResource;
@@ -30,7 +30,7 @@ public abstract class Character : MonoBehaviour
 
     private void SetComponents()
     {
-        myAnimator = GetComponent<Animator>();
+        myAnimator = GetComponent<AnimatorWrapper>();
 
         myHealth = GetComponent<Health>();
         myResource = GetComponent<Resource>();
@@ -45,10 +45,6 @@ public abstract class Character : MonoBehaviour
     protected virtual void Update()
     {
         HandleBuffs();
-
-        //Gör en kommentar ändå, puss på dig Oliver <3. Saknar dig.
-        if (myAnimator)
-            myAnimator.SetLayerWeight(1, 1);
     }
 
     public bool CanRaycastToObject(GameObject anObject)
@@ -118,13 +114,13 @@ public abstract class Character : MonoBehaviour
             if (currentAnimationSpeed > attackspeed)
             {
                 if (myAnimator)
-                    myAnimator.SetFloat("AutoAttackSpeed", myAnimator.GetFloat("AutoAttackSpeed") + attackspeed / currentAnimationSpeed);
+                    myAnimator.SetFloat(AnimationVariable.AutoAttackSpeed, myAnimator.GetFloat(AnimationVariable.AutoAttackSpeed) + attackspeed / currentAnimationSpeed);
             }
         }
         else if (aBuffSpell.GetBuff().mySpeedMultiplier != 0.0f)
         {
             if (myAnimator)
-                myAnimator.SetFloat("RunSpeed", myStats.mySpeedMultiplier);
+                myAnimator.SetFloat(AnimationVariable.RunSpeed, myStats.mySpeedMultiplier);
         }
     }
 
@@ -146,18 +142,18 @@ public abstract class Character : MonoBehaviour
             if (currentAnimationSpeed > attackspeed)
             {
                 if (myAnimator)
-                    myAnimator.SetFloat("AutoAttackSpeed", myAnimator.GetFloat("AutoAttackSpeed") + attackspeed / currentAnimationSpeed);
+                    myAnimator.SetFloat(AnimationVariable.AutoAttackSpeed, myAnimator.GetFloat(AnimationVariable.AutoAttackSpeed) + attackspeed / currentAnimationSpeed);
             }
             else
             {
                 if (myAnimator)
-                    myAnimator.SetFloat("AutoAttackSpeed", 1.0f);
+                    myAnimator.SetFloat(AnimationVariable.AutoAttackSpeed, 1.0f);
             }
         }
         else if (myBuffs[anIndex].GetBuff().mySpeedMultiplier != 0.0f)
         {
             if (myAnimator)
-                myAnimator.SetFloat("RunSpeed", myStats.mySpeedMultiplier);
+                myAnimator.SetFloat(AnimationVariable.RunSpeed, myStats.mySpeedMultiplier);
         }
 
         myBuffs.RemoveAt(anIndex);

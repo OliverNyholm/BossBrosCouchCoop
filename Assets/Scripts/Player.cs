@@ -16,6 +16,9 @@ public class Player : Character
     private void Start()
     {
         myTargetHandler = GameObject.Find("GameManager").GetComponent<TargetHandler>();
+
+        Transform uiHud = GameObject.Find("PlayerHud" + PlayerIndex).transform;
+        GetComponent<PlayerUIComponent>().SetupHud(uiHud);
     }
 
     protected override void Update()

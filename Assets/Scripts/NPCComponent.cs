@@ -8,9 +8,7 @@ public class NPCComponent : Character
 {
     protected Subscriber mySubscriber;
 
-    private NavMeshAgent myNavmeshAgent;
     private BehaviorTree myBehaviorTree;
-
     private TargetHandler myTargetHandler;
 
     private Vector3 mySpawnPosition;
@@ -89,15 +87,17 @@ public class NPCComponent : Character
         {
             case CombatState.Idle:
                 transform.rotation = mySpawnRotation;
-                myAnimator.SetBool("IsRunning", false);
+                myAnimator.SetBool(AnimationVariable.IsRunning, false);
                 break;
             case CombatState.Combat:
                 PostMaster.Instance.PostMessage(new Message(MessageCategory.EnteredCombat));
                 break;
             case CombatState.Disengage:
-                if (myNavmeshAgent)
-                    myNavmeshAgent.destination = mySpawnPosition;
-                myAnimator.SetBool("IsRunning", true);
+                NavMeshAgent navmeshAgent = GetComponent<NavMeshAgent>();
+                if (navmeshAgent)
+                    navmeshAgent.destination = mySpawnPosition;
+
+                myAnimator.SetBool(AnimationVariable.IsRunning, true);
 
                 if (myBehaviorTree)
                 {

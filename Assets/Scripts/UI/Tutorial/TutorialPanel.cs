@@ -42,7 +42,7 @@ public class TutorialPanel : MonoBehaviour
         for (int index = 0; index < players.Count; index++)
         {
             GameObject instance = Instantiate(myPlayersReadyPrefab, myPlayersReadyParent.transform);
-            instance.GetComponentInChildren<Text>().text = players[index].GetComponent<Character>().myName;
+            instance.GetComponentInChildren<Text>().text = players[index].GetComponent<PlayerUIComponent>().myName;
         }
     }
 

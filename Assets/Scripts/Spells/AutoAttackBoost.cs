@@ -27,10 +27,11 @@ public class AutoAttackBoost : Spell
             ReturnToPool();
         }
 
+        Debug.LogWarning("AutoAtk is probably wrong name in code for setting auto attack boost damage when used. Revisit when used.");
         if (myParentAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "AutoAtk")
         {
 
-            myTarget = myParent.GetComponent<Character>().GetTarget();
+            myTarget = myParent.GetComponent<TargetingComponent>().Target;
             if (myTarget == null)
                 return;
 

@@ -36,6 +36,16 @@ public class AnimatorWrapper : MonoBehaviour
         myAnimator.SetBool(GetAnimationHash(anAnimationVariable), aValue);
     }
 
+    public float GetFloat(AnimationVariable anAnimationVariable)
+    {
+        return myAnimator.GetFloat(GetAnimationHash(anAnimationVariable));
+    }
+
+    public void SetFloat(AnimationVariable anAnimationVariable, float aValue)
+    {
+        myAnimator.SetFloat(GetAnimationHash(anAnimationVariable), aValue);
+    }
+
     public void ResetTrigger(SpellAnimationType aSpellAnimationType)
     {
         myAnimator.ResetTrigger(GetAnimationHash(aSpellAnimationType));

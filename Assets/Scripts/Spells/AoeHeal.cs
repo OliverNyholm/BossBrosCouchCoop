@@ -64,7 +64,7 @@ public class AoeHeal : Spell
 
     private void StartCoroutine()
     {
-        myParent.GetComponent<Player>().StartChannel(myChannelTime, this, gameObject);
+        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, gameObject);
     }
 
     private void HealNearby()

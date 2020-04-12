@@ -156,7 +156,7 @@ public class Spell : PoolableObject
         }
 
         if (myStunDuration > 0.0f)
-            myTarget.GetComponent<Character>().Stun(myStunDuration);
+            myTarget.GetComponent<Stats>().SetStunned(myStunDuration);
 
         if (mySpellType == SpellType.Interrupt)
         {
@@ -164,7 +164,7 @@ public class Spell : PoolableObject
         }
         if (mySpellType == SpellType.Taunt)
         {
-            myTarget.GetComponent<NPCComponent>().SetTaunt(myParent.GetInstanceID(), 3.0f);
+            myTarget.GetComponent<NPCThreatComponent>().SetTaunt(myParent.GetInstanceID(), 3.0f);
         }
     }
 
@@ -185,7 +185,7 @@ public class Spell : PoolableObject
             target = aTarget;
 
         int parentID = myParent.GetInstanceID();
-        int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<Character>().myCharacterColor);
+        int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<UIComponent>().myCharacterColor);
         target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID);
 
         if (myParent.tag == "Player")
@@ -398,9 +398,9 @@ public class Spell : PoolableObject
     private void Interrupt()
     {
         if (myTarget.tag == "Player")
-            myTarget.GetComponent<Player>().InterruptSpellCast();
+            myTarget.GetComponent<CastingComponent>().InterruptSpellCast();
         else if (myTarget.tag == "Enemy")
-            myTarget.GetComponent<NPCComponent>().InterruptSpellCast();
+            myTarget.GetComponent<CastingComponent>().InterruptSpellCast();
     }
 
     public SpellSFX GetSpellSFX()

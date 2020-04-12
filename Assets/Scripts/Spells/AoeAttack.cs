@@ -31,7 +31,7 @@ public class AoeAttack : Spell
         if (other.gameObject.tag == myAttackTag)
         {
             if (myDamage > 0.0f)
-                other.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<Character>().myCharacterColor);
+                other.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor);
         }
     }
 

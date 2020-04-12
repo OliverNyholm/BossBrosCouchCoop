@@ -28,7 +28,7 @@ public class BarrierSpell : Spell
 
     private void StartCoroutine(GameObject aChannelSpell)
     {
-        myParent.GetComponent<Player>().StartChannel(myChannelTime, this, aChannelSpell);
+        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, aChannelSpell);
     }
 
     private void SetSpellParent(GameObject aParent, GameObject aChild)

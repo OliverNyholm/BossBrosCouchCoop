@@ -57,6 +57,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -68,6 +69,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -96,6 +98,7 @@ MonoBehaviour:
   myTutorialInfo: 
   myName: Rush
   mySpellType: 8
+  myAttackType: 0
   mySpellTarget: 2
   myAnimationType: 0
   myDamage: 0
@@ -112,7 +115,8 @@ MonoBehaviour:
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 1
   myShouldRotate: 0
-  myBuff: {fileID: 11400000, guid: 9c3513f43da15de41b4f4216895df3ad, type: 2}
+  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}

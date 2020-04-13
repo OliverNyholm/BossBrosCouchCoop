@@ -59,6 +59,7 @@ MonoBehaviour:
     the loremaster will regain a large percentage of resource while channeling.
   myName: Meditate
   mySpellType: 10
+  myAttackType: 1
   mySpellTarget: 2
   myAnimationType: 7
   myDamage: 0
@@ -76,6 +77,7 @@ MonoBehaviour:
   myIsOnlySelfCast: 1
   myShouldRotate: 0
   myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 8300000, guid: 40c771d5d095a0c44addad3ee1b69ad8, type: 3}
     mySpawnSound: {fileID: 0}

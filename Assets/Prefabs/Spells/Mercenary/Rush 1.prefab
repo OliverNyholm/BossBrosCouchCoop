@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1092754315041728
+--- !u!1 &1423380903055156
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4292326993051626}
-  - component: {fileID: 33222039273869004}
-  - component: {fileID: 23471259964353404}
-  - component: {fileID: 114695817852024482}
-  - component: {fileID: -7961157006909125229}
-  - component: {fileID: 8023474927384194135}
+  - component: {fileID: 4887214456255646}
+  - component: {fileID: 33401773743452024}
+  - component: {fileID: 23716427364177180}
+  - component: {fileID: 9088086734368364426}
+  - component: {fileID: -1518101963397814658}
+  - component: {fileID: 8964454374937419646}
   m_Layer: 0
-  m_Name: Sacrifice
+  m_Name: Rush 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4292326993051626
+--- !u!4 &4887214456255646
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1092754315041728}
+  m_GameObject: {fileID: 1423380903055156}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1474582, y: 0.6805223, z: 0.6294943}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &33222039273869004
+--- !u!33 &33401773743452024
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1092754315041728}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &23471259964353404
+  m_GameObject: {fileID: 1423380903055156}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &23716427364177180
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1092754315041728}
+  m_GameObject: {fileID: 1423380903055156}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 60a21eef012cd1e4fb0e36502a099b3b, type: 2}
+  - {fileID: 2100000, guid: f422daac75b75ce40bad5d08ace9243b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,54 +82,13 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114695817852024482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1092754315041728}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65a5a1b02a5a90a44948464619d928fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myQuickInfo: Give Health
-  myTutorialInfo: Sacrifice is a healing spell with a short cast time. However, the
-    amount healed is taken from your own health pool.
-  myName: Sacrifice
-  mySpellType: 2
-  myAttackType: 5
-  mySpellTarget: 2
-  myAnimationType: 0
-  myDamage: 200
-  myResourceCost: 40
-  myThreatModifier: 1
-  mySpeed: 40
-  myCastTime: 1
-  myCooldown: 0.2
-  myRange: 25
-  myStunDuration: 0
-  myCastbarColor: {r: 0.3207547, g: 0.06079097, b: 0, a: 1}
-  mySpellIcon: {fileID: 21300000, guid: 83d07cce5fc6f1e449f83555e63feeed, type: 3}
-  myIsCastableWhileMoving: 0
-  myCanCastOnSelf: 0
-  myIsOnlySelfCast: 0
-  myShouldRotate: 0
-  myBuff: {fileID: 0}
-  mySpellSFX:
-    myCastSound: {fileID: 0}
-    mySpawnSound: {fileID: 0}
-    myHitSound: {fileID: 8300000, guid: 9df7b795df69d3346b0e9522127d8c66, type: 3}
-  mySpellVFX: {fileID: 2989814573608996187, guid: b3e288b451638e845a75f5ac1c747a5f,
-    type: 3}
---- !u!82 &-7961157006909125229
+--- !u!82 &9088086734368364426
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1092754315041728}
+  m_GameObject: {fileID: 1423380903055156}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -219,16 +178,61 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8023474927384194135
+--- !u!114 &-1518101963397814658
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1092754315041728}
+  m_GameObject: {fileID: 1423380903055156}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myID: 38
+  myID: 69
+--- !u!114 &8964454374937419646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423380903055156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c54a6f777942aaa4eb9911fc688d3df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myQuickInfo: 
+  myTutorialInfo: 
+  myName: 
+  mySpellType: 0
+  myAttackType: 16
+  mySpellTarget: 0
+  myAnimationType: 0
+  myDamage: 322
+  myResourceCost: 0
+  myThreatModifier: 1
+  mySpeed: 0
+  myCastTime: 0
+  myCooldown: 0
+  myRange: 0
+  myStunDuration: 0
+  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
+  mySpellIcon: {fileID: 0}
+  myIsCastableWhileMoving: 0
+  myCanCastOnSelf: 0
+  myIsOnlySelfCast: 0
+  myShouldRotate: 0
+  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
+  mySpellSFX:
+    myCastSound: {fileID: 0}
+    mySpawnSound: {fileID: 0}
+    myHitSound: {fileID: 0}
+  mySpellVFX: {fileID: 0}
+  mySpellOverTimeType: 1
+  myDuration: 0
+  myIsCastManually: 0
+  myShieldValue: 32
+  myNumberOfTicks: 2

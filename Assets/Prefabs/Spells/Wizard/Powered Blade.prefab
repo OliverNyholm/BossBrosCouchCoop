@@ -4706,10 +4706,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: Melee Increase
-  myTutorialInfo: Powered blade gains strength from above, enchanting your blade for
-    a few seconds. It will cause your next melee attack to deal increased damage.
+  myTutorialInfo: Powered blade gains strength from above, enchanting your blade
+    for a few seconds. It will cause your next melee attack to deal increased damage.
   myName: Powered Blade
   mySpellType: 0
+  myAttackType: 257
   mySpellTarget: 4
   myAnimationType: 0
   myDamage: 500
@@ -4845,6 +4846,7 @@ ParticleSystemRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4857,6 +4859,7 @@ ParticleSystemRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

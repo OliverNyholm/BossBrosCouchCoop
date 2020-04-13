@@ -6,7 +6,7 @@ using BehaviorDesigner.Runtime.Tasks;
 
 public class TutorialSpellCheck : Conditional
 {
-    public SpellType aSpellType;
+    public SpellTypeToBeChanged aSpellType;
     public SharedInt myPlayerIndexWithSpell;
 
     private List<Spell> mySpellsToCheck;

@@ -143,10 +143,10 @@ public class PlayerTargetingComponent : TargetingComponent
             }
 
             Player player = playerGO.GetComponent<Player>();
-            if (aSpell.myBuff != null)
+            if (aSpell.mySpawnedOnHit != null)
             {
-                if (player.CheckAlreadyHasThatBuff(aSpell.myBuff.InitializeBuff(gameObject))) //SO BAD, redo buff system from networking legacy
-                    continue;
+                if (myStats.HasSpellOverTime(aSpell.GetComponent<SpellOverTime>())) //SO BAD, redo buff system from networking legacy
+                    score -= 2.0f;
                 else
                     score += 1.0f;
             }

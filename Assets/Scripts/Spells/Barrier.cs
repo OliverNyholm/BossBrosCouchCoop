@@ -6,6 +6,8 @@ public class Barrier : ChannelSpell
 {
     [SerializeField]
     private Buff myBuff = null;
+    [SerializeField]
+    private GameObject mySpellOverTime = null;
 
     void OnTriggerEnter(Collider other)
     {
@@ -26,24 +28,12 @@ public class Barrier : ChannelSpell
 
     private void SpawnBuff(GameObject aTarget)
     {
-        if (myBuff.mySpellType == SpellType.DOT || myBuff.mySpellType == SpellType.HOT)
-        {
-            BuffTickSpell buffSpell;
-            buffSpell = (myBuff as TickBuff).InitializeBuff(transform.parent.gameObject, aTarget);
-            aTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
-        }
-        else
-        {
-            BuffSpell buffSpell;
-            buffSpell = myBuff.InitializeBuff(transform.parent.gameObject);
-            aTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
-        }
+        aTarget.GetComponent<Stats>().AddSpellOverTime(mySpellOverTime.GetComponent<SpellOverTime>());
     }
 
     private void RemoveBuff(GameObject aTarget)
     {
-        Debug.Log("Remove Buff: " + myBuff.name);
-        aTarget.GetComponent<Player>().RemoveBuffByName(myBuff.name);
+        aTarget.GetComponent<Stats>().RemoveSpellOverTime(mySpellOverTime.GetComponent<SpellOverTime>());
     }
 
     public override void SetToDestroy()

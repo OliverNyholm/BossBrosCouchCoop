@@ -24,3 +24,16 @@ public static class ExtensionMethods
         return child != null ? child.gameObject : null;
     }
 }
+
+public static class UtilityFunctions
+{
+    public static bool HasSpellType(AttackType anAttacktype, AttackType aHasType)
+    {
+        return (anAttacktype & aHasType) != 0;
+    }
+
+    public static bool HasSpellType(SpellOverTimeType anAttacktype, SpellOverTimeType aHasType)
+    {
+        return (anAttacktype & aHasType) != 0;
+    }
+}

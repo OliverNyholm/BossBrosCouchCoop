@@ -50,7 +50,7 @@ public class Player : Character
         float score = 0.0f;
         foreach (BuffSpell buff in myBuffs)
         {
-            if (buff.GetBuff().mySpellType != SpellType.DOT)
+            if (buff.GetBuff().mySpellType != SpellTypeToBeChanged.DOT)
                 continue;
 
             BuffTickSpell dot = buff as BuffTickSpell;

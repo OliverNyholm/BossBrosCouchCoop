@@ -5,7 +5,7 @@ using UnityEngine;
 public class AreaEffect : MonoBehaviour
 {
     [SerializeField]
-    SpellType mySpellType = SpellType.Damage;
+    SpellTypeToBeChanged mySpellType = SpellTypeToBeChanged.Damage;
 
     [Header("Damage per tick")]
     [SerializeField]
@@ -20,6 +20,8 @@ public class AreaEffect : MonoBehaviour
     private Buff myBuff = null;
     [SerializeField]
     private Sprite myBuffSprite = null;
+    [SerializeField]
+    private GameObject mySpellOverTime = null;
 
     private List<GameObject> myObjectsInTrigger;
 
@@ -38,13 +40,13 @@ public class AreaEffect : MonoBehaviour
             myTimer = myDurationPerTick;
             for (int index = 0; index < myObjectsInTrigger.Count; index++)
             {
-                if (mySpellType == SpellType.Damage)
+                if (mySpellType == SpellTypeToBeChanged.Damage)
                     DealDamage(ref index);
-                else if (mySpellType == SpellType.Heal)
+                else if (mySpellType == SpellTypeToBeChanged.Heal)
                     myObjectsInTrigger[index].GetComponent<Health>().GainHealth(myTickDamage);
 
-                if (myBuff != null)
-                    myObjectsInTrigger[index].GetComponent<Character>().AddBuff(myBuff.InitializeBuff(gameObject), myBuffSprite);
+                if (mySpellOverTime != null)
+                    myObjectsInTrigger[index].GetComponent<Stats>().AddSpellOverTime(mySpellOverTime.GetComponent<SpellOverTime>());
             }
         }
     }
@@ -69,16 +71,16 @@ public class AreaEffect : MonoBehaviour
 
             myObjectsInTrigger.Add(aOther.gameObject);
 
-            if (mySpellType == SpellType.Damage)
+            if (mySpellType == SpellTypeToBeChanged.Damage)
             {
                 int index = myObjectsInTrigger.Count - 1;
                 DealDamage(ref index);
             }
-            else if (mySpellType == SpellType.Heal)
+            else if (mySpellType == SpellTypeToBeChanged.Heal)
                 aOther.GetComponent<Health>().GainHealth(myTickDamage);
 
-            if (myBuff != null)
-                aOther.GetComponent<Character>().AddBuff(myBuff.InitializeBuff(gameObject), myBuffSprite);
+            if (mySpellOverTime != null)
+                aOther.GetComponent<Stats>().AddSpellOverTime(mySpellOverTime.GetComponent<SpellOverTime>());
         }
     }
 

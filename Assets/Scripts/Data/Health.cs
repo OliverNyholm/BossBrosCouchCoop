@@ -15,7 +15,7 @@ public class Health : MonoBehaviour
     public event ThreatGenerated EventOnThreatGenerated;
     public event HealthZero EventOnHealthZero;
 
-    private List<BuffShieldSpell> myShields = new List<BuffShieldSpell>();
+    private List<SpellOverTime> myShields = new List<SpellOverTime>();
 
     public int TakeDamage(int aValue, Color aDamagerColor)
     {
@@ -85,18 +85,19 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void AddShield(BuffShieldSpell aShield)
+    public void AddShield(SpellOverTime aShield)
     {
         myShields.Add(aShield);
         OnHealthChanged(false);
         SpawnFloatingText("Shield, " + aShield.GetRemainingShieldHealth().ToString(), Color.yellow, 1.0f);
     }
 
-    public void RemoveShield()
+    public void RemoveShield(SpellOverTime aSpell)
     {
+        uint spellID = aSpell.GetComponent<UniqueID>().GetID();
         for (int index = 0; index < myShields.Count; index++)
         {
-            if (myShields[index].IsFinished())
+            if (myShields[index].GetComponent<UniqueID>().GetID() == spellID)
             {
                 myShields.RemoveAt(index);
                 break;

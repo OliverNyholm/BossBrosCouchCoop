@@ -19,6 +19,10 @@ public class BuffShieldSpell : BuffSpell {
 
         return Mathf.Abs(myCurrentShieldValue);
     }
+    public int GetRemainingShieldHealth()
+    {
+        return myCurrentShieldValue;
+    }
 
     public override bool IsFinished()
     {
@@ -33,8 +37,4 @@ public class BuffShieldSpell : BuffSpell {
         return myCurrentShieldValue <= 0.0f;
     }
 
-    public int GetRemainingShieldHealth()
-    {
-        return myCurrentShieldValue;
-    }
 }

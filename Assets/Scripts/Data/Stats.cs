@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Stats : MonoBehaviour
 {
@@ -12,6 +13,14 @@ public class Stats : MonoBehaviour
     public bool myCanBeStunned = true;
     private bool myIsStunned = false;
     private float myStunDuration = 0.0f;
+
+    private List<SpellOverTime> mySpellOverTimeGOs;
+
+    private void Awake()
+    {
+        mySpellOverTimeGOs = new List<SpellOverTime>(8);
+        GetComponent<Health>().EventOnHealthZero += OnDeath;
+    }
 
     public float AttackRange { get { return myAutoAttackRange; } }
     public bool IsStunned() { return myIsStunned; }
@@ -33,6 +42,59 @@ public class Stats : MonoBehaviour
             myStunDuration -= Time.deltaTime;
             if (myStunDuration <= 0.0f)
                 myIsStunned = false;
+        }
+    }
+
+    public void AddSpellOverTime(SpellOverTime aSpell)
+    {
+        mySpellOverTimeGOs.Add(aSpell);
+        GetComponent<UIComponent>().AddBuff(aSpell.mySpellIcon);
+    }
+
+    public void RemoveSpellOverTime(SpellOverTime aSpell)
+    {
+        int index = FindIndexOfSpellOverTime(aSpell);
+        mySpellOverTimeGOs.RemoveAt(index);
+        GetComponent<UIComponent>().RemoveBuff(index);
+    }
+
+    public void RemoveSpellOverTimeIfExists(SpellOverTime aSpell)
+    {
+        int index = FindIndexOfSpellOverTime(aSpell);
+        if (index == -1)
+            return;
+
+        mySpellOverTimeGOs[index].RemoveSpellOverTime();
+        mySpellOverTimeGOs.RemoveAt(index);
+    }
+
+    public bool HasSpellOverTime(SpellOverTime aSpell)
+    {
+        if (aSpell == null)
+            return false;
+
+        return FindIndexOfSpellOverTime(aSpell) != -1;
+    }
+
+    private int FindIndexOfSpellOverTime(SpellOverTime aSpell)
+    {
+        uint spellID = aSpell.GetComponent<UniqueID>().GetID();
+        for (int index = 0; index < mySpellOverTimeGOs.Count; index++)
+        {
+            if (mySpellOverTimeGOs[index].GetComponent<UniqueID>().GetID() == spellID)
+            {
+                return index;
+            }
+        }
+
+        return -1;
+    }
+
+    protected virtual void OnDeath()
+    {
+        while (mySpellOverTimeGOs.Count > 0)
+        {
+            RemoveSpellOverTime(mySpellOverTimeGOs[mySpellOverTimeGOs.Count - 1]);
         }
     }
 }

@@ -3,7 +3,7 @@
 [CreateAssetMenu(fileName = "New Buff", menuName = "Buff/Simple")]
 public class Buff : ScriptableObject
 {
-    public SpellType mySpellType = SpellType.Buff;
+    public SpellTypeToBeChanged mySpellType = SpellTypeToBeChanged.Buff;
     public float myDuration;
 
     public float mySpeedMultiplier;

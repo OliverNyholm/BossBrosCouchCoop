@@ -1,7 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+public enum SpellTypeToBeChanged
+{
+    Damage,
+    DOT,
+    Heal,
+    HOT,
+    Shield,
+    Interrupt,
+    Taunt,
+    Slow,
+    Buff,
+    Ressurect,
+    Special
+}
+
+[System.Flags]
+public enum SpellTarget
+{
+    Friend = 1 << 1,
+    Enemy = 1 << 2,
+    Anyone = Friend | Enemy
+}
 
 public class Spell : PoolableObject
 {
@@ -10,7 +30,9 @@ public class Spell : PoolableObject
     public string myTutorialInfo;
 
     public string myName;
-    public SpellType mySpellType;
+    public SpellTypeToBeChanged mySpellType;
+    [HideInInspector]
+    public AttackType myAttackType;
     public SpellTarget mySpellTarget;
     public SpellAnimationType myAnimationType;
 
@@ -37,8 +59,10 @@ public class Spell : PoolableObject
     protected Vector3 myRandomRotation;
 
     public Buff myBuff;
+    public GameObject mySpawnedOnHit;
 
     protected bool myIsFirstUpdate = true;
+    protected bool myReturnToPoolWhenReachedTarget = true;
 
     [System.Serializable]
     public struct SpellSFX
@@ -47,11 +71,11 @@ public class Spell : PoolableObject
         public AudioClip mySpawnSound;
         public AudioClip myHitSound;
     }
-    [Header("The sound effects for the spell")]
+    //[Header("The sound effects for the spell")]
     [SerializeField]
     protected SpellSFX mySpellSFX;
 
-    [Header("The spawned effect for the spell")]
+    //[Header("The spawned effect for the spell")]
     [SerializeField]
     protected GameObject mySpellVFX;
 
@@ -94,47 +118,27 @@ public class Spell : PoolableObject
         }
         else
         {
-            DealSpellEffect();
-            SpawnVFX(2.5f);
-
-            if (myBuff != null)
-            {
-                SpawnBuff();
-            }
-
-            ReturnToPool();
+            OnReachTarget();
         }
+    }
+
+    protected virtual void OnReachTarget()
+    {
+        DealSpellEffect();
+        SpawnVFX(2.5f);
+
+        if (myBuff != null)
+        {
+            SpawnOnHitObject();
+        }
+
+        if (myReturnToPoolWhenReachedTarget)
+            ReturnToPool();
     }
 
     protected virtual void OnFirstUpdate()
     {
         myIsFirstUpdate = false;
-    }
-
-    private void SpawnBuff()
-    {
-        if (myBuff.mySpellType == SpellType.DOT || myBuff.mySpellType == SpellType.HOT)
-        {
-            BuffTickSpell buffSpell;
-            buffSpell = (myBuff as TickBuff).InitializeBuff(myParent, myTarget);
-            if (myTarget.tag == "Player")
-                myTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
-            else if (myTarget.tag == "Enemy")
-                myTarget.GetComponent<NPCComponent>().AddBuff(buffSpell, mySpellIcon);
-        }
-        else
-        {
-            BuffSpell buffSpell;
-            buffSpell = myBuff.InitializeBuff(myParent);
-            if (myTarget.tag == "Player")
-                myTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
-            else if (myTarget.tag == "Enemy")
-                myTarget.GetComponent<NPCComponent>().AddBuff(buffSpell, mySpellIcon);
-
-            if (buffSpell.GetBuff().mySpellType == SpellType.Shield)
-                myTarget.GetComponent<Health>().AddShield(buffSpell as BuffShieldSpell);
-
-        }
     }
 
     protected virtual void DealSpellEffect()
@@ -158,14 +162,23 @@ public class Spell : PoolableObject
         if (myStunDuration > 0.0f)
             myTarget.GetComponent<Stats>().SetStunned(myStunDuration);
 
-        if (mySpellType == SpellType.Interrupt)
+        if (mySpellType == SpellTypeToBeChanged.Interrupt)
         {
             Interrupt();
         }
-        if (mySpellType == SpellType.Taunt)
+        if (mySpellType == SpellTypeToBeChanged.Taunt)
         {
             myTarget.GetComponent<NPCThreatComponent>().SetTaunt(myParent.GetInstanceID(), 3.0f);
         }
+    }
+
+    protected void SpawnOnHitObject()
+    {
+        PoolManager poolManager = PoolManager.Instance;
+        GameObject spawnObject = poolManager.GetPooledObject(mySpawnedOnHit.GetComponent<UniqueID>().GetID());
+
+        spawnObject.transform.localPosition = transform.position;
+        spawnObject.transform.localRotation = Quaternion.identity;
     }
 
     public virtual void AddDamageIncrease(float aDamageIncrease)
@@ -249,38 +262,38 @@ public class Spell : PoolableObject
         string detail = "to ";
         switch (mySpellType)
         {
-            case SpellType.Damage:
+            case SpellTypeToBeChanged.Damage:
                 detail += "deal " + myDamage + " damage. ";
                 break;
-            case SpellType.Heal:
+            case SpellTypeToBeChanged.Heal:
                 detail += "heal " + myDamage + " damage. ";
                 break;
-            case SpellType.Interrupt:
+            case SpellTypeToBeChanged.Interrupt:
                 if (myDamage > 0.0f)
                     detail += "deal " + myDamage + " damage and ";
                 detail += "interrupt any spellcast. ";
                 break;
-            case SpellType.Taunt:
+            case SpellTypeToBeChanged.Taunt:
                 detail += "to make the target attack you for a few seconds.";
                 break;
-            case SpellType.Buff:
+            case SpellTypeToBeChanged.Buff:
                 detail += GetDefaultBuffDetails();
 
-                if (myBuff.mySpellType == SpellType.DOT)
+                if (myBuff.mySpellType == SpellTypeToBeChanged.DOT)
                 {
                     if (detail[detail.Length - 1] == '%')
                         detail += " and ";
 
                     detail += "deal " + (myBuff as TickBuff).myTotalDamage + " damage over ";
                 }
-                else if (myBuff.mySpellType == SpellType.HOT)
+                else if (myBuff.mySpellType == SpellTypeToBeChanged.HOT)
                 {
                     if (detail[detail.Length - 1] == '%')
                         detail += " and ";
 
                     detail += "heal " + (myBuff as TickBuff).myTotalDamage + " damage over ";
                 }
-                else if (myBuff.mySpellType == SpellType.Shield)
+                else if (myBuff.mySpellType == SpellTypeToBeChanged.Shield)
                 {
                     if (detail[detail.Length - 1] == '%')
                         detail += " and ";
@@ -290,10 +303,10 @@ public class Spell : PoolableObject
 
                 detail += myBuff.myDuration.ToString("0") + " seconds.";
                 break;
-            case SpellType.Ressurect:
+            case SpellTypeToBeChanged.Ressurect:
                 detail += "ressurect the target. ";
                 break;
-            case SpellType.Special:
+            case SpellTypeToBeChanged.Special:
                 //Override this function and add special text.
                 break;
         }
@@ -367,7 +380,7 @@ public class Spell : PoolableObject
             buffDetail += "reduce damage dealt by " + (myBuff.myDamageIncrease * 100).ToString("0") + "% ";
         }
 
-        if (myBuff.mySpellType == SpellType.Buff)
+        if (myBuff.mySpellType == SpellTypeToBeChanged.Buff)
             buffDetail += " for ";
 
         return buffDetail;
@@ -379,17 +392,17 @@ public class Spell : PoolableObject
 
         if (myDamage > 0)
             text += myDamage.ToString();
-        if (mySpellType == SpellType.DOT)
+        if (mySpellType == SpellTypeToBeChanged.DOT)
             text += " - DOT " + myName;
-        if (mySpellType == SpellType.HOT)
+        if (mySpellType == SpellTypeToBeChanged.HOT)
             text += " - HOT " + myName;
-        if (mySpellType == SpellType.Interrupt)
+        if (mySpellType == SpellTypeToBeChanged.Interrupt)
             text += " - Interrupt";
-        if (mySpellType == SpellType.Slow)
+        if (mySpellType == SpellTypeToBeChanged.Slow)
             text += " - Slow";
-        if (mySpellType == SpellType.Taunt)
+        if (mySpellType == SpellTypeToBeChanged.Taunt)
             text += " - Taunt";
-        if (mySpellType == SpellType.Ressurect)
+        if (mySpellType == SpellTypeToBeChanged.Ressurect)
             text += " - Ressurect";
 
         return text;
@@ -427,7 +440,7 @@ public class Spell : PoolableObject
         if (myIsOnlySelfCast)
             return false;
 
-        return (mySpellType == SpellType.Heal || mySpellType == SpellType.HOT || mySpellType == SpellType.Shield || mySpellType == SpellType.Buff || mySpellType == SpellType.Ressurect);
+        return (mySpellType == SpellTypeToBeChanged.Heal || mySpellType == SpellTypeToBeChanged.HOT || mySpellType == SpellTypeToBeChanged.Shield || mySpellType == SpellTypeToBeChanged.Buff || mySpellType == SpellTypeToBeChanged.Ressurect);
     }
 
     protected GameObject SpawnVFX(float aDuration, GameObject aTarget = null)
@@ -468,8 +481,9 @@ public class Spell : PoolableObject
     public virtual void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
     {
         aPoolManager.AddPoolableObjects(gameObject, GetComponent<UniqueID>().GetID(), aSpellMaxCount);
+        aPoolManager.AddPoolableObjects(mySpawnedOnHit, mySpawnedOnHit.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
 
-        if(mySpellVFX)
+        if (mySpellVFX)
         {
             aPoolManager.AddPoolableObjects(mySpellVFX, mySpellVFX.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
         }

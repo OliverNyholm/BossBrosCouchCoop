@@ -3,29 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum SpellType
-{
-    Damage,
-    DOT,
-    Heal,
-    HOT,
-    Shield,
-    Interrupt,
-    Taunt,
-    Slow,
-    Buff,
-    Ressurect,
-    Special
-}
-
-[System.Flags]
-public enum SpellTarget
-{
-    Friend = 1 << 1,
-    Enemy = 1 << 2,
-    Anyone = Friend | Enemy
-}
-
 public class Class : MonoBehaviour
 {
     public string myClassName;

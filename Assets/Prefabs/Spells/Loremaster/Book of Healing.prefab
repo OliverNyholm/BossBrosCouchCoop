@@ -51,6 +51,7 @@ MonoBehaviour:
     onto an ally, they will be healed.
   myName: Book of Healing
   mySpellType: 2
+  myAttackType: 4
   mySpellTarget: 2
   myAnimationType: 0
   myDamage: 200
@@ -190,11 +191,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4876655138131858}
     m_Modifications:
-    - target: {fileID: 8653303124189684200, guid: ec216a3c4c4bb3842a7a0d79f8fe073f,
-        type: 3}
-      propertyPath: m_Name
-      value: BookMesh
-      objectReference: {fileID: 0}
     - target: {fileID: 7560069541533119496, guid: ec216a3c4c4bb3842a7a0d79f8fe073f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -249,6 +245,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8653303124189684200, guid: ec216a3c4c4bb3842a7a0d79f8fe073f,
+        type: 3}
+      propertyPath: m_Name
+      value: BookMesh
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec216a3c4c4bb3842a7a0d79f8fe073f, type: 3}

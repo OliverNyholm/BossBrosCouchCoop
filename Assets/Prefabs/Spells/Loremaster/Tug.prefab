@@ -98,11 +98,11 @@ MonoBehaviour:
   myTutorialInfo: Tug is a spell where an ally will be pulled to the loremasters
     position. Sometimes you just got to help fools in fire.
   myName: Tug
-  mySpellType: 10
-  myAttackType: 1024
+  mySpellType: 0
   mySpellTarget: 2
   myAnimationType: 0
   myDamage: 0
+  myHealValue: 0
   myResourceCost: 70
   myThreatModifier: 1
   mySpeed: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}

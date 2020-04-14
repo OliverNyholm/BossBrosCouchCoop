@@ -146,11 +146,11 @@ MonoBehaviour:
   myQuickInfo: 
   myTutorialInfo: 
   myName: Inflict Terror
-  mySpellType: 0
-  myAttackType: 1
+  mySpellType: 1
   mySpellTarget: 4
   myAnimationType: 0
   myDamage: 150
+  myHealValue: 0
   myResourceCost: 0
   myThreatModifier: 1
   mySpeed: 40
@@ -164,7 +164,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 8300000, guid: 2b20ddac57d2421418e7a9fa07a795b6, type: 3}
     mySpawnSound: {fileID: 0}

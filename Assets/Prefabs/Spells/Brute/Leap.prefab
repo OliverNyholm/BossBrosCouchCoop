@@ -97,11 +97,11 @@ MonoBehaviour:
   myQuickInfo: Jump to target
   myTutorialInfo: 'The brute can leap to any target, whether it be ally or foe. '
   myName: Leap
-  mySpellType: 10
-  myAttackType: 1024
+  mySpellType: 0
   mySpellTarget: 6
   myAnimationType: 0
   myDamage: 0
+  myHealValue: 0
   myResourceCost: 10
   myThreatModifier: 1
   mySpeed: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 8300000, guid: 69aa176190ac71e409f7e0a8f425254f, type: 3}
     mySpawnSound: {fileID: 8300000, guid: 69aa176190ac71e409f7e0a8f425254f, type: 3}

@@ -27,7 +27,7 @@ public static class ExtensionMethods
 
 public static class UtilityFunctions
 {
-    public static bool HasSpellType(AttackType anAttacktype, AttackType aHasType)
+    public static bool HasSpellType(SpellType anAttacktype, SpellType aHasType)
     {
         return (anAttacktype & aHasType) != 0;
     }

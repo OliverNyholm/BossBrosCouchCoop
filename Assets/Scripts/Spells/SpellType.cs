@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [System.Flags]
-public enum AttackType
+public enum SpellType
 {
     None = 0,
     Damage = 1,
@@ -23,7 +23,7 @@ public enum SpellOverTimeType
     Stats = 1 << 3
 }
 
-[CustomPropertyDrawer(typeof(AttackType))]
+[CustomPropertyDrawer(typeof(SpellType))]
 [CustomPropertyDrawer(typeof(SpellOverTimeType))]
 public class EnumFlagsAttributeDrawer : PropertyDrawer
 {

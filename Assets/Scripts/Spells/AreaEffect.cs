@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class AreaEffect : MonoBehaviour
 {
-    [SerializeField]
-    AttackType mySpellType = AttackType.Damage;
+    public SpellType mySpellType;
 
     [Header("Damage per tick")]
     [SerializeField]
@@ -36,9 +35,9 @@ public class AreaEffect : MonoBehaviour
             myTimer = myDurationPerTick;
             for (int index = 0; index < myObjectsInTrigger.Count; index++)
             {
-                if (UtilityFunctions.HasSpellType(mySpellType, AttackType.Damage))
+                if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Damage))
                     DealDamage(ref index);
-                if (UtilityFunctions.HasSpellType(mySpellType, AttackType.Heal))
+                if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal))
                     myObjectsInTrigger[index].GetComponent<Health>().GainHealth(myTickValue);
 
                 if (mySpellOverTime != null)
@@ -67,12 +66,12 @@ public class AreaEffect : MonoBehaviour
 
             myObjectsInTrigger.Add(aOther.gameObject);
 
-            if (UtilityFunctions.HasSpellType(mySpellType, AttackType.Damage))
+            if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Damage))
             {
                 int index = myObjectsInTrigger.Count - 1;
                 DealDamage(ref index);
             }
-            if (UtilityFunctions.HasSpellType(mySpellType, AttackType.Heal))
+            if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal))
                 aOther.GetComponent<Health>().GainHealth(myTickValue);
 
             if (mySpellOverTime != null)

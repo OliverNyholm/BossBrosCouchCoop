@@ -146,11 +146,11 @@ MonoBehaviour:
   myQuickInfo: 
   myTutorialInfo: 
   myName: Siphon Soul
-  mySpellType: 0
-  myAttackType: 1
+  mySpellType: 1
   mySpellTarget: 4
   myAnimationType: 0
   myDamage: 70
+  myHealValue: 0
   myResourceCost: 0
   myThreatModifier: 1
   mySpeed: 40
@@ -164,7 +164,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}

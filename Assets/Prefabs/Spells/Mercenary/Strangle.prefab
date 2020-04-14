@@ -98,11 +98,11 @@ MonoBehaviour:
   myTutorialInfo: 'The Mercenary can strangle the target, interrupting any chant
     that was currently cited. '
   myName: Strangle
-  mySpellType: 5
-  myAttackType: 32
+  mySpellType: 4
   mySpellTarget: 4
   myAnimationType: 0
   myDamage: 0
+  myHealValue: 0
   myResourceCost: 20
   myThreatModifier: 1
   mySpeed: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}

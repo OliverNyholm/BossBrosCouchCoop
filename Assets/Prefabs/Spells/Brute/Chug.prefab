@@ -145,11 +145,11 @@ MonoBehaviour:
   myTutorialInfo: The brute pulls out a bottle of liquor and chugs the bottle. The
     drink heals the brute and reduces damage taken for a few seconds.
   myName: Chug
-  myAttackType: 0
+  mySpellType: 2
   mySpellTarget: 0
   myAnimationType: 0
   myDamage: 0
-  myHealValue: 0
+  myHealValue: 200
   myResourceCost: 20
   myThreatModifier: 1
   mySpeed: 0
@@ -163,7 +163,6 @@ MonoBehaviour:
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 1
   myShouldRotate: 0
-  myBuff: {fileID: 0}
   mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}

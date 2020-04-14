@@ -4709,11 +4709,11 @@ MonoBehaviour:
   myTutorialInfo: Powered blade gains strength from above, enchanting your blade
     for a few seconds. It will cause your next melee attack to deal increased damage.
   myName: Powered Blade
-  mySpellType: 0
-  myAttackType: 257
+  mySpellType: 5
   mySpellTarget: 4
   myAnimationType: 0
   myDamage: 500
+  myHealValue: 0
   myResourceCost: 40
   myThreatModifier: 1.5
   mySpeed: 0
@@ -4727,7 +4727,7 @@ MonoBehaviour:
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 1
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}

@@ -98,11 +98,11 @@ MonoBehaviour:
   myTutorialInfo: To move around quickly and get into range of combat, the mercenary
     can teleport a few meters forward.
   myName: Teleport
-  mySpellType: 10
-  myAttackType: 1024
+  mySpellType: 0
   mySpellTarget: 2
   myAnimationType: 6
   myDamage: 0
+  myHealValue: 0
   myResourceCost: 30
   myThreatModifier: 1
   mySpeed: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 1
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 8300000, guid: 0bc6d9f63e30ba4448d46f4f4aa5ba8d, type: 3}
     mySpawnSound: {fileID: 8300000, guid: 0bc6d9f63e30ba4448d46f4f4aa5ba8d, type: 3}

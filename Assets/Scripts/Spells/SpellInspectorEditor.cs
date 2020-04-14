@@ -53,7 +53,7 @@ public class SpellInspectorEditor : Editor
 
         myThreatModifier = serializedObject.FindProperty("myThreatModifier");
 
-        mySpellType = serializedObject.FindProperty("myAttackType");
+        mySpellType = serializedObject.FindProperty("mySpellType");
         mySpellTarget = serializedObject.FindProperty("mySpellTarget");
         myDamage = serializedObject.FindProperty("myDamage");
         myHealValue = serializedObject.FindProperty("myHealValue");
@@ -84,17 +84,17 @@ public class SpellInspectorEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("mySpawnedOnHit"));
         EditorGUILayout.PropertyField(mySpellTarget);
         EditorGUILayout.PropertyField(mySpellType);
-        AttackType spellType = (AttackType)mySpellType.intValue;
+        SpellType spellType = (SpellType)mySpellType.intValue;
 
         // ------------------------------------------------------------------
         EditorGUILayout.HelpBox("Attack Type Attributes", MessageType.None);
 
-        if (UtilityFunctions.HasSpellType(spellType, AttackType.Damage))
+        if (UtilityFunctions.HasSpellType(spellType, SpellType.Damage))
             EditorGUILayout.PropertyField(myDamage, new GUIContent("Damage Amount"));
-        if (UtilityFunctions.HasSpellType(spellType, AttackType.Heal))
+        if (UtilityFunctions.HasSpellType(spellType, SpellType.Heal))
             EditorGUILayout.PropertyField(myHealValue, new GUIContent("Heal Amount"));
 
-        if (UtilityFunctions.HasSpellType(spellType, AttackType.Stun))
+        if (UtilityFunctions.HasSpellType(spellType, SpellType.Stun))
             EditorGUILayout.PropertyField(myStunDuration, new GUIContent("Stun Duration"));
         // ------------------------------------------------------------------
 

@@ -79,6 +79,7 @@ public class NPCCastingComponent : CastingComponent
             if (myResource)
                 GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
             myAnimatorWrapper.SetTrigger(AnimationVariable.CastingDone);
+            myTargetingComponent.SetTarget(myTargetingComponent.Target);
         }
     }
 

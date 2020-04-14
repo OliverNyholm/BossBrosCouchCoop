@@ -16,7 +16,7 @@ public class Spell : PoolableObject
 
     [HideInInspector] public string myName;
 
-    [HideInInspector] public AttackType myAttackType;
+    [HideInInspector] public SpellType mySpellType;
     [HideInInspector] public SpellTarget mySpellTarget;
     [HideInInspector] public SpellAnimationType myAnimationType;
 
@@ -128,24 +128,24 @@ public class Spell : PoolableObject
 
     protected virtual void DealSpellEffect()
     {
-        if (UtilityFunctions.HasSpellType(myAttackType, AttackType.Heal))
+        if(UtilityFunctions.HasSpellType(mySpellType, SpellType.Damage))
+        {
+            DealDamage(myDamage);
+        }
+        if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal))
         {
             myTarget.GetComponent<Health>().GainHealth(myHealValue);
             PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myHealValue)));
-        }
-        if(UtilityFunctions.HasSpellType(myAttackType, AttackType.Heal))
-        {
-            DealDamage(myDamage);
         }
 
         if (myStunDuration > 0.0f)
             myTarget.GetComponent<Stats>().SetStunned(myStunDuration);
 
-        if (UtilityFunctions.HasSpellType(myAttackType, AttackType.Interrupt))
+        if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Interrupt))
         {
             Interrupt();
         }
-        if (UtilityFunctions.HasSpellType(myAttackType, AttackType.Taunt))
+        if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Taunt))
         {
             myTarget.GetComponent<NPCThreatComponent>().SetTaunt(myParent.GetInstanceID(), 3.0f);
         }
@@ -243,7 +243,7 @@ public class Spell : PoolableObject
         if (myIsOnlySelfCast)
             return false;
 
-        return UtilityFunctions.HasSpellType(myAttackType, AttackType.Heal | AttackType.Ressurect);
+        return UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal | SpellType.Ressurect);
     }
 
     protected GameObject SpawnVFX(float aDuration, GameObject aTarget = null)

@@ -210,6 +210,14 @@ public class GameManager : MonoBehaviour
         Debug.Log("Adding another debug player.");
         myPlayerSelectData.Add(myDebugPlayerData);
         SpawnPlayer(targetHandler, targetHandler.GetAllPlayers().Count + 1);
+
+        GameObject newPlayer = targetHandler.GetPlayer(targetHandler.GetAllPlayers().Count - 1);
+        foreach (GameObject npc in targetHandler.GetAllEnemies())
+        {
+            if (!npc.GetComponent<NPCThreatComponent>())
+                continue;
+            npc.GetComponent<NPCThreatComponent>().AddPlayer(newPlayer);
+        }
     }
 
     private Vector3 ColorToRGBVector(Color aColor)

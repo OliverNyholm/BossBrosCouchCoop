@@ -12901,11 +12901,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8f22aaf8ab9a544e92fc0b2434da4ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mySpellType: 0
-  myTickDamage: 200
+  mySpellType: 1
+  myTickValue: 100
   myDurationPerTick: 0.8
-  myBuff: {fileID: 0}
-  myBuffSprite: {fileID: 0}
+  mySpellOverTime: {fileID: 0}
 --- !u!65 &671105522
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14059,11 +14058,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8f22aaf8ab9a544e92fc0b2434da4ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mySpellType: 8
-  myTickDamage: 0
+  mySpellType: 0
+  myTickValue: 100
   myDurationPerTick: 1
-  myBuff: {fileID: 11400000, guid: 9c3513f43da15de41b4f4216895df3ad, type: 2}
-  myBuffSprite: {fileID: 21300000, guid: e17cd266fdccfb641bb4961fbb4dfd47, type: 3}
+  mySpellOverTime: {fileID: 1423380903055156, guid: 820c5b286ff32874ebaae95f98a5f7c1,
+    type: 3}
 --- !u!65 &925591397
 BoxCollider:
   m_ObjectHideFlags: 0

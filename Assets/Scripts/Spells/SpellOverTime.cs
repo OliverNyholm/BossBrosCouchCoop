@@ -99,6 +99,8 @@ public class SpellOverTime : Spell
         Stats stats = myTarget.GetComponent<Stats>();
         stats.RemoveSpellOverTimeIfExists(this);
 
+        stats.AddSpellOverTime(this);
+
         if(UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.Stats))
             SetStatsEffect(stats, true);
 
@@ -119,7 +121,7 @@ public class SpellOverTime : Spell
 
         if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.DOT | SpellOverTimeType.HOT))
         {
-            if (!myTarget.GetComponent<Health>().IsDead())
+            if (!myTarget.GetComponent<Health>().IsDead() && myNumberOfTicksDealt < myNumberOfTicks)
                 DealTickEffect();
         }
     }

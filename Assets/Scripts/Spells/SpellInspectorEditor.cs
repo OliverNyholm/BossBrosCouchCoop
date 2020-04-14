@@ -20,6 +20,7 @@ public class SpellInspectorEditor : Editor
         myThreatModifier,
 
         mySpellType,
+        mySpellTarget,
         myDamage,
         myStunDuration,
 
@@ -51,6 +52,7 @@ public class SpellInspectorEditor : Editor
         myThreatModifier = serializedObject.FindProperty("myThreatModifier");
 
         mySpellType = serializedObject.FindProperty("myAttackType");
+        mySpellTarget = serializedObject.FindProperty("mySpellTarget");
         myDamage = serializedObject.FindProperty("myDamage");
         myStunDuration = serializedObject.FindProperty("myStunDuration");
 
@@ -70,10 +72,13 @@ public class SpellInspectorEditor : Editor
     {
         serializedObject.Update();
 
-        //DrawDefaultInspector();
+        DrawDefaultInspector();
+        EditorGUILayout.Space();
+        EditorGUILayout.HelpBox("Spell Base", MessageType.None);
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("myBuff"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("mySpawnedOnHit"));
+        EditorGUILayout.PropertyField(mySpellTarget);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("mySpellType"));
         EditorGUILayout.PropertyField(mySpellType);
         AttackType spellType = (AttackType)mySpellType.intValue;

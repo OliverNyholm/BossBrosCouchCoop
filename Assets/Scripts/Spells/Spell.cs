@@ -25,46 +25,47 @@ public enum SpellTarget
 
 public class Spell : PoolableObject
 {
-    public string myQuickInfo;
+    [HideInInspector] public string myQuickInfo;
     [TextArea(2, 5)]
-    public string myTutorialInfo;
+    [HideInInspector] public string myTutorialInfo;
 
-    public string myName;
-    public SpellTypeToBeChanged mySpellType;
-    [HideInInspector]
-    public AttackType myAttackType;
-    public SpellTarget mySpellTarget;
-    public SpellAnimationType myAnimationType;
+    [HideInInspector] public string myName;
+    [HideInInspector] public SpellTypeToBeChanged mySpellType;
 
-    public int myDamage;
-    public int myResourceCost;
+    [HideInInspector] public AttackType myAttackType;
+    [HideInInspector] public SpellTarget mySpellTarget;
+    [HideInInspector] public SpellAnimationType myAnimationType;
 
-    public float myThreatModifier = 1.0f;
-    public float mySpeed;
-    public float myCastTime;
-    public float myCooldown;
-    public float myRange;
-    public float myStunDuration;
+    [HideInInspector] public int myDamage;
+    [HideInInspector] public int myResourceCost;
 
-    public Color myCastbarColor;
-    public Sprite mySpellIcon;
+    [HideInInspector] public float myThreatModifier = 1.0f;
+    [HideInInspector] public float mySpeed;
+    [HideInInspector] public float myCastTime;
+    [HideInInspector] public float myCooldown;
+    [HideInInspector] public float myRange;
+    [HideInInspector] public float myStunDuration;
 
-    public bool myIsCastableWhileMoving;
-    public bool myCanCastOnSelf;
-    public bool myIsOnlySelfCast;
+    [HideInInspector] public Color myCastbarColor;
+    [HideInInspector] public Sprite mySpellIcon;
 
-    public bool myShouldRotate;
+    [HideInInspector] public bool myIsCastableWhileMoving;
+    [HideInInspector] public bool myCanCastOnSelf;
+    [HideInInspector] public bool myIsOnlySelfCast;
+
+    [HideInInspector] public bool myShouldRotate;
 
     protected float myRotationSpeed;
     protected Vector3 myRandomRotation;
 
-    public Buff myBuff;
-    public GameObject mySpawnedOnHit;
+    [HideInInspector] public Buff myBuff;
+    [HideInInspector] public GameObject mySpawnedOnHit;
 
     protected bool myIsFirstUpdate = true;
     protected bool myReturnToPoolWhenReachedTarget = true;
 
     [System.Serializable]
+    [HideInInspector]
     public struct SpellSFX
     {
         public AudioClip myCastSound;
@@ -73,11 +74,11 @@ public class Spell : PoolableObject
     }
     //[Header("The sound effects for the spell")]
     [SerializeField]
-    protected SpellSFX mySpellSFX;
+    [HideInInspector] protected SpellSFX mySpellSFX;
 
     //[Header("The spawned effect for the spell")]
     [SerializeField]
-    protected GameObject mySpellVFX;
+    [HideInInspector] protected GameObject mySpellVFX;
 
     protected GameObject myParent;
     protected GameObject myTarget;
@@ -176,6 +177,8 @@ public class Spell : PoolableObject
     {
         PoolManager poolManager = PoolManager.Instance;
         GameObject spawnObject = poolManager.GetPooledObject(mySpawnedOnHit.GetComponent<UniqueID>().GetID());
+        spawnObject.GetComponent<SpawnObjectSpell>().SetParent(myParent);
+        spawnObject.GetComponent<SpawnObjectSpell>().SetTarget(myTarget);
 
         spawnObject.transform.localPosition = transform.position;
         spawnObject.transform.localRotation = Quaternion.identity;
@@ -213,6 +216,11 @@ public class Spell : PoolableObject
     public void SetTarget(GameObject aTarget)
     {
         myTarget = aTarget;
+    }
+
+    public GameObject GetTarget()
+    {
+        return myTarget;
     }
 
     public SpellTarget GetSpellTarget()
@@ -481,7 +489,9 @@ public class Spell : PoolableObject
     public virtual void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
     {
         aPoolManager.AddPoolableObjects(gameObject, GetComponent<UniqueID>().GetID(), aSpellMaxCount);
-        aPoolManager.AddPoolableObjects(mySpawnedOnHit, mySpawnedOnHit.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
+
+        if (mySpawnedOnHit)
+            aPoolManager.AddPoolableObjects(mySpawnedOnHit, mySpawnedOnHit.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
 
         if (mySpellVFX)
         {

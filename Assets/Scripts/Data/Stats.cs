@@ -65,7 +65,6 @@ public class Stats : MonoBehaviour
             return;
 
         mySpellOverTimeGOs[index].RemoveSpellOverTime();
-        mySpellOverTimeGOs.RemoveAt(index);
     }
 
     public bool HasSpellOverTime(SpellOverTime aSpell)

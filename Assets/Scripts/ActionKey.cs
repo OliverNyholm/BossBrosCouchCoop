@@ -60,12 +60,14 @@ public class ActionKey : MonoBehaviour
         {
             myCooldownText.text = aDuration.ToString("0.0");
             myImage.color = new Color(0.8f, 0.3f, 0.3f, 0.5f);
+            myStartColor = myImage.color;
             IsSpellOnCooldown = true;
         }
         else
         {
             myCooldownText.text = "";
             myImage.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            myStartColor = myImage.color;
             IsSpellOnCooldown = false;
         }
     }

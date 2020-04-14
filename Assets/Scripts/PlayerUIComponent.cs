@@ -40,14 +40,7 @@ public class PlayerUIComponent : UIComponent
         if (myActionButtons[anIndex] == null)
             return;
 
-        if (aDuration > 0.0f)
-        {
-            myActionButtons[anIndex].GetComponentInChildren<Text>().text = aDuration.ToString("0.0");
-        }
-        else
-        {
-            myActionButtons[anIndex].GetComponent<ActionKey>().SetCooldown(0.0f);
-        }
+        myActionButtons[anIndex].GetComponent<ActionKey>().SetCooldown(aDuration);
     }
 
     public void SpellPressed(int anIndex)

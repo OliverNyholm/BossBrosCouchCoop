@@ -395,7 +395,7 @@ PrefabInstance:
         type: 3}
       propertyPath: myDebugPlayerData.myClassData
       value: 
-      objectReference: {fileID: 11400000, guid: 549949e763dc75f4696e541743aa8658,
+      objectReference: {fileID: 11400000, guid: f79276452ec4ef54198f5321e32b3a62,
         type: 2}
     - target: {fileID: 3448170462930489257, guid: 503cc89a2de43d243aca431dd077b45f,
         type: 3}
@@ -580,7 +580,7 @@ PrefabInstance:
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.78
+      value: 6.88
       objectReference: {fileID: 0}
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
@@ -5030,6 +5030,7 @@ GameObject:
   - component: {fileID: 1106713476812670440}
   - component: {fileID: 1106713476812670441}
   - component: {fileID: 1106713476812670442}
+  - component: {fileID: 1106713476812670443}
   m_Layer: 9
   m_Name: EnemyDummy
   m_TagString: Enemy
@@ -5076,6 +5077,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6139c0ebc1eb51409642c730b18e116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1106713476812670443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106713476812670439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67f7d3e7a352194c903a05147ca3e37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1106717162099024651

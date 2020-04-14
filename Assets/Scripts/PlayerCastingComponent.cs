@@ -126,7 +126,11 @@ public class PlayerCastingComponent : CastingComponent
     {
         if (Time.time - myStartTimeOfHoldingKeyDown < myTargetingComponent.GetSmartTargetHoldDownMaxDuration())
         {
-            myTargetingComponent.SetTargetWithSmartTargeting(aKeyIndex);
+            if (myClass.GetSpell(aKeyIndex).GetComponent<Spell>().myIsOnlySelfCast)
+                myTargetingComponent.SpellTarget = gameObject;
+            else
+                myTargetingComponent.SetTargetWithSmartTargeting(aKeyIndex);
+
             CastSpell(aKeyIndex, true);
         }
         else
@@ -158,7 +162,9 @@ public class PlayerCastingComponent : CastingComponent
         if (GetComponent<Health>().IsDead())
             return;
 
-        myTargetingComponent.SpellTarget = myTargetingComponent.Target;
+        if (!spellScript.myIsOnlySelfCast)
+            myTargetingComponent.SpellTarget = myTargetingComponent.Target;
+
         if (!IsAbleToCastSpell(spellScript))
             return;
 

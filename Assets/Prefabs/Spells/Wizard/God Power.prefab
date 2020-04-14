@@ -9,10 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4690845771128142}
-  - component: {fileID: 33306368500118068}
-  - component: {fileID: 23159759953195742}
-  - component: {fileID: 114048696720399394}
   - component: {fileID: -7042081472374241871}
+  - component: {fileID: -2791297239472395625}
   - component: {fileID: 1150812756593423710}
   m_Layer: 0
   m_Name: God Power
@@ -35,94 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &33306368500118068
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345520433668302}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &23159759953195742
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345520433668302}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RenderingLayerMask: 4294967295
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: f422daac75b75ce40bad5d08ace9243b, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!114 &114048696720399394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345520433668302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4148e1b28d969ae4aa67f15be58c979c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myQuickInfo: Increase damage
-  myTutorialInfo: Casting this spell will summon the power of the Gods, increasing
-    the damage of your attacks and shortening the duration required to cast spells.
-  myName: God Power
-  mySpellType: 8
-  myAttackType: 256
-  mySpellTarget: 2
-  myAnimationType: 0
-  myDamage: 0
-  myResourceCost: 80
-  myThreatModifier: 1
-  mySpeed: 0
-  myCastTime: 0
-  myCooldown: 60
-  myRange: 0
-  myStunDuration: 0
-  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
-  mySpellIcon: {fileID: 21300000, guid: 253e30ee9abc05944b8d28a6ed840333, type: 3}
-  myIsCastableWhileMoving: 1
-  myCanCastOnSelf: 1
-  myIsOnlySelfCast: 1
-  myShouldRotate: 0
-  myBuff: {fileID: 11400000, guid: 8defb34a258f92e41a12504d854082e8, type: 2}
-  mySpellSFX:
-    myCastSound: {fileID: 0}
-    mySpawnSound: {fileID: 0}
-    myHitSound: {fileID: 8300000, guid: 877645237c811464bb9ec6b8b31cdb88, type: 3}
-  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
-    type: 3}
 --- !u!82 &-7042081472374241871
 AudioSource:
   m_ObjectHideFlags: 0
@@ -219,6 +129,57 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-2791297239472395625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345520433668302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c54a6f777942aaa4eb9911fc688d3df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myQuickInfo: Increase Damage
+  myTutorialInfo: Casting this spell will summon the power of the Gods, increasing
+    the damage of your attacks and shortening the duration required to cast spells.
+  myName: God Power
+  myAttackType: 0
+  mySpellTarget: 0
+  myAnimationType: 0
+  myDamage: 0
+  myHealValue: 0
+  myResourceCost: 80
+  myThreatModifier: 1
+  mySpeed: 0
+  myCastTime: 0
+  myCooldown: 60
+  myRange: 0
+  myStunDuration: 0
+  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
+  mySpellIcon: {fileID: 0}
+  myIsCastableWhileMoving: 1
+  myCanCastOnSelf: 1
+  myIsOnlySelfCast: 1
+  myShouldRotate: 0
+  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
+  mySpellSFX:
+    myCastSound: {fileID: 0}
+    mySpawnSound: {fileID: 0}
+    myHitSound: {fileID: 0}
+  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
+    type: 3}
+  myIsCastManually: 1
+  myDuration: 12
+  mySpellOverTimeType: 8
+  mySpeedMultiplier: 0
+  myAttackSpeed: 0.5
+  myDamageIncrease: 0.5
+  myDamageMitigator: 0
+  myShieldValue: 0
+  myNumberOfTicks: 3
 --- !u!114 &1150812756593423710
 MonoBehaviour:
   m_ObjectHideFlags: 0

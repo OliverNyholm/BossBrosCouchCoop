@@ -337,12 +337,12 @@ public class PlayerCastingComponent : CastingComponent
         }
 
         bool isDead = target.GetComponent<Health>().IsDead();
-        if (!isDead && aSpellScript.mySpellType == SpellTypeToBeChanged.Ressurect)
+        if (!isDead && UtilityFunctions.HasSpellType(aSpellScript.myAttackType, AttackType.Ressurect))
         {
             myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.NotDead);
             return false;
         }
-        if (isDead && aSpellScript.mySpellType != SpellTypeToBeChanged.Ressurect)
+        if (isDead && !UtilityFunctions.HasSpellType(aSpellScript.myAttackType, AttackType.Ressurect))
         {
             myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.IsDead);
             return false;

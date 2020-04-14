@@ -24,6 +24,8 @@ public class SpellOverTimeInspectorEditor : SpellInspectorEditor
         base.OnEnable();
         // Setup the SerializedProperties
 
+        myShouldShowIcon = true;
+
         myDuration = serializedObject.FindProperty("myDuration");
 
         mySpellOverTimeType = serializedObject.FindProperty("mySpellOverTimeType");
@@ -70,7 +72,7 @@ public class SpellOverTimeInspectorEditor : SpellInspectorEditor
 
         if (!myIsCastManually.boolValue)
         {
-            EditorGUILayout.HelpBox("Visuals", MessageType.None);
+            EditorGUILayout.HelpBox("Visuals and Effects", MessageType.None);
             DrawEffects();
             EditorGUILayout.Space();
             DrawUI();

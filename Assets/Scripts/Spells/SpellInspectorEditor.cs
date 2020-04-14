@@ -16,25 +16,27 @@ public class SpellInspectorEditor : Editor
         myIsCastableWhileMoving,
         myCanCastOnSelf,
         myIsOnlySelfCast,
-        
+
         myThreatModifier,
 
         mySpellType,
         mySpellTarget,
         myDamage,
+        myHealValue,
         myStunDuration,
 
         myAnimationType,
         mySpellSFX,
         mySpellVFX,
         myShouldRotate,
-        
+
         myCastbarColor,
         mySpellIcon,
         myName,
         myQuickInfo,
         myTutorialInfo;
 
+    protected bool myShouldShowIcon;
 
     public virtual void OnEnable()
     {
@@ -54,6 +56,7 @@ public class SpellInspectorEditor : Editor
         mySpellType = serializedObject.FindProperty("myAttackType");
         mySpellTarget = serializedObject.FindProperty("mySpellTarget");
         myDamage = serializedObject.FindProperty("myDamage");
+        myHealValue = serializedObject.FindProperty("myHealValue");
         myStunDuration = serializedObject.FindProperty("myStunDuration");
 
         myAnimationType = serializedObject.FindProperty("myAnimationType");
@@ -66,6 +69,8 @@ public class SpellInspectorEditor : Editor
         myName = serializedObject.FindProperty("myName");
         myQuickInfo = serializedObject.FindProperty("myQuickInfo");
         myTutorialInfo = serializedObject.FindProperty("myTutorialInfo");
+
+        myShouldShowIcon = false;
     }
 
     public override void OnInspectorGUI()
@@ -76,10 +81,8 @@ public class SpellInspectorEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.HelpBox("Spell Base", MessageType.None);
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("myBuff"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("mySpawnedOnHit"));
         EditorGUILayout.PropertyField(mySpellTarget);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("mySpellType"));
         EditorGUILayout.PropertyField(mySpellType);
         AttackType spellType = (AttackType)mySpellType.intValue;
 
@@ -89,7 +92,7 @@ public class SpellInspectorEditor : Editor
         if (UtilityFunctions.HasSpellType(spellType, AttackType.Damage))
             EditorGUILayout.PropertyField(myDamage, new GUIContent("Damage Amount"));
         if (UtilityFunctions.HasSpellType(spellType, AttackType.Heal))
-            EditorGUILayout.PropertyField(myDamage, new GUIContent("Heal Amount"));
+            EditorGUILayout.PropertyField(myHealValue, new GUIContent("Heal Amount"));
 
         if (UtilityFunctions.HasSpellType(spellType, AttackType.Stun))
             EditorGUILayout.PropertyField(myStunDuration, new GUIContent("Stun Duration"));
@@ -107,9 +110,10 @@ public class SpellInspectorEditor : Editor
         EditorGUILayout.PropertyField(mySpeed, new GUIContent("Speed"));
 
         EditorGUILayout.Space();
-        EditorGUILayout.PropertyField(myIsCastableWhileMoving, new GUIContent("Can Move While Casting"));
         EditorGUILayout.PropertyField(myCanCastOnSelf, new GUIContent("Can Cast On Self"));
         EditorGUILayout.PropertyField(myIsOnlySelfCast, new GUIContent("Is Only Self Cast"));
+        if (myCastTime.floatValue > 0.0f)
+            EditorGUILayout.PropertyField(myIsCastableWhileMoving, new GUIContent("Can Move While Casting"));
 
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(myThreatModifier, new GUIContent("Threat Modifier"));
@@ -118,7 +122,7 @@ public class SpellInspectorEditor : Editor
         EditorGUILayout.Space();
 
         // ------------------------------------------------------------------
-        EditorGUILayout.HelpBox("Visuals", MessageType.None);
+        EditorGUILayout.HelpBox("Visuals and Effects", MessageType.None);
         EditorGUILayout.PropertyField(myAnimationType, new GUIContent("Animation Type"));
         DrawEffects();
         EditorGUILayout.PropertyField(myShouldRotate, new GUIContent("Should Spell Rotate"));
@@ -137,15 +141,28 @@ public class SpellInspectorEditor : Editor
     {
         EditorGUILayout.HelpBox("UI", MessageType.None);
         EditorGUILayout.PropertyField(myName, new GUIContent("Spell Name"));
-        EditorGUILayout.PropertyField(myCastbarColor, new GUIContent("Castbar Color"));
-        EditorGUILayout.PropertyField(mySpellIcon, new GUIContent("Castbar Spell Icon"));
+        if (myCastTime.floatValue > 0.0f)
+        {
+            EditorGUILayout.PropertyField(myCastbarColor, new GUIContent("Castbar Color"));
+            EditorGUILayout.PropertyField(mySpellIcon, new GUIContent("Castbar Spell Icon"));
+        }
+        else
+        {
+            if(myShouldShowIcon)
+                EditorGUILayout.PropertyField(mySpellIcon, new GUIContent("Castbar Spell Icon"));
+        }
         EditorGUILayout.PropertyField(myQuickInfo, new GUIContent("One-Liner Spell Info"));
         EditorGUILayout.PropertyField(myTutorialInfo, new GUIContent("Tutorial Spell Info"));
     }
 
     protected void DrawEffects()
     {
-        EditorGUILayout.PropertyField(mySpellSFX, new GUIContent("Sound Effects"));
+        if (myCastTime.floatValue > 0.0f)
+            EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myCastSound"), new GUIContent("Sound While Casting"));
+        if (mySpeed.floatValue > 0.0f)
+            EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("mySpawnSound"), new GUIContent("Sound When Spell Spawns"));
+        EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myHitSound"), new GUIContent("Sound When Spell Hits Target"));
+
         EditorGUILayout.PropertyField(mySpellVFX, new GUIContent("On Hit VFX"));
     }
 }

@@ -82,13 +82,6 @@ public class AoeHeal : Spell
         }
     }
 
-    protected override string GetSpellDetail()
-    {
-        string detail = "to heal all players within range for a total of " + myDamage + " over a period of " + myChannelTime + " seconds.";
-
-        return detail;
-    }
-
     public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
     {
         base.CreatePooledObjects(aPoolManager, aSpellMaxCount);

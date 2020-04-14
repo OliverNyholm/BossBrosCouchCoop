@@ -89,11 +89,30 @@ public class Stats : MonoBehaviour
         return -1;
     }
 
+    public float CalculateBuffSmartDamage()
+    {
+        int damageBuffCount = 0;
+        float score = 0.0f;
+        foreach (SpellOverTime spell in mySpellOverTimeGOs)
+        {
+            if(!UtilityFunctions.HasSpellType(spell.mySpellOverTimeType, SpellOverTimeType.DOT))
+                continue;
+
+            score += spell.CalculateRemainingDamage() * 0.05f;
+            const float madeUpMaxTime = 5.0f;
+            score += Mathf.Abs(madeUpMaxTime - spell.TimeUntilNextTick()) + spell.GetTickValue() * 0.1f;
+
+            damageBuffCount++;
+        }
+
+        return score + damageBuffCount;
+    }
+
     protected virtual void OnDeath()
     {
         while (mySpellOverTimeGOs.Count > 0)
         {
-            RemoveSpellOverTime(mySpellOverTimeGOs[mySpellOverTimeGOs.Count - 1]);
+            mySpellOverTimeGOs[mySpellOverTimeGOs.Count - 1].RemoveSpellOverTime();
         }
     }
 }

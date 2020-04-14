@@ -36,11 +36,4 @@ public class Teleport : Spell
     {
         myParent.GetComponent<Player>().SetPosition(aPosition);
     }
-
-    protected override string GetSpellDetail()
-    {
-        string detail = "to teleport forward";
-
-        return detail;
-    }
 }

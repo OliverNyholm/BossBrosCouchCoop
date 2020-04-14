@@ -98,11 +98,11 @@ MonoBehaviour:
   myTutorialInfo: The brute can use his thick head to attack the enemy. When headbutting,
     the target takes a lot of damage and any spell cast is interrupted.
   myName: Headbutt
-  mySpellType: 5
-  myAttackType: 97
+  myAttackType: 69
   mySpellTarget: 4
   myAnimationType: 0
   myDamage: 400
+  myHealValue: 0
   myResourceCost: 50
   myThreatModifier: 8
   mySpeed: 0
@@ -117,6 +117,7 @@ MonoBehaviour:
   myIsOnlySelfCast: 0
   myShouldRotate: 0
   myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}

@@ -44,11 +44,4 @@ public class AutoAttackBoost : Spell
             ReturnToPool();
         }
     }
-
-    protected override string GetSpellDetail()
-    {
-        string detail = "to empower your next auto attack within 4 seconds, dealing " + myDamage + " damage.";
-
-        return detail;
-    }
 }

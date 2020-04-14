@@ -44,11 +44,4 @@ public class DirectionalSpell : Spell
             SpawnVFX(2.5f, other.gameObject);
         }
     }
-
-    protected override string GetSpellDetail()
-    {
-        string detail = "Move forward and deals damage to + " + myAttackTag + "s that are hit. Destroyed after " + myLifeTime.ToString("0.0") + " secodnds or hitting a wall";
-
-        return detail;
-    }
 }

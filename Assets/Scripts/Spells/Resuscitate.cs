@@ -29,11 +29,4 @@ public class Resuscitate : Spell
     {
         myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, null);
     }
-
-    protected override string GetSpellDetail()
-    {
-        string detail = "to resuscitate the target, brining them back to life after " + myChannelTime + " seconds";
-
-        return detail;
-    }
 }

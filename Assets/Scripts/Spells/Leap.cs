@@ -46,11 +46,4 @@ public class Leap : Spell {
     {
         myParent.GetComponent<PlayerMovementComponent>().GiveImpulse(aVelocity, myTarget.transform.position);
     }
-
-    protected override string GetSpellDetail()
-    {
-        string detail = "to leap to the target\'s position";
-
-        return detail;
-    }
 }

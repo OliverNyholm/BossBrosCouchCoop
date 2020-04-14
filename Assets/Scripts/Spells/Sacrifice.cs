@@ -14,11 +14,4 @@ public class Sacrifice : Spell
         myTarget.GetComponent<Health>().GainHealth(healthToCast);
         PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myDamage)));
     }
-
-    protected override string GetSpellDetail()
-    {
-        string detail = "to sacrifice " + myDamage + " of your own health, giving it to your target";
-
-        return detail;
-    }
 }

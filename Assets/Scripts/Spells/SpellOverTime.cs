@@ -5,26 +5,26 @@ using UnityEngine;
 public class SpellOverTime : Spell
 {
     [Tooltip("Set to true if the object is cast, and not spawned by another spell")]
-    public bool myIsCastManually = false;
+    [HideInInspector] public bool myIsCastManually = false;
 
-    public float myDuration = 6;
-    public SpellOverTimeType mySpellOverTimeType;
+    [HideInInspector] public float myDuration = 6;
+    [HideInInspector] public SpellOverTimeType mySpellOverTimeType;
     //Buffs
-    public float mySpeedMultiplier = 0;
-    public float myAttackSpeed = 0;
-    public float myDamageIncrease = 0;
-    public float myDamageMitigator = 0;
+    [HideInInspector] public float mySpeedMultiplier = 0;
+    [HideInInspector] public float myAttackSpeed = 0;
+    [HideInInspector] public float myDamageIncrease = 0;
+    [HideInInspector] public float myDamageMitigator = 0;
     //Shield
-    public int myShieldValue = 0;
+    [HideInInspector] public int myShieldValue = 0;
     private int myCurrentShieldValue;
     //HoT and DoT
-    public int myNumberOfTicks = 3;
+    [HideInInspector] public int myNumberOfTicks = 3;
     private int myNumberOfTicksDealt;
     private int myTickDamage;
     private float myInterval;
     private float myIntervalTimer;
 
-    private float myLifeTime;
+    private float myLifeTimeLeft;
     private bool myHasReachedTarget;
 
     private void Awake()
@@ -35,7 +35,7 @@ public class SpellOverTime : Spell
     public override void Reset()
     {
         base.Reset();
-        myLifeTime = myDuration;
+        myLifeTimeLeft = myDuration;
         myCurrentShieldValue = myShieldValue;
         myHasReachedTarget = false;
 
@@ -56,8 +56,8 @@ public class SpellOverTime : Spell
             return;
         }
 
-        myLifeTime -= Time.deltaTime;
-        if(myLifeTime <= 0.0f)
+        myLifeTimeLeft -= Time.deltaTime;
+        if (myLifeTimeLeft <= 0.0f)
         {
             RemoveSpellOverTime();
             return;
@@ -101,7 +101,7 @@ public class SpellOverTime : Spell
 
         stats.AddSpellOverTime(this);
 
-        if(UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.Stats))
+        if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.Stats))
             SetStatsEffect(stats, true);
 
         if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.Shield))
@@ -142,7 +142,7 @@ public class SpellOverTime : Spell
 
         if (myAttackSpeed != 0.0f)
         {
-            float attackspeed = GetComponent<CastingComponent>().myAutoAttackCooldownReset / aStats.myAttackSpeed;
+            float attackspeed = myTarget.GetComponent<CastingComponent>().myAutoAttackCooldownReset / aStats.myAttackSpeed;
 
             float currentAnimationSpeed = 1.0f;
             if (currentAnimationSpeed > attackspeed)
@@ -154,7 +154,7 @@ public class SpellOverTime : Spell
         }
         else if (mySpeedMultiplier != 0.0f)
         {
-                AnimatorWrapper animatorWrapper = myTarget.GetComponent<AnimatorWrapper>();
+            AnimatorWrapper animatorWrapper = myTarget.GetComponent<AnimatorWrapper>();
             if (animatorWrapper)
                 animatorWrapper.SetFloat(AnimationVariable.RunSpeed, aStats.mySpeedMultiplier);
         }
@@ -177,7 +177,7 @@ public class SpellOverTime : Spell
 
     public int CalculateRemainingDamage()
     {
-        int ticksLeft = (int)((myBuff.myDuration - myDuration) / myIntervalTimer);
+        int ticksLeft = (int)((myDuration - myLifeTimeLeft) / myIntervalTimer);
         return ticksLeft * myTickDamage;
     }
 
@@ -194,5 +194,23 @@ public class SpellOverTime : Spell
         {
             myTarget.GetComponent<Health>().GainHealth(myTickDamage);
         }
+    }
+
+    public int GetTickValue()
+    {
+        return myTickDamage;
+    }
+
+    public float TimeUntilNextTick()
+    {
+        return myInterval - myIntervalTimer;
+    }
+
+    public override bool IsCastOnFriends()
+    {
+        if (base.IsCastOnFriends())
+            return true;
+
+        return UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.HOT | SpellOverTimeType.Shield | SpellOverTimeType.Stats);
     }
 }

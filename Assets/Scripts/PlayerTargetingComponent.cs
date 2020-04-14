@@ -164,7 +164,7 @@ public class PlayerTargetingComponent : TargetingComponent
 
             score += (1.0f - healthPercentage) * 10.0f;
 
-            score += playerGO.GetComponent<Player>().CalculateBuffSmartDamage();
+            score += playerGO.GetComponent<Stats>().CalculateBuffSmartDamage();
 
             foreach (GameObject enemyGO in enemies)
             {

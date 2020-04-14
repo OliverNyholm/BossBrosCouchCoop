@@ -1,20 +1,5 @@
 ﻿using UnityEngine;
 
-public enum SpellTypeToBeChanged
-{
-    Damage,
-    DOT,
-    Heal,
-    HOT,
-    Shield,
-    Interrupt,
-    Taunt,
-    Slow,
-    Buff,
-    Ressurect,
-    Special
-}
-
 [System.Flags]
 public enum SpellTarget
 {
@@ -30,13 +15,13 @@ public class Spell : PoolableObject
     [HideInInspector] public string myTutorialInfo;
 
     [HideInInspector] public string myName;
-    [HideInInspector] public SpellTypeToBeChanged mySpellType;
 
     [HideInInspector] public AttackType myAttackType;
     [HideInInspector] public SpellTarget mySpellTarget;
     [HideInInspector] public SpellAnimationType myAnimationType;
 
     [HideInInspector] public int myDamage;
+    [HideInInspector] public int myHealValue;
     [HideInInspector] public int myResourceCost;
 
     [HideInInspector] public float myThreatModifier = 1.0f;
@@ -58,7 +43,6 @@ public class Spell : PoolableObject
     protected float myRotationSpeed;
     protected Vector3 myRandomRotation;
 
-    [HideInInspector] public Buff myBuff;
     [HideInInspector] public GameObject mySpawnedOnHit;
 
     protected bool myIsFirstUpdate = true;
@@ -128,7 +112,7 @@ public class Spell : PoolableObject
         DealSpellEffect();
         SpawnVFX(2.5f);
 
-        if (myBuff != null)
+        if (mySpawnedOnHit != null)
         {
             SpawnOnHitObject();
         }
@@ -144,30 +128,24 @@ public class Spell : PoolableObject
 
     protected virtual void DealSpellEffect()
     {
-        if (GetSpellTarget() == SpellTarget.Friend)
+        if (UtilityFunctions.HasSpellType(myAttackType, AttackType.Heal))
         {
-            if (myDamage > 0.0f)
-            {
-                myTarget.GetComponent<Health>().GainHealth(myDamage);
-                PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myDamage)));
-            }
+            myTarget.GetComponent<Health>().GainHealth(myHealValue);
+            PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myHealValue)));
         }
-        else
+        if(UtilityFunctions.HasSpellType(myAttackType, AttackType.Heal))
         {
-            if (myDamage > 0.0f)
-            {
-                DealDamage(myDamage);
-            }
+            DealDamage(myDamage);
         }
 
         if (myStunDuration > 0.0f)
             myTarget.GetComponent<Stats>().SetStunned(myStunDuration);
 
-        if (mySpellType == SpellTypeToBeChanged.Interrupt)
+        if (UtilityFunctions.HasSpellType(myAttackType, AttackType.Interrupt))
         {
             Interrupt();
         }
-        if (mySpellType == SpellTypeToBeChanged.Taunt)
+        if (UtilityFunctions.HasSpellType(myAttackType, AttackType.Taunt))
         {
             myTarget.GetComponent<NPCThreatComponent>().SetTaunt(myParent.GetInstanceID(), 3.0f);
         }
@@ -233,189 +211,6 @@ public class Spell : PoolableObject
         return myIsCastableWhileMoving || myCastTime <= 0.0f;
     }
 
-    public string GetSpellDescription()
-    {
-        string target = "Cast spell on ";
-        if (myIsOnlySelfCast)
-            target += "self ";
-        else
-            target += mySpellTarget.ToString() + " ";
-
-        string detail = GetSpellDetail();
-
-        string range = "";
-        if (myRange != 0 && myIsOnlySelfCast)
-            range = "Range: " + myRange;
-        string cost = "\nCosts " + myResourceCost + " to cast spell. ";
-
-        string castTime = "\nSpell ";
-        if (myCastTime <= 0.0f)
-        {
-            castTime += "is instant cast.";
-        }
-        else
-        {
-            castTime += "takes " + myCastTime + " seconds to cast. ";
-            if (myIsCastableWhileMoving)
-                castTime += "Is castable while moving.";
-            else
-                castTime += "Is not castable while moving";
-        }
-
-        return target + detail + range + cost + castTime;
-    }
-
-    protected virtual string GetSpellDetail()
-    {
-        string detail = "to ";
-        switch (mySpellType)
-        {
-            case SpellTypeToBeChanged.Damage:
-                detail += "deal " + myDamage + " damage. ";
-                break;
-            case SpellTypeToBeChanged.Heal:
-                detail += "heal " + myDamage + " damage. ";
-                break;
-            case SpellTypeToBeChanged.Interrupt:
-                if (myDamage > 0.0f)
-                    detail += "deal " + myDamage + " damage and ";
-                detail += "interrupt any spellcast. ";
-                break;
-            case SpellTypeToBeChanged.Taunt:
-                detail += "to make the target attack you for a few seconds.";
-                break;
-            case SpellTypeToBeChanged.Buff:
-                detail += GetDefaultBuffDetails();
-
-                if (myBuff.mySpellType == SpellTypeToBeChanged.DOT)
-                {
-                    if (detail[detail.Length - 1] == '%')
-                        detail += " and ";
-
-                    detail += "deal " + (myBuff as TickBuff).myTotalDamage + " damage over ";
-                }
-                else if (myBuff.mySpellType == SpellTypeToBeChanged.HOT)
-                {
-                    if (detail[detail.Length - 1] == '%')
-                        detail += " and ";
-
-                    detail += "heal " + (myBuff as TickBuff).myTotalDamage + " damage over ";
-                }
-                else if (myBuff.mySpellType == SpellTypeToBeChanged.Shield)
-                {
-                    if (detail[detail.Length - 1] == '%')
-                        detail += " and ";
-
-                    detail += "place a shield that will absorb " + (myBuff as ShieldBuff).myShieldValue + " damage for ";
-                }
-
-                detail += myBuff.myDuration.ToString("0") + " seconds.";
-                break;
-            case SpellTypeToBeChanged.Ressurect:
-                detail += "ressurect the target. ";
-                break;
-            case SpellTypeToBeChanged.Special:
-                //Override this function and add special text.
-                break;
-        }
-
-        return detail;
-    }
-
-    private string GetDefaultBuffDetails()
-    {
-        string buffDetail = " ";
-
-        bool shouldAddComma = false;
-
-        if (myBuff.mySpeedMultiplier > 0.0f)
-        {
-            buffDetail += "increase movement speed by " + (myBuff.mySpeedMultiplier * 100).ToString("0") + "%";
-            shouldAddComma = true;
-        }
-        else if (myBuff.mySpeedMultiplier < 0.0f)
-        {
-            buffDetail += "reduce movement speed by " + (myBuff.mySpeedMultiplier * 100).ToString("0") + "%";
-            shouldAddComma = true;
-        }
-
-        if (myBuff.myAttackSpeed > 0.0f)
-        {
-            if (shouldAddComma)
-                buffDetail += ", and ";
-
-            buffDetail += "increase attack speed by " + (myBuff.myAttackSpeed * 100).ToString("0") + "%";
-            shouldAddComma = true;
-        }
-        else if (myBuff.myAttackSpeed < 0.0f)
-        {
-            if (shouldAddComma)
-                buffDetail += ", and ";
-
-            buffDetail += "reduce attack speed by " + (myBuff.myAttackSpeed * 100).ToString("0") + "%";
-            shouldAddComma = true;
-        }
-
-        if (myBuff.myDamageMitigator > 0.0f)
-        {
-            if (shouldAddComma)
-                buffDetail += ", and ";
-
-            buffDetail += "reduce damage taken by " + (myBuff.myDamageMitigator * 100).ToString("0") + "%";
-            shouldAddComma = true;
-        }
-        else if (myBuff.myDamageMitigator < 0.0f)
-        {
-            if (shouldAddComma)
-                buffDetail += ", and ";
-
-            buffDetail += "increase damage taken by " + (myBuff.myDamageMitigator * 100).ToString("0") + "%";
-            shouldAddComma = true;
-        }
-
-        if (myBuff.myDamageIncrease > 0.0f)
-        {
-            if (shouldAddComma)
-                buffDetail += ", and ";
-
-            buffDetail += "increase damage dealt by " + (myBuff.myDamageIncrease * 100).ToString("0") + "%";
-        }
-        else if (myBuff.myDamageIncrease < 0.0f)
-        {
-            if (shouldAddComma)
-                buffDetail += ", and ";
-
-            buffDetail += "reduce damage dealt by " + (myBuff.myDamageIncrease * 100).ToString("0") + "% ";
-        }
-
-        if (myBuff.mySpellType == SpellTypeToBeChanged.Buff)
-            buffDetail += " for ";
-
-        return buffDetail;
-    }
-
-    private string GetSpellHitText()
-    {
-        string text = string.Empty;
-
-        if (myDamage > 0)
-            text += myDamage.ToString();
-        if (mySpellType == SpellTypeToBeChanged.DOT)
-            text += " - DOT " + myName;
-        if (mySpellType == SpellTypeToBeChanged.HOT)
-            text += " - HOT " + myName;
-        if (mySpellType == SpellTypeToBeChanged.Interrupt)
-            text += " - Interrupt";
-        if (mySpellType == SpellTypeToBeChanged.Slow)
-            text += " - Slow";
-        if (mySpellType == SpellTypeToBeChanged.Taunt)
-            text += " - Taunt";
-        if (mySpellType == SpellTypeToBeChanged.Ressurect)
-            text += " - Ressurect";
-
-        return text;
-    }
-
     private void Interrupt()
     {
         if (myTarget.tag == "Player")
@@ -443,12 +238,12 @@ public class Spell : PoolableObject
         return myAnimationType;
     }
 
-    public bool IsCastOnFriends()
+    public virtual bool IsCastOnFriends()
     {
         if (myIsOnlySelfCast)
             return false;
 
-        return (mySpellType == SpellTypeToBeChanged.Heal || mySpellType == SpellTypeToBeChanged.HOT || mySpellType == SpellTypeToBeChanged.Shield || mySpellType == SpellTypeToBeChanged.Buff || mySpellType == SpellTypeToBeChanged.Ressurect);
+        return UtilityFunctions.HasSpellType(myAttackType, AttackType.Heal | AttackType.Ressurect);
     }
 
     protected GameObject SpawnVFX(float aDuration, GameObject aTarget = null)

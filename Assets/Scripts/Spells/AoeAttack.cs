@@ -34,11 +34,4 @@ public class AoeAttack : Spell
                 other.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor);
         }
     }
-
-    protected override string GetSpellDetail()
-    {
-        string detail = "to deal damage to everyone around you for " + myDamage + " damage";
-
-        return detail;
-    }
 }

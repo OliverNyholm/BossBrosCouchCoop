@@ -51,11 +51,4 @@ public class Tug : Spell
     {
         myTarget.GetComponent<PlayerMovementComponent>().GiveImpulse(aVelocity);
     }
-
-    protected override string GetSpellDetail()
-    {
-        string detail = "to pull the target to your position";
-
-        return detail;
-    }
 }

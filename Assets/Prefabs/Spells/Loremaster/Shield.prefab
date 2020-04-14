@@ -9,10 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4551110838023856}
-  - component: {fileID: 33294035023228838}
-  - component: {fileID: 23592871199577442}
-  - component: {fileID: 114541708951575536}
   - component: {fileID: -8262593119424274946}
+  - component: {fileID: 5530176615643220894}
   - component: {fileID: -343173545838368951}
   m_Layer: 0
   m_Name: Shield
@@ -35,94 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &33294035023228838
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1112324760461454}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &23592871199577442
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1112324760461454}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RenderingLayerMask: 4294967295
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 543a9e08fa192584d96e9f5b477ef3d3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!114 &114541708951575536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1112324760461454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4148e1b28d969ae4aa67f15be58c979c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myQuickInfo: Absorb 200
-  myTutorialInfo: The loremaster places a shield on an ally, allowing a certain amount
-    of damage to be absorbed by the shield for a few seconds.
-  myName: Shield
-  mySpellType: 8
-  myAttackType: 16
-  mySpellTarget: 2
-  myAnimationType: 0
-  myDamage: 0
-  myResourceCost: 50
-  myThreatModifier: 1
-  mySpeed: 0
-  myCastTime: 0
-  myCooldown: 1
-  myRange: 25
-  myStunDuration: 0
-  myCastbarColor: {r: 1, g: 0.8411184, b: 0, a: 1}
-  mySpellIcon: {fileID: 21300000, guid: a6ec4927dbed11844acf4d737432fc73, type: 3}
-  myIsCastableWhileMoving: 1
-  myCanCastOnSelf: 1
-  myIsOnlySelfCast: 0
-  myShouldRotate: 0
-  myBuff: {fileID: 11400000, guid: ac595b3fb16f73c49b5714aeaeec61e2, type: 2}
-  mySpellSFX:
-    myCastSound: {fileID: 8300000, guid: 3262c985deb9a494b9b580b7cc9b1580, type: 3}
-    mySpawnSound: {fileID: 0}
-    myHitSound: {fileID: 0}
-  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
-    type: 3}
 --- !u!82 &-8262593119424274946
 AudioSource:
   m_ObjectHideFlags: 0
@@ -219,6 +129,56 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5530176615643220894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112324760461454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c54a6f777942aaa4eb9911fc688d3df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myQuickInfo: 'Absors 200 '
+  myTutorialInfo: The loremaster places a shield on an ally, allowing a certain amount
+    of damage to be absorbed by the shield for a few seconds.
+  myName: Shield
+  myAttackType: 0
+  mySpellTarget: 2
+  myAnimationType: 0
+  myDamage: 0
+  myHealValue: 0
+  myResourceCost: 50
+  myThreatModifier: 1
+  mySpeed: 0
+  myCastTime: 0
+  myCooldown: 1
+  myRange: 25
+  myStunDuration: 0
+  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
+  mySpellIcon: {fileID: 21300000, guid: a6ec4927dbed11844acf4d737432fc73, type: 3}
+  myIsCastableWhileMoving: 1
+  myCanCastOnSelf: 1
+  myIsOnlySelfCast: 0
+  myShouldRotate: 0
+  mySpawnedOnHit: {fileID: 0}
+  mySpellSFX:
+    myCastSound: {fileID: 0}
+    mySpawnSound: {fileID: 0}
+    myHitSound: {fileID: 0}
+  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
+    type: 3}
+  myIsCastManually: 1
+  myDuration: 6
+  mySpellOverTimeType: 12
+  mySpeedMultiplier: 0.2
+  myAttackSpeed: 0
+  myDamageIncrease: 0
+  myDamageMitigator: 0
+  myShieldValue: 250
+  myNumberOfTicks: 3
 --- !u!114 &-343173545838368951
 MonoBehaviour:
   m_ObjectHideFlags: 0

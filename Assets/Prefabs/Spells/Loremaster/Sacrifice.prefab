@@ -98,11 +98,11 @@ MonoBehaviour:
   myTutorialInfo: Sacrifice is a healing spell with a short cast time. However, the
     amount healed is taken from your own health pool.
   myName: Sacrifice
-  mySpellType: 2
-  myAttackType: 5
+  myAttackType: 7
   mySpellTarget: 2
   myAnimationType: 0
   myDamage: 200
+  myHealValue: 200
   myResourceCost: 40
   myThreatModifier: 1
   mySpeed: 40
@@ -117,6 +117,7 @@ MonoBehaviour:
   myIsOnlySelfCast: 0
   myShouldRotate: 0
   myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}

@@ -44,28 +44,6 @@ public class Player : Character
             FindObjectOfType<GameManager>().RestartLevel();
     }
 
-    public float CalculateBuffSmartDamage()
-    {
-        int damageBuffCount = 0;
-        float score = 0.0f;
-        foreach (BuffSpell buff in myBuffs)
-        {
-            if (buff.GetBuff().mySpellType != SpellTypeToBeChanged.DOT)
-                continue;
-
-            BuffTickSpell dot = buff as BuffTickSpell;
-            score += dot.CalculateRemainingDamage() * 0.05f;
-            const float madeUpMaxTime = 5.0f;
-            score += Mathf.Abs(madeUpMaxTime - dot.TimeUntilNextTick()) + dot.GetTickValue() * 0.1f;
-
-            damageBuffCount++;
-        }
-
-        return score + damageBuffCount;
-    }
-
-
-
     public void SetPosition(Vector3 aPosition)
     {
         transform.position = aPosition;

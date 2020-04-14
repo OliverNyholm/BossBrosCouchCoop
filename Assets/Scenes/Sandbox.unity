@@ -395,7 +395,7 @@ PrefabInstance:
         type: 3}
       propertyPath: myDebugPlayerData.myClassData
       value: 
-      objectReference: {fileID: 11400000, guid: 027f3f981548233438e7d41da8b3c1e2,
+      objectReference: {fileID: 11400000, guid: 549949e763dc75f4696e541743aa8658,
         type: 2}
     - target: {fileID: 3448170462930489257, guid: 503cc89a2de43d243aca431dd077b45f,
         type: 3}
@@ -5028,6 +5028,8 @@ GameObject:
   - component: {fileID: 1066126327403314803}
   - component: {fileID: 1955740398984810206}
   - component: {fileID: 1106713476812670440}
+  - component: {fileID: 1106713476812670441}
+  - component: {fileID: 1106713476812670442}
   m_Layer: 9
   m_Name: EnemyDummy
   m_TagString: Enemy
@@ -5051,6 +5053,31 @@ MonoBehaviour:
   myClassSprite: {fileID: 21300000, guid: b8a8052f67b060c43915aca9d609bd1c, type: 3}
   myCharacterColor: {r: 1, g: 0, b: 0.0780077, a: 1}
   myName: Enemy Dummy
+--- !u!114 &1106713476812670441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106713476812670439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce21cdc1ae203c408ff0ac479c0d2f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myThreatValues: 
+--- !u!114 &1106713476812670442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106713476812670439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6139c0ebc1eb51409642c730b18e116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1106717162099024651
 GameObject:
   m_ObjectHideFlags: 0

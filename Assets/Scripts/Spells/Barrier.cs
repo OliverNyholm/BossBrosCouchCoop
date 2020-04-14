@@ -61,13 +61,6 @@ public class Barrier : Spell
         }
     }
 
-    protected override string GetSpellDetail()
-    {
-        string detail = "to channel a barrier around yourself for " + myChannelTime + " seconds. Standing inside barrier will grant a buff to reduce damage taken by 50 % ";
-
-        return detail;
-    }
-
     private void StartCoroutine(GameObject aChannelSpell)
     {
         myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, aChannelSpell);
@@ -88,8 +81,6 @@ public class Barrier : Spell
         spellOverTime.SetParent(myParent);
         spellOverTime.SetTarget(aPlayer);
         spellOverTime.transform.parent = aPlayer.transform;
-
-        //aPlayer.GetComponent<Stats>().AddSpellOverTime(spellOverTime);
 
         myActiveBuffs.Add(spellOverTime);
     }

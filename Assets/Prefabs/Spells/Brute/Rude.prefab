@@ -98,11 +98,11 @@ MonoBehaviour:
   myTutorialInfo: The Brute makes a rude gesture towards his target. This result
     in a brawl with the target, as it is forced to attack the brute for a few seconds.
   myName: Rude
-  mySpellType: 6
-  myAttackType: 64
+  myAttackType: 72
   mySpellTarget: 4
   myAnimationType: 0
   myDamage: 8
+  myHealValue: 0
   myResourceCost: 30
   myThreatModifier: 20
   mySpeed: 0
@@ -117,6 +117,7 @@ MonoBehaviour:
   myIsOnlySelfCast: 0
   myShouldRotate: 0
   myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 8300000, guid: f98f145d42bd9aa47abb30c7b087cbac, type: 3}
     mySpawnSound: {fileID: 8300000, guid: f98f145d42bd9aa47abb30c7b087cbac, type: 3}

@@ -11,8 +11,6 @@ public abstract class Character : MonoBehaviour
     protected Resource myResource;
     protected Stats myStats;
 
-    protected List<BuffSpell> myBuffs;
-
     protected float myStunDuration;
 
     protected virtual void Awake()
@@ -29,8 +27,6 @@ public abstract class Character : MonoBehaviour
         myHealth = GetComponent<Health>();
         myResource = GetComponent<Resource>();
         myStats = GetComponent<Stats>();
-
-        myBuffs = new List<BuffSpell>();
 
         myHealth.EventOnHealthZero += OnDeath;
     }

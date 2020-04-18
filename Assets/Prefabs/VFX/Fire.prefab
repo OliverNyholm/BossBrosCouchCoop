@@ -4771,11 +4771,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8f22aaf8ab9a544e92fc0b2434da4ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mySpellType: 0
-  myTickDamage: 50
+  mySpellType: 1
+  myTickValue: 100
   myDurationPerTick: 1
-  myBuff: {fileID: 0}
-  myBuffSprite: {fileID: 0}
+  mySpellOverTime: {fileID: 0}
 --- !u!135 &2354279051243901802
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -17,6 +17,8 @@ public class AreaEffect : MonoBehaviour
 
     [SerializeField]
     private GameObject mySpellOverTime = null;
+    [SerializeField]
+    int myMaxSpellsOverTime = 10;
 
     private List<GameObject> myObjectsInTrigger;
 
@@ -24,6 +26,9 @@ public class AreaEffect : MonoBehaviour
     void Start()
     {
         myObjectsInTrigger = new List<GameObject>();
+
+        if (mySpellOverTime)
+            PoolManager.Instance.AddPoolableObjects(mySpellOverTime, mySpellOverTime.GetComponent<UniqueID>().GetID(), myMaxSpellsOverTime);
     }
 
     // Update is called once per frame

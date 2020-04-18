@@ -11458,7 +11458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myTutorialText: Each player has their own heads up display (HUD) as show on the
     sign. The big bar represents health and the smaller one resource. Resource is
-    used when casting spells. Press Right Dpad to show text of health and resource!
+    used when casting spells. You can toggle text on the hud via the options menu.
   myTutorialImageSprite: {fileID: 21300000, guid: 965fb685edf25e143b8a738964d8b15a,
     type: 3}
   myTutorialKeySprite: {fileID: 0}
@@ -12759,17 +12759,17 @@ PrefabInstance:
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -37.61
+      value: -54.05
       objectReference: {fileID: 0}
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.81
+      value: 6.24
       objectReference: {fileID: 0}
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 149.5
+      value: -121.25
       objectReference: {fileID: 0}
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
@@ -12905,6 +12905,7 @@ MonoBehaviour:
   myTickValue: 100
   myDurationPerTick: 0.8
   mySpellOverTime: {fileID: 0}
+  myMaxSpellsOverTime: 10
 --- !u!65 &671105522
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13664,6 +13665,7 @@ GameObject:
   - component: {fileID: 842406017}
   - component: {fileID: 842406016}
   - component: {fileID: 842406018}
+  - component: {fileID: 842406019}
   m_Layer: 0
   m_Name: Totem
   m_TagString: Untagged
@@ -13807,6 +13809,22 @@ MonoBehaviour:
   myAutoAttackRange: 5
   myAutoAttackDamage: 20
   myCanBeStunned: 1
+--- !u!114 &842406019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842406013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f5ca86098b18f7468bab94c768a16ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myAvatarSprite: {fileID: 21300000, guid: 6536dfc3c23029f4a85b53c156d6473c, type: 3}
+  myClassSprite: {fileID: 0}
+  myCharacterColor: {r: 1, g: 0, b: 0.76618385, a: 1}
+  myName: Totem
 --- !u!1 &851667256
 GameObject:
   m_ObjectHideFlags: 0
@@ -14063,6 +14081,7 @@ MonoBehaviour:
   myDurationPerTick: 1
   mySpellOverTime: {fileID: 1423380903055156, guid: 820c5b286ff32874ebaae95f98a5f7c1,
     type: 3}
+  myMaxSpellsOverTime: 10
 --- !u!65 &925591397
 BoxCollider:
   m_ObjectHideFlags: 0

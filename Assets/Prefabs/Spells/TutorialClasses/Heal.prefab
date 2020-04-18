@@ -46,14 +46,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: Heal
-  myTutorialInfo: This spell heals the target after casting for 1.5 seconds. You can
-    see the castbar above your HUD. Notice the error text above the castbar if something
-    is wrong!
+  myTutorialInfo: This spell heals the target after casting for 1.5 seconds. You
+    can see the castbar above your HUD. Notice the error text above the castbar if
+    something is wrong!
   myName: Pray for Likes
   mySpellType: 2
   mySpellTarget: 2
   myAnimationType: 0
   myDamage: 300
+  myHealValue: 200
   myResourceCost: 30
   myThreatModifier: 1
   mySpeed: 0
@@ -67,7 +68,7 @@ MonoBehaviour:
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 0
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}

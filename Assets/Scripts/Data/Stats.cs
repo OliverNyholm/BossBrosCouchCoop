@@ -19,7 +19,9 @@ public class Stats : MonoBehaviour
     private void Awake()
     {
         mySpellOverTimeGOs = new List<SpellOverTime>(8);
-        GetComponent<Health>().EventOnHealthZero += OnDeath;
+        Health health = GetComponent<Health>();
+        if (health)
+            health.EventOnHealthZero += OnDeath;
     }
 
     public float AttackRange { get { return myAutoAttackRange; } }
@@ -95,7 +97,7 @@ public class Stats : MonoBehaviour
         float score = 0.0f;
         foreach (SpellOverTime spell in mySpellOverTimeGOs)
         {
-            if(!UtilityFunctions.HasSpellType(spell.mySpellOverTimeType, SpellOverTimeType.DOT))
+            if (!UtilityFunctions.HasSpellType(spell.mySpellOverTimeType, SpellOverTimeType.DOT))
                 continue;
 
             score += spell.CalculateRemainingDamage() * 0.05f;

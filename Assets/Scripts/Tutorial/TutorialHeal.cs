@@ -40,7 +40,6 @@ public class TutorialHeal : TutorialCompletion
             if (!myCompletedPlayers.Contains(player) && player.GetComponent<Health>().GetHealthPercentage() >= 1.0f)
             {
                 myCompletedPlayers.Add(player);
-                SetPlayerCompleted(player);
                 if (myCompletedPlayers.Count == Players.Count)
                 {
                     foreach (GameObject character in Players)

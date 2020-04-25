@@ -37,7 +37,6 @@ public class TutorialAutoAttack : TutorialCompletion
             return;
 
         myCompletedPlayers.Add(aPlayer);
-        SetPlayerCompleted(aPlayer);
         if (myCompletedPlayers.Count == Players.Count)
         {
             foreach (GameObject player in Players)

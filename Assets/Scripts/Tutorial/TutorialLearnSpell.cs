@@ -24,7 +24,6 @@ public class TutorialLearnSpell : TutorialCompletion
         {
             GameObject player = Players[index];
             player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned += OnSpellSpawned;
-            myTutorialPanel.SetSpellData(player.GetComponent<Class>().mySpells[mySpellIndexToCast].GetComponent<Spell>(), player.GetComponent<Resource>(), index);
         }
 
         for (int index = 0; index < Players.Count; index++)
@@ -43,10 +42,6 @@ public class TutorialLearnSpell : TutorialCompletion
             myTargetHandler.AddEnemy(myTargetsToHit[index], true);
         }
 
-        myTutorialPanel.SetSpellsHightlight(true, mySpellIndexToCast > 3);
-        if (mySpellIndexToCast == 0)
-            myTutorialPanel.SetErrorHightlight(true);
-
         return true;
     }
 
@@ -59,7 +54,6 @@ public class TutorialLearnSpell : TutorialCompletion
             return;
 
         myCompletedPlayers.Add(aPlayer);
-        SetPlayerCompleted(aPlayer);
         if (myCompletedPlayers.Count == Players.Count)
         {
             foreach (GameObject player in Players)
@@ -74,9 +68,6 @@ public class TutorialLearnSpell : TutorialCompletion
                 fireVFX.transform.position += Vector3.up;
                 fireVFX.transform.rotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
             }
-            myTutorialPanel.SetSpellsHightlight(false, mySpellIndexToCast > 3);
-            if (mySpellIndexToCast == 0)
-                myTutorialPanel.SetErrorHightlight(true);
 
             DeactivateTargetDummies();
             EndTutorial();

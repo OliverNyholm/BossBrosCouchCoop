@@ -21,7 +21,6 @@ public class TutorialUIText : TutorialCompletion
             return;
 
         myCompletedPlayers.Add(aPlayer);
-        SetPlayerCompleted(aPlayer);
         if (myCompletedPlayers.Count == Players.Count)
         {
             Unsubscribe();

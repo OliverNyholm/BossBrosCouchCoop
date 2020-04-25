@@ -16,7 +16,6 @@ public class TutorialMove : TutorialCompletion
             if (!myCompletedPlayers.Contains(aHit.gameObject))
             {
                 myCompletedPlayers.Add(aHit.gameObject);
-                SetPlayerCompleted(aHit.gameObject);
                 if (myCompletedPlayers.Count == Players.Count)
                     EndTutorial();
             }

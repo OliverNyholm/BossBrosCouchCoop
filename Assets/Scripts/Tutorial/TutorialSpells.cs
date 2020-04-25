@@ -24,7 +24,6 @@ public class TutorialSpells : TutorialCompletion
             if (mySpellIndexToExceed < 3 && player.GetComponent<Class>().myClassName == "Loremaster")
             {
                 myCompletedPlayers.Add(player);
-                SetPlayerCompleted(player);
                 if (Players.Count == 1)
                 {
                     EndTutorial();
@@ -38,8 +37,6 @@ public class TutorialSpells : TutorialCompletion
             myTargetHandler.AddEnemy(myTargetsToHit[index], true);
         }
 
-        myTutorialPanel.SetSpellsHightlight(true, mySpellIndexToExceed > 0);
-
         return true;
     }
 
@@ -52,7 +49,6 @@ public class TutorialSpells : TutorialCompletion
             return;
 
         myCompletedPlayers.Add(aPlayer);
-        SetPlayerCompleted(aPlayer);
         if (myCompletedPlayers.Count == Players.Count)
         {
             foreach (GameObject player in Players)
@@ -64,7 +60,6 @@ public class TutorialSpells : TutorialCompletion
             {
                 myTargetHandler.RemoveEnemy(myTargetsToHit[index]);
             }
-            myTutorialPanel.SetSpellsHightlight(false, mySpellIndexToExceed > 0);
             EndTutorial();
         }
     }

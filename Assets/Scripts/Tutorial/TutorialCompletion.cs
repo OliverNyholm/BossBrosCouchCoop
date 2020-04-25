@@ -4,17 +4,6 @@ using UnityEngine;
 
 public class TutorialCompletion : MonoBehaviour
 {
-    [Header("Data to show on tutorial UI")]
-    [SerializeField]
-    [TextArea(3, 6)]
-    private string myTutorialText = "No tutorial text set!";
-
-    [SerializeField]
-    private Sprite myTutorialImageSprite = null;
-
-    [SerializeField]
-    private Sprite myTutorialKeySprite = null;
-
     [Header("Tutorial Area")]
     [SerializeField]
     private GameObject myGate = null;
@@ -52,28 +41,16 @@ public class TutorialCompletion : MonoBehaviour
         Players = new List<GameObject>(myTargetHandler.GetAllPlayers());
         myHasStarted = true;
 
-        myTutorialPanel.gameObject.SetActive(true);
-        myTutorialPanel.SetData(myTutorialText, myTutorialImageSprite, myTutorialKeySprite);
+        //myTutorialPanel.gameObject.SetActive(true);
+        //myTutorialPanel.SetData(myTutorialText, myTutorialImageSprite, myTutorialKeySprite);
 
         return true;
     }
 
     protected void EndTutorial()
     {
-        myTutorialPanel.gameObject.SetActive(false);
+        //myTutorialPanel.gameObject.SetActive(false);
         StartCoroutine(myFinishRoutine());
-    }
-
-    protected void SetPlayerCompleted(GameObject aPlayer)
-    {
-        for (int index = 0; index < Players.Count; index++)
-        {
-            if(aPlayer == Players[index])
-            {
-                myTutorialPanel.SetCompletedAtIndex(index);
-                break;
-            }
-        }
     }
 
     IEnumerator LowerGateRoutine()

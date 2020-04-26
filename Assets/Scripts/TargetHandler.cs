@@ -7,8 +7,6 @@ public class TargetHandler : MonoBehaviour
     [SerializeField]
     private List<GameObject> myPlayers = new List<GameObject>();
 
-    private List<int> myPlayersTargetIndex = new List<int>();
-
     [SerializeField]
     private List<GameObject> myNPCs = new List<GameObject>();
 
@@ -21,12 +19,6 @@ public class TargetHandler : MonoBehaviour
         for (int index = 0, count = myNPCs.Count; index < count; index++)
         {
             myBossHudHandler.AddBossHud(myNPCs[index]);
-        }
-
-        myPlayersTargetIndex = new List<int>(myPlayers.Count);
-        for (int index = 0; index < myPlayersTargetIndex.Capacity; index++)
-        {
-            myPlayersTargetIndex.Add(0);
         }
 
         for (int index = 0; index < myNPCs.Count; index++)
@@ -53,7 +45,6 @@ public class TargetHandler : MonoBehaviour
     public void AddPlayer(GameObject aGameObject)
     {
         myPlayers.Add(aGameObject);
-        myPlayersTargetIndex.Add(0);
     }
 
     public GameObject GetPlayer(int aIndex)
@@ -87,23 +78,6 @@ public class TargetHandler : MonoBehaviour
     public void ClearAllEnemies()
     {
         myNPCs.Clear();
-    }
-
-    public GameObject GetEnemy(int aPlayerIndex)
-    {
-        int playerIndex = aPlayerIndex - 1;
-
-        int aTargetIndex = ++myPlayersTargetIndex[playerIndex];
-        if (aTargetIndex >= myNPCs.Count)
-        {
-            myPlayersTargetIndex[playerIndex] = 0;
-            aTargetIndex = 0;
-        }
-
-        if (aTargetIndex < 0 || aTargetIndex >= myNPCs.Count)
-            return null;
-
-        return myNPCs[aTargetIndex];
     }
 
     public string GetEnemyName(int aInstanceID)

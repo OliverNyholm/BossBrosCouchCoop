@@ -16,6 +16,9 @@ public class PlayerTargetingComponent : TargetingComponent
     private float mySmartTargetHoldDownMaxDuration = 0.35f;
     private bool myIsHealTargetingEnabled;
 
+    private List<GameObject> myPreviouslyTargetedEnemies = new List<GameObject>(8);
+    private float myLatestSelectedTargetTime;
+
     void Awake()
     {
         myAnimatorWrapper = GetComponent<AnimatorWrapper>();
@@ -68,7 +71,7 @@ public class PlayerTargetingComponent : TargetingComponent
     private void DetectTargetingInput()
     {
         if (myPlayerControls.TargetEnemy.WasPressed && !myIsHealTargetingEnabled)
-            SetTarget(GameObject.Find("GameManager").GetComponent<TargetHandler>().GetEnemy(myPlayer.PlayerIndex));
+            DetermineNewEnemyTarget();
     }
 
     private void DetectFriendlyTargetInput(bool hasJoystickMoved)
@@ -183,5 +186,46 @@ public class PlayerTargetingComponent : TargetingComponent
         GameObject bestTarget = myTargetHandler.GetPlayer(bestPlayerTarget);
         if (Target != bestTarget)
             SetTarget(bestTarget);
+    }
+
+    private void DetermineNewEnemyTarget()
+    {
+        const float resetTargetTimer = 2.0f;
+        if (Time.time - myLatestSelectedTargetTime > resetTargetTimer)
+            myPreviouslyTargetedEnemies.Clear();
+
+        myLatestSelectedTargetTime = Time.time;
+
+        List<GameObject> enemies = myTargetHandler.GetAllEnemies();
+        if (myPreviouslyTargetedEnemies.Count == enemies.Count)
+            myPreviouslyTargetedEnemies.Clear();
+
+        int bestIndex = -1;
+        float bestScore = float.MinValue;
+        for (int index = 0; index < enemies.Count; index++)
+        {
+            if (enemies[index] == Target)
+                continue;
+
+            if (myPreviouslyTargetedEnemies.Contains(enemies[index]))
+                continue;
+
+            Vector3 toTarget = enemies[index].transform.position - transform.position;
+            float distance = toTarget.magnitude;
+            toTarget.y = 0.0f;
+            toTarget /= distance;
+
+            float dotAngle = Vector3.Dot(transform.forward, toTarget);
+
+            float score = (1 + dotAngle) * (100.0f - distance);
+            if(score > bestScore)
+            {
+                bestScore = score;
+                bestIndex = index;
+            }
+        }
+
+        if (bestIndex != -1)
+            SetTarget(enemies[bestIndex]);
     }
 }

@@ -29,6 +29,7 @@ public class BossHudHandler : MonoBehaviour
 
     public void RemoveBossHud(GameObject aBoss)
     {
+        Destroy(myBossHuds[aBoss.GetInstanceID()]);
         if (myBossHuds.Remove(aBoss.GetInstanceID()))
             RecalculateHudPositions();
     }

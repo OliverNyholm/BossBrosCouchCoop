@@ -95,8 +95,8 @@ public class Spell : PoolableObject
         {
             if (myShouldRotate)
                 transform.Rotate(myRandomRotation * myRotationSpeed * Time.deltaTime);
-
-            transform.LookAt(myTarget.transform);
+            else
+                transform.LookAt(myTarget.transform);
 
             Vector3 direction = myTarget.transform.position - transform.position;
             transform.position += direction.normalized * mySpeed * Time.deltaTime;

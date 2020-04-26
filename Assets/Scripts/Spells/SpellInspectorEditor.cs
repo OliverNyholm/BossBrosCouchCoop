@@ -36,8 +36,6 @@ public class SpellInspectorEditor : Editor
         myQuickInfo,
         myTutorialInfo;
 
-    protected bool myShouldShowIcon;
-
     public virtual void OnEnable()
     {
         // Setup the SerializedProperties
@@ -69,8 +67,6 @@ public class SpellInspectorEditor : Editor
         myName = serializedObject.FindProperty("myName");
         myQuickInfo = serializedObject.FindProperty("myQuickInfo");
         myTutorialInfo = serializedObject.FindProperty("myTutorialInfo");
-
-        myShouldShowIcon = false;
     }
 
     public override void OnInspectorGUI()
@@ -142,15 +138,9 @@ public class SpellInspectorEditor : Editor
         EditorGUILayout.HelpBox("UI", MessageType.None);
         EditorGUILayout.PropertyField(myName, new GUIContent("Spell Name"));
         if (myCastTime.floatValue > 0.0f)
-        {
             EditorGUILayout.PropertyField(myCastbarColor, new GUIContent("Castbar Color"));
-            EditorGUILayout.PropertyField(mySpellIcon, new GUIContent("Castbar Spell Icon"));
-        }
-        else
-        {
-            if(myShouldShowIcon)
-                EditorGUILayout.PropertyField(mySpellIcon, new GUIContent("Castbar Spell Icon"));
-        }
+
+        EditorGUILayout.PropertyField(mySpellIcon, new GUIContent("Castbar Spell Icon"));
         EditorGUILayout.PropertyField(myQuickInfo, new GUIContent("One-Liner Spell Info"));
         EditorGUILayout.PropertyField(myTutorialInfo, new GUIContent("Tutorial Spell Info"));
     }

@@ -24,8 +24,6 @@ public class SpellOverTimeInspectorEditor : SpellInspectorEditor
         base.OnEnable();
         // Setup the SerializedProperties
 
-        myShouldShowIcon = true;
-
         myDuration = serializedObject.FindProperty("myDuration");
 
         mySpellOverTimeType = serializedObject.FindProperty("mySpellOverTimeType");

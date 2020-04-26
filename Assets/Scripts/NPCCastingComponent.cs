@@ -220,8 +220,7 @@ public class NPCCastingComponent : CastingComponent
             return false;
         }
 
-        float distance = Vector3.Distance(transform.position, spellTarget.transform.position);
-        if (distance > aSpellScript.myRange)
+        if (spellTarget.GetComponent<Stats>().IsInRange(transform.position, aSpellScript.myRange))
         {
             Debug.Log(gameObject.name + " failed to cast spell due to target being without of range");
             return false;
@@ -271,8 +270,8 @@ public class NPCCastingComponent : CastingComponent
             return false;
         }
 
-        float distance = Vector3.Distance(transform.position, target.transform.position);
-        if (distance > GetComponent<Stats>().myAutoAttackRange)
+
+        if(!target.GetComponent<Stats>().IsInRange(transform.position, GetComponent<Stats>().myAutoAttackRange))
         {
             return false;
         }

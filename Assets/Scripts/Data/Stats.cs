@@ -10,6 +10,23 @@ public class Stats : MonoBehaviour
     public float myAutoAttackRange = 5;
     public int myAutoAttackDamage = 20;
 
+    [System.Serializable]
+    public struct RangeCylinder
+    {
+        public float myRadius;
+        public float myHeight;
+        public bool myDrawGizmos;
+
+        public RangeCylinder(float aRadius, float aHeight)
+        {
+            myRadius = aRadius;
+            myHeight = aHeight;
+            myDrawGizmos = true;
+        }
+    };
+
+    public RangeCylinder myRangeCylinder = new RangeCylinder(1.5f, 5.0f);
+
     public bool myCanBeStunned = true;
     private bool myIsStunned = false;
     private float myStunDuration = 0.0f;
@@ -115,6 +132,71 @@ public class Stats : MonoBehaviour
         while (mySpellOverTimeGOs.Count > 0)
         {
             mySpellOverTimeGOs[mySpellOverTimeGOs.Count - 1].RemoveSpellOverTime();
+        }
+    }
+
+    public bool IsInRange(Vector3 aOtherPosition, float aRange)
+    {
+        float heightDifference = Mathf.Abs(transform.position.y - aOtherPosition.y);
+        float maxHeightRange = aRange + myRangeCylinder.myHeight * 0.5f;
+        if (heightDifference > maxHeightRange)
+            return false;
+
+        VectorXZ planarToSelf = new VectorXZ(transform.position - aOtherPosition);
+        float distanceSqr = planarToSelf.LengthSqr();
+        float maxRangeSqr = (aRange * aRange) + (myRangeCylinder.myRadius * myRangeCylinder.myRadius);
+        if (distanceSqr > maxRangeSqr)
+            return false;
+
+        return true;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (!myRangeCylinder.myDrawGizmos)
+            return;
+
+        const int circlePrecision = 10;
+        float rotationPerIndex = 6.28f / circlePrecision;
+        Vector3 previousTopPosition = Vector3.zero;
+        Vector3 previousBottomPosition = Vector3.zero;
+        Vector3 firstTopPosition = Vector3.zero;
+        Vector3 firstBottomPosition = Vector3.zero;
+        for (int index = 0; index < circlePrecision; index++)
+        {
+            Vector3 topPosition = transform.position;
+            topPosition.y += myRangeCylinder.myHeight * 0.5f;
+
+            float x = Mathf.Cos(rotationPerIndex * index);
+            float z = Mathf.Sin(rotationPerIndex * index);
+
+            topPosition.x += myRangeCylinder.myRadius * x;
+            topPosition.z += myRangeCylinder.myRadius * z;
+
+            Vector3 bottomPosition = topPosition;
+            bottomPosition.y -= myRangeCylinder.myHeight;
+
+            if (index == 0)
+            {
+                firstTopPosition = topPosition;
+                firstBottomPosition = bottomPosition;
+            }
+            else
+            {
+                Gizmos.DrawLine(topPosition, previousTopPosition);
+                Gizmos.DrawLine(bottomPosition, previousBottomPosition);
+            }
+
+            if(index == circlePrecision - 1)
+            {
+                Gizmos.DrawLine(topPosition, firstTopPosition);
+                Gizmos.DrawLine(bottomPosition, firstBottomPosition);
+            }
+
+            Gizmos.DrawLine(topPosition, bottomPosition);
+
+            previousTopPosition = topPosition;
+            previousBottomPosition = bottomPosition;
         }
     }
 }

@@ -43,4 +43,14 @@ public class VectorXZ
 
         return returnData;
     }
+
+    public float Length()
+    {
+        return (Mathf.Sqrt(x * x + y * y + z * z));
+    }
+
+    public float LengthSqr()
+    {
+        return (x * x + y * y + z * z);
+    }
 }

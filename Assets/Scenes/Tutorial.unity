@@ -11046,7 +11046,7 @@ Transform:
   - {fileID: 691196495}
   - {fileID: 430841921}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &251109550
 GameObject:
@@ -12342,7 +12342,7 @@ RectTransform:
   - {fileID: 559920594}
   - {fileID: 1178696650}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -13531,7 +13531,7 @@ PrefabInstance:
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
@@ -14233,6 +14233,10 @@ MonoBehaviour:
   myDamageMitigator: 1
   myAutoAttackRange: 5
   myAutoAttackDamage: 20
+  myRangeCylinder:
+    myRadius: 3
+    myHeight: 5
+    myDrawGizmos: 0
   myCanBeStunned: 1
 --- !u!114 &742185127
 MonoBehaviour:
@@ -14725,6 +14729,10 @@ MonoBehaviour:
   myDamageMitigator: 1
   myAutoAttackRange: 5
   myAutoAttackDamage: 20
+  myRangeCylinder:
+    myRadius: 1.5
+    myHeight: 4
+    myDrawGizmos: 0
   myCanBeStunned: 1
 --- !u!114 &842406019
 MonoBehaviour:
@@ -18810,7 +18818,7 @@ PrefabInstance:
     - target: {fileID: 7810228069486830689, guid: 28948b89e410567469f4a4faf824c3a4,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7810228069486830689, guid: 28948b89e410567469f4a4faf824c3a4,
         type: 3}
@@ -19373,7 +19381,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1598689885
 GameObject:
@@ -20195,7 +20203,7 @@ PrefabInstance:
     - target: {fileID: 2741340247385852371, guid: a2102fcb7c1cc974d8c9e6b860463983,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2741340247385852371, guid: a2102fcb7c1cc974d8c9e6b860463983,
         type: 3}
@@ -26246,6 +26254,10 @@ MonoBehaviour:
   myDamageMitigator: 1
   myAutoAttackRange: 5
   myAutoAttackDamage: 20
+  myRangeCylinder:
+    myRadius: 9.5
+    myHeight: 3
+    myDrawGizmos: 1
   myCanBeStunned: 1
 --- !u!114 &2060391941
 MonoBehaviour:

@@ -354,8 +354,7 @@ public class PlayerCastingComponent : CastingComponent
             return false;
         }
 
-        float distance = Vector3.Distance(transform.position, target.transform.position);
-        if (distance > aSpellScript.myRange)
+        if(!target.GetComponent<Stats>().IsInRange(transform.position, aSpellScript.myRange))
         {
             myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.OutOfRange);
             return false;
@@ -412,8 +411,7 @@ public class PlayerCastingComponent : CastingComponent
             return false;
         }
 
-        float distance = Vector3.Distance(transform.position, target.transform.position);
-        if (distance > GetComponent<Stats>().myAutoAttackRange)
+        if (!target.GetComponent<Stats>().IsInRange(transform.position, GetComponent<Stats>().myAutoAttackRange))
         {
             return false;
         }

@@ -15,9 +15,9 @@ public class TutorialAutoAttack : TutorialCompletion
         if (!base.StartTutorial())
             return false;
 
-        foreach (GameObject player in myPlayers)
+        foreach (GameObject player in Players)
         {
-            player.GetComponent<Character>().myEventOnSpellSpawned += OnSpellSpawned;
+            player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned += OnSpellSpawned;
         }
 
         for (int index = 0; index < myTargetsToHit.Count; index++)
@@ -37,13 +37,12 @@ public class TutorialAutoAttack : TutorialCompletion
             return;
 
         myCompletedPlayers.Add(aPlayer);
-        SetPlayerCompleted(aPlayer);
-        if (myCompletedPlayers.Count == myPlayers.Count)
+        if (myCompletedPlayers.Count == Players.Count)
         {
-            foreach (GameObject player in myPlayers)
+            foreach (GameObject player in Players)
             {
-                player.GetComponent<Character>().myEventOnSpellSpawned -= OnSpellSpawned;
-                player.GetComponent<Character>().SetTarget(null);
+                player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned -= OnSpellSpawned;
+                player.GetComponent<PlayerTargetingComponent>().SetTarget(null);
             }
             for (int index = 0; index < myTargetsToHit.Count; index++)
             {

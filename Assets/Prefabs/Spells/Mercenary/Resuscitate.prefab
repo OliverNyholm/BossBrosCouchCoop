@@ -4767,10 +4767,11 @@ MonoBehaviour:
   myTutorialInfo: The mercenary can revive any friend who has been slain in battle
     by resuscitating them
   myName: Resuscitate
-  mySpellType: 9
+  mySpellType: 16
   mySpellTarget: 2
   myAnimationType: 0
   myDamage: 250
+  myHealValue: 0
   myResourceCost: 20
   myThreatModifier: 2
   mySpeed: 0
@@ -4784,7 +4785,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 8300000, guid: c1eb5bc5704c1fe418d694bbda5fd6d4, type: 3}
     mySpawnSound: {fileID: 0}
@@ -4903,6 +4904,7 @@ ParticleSystemRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4915,6 +4917,7 @@ ParticleSystemRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

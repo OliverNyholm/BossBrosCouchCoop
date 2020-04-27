@@ -71,15 +71,19 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 477297069875156304}
-  - component: {fileID: 494053044452700914}
+  - component: {fileID: 8933946802575502423}
   - component: {fileID: 536238827367030592}
   - component: {fileID: 567428570257149240}
+  - component: {fileID: -5817992743599137917}
   - component: {fileID: 2323411973668402319}
   - component: {fileID: 3479899812642356375}
   - component: {fileID: 2323411973733766124}
   - component: {fileID: 2323411973733766127}
   - component: {fileID: 2323411973733766126}
-  - component: {fileID: 8933946802575502423}
+  - component: {fileID: 5963056479277741322}
+  - component: {fileID: 6891261198601719468}
+  - component: {fileID: 6999705435931279163}
+  - component: {fileID: -942560800864424704}
   m_Layer: 9
   m_Name: Loremaster
   m_TagString: Player
@@ -104,178 +108,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -104.242004, z: 0}
---- !u!23 &494053044452700914
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471470350278489138}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RenderingLayerMask: 4294967295
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 6aba7bd3cbe14dd45b2158a444842361, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!143 &536238827367030592
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471470350278489138}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.4
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!95 &567428570257149240
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471470350278489138}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: ea0d0ca406dd72243a96a640b729b547, type: 3}
-  m_Controller: {fileID: 9100000, guid: 5300dd8dca9628e4f815e6e05d7759c5, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2323411973668402319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471470350278489138}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 147c442137fcf7143b973398fa7e0bb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myAvatarSprite: {fileID: 0}
-  myBaseSpeed: 8
-  myJumpSpeed: 15
-  myGravity: 30
-  myName: 
-  myCharacterColor: {r: 0, g: 0, b: 0, a: 0}
-  mySmartTargetHoldDownMaxDuration: 0.35
---- !u!114 &3479899812642356375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471470350278489138}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d622a94a3ce4984d8669a172cc9676c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myClassName: Loremaster
-  myClassRole: 0
-  mySprite: {fileID: 21300000, guid: fdd9cda9d859f8b40a0486973ce2300d, type: 3}
-  myAutoAttack: {fileID: 1076349553557202, guid: 58da3294e821ee7409b6b1de5bd92427,
-    type: 3}
-  mySpells:
-  - {fileID: 1458153417168346, guid: 7d4fe2b9e97731e4881150b10df5ef4e, type: 3}
-  - {fileID: 1112324760461454, guid: 06bd03b3d8dd4944a8c68e17a05233d4, type: 3}
-  - {fileID: 1508935094154108, guid: b4d20528e4cbcc246bed632b25b3b55f, type: 3}
-  - {fileID: 1028730897020040, guid: 83797ead00c3c8640a78da0ea1bbfd3a, type: 3}
-  myCooldownTimers:
-  - 0
-  - 0
-  - 0
-  - 0
---- !u!114 &2323411973733766124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471470350278489138}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c35b78c8adaa005488649c8354070efd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myResourceName: Mana
-  myResourceColor: {r: 0, g: 0.96862745, b: 1, a: 1}
-  myMaxResource: 2000
-  myCurrentResource: 2000
-  myRegenerationPerTick: 20
-  myRegenerationTimer: 2
---- !u!114 &2323411973733766127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471470350278489138}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d2c069978184cd4788cd4ddd56cf980, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myMaxHealth: 500
-  myCurrentHealth: 500
---- !u!114 &2323411973733766126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471470350278489138}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94435687d56f84f4f8e7785a4fd3cb9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mySpeedMultiplier: 1
-  myAttackSpeed: 1
-  myDamageIncrease: 1
-  myDamageMitigator: 1
-  myAutoAttackRange: 4
-  myAutoAttackDamage: 15
 --- !u!82 &8933946802575502423
 AudioSource:
   m_ObjectHideFlags: 0
@@ -373,6 +205,201 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!143 &536238827367030592
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.4
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!95 &567428570257149240
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: ea0d0ca406dd72243a96a640b729b547, type: 3}
+  m_Controller: {fileID: 9100000, guid: 5300dd8dca9628e4f815e6e05d7759c5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-5817992743599137917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 566e392358512804194b3e73ed400c95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2323411973668402319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 147c442137fcf7143b973398fa7e0bb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3479899812642356375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d622a94a3ce4984d8669a172cc9676c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myClassName: Loremaster
+  myClassRole: 0
+  mySprite: {fileID: 21300000, guid: fdd9cda9d859f8b40a0486973ce2300d, type: 3}
+  mySpells:
+  - {fileID: 1458153417168346, guid: 7d4fe2b9e97731e4881150b10df5ef4e, type: 3}
+  - {fileID: 1112324760461454, guid: 06bd03b3d8dd4944a8c68e17a05233d4, type: 3}
+  - {fileID: 1508935094154108, guid: b4d20528e4cbcc246bed632b25b3b55f, type: 3}
+  - {fileID: 1028730897020040, guid: 83797ead00c3c8640a78da0ea1bbfd3a, type: 3}
+  myCooldownTimers:
+  - 0
+  - 0
+  - 0
+  - 0
+  mySpellSize: 4
+--- !u!114 &2323411973733766124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c35b78c8adaa005488649c8354070efd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myResourceName: Mana
+  myResourceColor: {r: 0, g: 0.96862745, b: 1, a: 1}
+  myMaxResource: 2000
+  myCurrentResource: 2000
+  myRegenerationPerTick: 20
+  myRegenerationTimer: 2
+--- !u!114 &2323411973733766127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d2c069978184cd4788cd4ddd56cf980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myMaxHealth: 500
+  myCurrentHealth: 500
+--- !u!114 &2323411973733766126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94435687d56f84f4f8e7785a4fd3cb9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mySpeedMultiplier: 1
+  myAttackSpeed: 1
+  myDamageIncrease: 1
+  myDamageMitigator: 1
+  myAutoAttackRange: 4
+  myAutoAttackDamage: 15
+  myCanBeStunned: 1
+--- !u!114 &5963056479277741322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bf333faaa6a0cc409bb01ea20973fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myAvatarSprite: {fileID: 0}
+  myClassSprite: {fileID: 21300000, guid: fdd9cda9d859f8b40a0486973ce2300d, type: 3}
+  myCharacterColor: {r: 0, g: 0, b: 0, a: 0}
+  myName: 
+--- !u!114 &6891261198601719468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5ccc46deb662e42af6465810de0a4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myAutoAttackCooldownReset: 1
+--- !u!114 &6999705435931279163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e436d2f4e839a4c4596e88f9ba950c36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mySmartTargetHoldDownMaxDuration: 0.35
+--- !u!114 &-942560800864424704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f014485da2492449c9cc1fca71abec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myBaseSpeed: 8
+  myJumpSpeed: 15
+  myGravity: 30
 --- !u!1 &554936064146875867
 GameObject:
   m_ObjectHideFlags: 0

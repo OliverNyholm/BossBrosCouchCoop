@@ -40,7 +40,7 @@ public class TutorialPuzzle : TutorialCompletion
                         triggersContainingPlayers++;
                 }
 
-                if (triggersContainingPlayers == myPlayers.Count)
+                if (triggersContainingPlayers == Players.Count)
                     EndTutorial();
             }
         }

@@ -40,7 +40,7 @@ public class SpawnSpellMultiplePositions : Action
 
         for (int index = 0; index < mySpawnObjects.Value.Count; index++)
         {
-            myCanCastSpell = GetComponent<Enemy>().CastSpell(mySpell, mySpawnObjects.Value[index], mySpawnObjects.Value[index].transform, myShouldIgnoreCastability);
+            myCanCastSpell = GetComponent<NPCCastingComponent>().CastSpell(mySpell, mySpawnObjects.Value[index], mySpawnObjects.Value[index].transform, myShouldIgnoreCastability);
             if (!myCanCastSpell)
                 break;
         }

@@ -15,16 +15,11 @@ public class ShieldWallSpell : Spell
         SetSpellParent(myParent, shield);
     }
 
-    protected override string GetSpellDetail()
-    {
-        string detail = "to hold up your and block all incoming projectiles";
-
-        return detail;
-    }
-
     private void SetSpellParent(GameObject aParent, GameObject aChild)
     {
         aChild.transform.parent = aParent.transform;
+        aChild.transform.localPosition = new Vector3(0.0f, 1.4f, 1.2f);
+        aChild.transform.localRotation = Quaternion.identity;
     }
 
     public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)

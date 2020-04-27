@@ -59,6 +59,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -70,6 +71,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -95,13 +97,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: AOE 200
-  myTutorialInfo: By spinning around with extended arms, the mercenary will deal damage
-    to all targets around the mercenary.
+  myTutorialInfo: By spinning around with extended arms, the mercenary will deal
+    damage to all targets around the mercenary.
   myName: Spin
-  mySpellType: 0
+  mySpellType: 1
   mySpellTarget: 4
   myAnimationType: 0
   myDamage: 200
+  myHealValue: 0
   myResourceCost: 80
   myThreatModifier: 1
   mySpeed: 0
@@ -115,7 +118,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 1
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}

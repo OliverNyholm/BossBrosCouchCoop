@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class AreaEffect : MonoBehaviour
 {
-    [SerializeField]
-    SpellType mySpellType = SpellType.Damage;
+    public SpellType mySpellType;
 
     [Header("Damage per tick")]
     [SerializeField]
-    private int myTickDamage = 100;
+    private int myTickValue = 100;
 
     [Header("Duration between each tick")]
     [SerializeField]
@@ -17,9 +16,9 @@ public class AreaEffect : MonoBehaviour
     private float myTimer;
 
     [SerializeField]
-    private Buff myBuff = null;
+    private GameObject mySpellOverTime = null;
     [SerializeField]
-    private Sprite myBuffSprite = null;
+    int myMaxSpellsOverTime = 10;
 
     private List<GameObject> myObjectsInTrigger;
 
@@ -27,6 +26,9 @@ public class AreaEffect : MonoBehaviour
     void Start()
     {
         myObjectsInTrigger = new List<GameObject>();
+
+        if (mySpellOverTime)
+            PoolManager.Instance.AddPoolableObjects(mySpellOverTime, mySpellOverTime.GetComponent<UniqueID>().GetID(), myMaxSpellsOverTime);
     }
 
     // Update is called once per frame
@@ -38,13 +40,13 @@ public class AreaEffect : MonoBehaviour
             myTimer = myDurationPerTick;
             for (int index = 0; index < myObjectsInTrigger.Count; index++)
             {
-                if (mySpellType == SpellType.Damage)
+                if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Damage))
                     DealDamage(ref index);
-                else if (mySpellType == SpellType.Heal)
-                    myObjectsInTrigger[index].GetComponent<Health>().GainHealth(myTickDamage);
+                if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal))
+                    myObjectsInTrigger[index].GetComponent<Health>().GainHealth(myTickValue);
 
-                if (myBuff != null)
-                    myObjectsInTrigger[index].GetComponent<Character>().AddBuff(myBuff.InitializeBuff(gameObject), myBuffSprite);
+                if (mySpellOverTime != null)
+                    AddBuff(myObjectsInTrigger[index]);
             }
         }
     }
@@ -52,7 +54,7 @@ public class AreaEffect : MonoBehaviour
     private void DealDamage(ref int aIndex)
     {
         Health healthComponent = myObjectsInTrigger[aIndex].GetComponent<Health>();
-        healthComponent.TakeDamage(myTickDamage, Color.red);
+        healthComponent.TakeDamage(myTickValue, Color.red);
         if (healthComponent.IsDead())
         {
             myObjectsInTrigger.RemoveAt(aIndex);
@@ -69,16 +71,16 @@ public class AreaEffect : MonoBehaviour
 
             myObjectsInTrigger.Add(aOther.gameObject);
 
-            if (mySpellType == SpellType.Damage)
+            if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Damage))
             {
                 int index = myObjectsInTrigger.Count - 1;
                 DealDamage(ref index);
             }
-            else if (mySpellType == SpellType.Heal)
-                aOther.GetComponent<Health>().GainHealth(myTickDamage);
+            if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal))
+                aOther.GetComponent<Health>().GainHealth(myTickValue);
 
-            if (myBuff != null)
-                aOther.GetComponent<Character>().AddBuff(myBuff.InitializeBuff(gameObject), myBuffSprite);
+            if (mySpellOverTime != null)
+                AddBuff(aOther.gameObject);
         }
     }
 
@@ -88,5 +90,13 @@ public class AreaEffect : MonoBehaviour
         {
             myObjectsInTrigger.Remove(aOther.gameObject);
         }
+    }
+
+    private void AddBuff(GameObject aPlayer)
+    {
+        GameObject pooledObject = PoolManager.Instance.GetPooledObject(mySpellOverTime.GetComponent<UniqueID>().GetID());
+        SpellOverTime spellOverTime = pooledObject.GetComponent<SpellOverTime>();
+        spellOverTime.SetTarget(aPlayer);
+        spellOverTime.transform.parent = aPlayer.transform;
     }
 }

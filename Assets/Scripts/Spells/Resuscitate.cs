@@ -27,13 +27,6 @@ public class Resuscitate : Spell
 
     private void StartCoroutine()
     {
-        myParent.GetComponent<Player>().StartChannel(myChannelTime, this, null);
-    }
-
-    protected override string GetSpellDetail()
-    {
-        string detail = "to resuscitate the target, brining them back to life after " + myChannelTime + " seconds";
-
-        return detail;
+        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, null);
     }
 }

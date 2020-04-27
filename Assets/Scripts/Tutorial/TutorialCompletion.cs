@@ -4,17 +4,6 @@ using UnityEngine;
 
 public class TutorialCompletion : MonoBehaviour
 {
-    [Header("Data to show on tutorial UI")]
-    [SerializeField]
-    [TextArea(3, 6)]
-    private string myTutorialText = "No tutorial text set!";
-
-    [SerializeField]
-    private Sprite myTutorialImageSprite = null;
-
-    [SerializeField]
-    private Sprite myTutorialKeySprite = null;
-
     [Header("Tutorial Area")]
     [SerializeField]
     private GameObject myGate = null;
@@ -22,7 +11,7 @@ public class TutorialCompletion : MonoBehaviour
     [SerializeField]
     protected Collider myStartCollider = null;
 
-    protected List<GameObject> myPlayers;
+    public List<GameObject> Players { get; set; } = new List<GameObject>();
     protected List<GameObject> myCompletedPlayers = new List<GameObject>();
     protected TutorialPanel myTutorialPanel;
     protected TargetHandler myTargetHandler;
@@ -49,31 +38,19 @@ public class TutorialCompletion : MonoBehaviour
         if (myHasStarted)
             return false;
 
-        myPlayers = new List<GameObject>(myTargetHandler.GetAllPlayers());
+        Players = new List<GameObject>(myTargetHandler.GetAllPlayers());
         myHasStarted = true;
 
-        myTutorialPanel.gameObject.SetActive(true);
-        myTutorialPanel.SetData(myTutorialText, myTutorialImageSprite, myTutorialKeySprite);
+        //myTutorialPanel.gameObject.SetActive(true);
+        //myTutorialPanel.SetData(myTutorialText, myTutorialImageSprite, myTutorialKeySprite);
 
         return true;
     }
 
     protected void EndTutorial()
     {
-        myTutorialPanel.gameObject.SetActive(false);
+        //myTutorialPanel.gameObject.SetActive(false);
         StartCoroutine(myFinishRoutine());
-    }
-
-    protected void SetPlayerCompleted(GameObject aPlayer)
-    {
-        for (int index = 0; index < myPlayers.Count; index++)
-        {
-            if(aPlayer == myPlayers[index])
-            {
-                myTutorialPanel.SetCompletedAtIndex(index);
-                break;
-            }
-        }
     }
 
     IEnumerator LowerGateRoutine()

@@ -20,19 +20,18 @@ public class TutorialLearnSpell : TutorialCompletion
         if (!base.StartTutorial())
             return false;
 
-        for (int index = 0; index < myPlayers.Count; index++)
+        for (int index = 0; index < Players.Count; index++)
         {
-            GameObject player = myPlayers[index];
-            player.GetComponent<Character>().myEventOnSpellSpawned += OnSpellSpawned;
-            myTutorialPanel.SetSpellData(player.GetComponent<Class>().mySpells[mySpellIndexToCast].GetComponent<Spell>(), player.GetComponent<Resource>(), index);
+            GameObject player = Players[index];
+            player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned += OnSpellSpawned;
         }
 
-        for (int index = 0; index < myPlayers.Count; index++)
+        for (int index = 0; index < Players.Count; index++)
         {
-            Character character = myPlayers[index].GetComponent<Character>();
-            if (character.Target != null && character.Target.tag == "Enemy")
+            PlayerTargetingComponent targetingComponent = Players[index].GetComponent<PlayerTargetingComponent>();
+            if (targetingComponent.Target != null && targetingComponent.Target.tag == "Enemy")
             {
-                character.SetTarget(null);
+                targetingComponent.SetTarget(null);
                 break;
             }
         }
@@ -42,10 +41,6 @@ public class TutorialLearnSpell : TutorialCompletion
         {
             myTargetHandler.AddEnemy(myTargetsToHit[index], true);
         }
-
-        myTutorialPanel.SetSpellsHightlight(true, mySpellIndexToCast > 3);
-        if (mySpellIndexToCast == 0)
-            myTutorialPanel.SetErrorHightlight(true);
 
         return true;
     }
@@ -59,12 +54,11 @@ public class TutorialLearnSpell : TutorialCompletion
             return;
 
         myCompletedPlayers.Add(aPlayer);
-        SetPlayerCompleted(aPlayer);
-        if (myCompletedPlayers.Count == myPlayers.Count)
+        if (myCompletedPlayers.Count == Players.Count)
         {
-            foreach (GameObject player in myPlayers)
+            foreach (GameObject player in Players)
             {
-                Character character = player.GetComponent<Character>();
+                PlayerCastingComponent character = player.GetComponent<PlayerCastingComponent>();
                 character.myEventOnSpellSpawned -= OnSpellSpawned;
             }
 
@@ -74,9 +68,6 @@ public class TutorialLearnSpell : TutorialCompletion
                 fireVFX.transform.position += Vector3.up;
                 fireVFX.transform.rotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
             }
-            myTutorialPanel.SetSpellsHightlight(false, mySpellIndexToCast > 3);
-            if (mySpellIndexToCast == 0)
-                myTutorialPanel.SetErrorHightlight(true);
 
             DeactivateTargetDummies();
             EndTutorial();

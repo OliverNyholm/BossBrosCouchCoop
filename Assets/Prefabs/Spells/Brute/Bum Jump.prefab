@@ -59,6 +59,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -70,6 +71,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -98,24 +100,25 @@ MonoBehaviour:
   myTutorialInfo: The brute jumps up and lands on his bum, causing a miniature shockwave.
     Deals damage to all enemies within range.
   myName: Bum Jump
-  mySpellType: 0
+  mySpellType: 1
   mySpellTarget: 0
   myAnimationType: 0
   myDamage: 150
+  myHealValue: 0
   myResourceCost: 80
   myThreatModifier: 8
   mySpeed: 0
   myCastTime: 0
   myCooldown: 4
   myRange: 0
-  myStunDuration: 0
+  myStunDuration: 1
   myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
   mySpellIcon: {fileID: 21300000, guid: 16faba4869ed8584abd918caf2a4d3bf, type: 3}
   myIsCastableWhileMoving: 1
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 1
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 8300000, guid: 8934d899a26544746b5f6a2237f956f5, type: 3}
     mySpawnSound: {fileID: 8300000, guid: f34cb9bf395cf90408159eb82e26de84, type: 3}

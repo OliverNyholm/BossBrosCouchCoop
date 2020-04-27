@@ -49,10 +49,11 @@ MonoBehaviour:
   myTutorialInfo: Casting this spell will summon a storm above your target, lashing
     out a thunder strike on your foe.
   myName: Thunder Strike
-  mySpellType: 0
+  mySpellType: 1
   mySpellTarget: 4
   myAnimationType: 0
   myDamage: 500
+  myHealValue: 0
   myResourceCost: 100
   myThreatModifier: 1
   mySpeed: 0
@@ -66,7 +67,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 8300000, guid: b7da691db0371774aac829700141a460, type: 3}
     mySpawnSound: {fileID: 0}

@@ -35,7 +35,7 @@ public class DirectionalSpell : Spell
         if (other.gameObject.tag == myAttackTag)
         {
             if (!other.GetComponent<Health>().IsDead() && myDamage > 0.0f)
-                other.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<Character>().myCharacterColor);
+                other.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor);
         }
         
         if(other.gameObject.tag == "Terrain")
@@ -43,12 +43,5 @@ public class DirectionalSpell : Spell
             ReturnToPool();
             SpawnVFX(2.5f, other.gameObject);
         }
-    }
-
-    protected override string GetSpellDetail()
-    {
-        string detail = "Move forward and deals damage to + " + myAttackTag + "s that are hit. Destroyed after " + myLifeTime.ToString("0.0") + " secodnds or hitting a wall";
-
-        return detail;
     }
 }

@@ -58,10 +58,11 @@ MonoBehaviour:
   myTutorialInfo: The loremaster has a slow resource regeneration. By meditating,
     the loremaster will regain a large percentage of resource while channeling.
   myName: Meditate
-  mySpellType: 10
+  mySpellType: 0
   mySpellTarget: 2
   myAnimationType: 7
   myDamage: 0
+  myHealValue: 0
   myResourceCost: 0
   myThreatModifier: 1
   mySpeed: 0
@@ -75,7 +76,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 1
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 8300000, guid: 40c771d5d095a0c44addad3ee1b69ad8, type: 3}
     mySpawnSound: {fileID: 0}

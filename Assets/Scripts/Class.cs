@@ -3,29 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum SpellType
-{
-    Damage,
-    DOT,
-    Heal,
-    HOT,
-    Shield,
-    Interrupt,
-    Taunt,
-    Slow,
-    Buff,
-    Ressurect,
-    Special
-}
-
-[System.Flags]
-public enum SpellTarget
-{
-    Friend = 1 << 1,
-    Enemy = 1 << 2,
-    Anyone = Friend | Enemy
-}
-
 public class Class : MonoBehaviour
 {
     public string myClassName;
@@ -34,19 +11,13 @@ public class Class : MonoBehaviour
     [Header("Image to show on hud")]
     public Sprite mySprite;
 
-    [SerializeField]
-    private GameObject myAutoAttack = null;
     public GameObject[] mySpells;
-
-    private GameObject myActionBar;
-    private GameObject[] myActionButtons;
-
     public float[] myCooldownTimers;
 
-    private float myResource;
+    [HideInInspector]
+    public int mySpellSize = 4;
 
-    public delegate void EventOnInfoToggle(GameObject aPlayer);
-    public event EventOnInfoToggle myEventOnInfoToggle;
+    private PlayerUIComponent myUIComponent;
 
     public enum ClassRole
     {
@@ -56,17 +27,9 @@ public class Class : MonoBehaviour
         Tank
     }
 
-    public Class()
+    public void Awake()
     {
-        const int mySpellSize = 4;
-        mySpells = new GameObject[mySpellSize];
-        myActionButtons = new GameObject[mySpellSize];
-        myCooldownTimers = new float[mySpellSize];
-
-        for (int index = 0; index < myCooldownTimers.Length; index++)
-        {
-            myCooldownTimers[index] = 0.0f;
-        }
+        myUIComponent = GetComponent<PlayerUIComponent>();
     }
 
     public void Start()
@@ -78,16 +41,11 @@ public class Class : MonoBehaviour
             if (mySpells[index] == null)
                 continue;
 
-            mySpells[index].GetComponent<Spell>().CreatePooledObjects(poolManager, 3);
+            Spell spell = mySpells[index].GetComponent<Spell>();
+            spell.CreatePooledObjects(poolManager, 3);
+
+            myUIComponent.SetSpellHud(spell, index);
         }
-
-        myAutoAttack.GetComponent<Spell>().CreatePooledObjects(poolManager, 4);
-    }
-
-    private void FindActionBar(Transform aUIParent)
-    {
-        myActionBar = aUIParent.Find("ActionBar").gameObject;
-        myActionBar.GetComponent<CanvasGroup>().alpha = 1.0f;
     }
 
     private void Update()
@@ -97,53 +55,14 @@ public class Class : MonoBehaviour
             if (myCooldownTimers[index] > 0.0f)
             {
                 myCooldownTimers[index] -= Time.deltaTime;
-                if (myActionButtons[index] == null)
-                    continue;
-
-                if (myCooldownTimers[index] > 0.0f)
-                {
-                    myActionButtons[index].GetComponentInChildren<Text>().text = myCooldownTimers[index].ToString("0.0");
-                }
-                else
-                {
-                    myActionButtons[index].GetComponent<ActionKey>().SetCooldown(0.0f);
-                }
+                myUIComponent.SetSpellCooldownText(index, myCooldownTimers[index]);
             }
         }
-    }
-
-    public void SpellPressed(int anIndex)
-    {
-        myActionButtons[anIndex].GetComponent<ActionKey>().SpellPressed();
-    }
-
-    public void SpellHeldDown(int anIndex)
-    {
-        myActionButtons[anIndex].GetComponent<ActionKey>().SpellHeldDown();
-    }
-
-    public void SpellReleased(int anIndex)
-    {
-        myActionButtons[anIndex].GetComponent<ActionKey>().SpellReleased();
-    }
-
-    public void HightlightHealTargeting(int anIndex, bool aShouldPulsate)
-    {
-        myActionButtons[anIndex].GetComponent<ActionKey>().SetPulsation(aShouldPulsate);
     }
 
     public bool IsSpellCastOnFriends(int anIndex)
     {
         return mySpells[anIndex].GetComponent<Spell>().IsCastOnFriends();
-    }
-
-    public void ToggleSpellInfo()
-    {
-        myEventOnInfoToggle?.Invoke(gameObject);
-        for (int index = 0; index < myActionButtons.Length; index++)
-        {
-            myActionButtons[index].GetComponent<ActionKey>().ToggleInfo();
-        }
     }
 
     public bool IsSpellOnCooldown(int anIndex)
@@ -154,11 +73,6 @@ public class Class : MonoBehaviour
         return false;
     }
 
-    public GameObject GetAutoAttack()
-    {
-        return myAutoAttack;
-    }
-
     public GameObject GetSpell(int anIndex)
     {
         return mySpells[anIndex];
@@ -167,37 +81,6 @@ public class Class : MonoBehaviour
     public void SetSpellOnCooldown(int anIndex)
     {
         myCooldownTimers[anIndex] = mySpells[anIndex].GetComponent<Spell>().myCooldown;
-
-        if (myActionButtons[anIndex] == null)
-            return;
-
-        myActionButtons[anIndex].GetComponent<ActionKey>().SetCooldown(myCooldownTimers[anIndex]);
-    }
-
-    public delegate void ActionClick(int anIndex, bool aIsPressed);
-    public void SetupSpellHud(ActionClick anActionClickFunction, Transform aUIParent)
-    {
-        FindActionBar(aUIParent);
-
-        for (int index = 0; index < myActionButtons.Length; index++)
-        {
-            int tempIndex = index;
-
-            string name = "ActionButton" + (tempIndex + 1).ToString();
-            for (int childIndex = 0; childIndex < myActionBar.transform.childCount; childIndex++)
-            {
-                if (myActionBar.transform.GetChild(childIndex).name == name)
-                {
-                    myActionButtons[index] = myActionBar.transform.GetChild(childIndex).gameObject;
-                    Spell spell = mySpells[index].GetComponent<Spell>();
-                    myActionButtons[index].GetComponent<Image>().sprite = spell.mySpellIcon;
-                    myActionButtons[index].GetComponent<ActionKey>().SetSpellInfo(spell.myQuickInfo);
-                    break;
-                }
-            }
-
-            myActionButtons[tempIndex].GetComponent<Button>().onClick.AddListener(delegate { anActionClickFunction(tempIndex, true); });
-            myActionButtons[index].GetComponent<ActionKey>().SpellPressed();
-        }
+        myUIComponent.SetSpellCooldownText(anIndex, myCooldownTimers[anIndex]);
     }
 }

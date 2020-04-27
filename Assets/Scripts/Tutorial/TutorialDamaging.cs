@@ -6,9 +6,7 @@ public class TutorialDamaging : TutorialCompletion
 {
     [Header("The class to try out damaging with")]
     [SerializeField]
-    private GameObject myTutorialMelee = null;
-    [SerializeField]
-    private GameObject myTutorialCaster = null;
+    private GameObject myTutorialClass = null;
 
     [Header("The targets to kill")]
     [SerializeField]
@@ -22,8 +20,6 @@ public class TutorialDamaging : TutorialCompletion
     [SerializeField]
     private DynamicCamera myDynamicCamera = null;
 
-    private Subscriber mySubscriber;
-
     int myKilledCount = 0;
 
     protected override bool StartTutorial()
@@ -31,36 +27,26 @@ public class TutorialDamaging : TutorialCompletion
         if (!base.StartTutorial())
             return false;
 
-        myGameManager.ChangeClassInGame(myTutorialMelee);
+        myGameManager.ChangeClassInGame(myTutorialClass);
         myDynamicCamera.ReplacePlayersToTarget(myTargetHandler);
-
-        mySubscriber = new Subscriber();
-        mySubscriber.EventOnReceivedMessage += ReceiveMessage;
 
         myTargetHandler.AddEnemy(myGroundTarget, true);
         myTargetHandler.AddEnemy(myRangeTarget, true);
 
+        myGroundTarget.GetComponent<Health>().EventOnHealthZero += OnTargetDied;
+        myRangeTarget.GetComponent<Health>().EventOnHealthZero += OnTargetDied;
+
         return true;
     }
 
-    public void ReceiveMessage(Message aMessage)
+    private void OnTargetDied()
     {
-        switch (aMessage.Type)
+        myKilledCount++;
+        if(myKilledCount == 2)
         {
-            case MessageCategory.EnemyDied:
-
-                if (myKilledCount == 0)
-                {
-                    myGameManager.ChangeClassInGame(myTutorialCaster);
-                    myDynamicCamera.ReplacePlayersToTarget(myTargetHandler);
-                }
-                else
-                {
-                    EndTutorial();
-                }
-                break;
-            default:
-                break;
+            myTargetHandler.RemoveEnemy(myGroundTarget);
+            myTargetHandler.RemoveEnemy(myRangeTarget);
+            EndTutorial();
         }
     }
 }

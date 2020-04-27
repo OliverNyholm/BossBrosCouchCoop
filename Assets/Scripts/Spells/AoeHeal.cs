@@ -64,7 +64,7 @@ public class AoeHeal : Spell
 
     private void StartCoroutine()
     {
-        myParent.GetComponent<Player>().StartChannel(myChannelTime, this, gameObject);
+        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, gameObject);
     }
 
     private void HealNearby()
@@ -80,13 +80,6 @@ public class AoeHeal : Spell
                 myPlayers[index].GetComponent<Health>().GainHealth(myHealthPerTick);
             }
         }
-    }
-
-    protected override string GetSpellDetail()
-    {
-        string detail = "to heal all players within range for a total of " + myDamage + " over a period of " + myChannelTime + " seconds.";
-
-        return detail;
     }
 
     public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)

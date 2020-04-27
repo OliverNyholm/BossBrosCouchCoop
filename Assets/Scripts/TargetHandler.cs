@@ -7,10 +7,8 @@ public class TargetHandler : MonoBehaviour
     [SerializeField]
     private List<GameObject> myPlayers = new List<GameObject>();
 
-    private List<int> myPlayersTargetIndex = new List<int>();
-
     [SerializeField]
-    private List<GameObject> myEnemies = new List<GameObject>();
+    private List<GameObject> myNPCs = new List<GameObject>();
 
     private BossHudHandler myBossHudHandler;
 
@@ -18,24 +16,18 @@ public class TargetHandler : MonoBehaviour
     {
         myBossHudHandler = FindObjectsOfType<BossHudHandler>()[0];
 
-        for (int index = 0, count = myEnemies.Count; index < count; index++)
+        for (int index = 0, count = myNPCs.Count; index < count; index++)
         {
-            myBossHudHandler.AddBossHud(myEnemies[index]);
+            myBossHudHandler.AddBossHud(myNPCs[index]);
         }
 
-        myPlayersTargetIndex = new List<int>(myPlayers.Count);
-        for (int index = 0; index < myPlayersTargetIndex.Capacity; index++)
-        {
-            myPlayersTargetIndex.Add(0);
-        }
-
-        for (int index = 0; index < myEnemies.Count; index++)
+        for (int index = 0; index < myNPCs.Count; index++)
         {
             for (int playerIndex = 0; playerIndex < myPlayers.Count; playerIndex++)
             {
-                if (!myEnemies[index].GetComponent<Enemy>())
+                if (!myNPCs[index].GetComponent<NPCThreatComponent>())
                     continue;
-                myEnemies[index].GetComponent<Enemy>().AddPlayer(myPlayers[playerIndex]);
+                myNPCs[index].GetComponent<NPCThreatComponent>().AddPlayer(myPlayers[playerIndex]);
             }
         }
     }
@@ -53,7 +45,6 @@ public class TargetHandler : MonoBehaviour
     public void AddPlayer(GameObject aGameObject)
     {
         myPlayers.Add(aGameObject);
-        myPlayersTargetIndex.Add(0);
     }
 
     public GameObject GetPlayer(int aIndex)
@@ -66,12 +57,12 @@ public class TargetHandler : MonoBehaviour
 
     public void AddEnemy(GameObject aGameObject, bool aShouldAddUI)
     {
-        myEnemies.Add(aGameObject);
+        myNPCs.Add(aGameObject);
         for (int playerIndex = 0; playerIndex < myPlayers.Count; playerIndex++)
         {
-            if (!aGameObject.GetComponent<Enemy>())
+            if (!aGameObject.GetComponent<NPCThreatComponent>())
                 continue;
-            aGameObject.GetComponent<Enemy>().AddPlayer(myPlayers[playerIndex]);
+            aGameObject.GetComponent<NPCThreatComponent>().AddPlayer(myPlayers[playerIndex]);
         }
 
         if(aShouldAddUI)
@@ -80,38 +71,21 @@ public class TargetHandler : MonoBehaviour
 
     public void RemoveEnemy(GameObject aGameObject)
     {
-        myEnemies.Remove(aGameObject);
+        myNPCs.Remove(aGameObject);
         myBossHudHandler.RemoveBossHud(aGameObject);
     }
     
     public void ClearAllEnemies()
     {
-        myEnemies.Clear();
-    }
-
-    public GameObject GetEnemy(int aPlayerIndex)
-    {
-        int playerIndex = aPlayerIndex - 1;
-
-        int aTargetIndex = ++myPlayersTargetIndex[playerIndex];
-        if (aTargetIndex >= myEnemies.Count)
-        {
-            myPlayersTargetIndex[playerIndex] = 0;
-            aTargetIndex = 0;
-        }
-
-        if (aTargetIndex < 0 || aTargetIndex >= myEnemies.Count)
-            return null;
-
-        return myEnemies[aTargetIndex];
+        myNPCs.Clear();
     }
 
     public string GetEnemyName(int aInstanceID)
     {
-        for (int index = 0; index < myEnemies.Count; index++)
+        for (int index = 0; index < myNPCs.Count; index++)
         {
-            if (myEnemies[index].GetInstanceID() == aInstanceID)
-                return myEnemies[index].GetComponent<Character>().name;
+            if (myNPCs[index].GetInstanceID() == aInstanceID)
+                return myNPCs[index].GetComponent<Character>().name;
         }
 
         return "Null";
@@ -119,6 +93,6 @@ public class TargetHandler : MonoBehaviour
 
     public List<GameObject> GetAllEnemies()
     {
-        return myEnemies;
+        return myNPCs;
     }
 }

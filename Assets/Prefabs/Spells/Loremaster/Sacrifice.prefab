@@ -57,6 +57,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -68,6 +69,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -96,10 +98,11 @@ MonoBehaviour:
   myTutorialInfo: Sacrifice is a healing spell with a short cast time. However, the
     amount healed is taken from your own health pool.
   myName: Sacrifice
-  mySpellType: 2
+  mySpellType: 3
   mySpellTarget: 2
   myAnimationType: 0
   myDamage: 200
+  myHealValue: 200
   myResourceCost: 40
   myThreatModifier: 1
   mySpeed: 40
@@ -113,7 +116,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}

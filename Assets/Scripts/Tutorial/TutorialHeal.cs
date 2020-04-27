@@ -6,7 +6,7 @@ public class TutorialHeal : TutorialCompletion
 {
     [Header("The class to try out healing with")]
     [SerializeField]
-    private GameObject myTutorialHealer;
+    private GameObject myTutorialHealer = null;
 
     [SerializeField]
     private GameManager myGameManager = null;
@@ -22,9 +22,9 @@ public class TutorialHeal : TutorialCompletion
         myGameManager.ChangeClassInGame(myTutorialHealer);
         myDynamicCamera.ReplacePlayersToTarget(myTargetHandler);
 
-        myPlayers = new List<GameObject>(myTargetHandler.GetAllPlayers());
+        Players = new List<GameObject>(myTargetHandler.GetAllPlayers());
 
-        foreach (GameObject player in myPlayers)
+        foreach (GameObject player in Players)
         {
             Health health = player.GetComponent<Health>();
             health.EventOnHealthChange += OnHealthChanged;
@@ -35,15 +35,14 @@ public class TutorialHeal : TutorialCompletion
 
     public void OnHealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue, bool aIsDamage)
     {
-        foreach (GameObject player in myPlayers)
+        foreach (GameObject player in Players)
         {
             if (!myCompletedPlayers.Contains(player) && player.GetComponent<Health>().GetHealthPercentage() >= 1.0f)
             {
                 myCompletedPlayers.Add(player);
-                SetPlayerCompleted(player);
-                if (myCompletedPlayers.Count == myPlayers.Count)
+                if (myCompletedPlayers.Count == Players.Count)
                 {
-                    foreach (GameObject character in myPlayers)
+                    foreach (GameObject character in Players)
                     {
                         character.GetComponent<Health>().EventOnHealthChange -= OnHealthChanged;
                     }

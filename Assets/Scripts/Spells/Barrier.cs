@@ -2,53 +2,107 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Barrier : ChannelSpell
+public class Barrier : Spell
 {
+
     [SerializeField]
-    private Buff myBuff = null;
+    private GameObject myBarrierPrefab = null;
 
-    void OnTriggerEnter(Collider other)
+    [SerializeField]
+    private float myChannelTime = 0.0f;
+
+    private float myRadius;
+    private TargetHandler myTargetHandler;
+    private List<SpellOverTime> myActiveBuffs = new List<SpellOverTime>(4);
+
+    private void Awake()
     {
-        if (other.tag == "Player")
+        myRadius = transform.localScale.x / 2.0f;
+        myTargetHandler = FindObjectOfType<TargetHandler>();
+    }
+
+    protected override void Start()
+    {
+        AddBuff(myParent);
+        StartCoroutine(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        for (int index = 0; index < myActiveBuffs.Count; index++)
         {
-            SpawnBuff(other.gameObject);
+            myActiveBuffs[index].RemoveSpellOverTime();
+        }
+
+        myActiveBuffs.Clear();
+    }
+
+    protected override void Update()
+    {
+       List<GameObject> players = myTargetHandler.GetAllPlayers();
+        for (int index = 0; index < players.Count; index++)
+        {
+            float sqrDistance = Vector3.SqrMagnitude(gameObject.transform.position - players[index].transform.position);
+            if (DoesPlayerHaveBuff(players[index], out int buffIndex))
+            {
+                if (sqrDistance > myRadius * myRadius)
+                {
+                    myActiveBuffs[buffIndex].RemoveSpellOverTime();
+                    myActiveBuffs.RemoveAt(buffIndex);
+                }
+            }
+            else
+            {
+                if(sqrDistance <= myRadius * myRadius)
+                {
+                    AddBuff(players[index]);
+                }
+            }
         }
     }
 
-    void OnTriggerExit(Collider other)
+    private void StartCoroutine(GameObject aChannelSpell)
     {
-        if (other.tag == "Player")
-        {
-            RemoveBuff(other.gameObject);
-        }
+        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, aChannelSpell);
     }
 
-
-    private void SpawnBuff(GameObject aTarget)
+    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
     {
-        if (myBuff.mySpellType == SpellType.DOT || myBuff.mySpellType == SpellType.HOT)
-        {
-            BuffTickSpell buffSpell;
-            buffSpell = (myBuff as TickBuff).InitializeBuff(transform.parent.gameObject, aTarget);
-            aTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
-        }
-        else
-        {
-            BuffSpell buffSpell;
-            buffSpell = myBuff.InitializeBuff(transform.parent.gameObject);
-            aTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
-        }
+        base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
+
+        if(myBarrierPrefab)
+        aPoolManager.AddPoolableObjects(myBarrierPrefab, myBarrierPrefab.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
     }
 
-    private void RemoveBuff(GameObject aTarget)
+    private void AddBuff(GameObject aPlayer)
     {
-        Debug.Log("Remove Buff: " + myBuff.name);
-        aTarget.GetComponent<Player>().RemoveBuffByName(myBuff.name);
+        GameObject barrierBuff = PoolManager.Instance.GetPooledObject(mySpawnedOnHit.GetComponent<UniqueID>().GetID());
+        SpellOverTime spellOverTime = barrierBuff.GetComponent<SpellOverTime>();
+        spellOverTime.SetParent(myParent);
+        spellOverTime.SetTarget(aPlayer);
+        spellOverTime.transform.parent = aPlayer.transform;
+
+        myActiveBuffs.Add(spellOverTime);
     }
 
-    public override void SetToDestroy()
-    {  
-        transform.Translate(Vector3.up * 1000);
-        myTimerBeforeDestroy = 0.1f;
+    private bool DoesPlayerHaveBuff(GameObject aPlayer, out int aBuffIndex)
+    {
+        for (int index = 0; index < myActiveBuffs.Count; index++)
+        {
+            if (myActiveBuffs[index].GetTarget() == aPlayer)
+            {
+                aBuffIndex = index;
+                return true;
+
+            }
+        }
+
+        aBuffIndex = -1;
+        return false;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawSphere(transform.position, myRadius);
     }
 }

@@ -15,15 +15,9 @@ public class BossHudHandler : MonoBehaviour
 
         myBossHuds.Add(aBoss.GetInstanceID(), bossHud);
 
-        Enemy enemy = aBoss.GetComponent<Enemy>();
-        if (enemy)
-            enemy.SetBossHud(bossHud);
-        else
-        {
-            FriendlyTargetDummy friendlyDummy = aBoss.GetComponent<FriendlyTargetDummy>();
-            if (friendlyDummy)
-                friendlyDummy.SetBossHud(bossHud);
-        }
+        UIComponent npc = aBoss.GetComponent<UIComponent>();
+        if (npc)
+            npc.SetupHud(bossHud.transform);
 
         if (myBossHuds.Count == 1)
         {
@@ -35,6 +29,7 @@ public class BossHudHandler : MonoBehaviour
 
     public void RemoveBossHud(GameObject aBoss)
     {
+        Destroy(myBossHuds[aBoss.GetInstanceID()]);
         if (myBossHuds.Remove(aBoss.GetInstanceID()))
             RecalculateHudPositions();
     }

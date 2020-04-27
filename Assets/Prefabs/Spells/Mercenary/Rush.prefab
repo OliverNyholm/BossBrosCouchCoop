@@ -9,10 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4887214456255646}
-  - component: {fileID: 33401773743452024}
-  - component: {fileID: 23716427364177180}
-  - component: {fileID: 114044364282244742}
   - component: {fileID: 9088086734368364426}
+  - component: {fileID: -3014266418265328286}
   - component: {fileID: -1518101963397814658}
   m_Layer: 0
   m_Name: Rush
@@ -35,90 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &33401773743452024
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423380903055156}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &23716427364177180
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423380903055156}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: f422daac75b75ce40bad5d08ace9243b, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!114 &114044364282244742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423380903055156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4148e1b28d969ae4aa67f15be58c979c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myQuickInfo: Speed boost
-  myTutorialInfo: 
-  myName: Rush
-  mySpellType: 8
-  mySpellTarget: 2
-  myAnimationType: 0
-  myDamage: 0
-  myResourceCost: 50
-  myThreatModifier: 1
-  mySpeed: 0
-  myCastTime: 0
-  myCooldown: 1
-  myRange: 25
-  myStunDuration: 0
-  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
-  mySpellIcon: {fileID: 21300000, guid: e17cd266fdccfb641bb4961fbb4dfd47, type: 3}
-  myIsCastableWhileMoving: 1
-  myCanCastOnSelf: 1
-  myIsOnlySelfCast: 1
-  myShouldRotate: 0
-  myBuff: {fileID: 11400000, guid: 9c3513f43da15de41b4f4216895df3ad, type: 2}
-  mySpellSFX:
-    myCastSound: {fileID: 0}
-    mySpawnSound: {fileID: 0}
-    myHitSound: {fileID: 0}
-  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
-    type: 3}
 --- !u!82 &9088086734368364426
 AudioSource:
   m_ObjectHideFlags: 0
@@ -215,6 +129,56 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-3014266418265328286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423380903055156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c54a6f777942aaa4eb9911fc688d3df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myQuickInfo: Movement Speed
+  myTutorialInfo: Increases movement speed greatly.
+  myName: Rush
+  myAttackType: 0
+  mySpellTarget: 0
+  myAnimationType: 0
+  myDamage: 0
+  myHealValue: 0
+  myResourceCost: 40
+  myThreatModifier: 1
+  mySpeed: 0
+  myCastTime: 0
+  myCooldown: 15
+  myRange: 0
+  myStunDuration: 0
+  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
+  mySpellIcon: {fileID: 21300000, guid: e17cd266fdccfb641bb4961fbb4dfd47, type: 3}
+  myIsCastableWhileMoving: 0
+  myCanCastOnSelf: 0
+  myIsOnlySelfCast: 1
+  myShouldRotate: 0
+  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
+  mySpellSFX:
+    myCastSound: {fileID: 0}
+    mySpawnSound: {fileID: 0}
+    myHitSound: {fileID: 0}
+  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
+    type: 3}
+  myIsCastManually: 1
+  myDuration: 6
+  mySpellOverTimeType: 8
+  mySpeedMultiplier: 0.5
+  myAttackSpeed: 0
+  myDamageIncrease: 0
+  myDamageMitigator: 0
+  myShieldValue: 0
+  myNumberOfTicks: 3
 --- !u!114 &-1518101963397814658
 MonoBehaviour:
   m_ObjectHideFlags: 0

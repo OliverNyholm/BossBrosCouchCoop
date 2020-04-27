@@ -8,14 +8,14 @@ public class Health : MonoBehaviour
     public int myCurrentHealth = 100;
 
     public delegate void HealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue, bool aIsDamage);
-    public delegate void ThreatGenerated(int aThreatPercentage, int anID);
+    public delegate void ThreatGenerated(int aThreatPercentage, int anID, bool anIsDamage);
     public delegate void HealthZero();
 
     public event HealthChanged EventOnHealthChange;
     public event ThreatGenerated EventOnThreatGenerated;
     public event HealthZero EventOnHealthZero;
 
-    private List<BuffShieldSpell> myShields = new List<BuffShieldSpell>();
+    private List<SpellOverTime> myShields = new List<SpellOverTime>();
 
     public int TakeDamage(int aValue, Color aDamagerColor)
     {
@@ -24,7 +24,7 @@ public class Health : MonoBehaviour
         if (myCurrentHealth <= 0)
         {
             myCurrentHealth = 0;
-            EventOnHealthZero();
+            OnHealthZero();
         }
 
         string damageText = damage.ToString();
@@ -85,18 +85,19 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void AddShield(BuffShieldSpell aShield)
+    public void AddShield(SpellOverTime aShield)
     {
         myShields.Add(aShield);
         OnHealthChanged(false);
         SpawnFloatingText("Shield, " + aShield.GetRemainingShieldHealth().ToString(), Color.yellow, 1.0f);
     }
 
-    public void RemoveShield()
+    public void RemoveShield(SpellOverTime aSpell)
     {
+        uint spellID = aSpell.GetComponent<UniqueID>().GetID();
         for (int index = 0; index < myShields.Count; index++)
         {
-            if (myShields[index].IsFinished())
+            if (myShields[index].GetComponent<UniqueID>().GetID() == spellID)
             {
                 myShields.RemoveAt(index);
                 break;
@@ -107,9 +108,9 @@ public class Health : MonoBehaviour
         SpawnFloatingText("Shield faded", Color.yellow, 1.0f);
     }
 
-    public void GenerateThreat(int aThreatValue, int anID)
+    public void GenerateThreat(int aThreatValue, int anID, bool anIgnoreCombatState)
     {
-        EventOnThreatGenerated?.Invoke(aThreatValue, anID);
+        EventOnThreatGenerated?.Invoke(aThreatValue, anID, anIgnoreCombatState);
     }
 
     private void OnHealthChanged(bool aIsDamage)

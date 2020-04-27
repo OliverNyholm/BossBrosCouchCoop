@@ -58,13 +58,6 @@ public class Meditate : Spell
 
     private void StartCoroutine()
     {
-        myParent.GetComponent<Player>().StartChannel(myChannelTime, this, gameObject, 2);
-    }
-
-    protected override string GetSpellDetail()
-    {
-        string detail = "to regenerate " + myRegenerationPercentage + " % of your mana over a period of " + myChannelTime + " seconds. You are stunned for 2 seconds.";
-
-        return detail;
+        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, gameObject, 2);
     }
 }

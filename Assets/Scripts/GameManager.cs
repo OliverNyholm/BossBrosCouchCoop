@@ -91,13 +91,14 @@ public class GameManager : MonoBehaviour
 
         Player player = playerGO.GetComponent<Player>();
         player.SetPlayerControls(aCharacter.myPlayerControls);
-        player.myName = aCharacter.myName;
         player.PlayerIndex = aIndex + 1;
-        player.myCharacterColor = aCharacter.myColorScheme.myColor;
-        player.SetAvatar(aCharacter.myColorScheme.myAvatar);
 
-        Vector3 rgb = new Vector3(player.myCharacterColor.r, player.myCharacterColor.g, player.myCharacterColor.b);
-        PostMaster.Instance.PostMessage(new Message(MessageCategory.RegisterPlayer, playerGO.GetInstanceID(), rgb));
+        PlayerUIComponent uiComponent = playerGO.GetComponent<PlayerUIComponent>();
+        uiComponent.myName = aCharacter.myName;
+        uiComponent.myCharacterColor = aCharacter.myColorScheme.myColor;
+        uiComponent.myAvatarSprite = aCharacter.myColorScheme.myAvatar;
+
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.RegisterPlayer, playerGO.GetInstanceID(), ColorToRGBVector(uiComponent.myCharacterColor)));
 
         aTargetHandler.AddPlayer(playerGO);
     }
@@ -121,15 +122,18 @@ public class GameManager : MonoBehaviour
 
         myDebugPlayer = playerGO.GetComponent<Player>();
         myDebugPlayer.SetPlayerControls(keyboardListener);
-        myDebugPlayer.myName = myDebugPlayerData.myName;
         myDebugPlayer.PlayerIndex = aPlayerIndex;
-        myDebugPlayer.myCharacterColor = myDebugPlayerData.myColorScheme.myColor;
-        myDebugPlayer.SetAvatar(myDebugPlayerData.myColorScheme.myAvatar);
+
+        PlayerUIComponent uiComponent = playerGO.GetComponent<PlayerUIComponent>();
+        uiComponent.myName = myDebugPlayerData.myName;
+        uiComponent.myCharacterColor = myDebugPlayerData.myColorScheme.myColor;
+        uiComponent.myAvatarSprite = myDebugPlayerData.myColorScheme.myAvatar;
+
+        playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material = myDebugPlayerData.myColorScheme.myMaterial;
 
         myPlayerSelectData[myPlayerSelectData.Count - 1].myPlayerControls = keyboardListener;
 
-        Vector3 rgb = new Vector3(myDebugPlayer.myCharacterColor.r, myDebugPlayer.myCharacterColor.g, myDebugPlayer.myCharacterColor.b);
-        PostMaster.Instance.PostMessage(new Message(MessageCategory.RegisterPlayer, playerGO.GetInstanceID(), rgb));
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.RegisterPlayer, playerGO.GetInstanceID(), ColorToRGBVector(uiComponent.myCharacterColor)));
 
         aTargetHandler.AddPlayer(playerGO);
     }
@@ -172,15 +176,17 @@ public class GameManager : MonoBehaviour
         playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material = originalPlayerSelectData.myColorScheme.myMaterial;
 
         Player player = playerGO.GetComponent<Player>();
-        player.SetPlayerControls(originalPlayerSelectData.myPlayerControls);
-        player.myName = originalPlayerSelectData.myName;
         player.PlayerIndex = anIndex + 1;
-        player.myCharacterColor = originalPlayerSelectData.myColorScheme.myColor;
-        player.SetAvatar(originalPlayerSelectData.myColorScheme.myAvatar);
+        player.SetPlayerControls(originalPlayerSelectData.myPlayerControls);
+
+        PlayerUIComponent uiComponent = player.GetComponent<PlayerUIComponent>();
+        uiComponent.myName = originalPlayerSelectData.myName;
+        uiComponent.myCharacterColor = originalPlayerSelectData.myColorScheme.myColor;
+        uiComponent.myAvatarSprite = originalPlayerSelectData.myColorScheme.myAvatar;
 
         playerGO.GetComponent<Health>().SetHealthPercentage(myChangeClassData[anIndex].myHealthPercentage);
 
-        PostMaster.Instance.PostMessage(new Message(MessageCategory.RegisterPlayer, playerGO.GetInstanceID(), new Vector3(player.myCharacterColor.r, player.myCharacterColor.g, player.myCharacterColor.b)));
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.RegisterPlayer, playerGO.GetInstanceID(), ColorToRGBVector(uiComponent.myCharacterColor)));
         aTargetHandler.AddPlayer(playerGO);
     }
 
@@ -204,5 +210,18 @@ public class GameManager : MonoBehaviour
         Debug.Log("Adding another debug player.");
         myPlayerSelectData.Add(myDebugPlayerData);
         SpawnPlayer(targetHandler, targetHandler.GetAllPlayers().Count + 1);
+
+        GameObject newPlayer = targetHandler.GetPlayer(targetHandler.GetAllPlayers().Count - 1);
+        foreach (GameObject npc in targetHandler.GetAllEnemies())
+        {
+            if (!npc.GetComponent<NPCThreatComponent>())
+                continue;
+            npc.GetComponent<NPCThreatComponent>().AddPlayer(newPlayer);
+        }
+    }
+
+    private Vector3 ColorToRGBVector(Color aColor)
+    {
+        return new Vector3(aColor.r, aColor.g, aColor.b);
     }
 }

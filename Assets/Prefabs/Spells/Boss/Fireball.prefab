@@ -39,8 +39,9 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 219316881033152857}
   m_Enabled: 1
-  serializedVersion: 9
+  serializedVersion: 10
   m_Type: 2
+  m_Shape: 0
   m_Color: {r: 0.9811321, g: 0.90874946, b: 0, a: 1}
   m_Intensity: 2.75
   m_Range: 10
@@ -144,10 +145,11 @@ MonoBehaviour:
   myQuickInfo: A Fireball spawned from one end moving forwards
   myTutorialInfo: 
   myName: Fireball
-  mySpellType: 0
+  mySpellType: 1
   mySpellTarget: 4
   myAnimationType: 0
   myDamage: 250
+  myHealValue: 0
   myResourceCost: 0
   myThreatModifier: 1
   mySpeed: 4
@@ -161,7 +163,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
@@ -4952,6 +4954,7 @@ ParticleSystemRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4964,6 +4967,7 @@ ParticleSystemRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -5019,10 +5023,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 994300686480391166}
     m_Modifications:
-    - target: {fileID: 17950608816841230, guid: 7b922470fac4fba4abdc6a4f87091058,
+    - target: {fileID: 17950608816841216, guid: 7b922470fac4fba4abdc6a4f87091058,
         type: 3}
-      propertyPath: m_Name
-      value: PS_FireBall_V3
+      propertyPath: VelocityModule.x.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 17950608816841216, guid: 7b922470fac4fba4abdc6a4f87091058,
+        type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 17950608816841216, guid: 7b922470fac4fba4abdc6a4f87091058,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 17950608816841219, guid: 7b922470fac4fba4abdc6a4f87091058,
         type: 3}
@@ -5079,20 +5093,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 17950608816841216, guid: 7b922470fac4fba4abdc6a4f87091058,
+    - target: {fileID: 17950608816841230, guid: 7b922470fac4fba4abdc6a4f87091058,
         type: 3}
-      propertyPath: VelocityModule.x.scalar
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 17950608816841216, guid: 7b922470fac4fba4abdc6a4f87091058,
-        type: 3}
-      propertyPath: InitialModule.startSize.minScalar
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 17950608816841216, guid: 7b922470fac4fba4abdc6a4f87091058,
-        type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 6
+      propertyPath: m_Name
+      value: PS_FireBall_V3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b922470fac4fba4abdc6a4f87091058, type: 3}

@@ -50,9 +50,10 @@ public class SpawnSpell : Action
 
         if (mySpawnTransform.Value != null)
         {
-            myEmptyTransformHolder.transform.position = mySpawnTransform.Value.position;
-            myEmptyTransformHolder.transform.rotation = mySpawnTransform.Value.rotation;
-            myEmptyTransformHolder.transform.localScale = mySpawnTransform.Value.localScale;
+            myEmptyTransformHolder.transform.parent = mySpawnTransform.Value;
+            myEmptyTransformHolder.transform.localPosition = Vector3.zero;
+            myEmptyTransformHolder.transform.localRotation = Quaternion.identity;
+            myEmptyTransformHolder.transform.localScale = Vector3.zero;
         }
         else if(mySpawnPosition.Value != null)
         {
@@ -64,9 +65,9 @@ public class SpawnSpell : Action
         }
 
         myHasSpawnedSpell = false;
-        Enemy enemyComponent = GetComponent<Enemy>();
-        enemyComponent.IsInterruptable = myIsInterruptable;
-        myCanCastSpell = enemyComponent.CastSpell(mySpell, myTarget.Value, myEmptyTransformHolder.transform, myShouldIgnoreCastability);
+        NPCCastingComponent castingComponent = GetComponent<NPCCastingComponent>();
+        castingComponent.IsInterruptable = myIsInterruptable;
+        myCanCastSpell = castingComponent.CastSpell(mySpell, myTarget.Value, myEmptyTransformHolder.transform, myShouldIgnoreCastability);
     }
 
     public override TaskStatus OnUpdate()
@@ -87,6 +88,8 @@ public class SpawnSpell : Action
             Owner.UnregisterEvent(myEventName, ReceivedEvent);
             Owner.UnregisterEvent(myEventInterruptedName, ReceivedEventInterrupted);
             myHasRegisteredForEvent = false;
+
+            myEmptyTransformHolder.transform.parent = PoolManager.Instance.GetEmptyTransformHolder();
         }
         myHasSpawnedSpell = false;
     }

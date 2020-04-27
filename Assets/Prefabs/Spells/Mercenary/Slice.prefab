@@ -9,11 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4839696439400602}
-  - component: {fileID: 33609903819057592}
-  - component: {fileID: 23056434949122442}
-  - component: {fileID: 114482570124919518}
   - component: {fileID: 3536779085426697894}
   - component: {fileID: 6375225110656265874}
+  - component: {fileID: 4183655030200849949}
   m_Layer: 0
   m_Name: Slice
   m_TagString: Untagged
@@ -35,91 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &33609903819057592
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1959371134241452}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &23056434949122442
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1959371134241452}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: f422daac75b75ce40bad5d08ace9243b, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!114 &114482570124919518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1959371134241452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4148e1b28d969ae4aa67f15be58c979c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myQuickInfo: DOT
-  myTutorialInfo: By slicing the target, your foe will bleed and take Damage over
-    Time (DoT).
-  myName: Slice
-  mySpellType: 1
-  mySpellTarget: 4
-  myAnimationType: 0
-  myDamage: 50
-  myResourceCost: 0
-  myThreatModifier: 1
-  mySpeed: 0
-  myCastTime: 1
-  myCooldown: 1
-  myRange: 4
-  myStunDuration: 0
-  myCastbarColor: {r: 0.3308662, g: 0.7830189, b: 0.31394625, a: 1}
-  mySpellIcon: {fileID: 21300000, guid: 729dbe5b80de3984a88167386c4505a8, type: 3}
-  myIsCastableWhileMoving: 1
-  myCanCastOnSelf: 0
-  myIsOnlySelfCast: 0
-  myShouldRotate: 0
-  myBuff: {fileID: 11400000, guid: 0100d26053a5f294c81cd69641d04915, type: 2}
-  mySpellSFX:
-    myCastSound: {fileID: 8300000, guid: 29bf85fa43689764eaacceb4614b3cc4, type: 3}
-    mySpawnSound: {fileID: 0}
-    myHitSound: {fileID: 0}
-  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
-    type: 3}
 --- !u!82 &3536779085426697894
 AudioSource:
   m_ObjectHideFlags: 0
@@ -229,3 +142,53 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myID: 70
+--- !u!114 &4183655030200849949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959371134241452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c54a6f777942aaa4eb9911fc688d3df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myQuickInfo: Damage Over Time
+  myTutorialInfo: By slicing the target, your foe will bleed and take Damage over
+    Time (DoT).
+  myName: Slice
+  mySpellType: 1
+  mySpellTarget: 4
+  myAnimationType: 0
+  myDamage: 50
+  myHealValue: 0
+  myResourceCost: 0
+  myThreatModifier: 1
+  mySpeed: 0
+  myCastTime: 1
+  myCooldown: 1
+  myRange: 6
+  myStunDuration: 0
+  myCastbarColor: {r: 1, g: 0.42948908, b: 0, a: 0}
+  mySpellIcon: {fileID: 21300000, guid: 729dbe5b80de3984a88167386c4505a8, type: 3}
+  myIsCastableWhileMoving: 1
+  myCanCastOnSelf: 0
+  myIsOnlySelfCast: 0
+  myShouldRotate: 0
+  mySpawnedOnHit: {fileID: 0}
+  mySpellSFX:
+    myCastSound: {fileID: 0}
+    mySpawnSound: {fileID: 0}
+    myHitSound: {fileID: 0}
+  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
+    type: 3}
+  myIsCastManually: 1
+  myDuration: 6
+  mySpellOverTimeType: 1
+  mySpeedMultiplier: 0
+  myAttackSpeed: 0
+  myDamageIncrease: 0
+  myDamageMitigator: 0
+  myShieldValue: 0
+  myNumberOfTicks: 3

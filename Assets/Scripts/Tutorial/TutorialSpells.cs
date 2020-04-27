@@ -18,14 +18,13 @@ public class TutorialSpells : TutorialCompletion
         if (!base.StartTutorial())
             return false;
 
-        foreach (GameObject player in myPlayers)
+        foreach (GameObject player in Players)
         {
-            player.GetComponent<Character>().myEventOnSpellSpawned += OnSpellSpawned;
+            player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned += OnSpellSpawned;
             if (mySpellIndexToExceed < 3 && player.GetComponent<Class>().myClassName == "Loremaster")
             {
                 myCompletedPlayers.Add(player);
-                SetPlayerCompleted(player);
-                if (myPlayers.Count == 1)
+                if (Players.Count == 1)
                 {
                     EndTutorial();
                     return true;
@@ -37,8 +36,6 @@ public class TutorialSpells : TutorialCompletion
         {
             myTargetHandler.AddEnemy(myTargetsToHit[index], true);
         }
-
-        myTutorialPanel.SetSpellsHightlight(true, mySpellIndexToExceed > 0);
 
         return true;
     }
@@ -52,19 +49,17 @@ public class TutorialSpells : TutorialCompletion
             return;
 
         myCompletedPlayers.Add(aPlayer);
-        SetPlayerCompleted(aPlayer);
-        if (myCompletedPlayers.Count == myPlayers.Count)
+        if (myCompletedPlayers.Count == Players.Count)
         {
-            foreach (GameObject player in myPlayers)
+            foreach (GameObject player in Players)
             {
-                player.GetComponent<Character>().myEventOnSpellSpawned -= OnSpellSpawned;
-                player.GetComponent<Character>().SetTarget(null);
+                player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned -= OnSpellSpawned;
+                player.GetComponent<PlayerTargetingComponent>().SetTarget(null);
             }
             for (int index = 0; index < myTargetsToHit.Count; index++)
             {
                 myTargetHandler.RemoveEnemy(myTargetsToHit[index]);
             }
-            myTutorialPanel.SetSpellsHightlight(false, mySpellIndexToExceed > 0);
             EndTutorial();
         }
     }

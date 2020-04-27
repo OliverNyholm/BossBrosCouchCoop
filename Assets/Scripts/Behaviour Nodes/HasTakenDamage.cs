@@ -4,17 +4,21 @@ using BehaviorDesigner.Runtime.Tasks;
 
 public class HasTakenDamage : Conditional
 {
-    private bool myHasRegisteredForEvent;
-    private bool myHasTakenDamage;
+    private bool myHasTakenDamage = false;
+    private bool myIsRegistered;
 
-    private string myEventName = "TakeDamage";
+    public override void OnAwake()
+    {
+        base.OnAwake();
+        myIsRegistered = false;
+    }
 
     public override void OnStart()
     {
-        if(!myHasRegisteredForEvent)
+        if (!myIsRegistered && !myHasTakenDamage)
         {
-            Owner.RegisterEvent(myEventName, ReceivedEvent);
-            myHasRegisteredForEvent = true;
+            GetComponent<Health>().EventOnHealthChange += OnDamageTaken;
+            myIsRegistered = true;
         }
     }
 
@@ -28,25 +32,21 @@ public class HasTakenDamage : Conditional
 
     public override void OnEnd()
     {
-        if (myHasTakenDamage)
-        {
-            Owner.UnregisterEvent(myEventName, ReceivedEvent);
-            myHasRegisteredForEvent = false;
-        }
         myHasTakenDamage = false;
     }
 
     public override void OnBehaviorComplete()
     {
-        // Stop receiving the event when the behavior tree is complete
-        Owner.RegisterEvent(myEventName, ReceivedEvent);
-        myHasRegisteredForEvent = true;
+        if (myIsRegistered)
+            GetComponent<Health>().EventOnHealthChange -= OnDamageTaken;
 
         myHasTakenDamage = false;
     }
 
-    private void ReceivedEvent()
+    private void OnDamageTaken(float aHealthPercentage, string aHealthText, int aShieldValue, bool aIsDamage)
     {
         myHasTakenDamage = true;
+        myIsRegistered = false;
+        GetComponent<Health>().EventOnHealthChange -= OnDamageTaken;
     }
 }

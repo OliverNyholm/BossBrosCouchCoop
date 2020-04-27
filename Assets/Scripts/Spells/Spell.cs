@@ -1,59 +1,68 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+[System.Flags]
+public enum SpellTarget
+{
+    Friend = 1 << 1,
+    Enemy = 1 << 2,
+    Anyone = Friend | Enemy
+}
 
 public class Spell : PoolableObject
 {
-    public string myQuickInfo;
+    [HideInInspector] public string myQuickInfo;
     [TextArea(2, 5)]
-    public string myTutorialInfo;
+    [HideInInspector] public string myTutorialInfo;
 
-    public string myName;
-    public SpellType mySpellType;
-    public SpellTarget mySpellTarget;
-    public SpellAnimationType myAnimationType;
+    [HideInInspector] public string myName;
 
-    public int myDamage;
-    public int myResourceCost;
+    [HideInInspector] public SpellType mySpellType;
+    [HideInInspector] public SpellTarget mySpellTarget;
+    [HideInInspector] public SpellAnimationType myAnimationType;
 
-    public float myThreatModifier = 1.0f;
-    public float mySpeed;
-    public float myCastTime;
-    public float myCooldown;
-    public float myRange;
-    public float myStunDuration;
+    [HideInInspector] public int myDamage;
+    [HideInInspector] public int myHealValue;
+    [HideInInspector] public int myResourceCost;
 
-    public Color myCastbarColor;
-    public Sprite mySpellIcon;
+    [HideInInspector] public float myThreatModifier = 1.0f;
+    [HideInInspector] public float mySpeed;
+    [HideInInspector] public float myCastTime;
+    [HideInInspector] public float myCooldown;
+    [HideInInspector] public float myRange;
+    [HideInInspector] public float myStunDuration;
 
-    public bool myIsCastableWhileMoving;
-    public bool myCanCastOnSelf;
-    public bool myIsOnlySelfCast;
+    [HideInInspector] public Color myCastbarColor;
+    [HideInInspector] public Sprite mySpellIcon;
 
-    public bool myShouldRotate;
+    [HideInInspector] public bool myIsCastableWhileMoving;
+    [HideInInspector] public bool myCanCastOnSelf;
+    [HideInInspector] public bool myIsOnlySelfCast;
+
+    [HideInInspector] public bool myShouldRotate;
 
     protected float myRotationSpeed;
     protected Vector3 myRandomRotation;
 
-    public Buff myBuff;
+    [HideInInspector] public GameObject mySpawnedOnHit;
 
     protected bool myIsFirstUpdate = true;
+    protected bool myReturnToPoolWhenReachedTarget = true;
 
     [System.Serializable]
+    [HideInInspector]
     public struct SpellSFX
     {
         public AudioClip myCastSound;
         public AudioClip mySpawnSound;
         public AudioClip myHitSound;
     }
-    [Header("The sound effects for the spell")]
+    //[Header("The sound effects for the spell")]
     [SerializeField]
-    protected SpellSFX mySpellSFX;
+    [HideInInspector] protected SpellSFX mySpellSFX;
 
-    [Header("The spawned effect for the spell")]
+    //[Header("The spawned effect for the spell")]
     [SerializeField]
-    protected GameObject mySpellVFX;
+    [HideInInspector] protected GameObject mySpellVFX;
 
     protected GameObject myParent;
     protected GameObject myTarget;
@@ -86,24 +95,30 @@ public class Spell : PoolableObject
         {
             if (myShouldRotate)
                 transform.Rotate(myRandomRotation * myRotationSpeed * Time.deltaTime);
-
-            transform.LookAt(myTarget.transform);
+            else
+                transform.LookAt(myTarget.transform);
 
             Vector3 direction = myTarget.transform.position - transform.position;
             transform.position += direction.normalized * mySpeed * Time.deltaTime;
         }
         else
         {
-            DealSpellEffect();
-            SpawnVFX(2.5f);
-
-            if (myBuff != null)
-            {
-                SpawnBuff();
-            }
-
-            ReturnToPool();
+            OnReachTarget();
         }
+    }
+
+    protected virtual void OnReachTarget()
+    {
+        DealSpellEffect();
+        SpawnVFX(2.5f);
+
+        if (mySpawnedOnHit != null)
+        {
+            SpawnOnHitObject();
+        }
+
+        if (myReturnToPoolWhenReachedTarget)
+            ReturnToPool();
     }
 
     protected virtual void OnFirstUpdate()
@@ -111,61 +126,40 @@ public class Spell : PoolableObject
         myIsFirstUpdate = false;
     }
 
-    private void SpawnBuff()
-    {
-        if (myBuff.mySpellType == SpellType.DOT || myBuff.mySpellType == SpellType.HOT)
-        {
-            BuffTickSpell buffSpell;
-            buffSpell = (myBuff as TickBuff).InitializeBuff(myParent, myTarget);
-            if (myTarget.tag == "Player")
-                myTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
-            else if (myTarget.tag == "Enemy")
-                myTarget.GetComponent<Enemy>().AddBuff(buffSpell, mySpellIcon);
-        }
-        else
-        {
-            BuffSpell buffSpell;
-            buffSpell = myBuff.InitializeBuff(myParent);
-            if (myTarget.tag == "Player")
-                myTarget.GetComponent<Player>().AddBuff(buffSpell, mySpellIcon);
-            else if (myTarget.tag == "Enemy")
-                myTarget.GetComponent<Enemy>().AddBuff(buffSpell, mySpellIcon);
-
-            if (buffSpell.GetBuff().mySpellType == SpellType.Shield)
-                myTarget.GetComponent<Health>().AddShield(buffSpell as BuffShieldSpell);
-
-        }
-    }
-
     protected virtual void DealSpellEffect()
     {
-        if (GetSpellTarget() == SpellTarget.Friend)
+        if(UtilityFunctions.HasSpellType(mySpellType, SpellType.Damage))
         {
-            if (myDamage > 0.0f)
-            {
-                myTarget.GetComponent<Health>().GainHealth(myDamage);
-                PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myDamage)));
-            }
+            DealDamage(myDamage);
         }
-        else
+        if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal))
         {
-            if (myDamage > 0.0f)
-            {
-                DealDamage(myDamage);
-            }
+            myTarget.GetComponent<Health>().GainHealth(myHealValue);
+            PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myHealValue)));
         }
 
         if (myStunDuration > 0.0f)
-            myTarget.GetComponent<Character>().Stun(myStunDuration);
+            myTarget.GetComponent<Stats>().SetStunned(myStunDuration);
 
-        if (mySpellType == SpellType.Interrupt)
+        if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Interrupt))
         {
             Interrupt();
         }
-        if (mySpellType == SpellType.Taunt)
+        if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Taunt))
         {
-            myTarget.GetComponent<Enemy>().SetTaunt(myParent.GetInstanceID(), 3.0f);
+            myTarget.GetComponent<NPCThreatComponent>().SetTaunt(myParent.GetInstanceID(), 3.0f);
         }
+    }
+
+    protected void SpawnOnHitObject()
+    {
+        PoolManager poolManager = PoolManager.Instance;
+        GameObject spawnObject = poolManager.GetPooledObject(mySpawnedOnHit.GetComponent<UniqueID>().GetID());
+        spawnObject.GetComponent<SpawnObjectSpell>().SetParent(myParent);
+        spawnObject.GetComponent<SpawnObjectSpell>().SetTarget(myTarget);
+
+        spawnObject.transform.localPosition = transform.position;
+        spawnObject.transform.localRotation = Quaternion.identity;
     }
 
     public virtual void AddDamageIncrease(float aDamageIncrease)
@@ -185,8 +179,8 @@ public class Spell : PoolableObject
             target = aTarget;
 
         int parentID = myParent.GetInstanceID();
-        int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<Character>().myCharacterColor);
-        target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID);
+        int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<UIComponent>().myCharacterColor);
+        target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID, true);
 
         if (myParent.tag == "Player")
             PostMaster.Instance.PostMessage(new Message(MessageCategory.DamageDealt, new Vector2(parentID, damageDone)));
@@ -202,6 +196,11 @@ public class Spell : PoolableObject
         myTarget = aTarget;
     }
 
+    public GameObject GetTarget()
+    {
+        return myTarget;
+    }
+
     public SpellTarget GetSpellTarget()
     {
         return mySpellTarget;
@@ -212,195 +211,12 @@ public class Spell : PoolableObject
         return myIsCastableWhileMoving || myCastTime <= 0.0f;
     }
 
-    public string GetSpellDescription()
-    {
-        string target = "Cast spell on ";
-        if (myIsOnlySelfCast)
-            target += "self ";
-        else
-            target += mySpellTarget.ToString() + " ";
-
-        string detail = GetSpellDetail();
-
-        string range = "";
-        if (myRange != 0 && myIsOnlySelfCast)
-            range = "Range: " + myRange;
-        string cost = "\nCosts " + myResourceCost + " to cast spell. ";
-
-        string castTime = "\nSpell ";
-        if (myCastTime <= 0.0f)
-        {
-            castTime += "is instant cast.";
-        }
-        else
-        {
-            castTime += "takes " + myCastTime + " seconds to cast. ";
-            if (myIsCastableWhileMoving)
-                castTime += "Is castable while moving.";
-            else
-                castTime += "Is not castable while moving";
-        }
-
-        return target + detail + range + cost + castTime;
-    }
-
-    protected virtual string GetSpellDetail()
-    {
-        string detail = "to ";
-        switch (mySpellType)
-        {
-            case SpellType.Damage:
-                detail += "deal " + myDamage + " damage. ";
-                break;
-            case SpellType.Heal:
-                detail += "heal " + myDamage + " damage. ";
-                break;
-            case SpellType.Interrupt:
-                if (myDamage > 0.0f)
-                    detail += "deal " + myDamage + " damage and ";
-                detail += "interrupt any spellcast. ";
-                break;
-            case SpellType.Taunt:
-                detail += "to make the target attack you for a few seconds.";
-                break;
-            case SpellType.Buff:
-                detail += GetDefaultBuffDetails();
-
-                if (myBuff.mySpellType == SpellType.DOT)
-                {
-                    if (detail[detail.Length - 1] == '%')
-                        detail += " and ";
-
-                    detail += "deal " + (myBuff as TickBuff).myTotalDamage + " damage over ";
-                }
-                else if (myBuff.mySpellType == SpellType.HOT)
-                {
-                    if (detail[detail.Length - 1] == '%')
-                        detail += " and ";
-
-                    detail += "heal " + (myBuff as TickBuff).myTotalDamage + " damage over ";
-                }
-                else if (myBuff.mySpellType == SpellType.Shield)
-                {
-                    if (detail[detail.Length - 1] == '%')
-                        detail += " and ";
-
-                    detail += "place a shield that will absorb " + (myBuff as ShieldBuff).myShieldValue + " damage for ";
-                }
-
-                detail += myBuff.myDuration.ToString("0") + " seconds.";
-                break;
-            case SpellType.Ressurect:
-                detail += "ressurect the target. ";
-                break;
-            case SpellType.Special:
-                //Override this function and add special text.
-                break;
-        }
-
-        return detail;
-    }
-
-    private string GetDefaultBuffDetails()
-    {
-        string buffDetail = " ";
-
-        bool shouldAddComma = false;
-
-        if (myBuff.mySpeedMultiplier > 0.0f)
-        {
-            buffDetail += "increase movement speed by " + (myBuff.mySpeedMultiplier * 100).ToString("0") + "%";
-            shouldAddComma = true;
-        }
-        else if (myBuff.mySpeedMultiplier < 0.0f)
-        {
-            buffDetail += "reduce movement speed by " + (myBuff.mySpeedMultiplier * 100).ToString("0") + "%";
-            shouldAddComma = true;
-        }
-
-        if (myBuff.myAttackSpeed > 0.0f)
-        {
-            if (shouldAddComma)
-                buffDetail += ", and ";
-
-            buffDetail += "increase attack speed by " + (myBuff.myAttackSpeed * 100).ToString("0") + "%";
-            shouldAddComma = true;
-        }
-        else if (myBuff.myAttackSpeed < 0.0f)
-        {
-            if (shouldAddComma)
-                buffDetail += ", and ";
-
-            buffDetail += "reduce attack speed by " + (myBuff.myAttackSpeed * 100).ToString("0") + "%";
-            shouldAddComma = true;
-        }
-
-        if (myBuff.myDamageMitigator > 0.0f)
-        {
-            if (shouldAddComma)
-                buffDetail += ", and ";
-
-            buffDetail += "reduce damage taken by " + (myBuff.myDamageMitigator * 100).ToString("0") + "%";
-            shouldAddComma = true;
-        }
-        else if (myBuff.myDamageMitigator < 0.0f)
-        {
-            if (shouldAddComma)
-                buffDetail += ", and ";
-
-            buffDetail += "increase damage taken by " + (myBuff.myDamageMitigator * 100).ToString("0") + "%";
-            shouldAddComma = true;
-        }
-
-        if (myBuff.myDamageIncrease > 0.0f)
-        {
-            if (shouldAddComma)
-                buffDetail += ", and ";
-
-            buffDetail += "increase damage dealt by " + (myBuff.myDamageIncrease * 100).ToString("0") + "%";
-        }
-        else if (myBuff.myDamageIncrease < 0.0f)
-        {
-            if (shouldAddComma)
-                buffDetail += ", and ";
-
-            buffDetail += "reduce damage dealt by " + (myBuff.myDamageIncrease * 100).ToString("0") + "% ";
-        }
-
-        if (myBuff.mySpellType == SpellType.Buff)
-            buffDetail += " for ";
-
-        return buffDetail;
-    }
-
-    private string GetSpellHitText()
-    {
-        string text = string.Empty;
-
-        if (myDamage > 0)
-            text += myDamage.ToString();
-        if (mySpellType == SpellType.DOT)
-            text += " - DOT " + myName;
-        if (mySpellType == SpellType.HOT)
-            text += " - HOT " + myName;
-        if (mySpellType == SpellType.Interrupt)
-            text += " - Interrupt";
-        if (mySpellType == SpellType.Slow)
-            text += " - Slow";
-        if (mySpellType == SpellType.Taunt)
-            text += " - Taunt";
-        if (mySpellType == SpellType.Ressurect)
-            text += " - Ressurect";
-
-        return text;
-    }
-
     private void Interrupt()
     {
         if (myTarget.tag == "Player")
-            myTarget.GetComponent<Player>().InterruptSpellCast();
+            myTarget.GetComponent<CastingComponent>().InterruptSpellCast();
         else if (myTarget.tag == "Enemy")
-            myTarget.GetComponent<Enemy>().InterruptSpellCast();
+            myTarget.GetComponent<CastingComponent>().InterruptSpellCast();
     }
 
     public SpellSFX GetSpellSFX()
@@ -422,12 +238,12 @@ public class Spell : PoolableObject
         return myAnimationType;
     }
 
-    public bool IsCastOnFriends()
+    public virtual bool IsCastOnFriends()
     {
         if (myIsOnlySelfCast)
             return false;
 
-        return (mySpellType == SpellType.Heal || mySpellType == SpellType.HOT || mySpellType == SpellType.Shield || mySpellType == SpellType.Buff || mySpellType == SpellType.Ressurect);
+        return UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal | SpellType.Ressurect);
     }
 
     protected GameObject SpawnVFX(float aDuration, GameObject aTarget = null)
@@ -469,7 +285,10 @@ public class Spell : PoolableObject
     {
         aPoolManager.AddPoolableObjects(gameObject, GetComponent<UniqueID>().GetID(), aSpellMaxCount);
 
-        if(mySpellVFX)
+        if (mySpawnedOnHit)
+            aPoolManager.AddPoolableObjects(mySpawnedOnHit, mySpawnedOnHit.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
+
+        if (mySpellVFX)
         {
             aPoolManager.AddPoolableObjects(mySpellVFX, mySpellVFX.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
         }

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1660734403107979426}
   - component: {fileID: 5520848383298943793}
   - component: {fileID: -7333142974553288267}
+  - component: {fileID: 8758636418210652410}
   m_Layer: 0
   m_Name: Throw Axe
   m_TagString: Spell
@@ -146,10 +147,11 @@ MonoBehaviour:
   myQuickInfo: 
   myTutorialInfo: 
   myName: Throw Axe
-  mySpellType: 8
+  mySpellType: 1
   mySpellTarget: 4
   myAnimationType: 0
   myDamage: 20
+  myHealValue: 0
   myResourceCost: 0
   myThreatModifier: 1
   mySpeed: 40
@@ -163,7 +165,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 1
-  myBuff: {fileID: 11400000, guid: 22ded0bd70210344584fb9ebd82fcf28, type: 2}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
@@ -192,6 +194,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -203,6 +206,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -228,3 +232,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myID: 15
+--- !u!114 &8758636418210652410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4046620562603134914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c54a6f777942aaa4eb9911fc688d3df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myQuickInfo: 
+  myTutorialInfo: Applies a bleeding effect when hit by an axe in the face.
+  myName: Throw Axe
+  mySpellType: 0
+  mySpellTarget: 0
+  myAnimationType: 0
+  myDamage: 100
+  myHealValue: 0
+  myResourceCost: 0
+  myThreatModifier: 1
+  mySpeed: 40
+  myCastTime: 2
+  myCooldown: 0
+  myRange: 500
+  myStunDuration: 0
+  myCastbarColor: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
+  mySpellIcon: {fileID: 21300000, guid: 18bbcb53e225cce479b88bbb889feaa6, type: 3}
+  myIsCastableWhileMoving: 1
+  myCanCastOnSelf: 0
+  myIsOnlySelfCast: 0
+  myShouldRotate: 1
+  mySpawnedOnHit: {fileID: 0}
+  mySpellSFX:
+    myCastSound: {fileID: 8300000, guid: 9bb18b6a1a81bd84888cd763d0677c45, type: 3}
+    mySpawnSound: {fileID: 0}
+    myHitSound: {fileID: 8300000, guid: 04114ae66b464ff41b14ea806beaa345, type: 3}
+  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
+    type: 3}
+  myIsCastManually: 1
+  myDuration: 20
+  mySpellOverTimeType: 1
+  mySpeedMultiplier: 0
+  myAttackSpeed: 0
+  myDamageIncrease: 0
+  myDamageMitigator: 0
+  myShieldValue: 0
+  myNumberOfTicks: 10

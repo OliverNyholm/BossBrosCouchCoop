@@ -13,9 +13,9 @@ public class PoolManager : MonoBehaviour
     [SerializeField]
     private ObjectPool myHealthPool = null;
 
-    [Header("GameObject for AutoAttack Pool")]
+    [Header("AutoAttack prefab")]
     [SerializeField]
-    private ObjectPool myAutoAttackPool = null;
+    private GameObject myAutoAttackPrefab = null;
 
     [Header("GameObject for Empty Transform Holder")]
     [SerializeField]
@@ -37,6 +37,7 @@ public class PoolManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        myAutoAttackPrefab.GetComponent<Spell>().CreatePooledObjects(this, 20);
     }
 
     private void Update()
@@ -59,19 +60,27 @@ public class PoolManager : MonoBehaviour
         return myHealthPool.GetPooled();
     }
 
-    public ObjectPool GetAutoAttackPool()
-    {
-        return myAutoAttackPool;
-    }
-
-    public GameObject GetPoolPrefab()
-    {
-        return myPoolPrefab;
-    }
-
     public Transform GetEmptyTransformHolder()
     {
         return myEmptyTransformHolder.transform;
+    }
+
+    public GameObject GetAutoAttackPrefab()
+    {
+        return myAutoAttackPrefab;
+    }
+
+    public GameObject GetPooledAutoAttack()
+    {
+        if (myObjectPoolDictionary.TryGetValue(myAutoAttackPrefab.GetComponent<UniqueID>().GetID(), out ObjectPool pool))
+        {
+            return pool.GetPooled();
+        }
+        else
+        {
+            Debug.LogError("Auto Attack pool is not created for some reason.");
+            return null;
+        }
     }
 
     public GameObject GetPooledObject(uint anObjectID)

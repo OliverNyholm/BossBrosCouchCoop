@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AreaEffect : MonoBehaviour
 {
+    public SpellTarget mySpellTarget;
     public SpellType mySpellType;
 
     [Header("Damage per tick")]
@@ -64,32 +65,34 @@ public class AreaEffect : MonoBehaviour
 
     private void OnTriggerEnter(Collider aOther)
     {
-        if (aOther.tag == "Player")
+        if (!(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTarget.Friend) && aOther.GetComponent<Player>()) && 
+            !(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTarget.Enemy) && aOther.GetComponent<NPCComponent>()))
+            return;
+
+        if (aOther.gameObject.GetComponent<Health>().IsDead())
+            return;
+
+        myObjectsInTrigger.Add(aOther.gameObject);
+
+        if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Damage))
         {
-            if (aOther.gameObject.GetComponent<Health>().IsDead())
-                return;
-
-            myObjectsInTrigger.Add(aOther.gameObject);
-
-            if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Damage))
-            {
-                int index = myObjectsInTrigger.Count - 1;
-                DealDamage(ref index);
-            }
-            if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal))
-                aOther.GetComponent<Health>().GainHealth(myTickValue);
-
-            if (mySpellOverTime != null)
-                AddBuff(aOther.gameObject);
+            int index = myObjectsInTrigger.Count - 1;
+            DealDamage(ref index);
         }
+        if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal))
+            aOther.GetComponent<Health>().GainHealth(myTickValue);
+
+        if (mySpellOverTime != null)
+            AddBuff(aOther.gameObject);
     }
 
     private void OnTriggerExit(Collider aOther)
     {
-        if (aOther.tag == "Player")
-        {
-            myObjectsInTrigger.Remove(aOther.gameObject);
-        }
+        if (!(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTarget.Friend) && !aOther.GetComponent<Player>()) &&
+            !(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTarget.Enemy) && !aOther.GetComponent<NPCComponent>()))
+            return;
+
+        myObjectsInTrigger.Remove(aOther.gameObject);
     }
 
     private void AddBuff(GameObject aPlayer)

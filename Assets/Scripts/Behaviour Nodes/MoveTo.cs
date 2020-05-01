@@ -13,6 +13,9 @@ public class MoveTo : Action
 
     public float myStopDistance = 0.1f;
 
+    [BehaviorDesigner.Runtime.Tasks.Tooltip("When reaching target, rotates same directon as gameobject")]
+    public bool myShouldApplyGameObjectRotation = false;
+
     private NavMeshAgent myNavmeshAgent;
     private Animator myAnimator;
 
@@ -38,11 +41,14 @@ public class MoveTo : Action
             myTargetType = TargetType.GameObject;
         else
             myTargetType = TargetType.WorldPosition;
+
+        myNavmeshAgent.isStopped = false;
     }
 
     public override TaskStatus OnUpdate()
     {
         Vector3 targetPosition = myWorldPosition;
+        Quaternion targetRotation = Quaternion.identity;
         if (myTargetType == TargetType.SharedGameObject)
         {
             targetPosition = myTarget.Value.transform.position;
@@ -50,6 +56,8 @@ public class MoveTo : Action
         if (myTargetType == TargetType.GameObject)
         {
             targetPosition = myGameObject.transform.position;
+            if (myShouldApplyGameObjectRotation)
+                targetRotation = myGameObject.transform.rotation;
         }
 
 
@@ -59,6 +67,10 @@ public class MoveTo : Action
         if (distanceSqr <= myStopDistance * myStopDistance && myNavmeshAgent.remainingDistance <= myStopDistance)
         {
             myNavmeshAgent.destination = transform.position;
+
+            if (myShouldApplyGameObjectRotation)
+                transform.rotation = targetRotation;
+
             return TaskStatus.Success;
         }
 

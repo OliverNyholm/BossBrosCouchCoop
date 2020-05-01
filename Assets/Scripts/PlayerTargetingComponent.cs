@@ -25,6 +25,8 @@ public class PlayerTargetingComponent : TargetingComponent
         myPlayer = GetComponent<Player>();
         myHealth = GetComponent<Health>();
         myStats = GetComponent<Stats>();
+
+        myHealth.EventOnHealthZero += OnDeath;
     }
 
     public float GetSmartTargetHoldDownMaxDuration()
@@ -58,12 +60,18 @@ public class PlayerTargetingComponent : TargetingComponent
     public override void SetTarget(GameObject aTarget)
     {
         if (Target)
+        {
             Target.GetComponentInChildren<TargetProjector>().DropTargetProjection(myPlayer.PlayerIndex);
+            Target.GetComponent<Health>().EventOnHealthZero -= OnTargetDied;
+        }
 
         base.SetTarget(aTarget);
 
         if (Target)
+        {
             Target.GetComponentInChildren<TargetProjector>().AddTargetProjection(GetComponent<UIComponent>().myCharacterColor, myPlayer.PlayerIndex);
+            Target.GetComponent<Health>().EventOnHealthZero += OnTargetDied;
+        }
 
         GetComponent<PlayerCastingComponent>().SetShouldAutoAttack(Target && Target.tag == "Enemy");
     }
@@ -227,5 +235,16 @@ public class PlayerTargetingComponent : TargetingComponent
 
         if (bestIndex != -1)
             SetTarget(enemies[bestIndex]);
+    }
+
+    private void OnDeath()
+    {
+        SetTarget(null);
+        myIsHealTargetingEnabled = false;
+    }
+
+    private void OnTargetDied()
+    {
+        SetTarget(null);
     }
 }

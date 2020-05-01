@@ -14,7 +14,7 @@ public class ShieldWall : PoolableObject
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Spell")
+        if (other.GetComponent<Spell>())
             other.GetComponent<PoolableObject>().ReturnToPool();     
     }
 

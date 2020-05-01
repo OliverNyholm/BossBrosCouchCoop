@@ -88,6 +88,7 @@ public class NPCComponent : Character
             case CombatState.Idle:
                 transform.rotation = mySpawnRotation;
                 myAnimator.SetBool(AnimationVariable.IsRunning, false);
+                myHealth.SetHealthPercentage(1.0f);
                 break;
             case CombatState.Combat:
                 NPCThreatComponent threatComponent = GetComponent<NPCThreatComponent>();
@@ -98,12 +99,6 @@ public class NPCComponent : Character
                 PostMaster.Instance.PostMessage(new Message(MessageCategory.EnteredCombat));
                 break;
             case CombatState.Disengage:
-                NavMeshAgent navmeshAgent = GetComponent<NavMeshAgent>();
-                if (navmeshAgent)
-                    navmeshAgent.destination = mySpawnPosition;
-
-                myAnimator.SetBool(AnimationVariable.IsRunning, true);
-
                 if (myBehaviorTree)
                 {
                     myBehaviorTree.DisableBehavior();

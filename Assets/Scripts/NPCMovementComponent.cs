@@ -30,15 +30,6 @@ public class NPCMovementComponent : MovementComponent
         GetComponent<Health>().EventOnHealthZero -= OnDeath;
     }
 
-    public void Update()
-    {
-        if (myNPCComponent.State != NPCComponent.CombatState.Disengage)
-            return;
-
-        if (!myNavmeshAgent.hasPath) //When moved back to start position
-            myNPCComponent.SetState(NPCComponent.CombatState.Idle);
-    }
-
     public void Stop()
     {
         myNavmeshAgent.destination = transform.position;

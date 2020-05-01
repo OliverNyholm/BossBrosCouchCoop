@@ -36,4 +36,9 @@ public static class UtilityFunctions
     {
         return (anAttacktype & aHasType) != 0;
     }
+
+    public static bool HasSpellTarget(SpellTarget aSpellTarget, SpellTarget aTargetType)
+    {
+        return (aSpellTarget & aTargetType) != 0;
+    }
 }

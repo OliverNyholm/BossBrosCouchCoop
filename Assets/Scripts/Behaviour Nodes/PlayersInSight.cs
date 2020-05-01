@@ -6,28 +6,21 @@ public class PlayersInSight : Conditional
 {
     public float myRange;
 
-    public string myTargetTag;
-
     // A cache of all of the possible targets
-    private Transform[] possibleTargets;
+    NPCThreatComponent myThreatComponent;
 
     public override void OnAwake()
     {
-        var targets = GameObject.FindGameObjectsWithTag(myTargetTag);
-        possibleTargets = new Transform[targets.Length];
-        for (int i = 0; i < targets.Length; ++i)
-        {
-            possibleTargets[i] = targets[i].transform;
-        }
+        myThreatComponent = GetComponent<NPCThreatComponent>();
     }
 
     public override TaskStatus OnUpdate()
     {
-        for (int i = 0; i < possibleTargets.Length; ++i)
+        for (int index = 0; index < myThreatComponent.Players.Count; ++index)
         {
-            if (InSight(possibleTargets[i]))
+            if (InSight(myThreatComponent.Players[index].transform))
             {
-                GetComponent<NPCThreatComponent>().PlayerSpotted(possibleTargets[i].gameObject);
+                GetComponent<NPCThreatComponent>().PlayerSpotted(myThreatComponent.Players[index].gameObject);
                 return TaskStatus.Success;
             }
         }

@@ -15,7 +15,7 @@ public class GetRandomPlayer : Action
     public override TaskStatus OnUpdate()
     {
         List<GameObject> players;
-        if(myPlayers.Value != null)
+        if(myPlayers.Value != null && myPlayers.Value.Count != 0)
             players = myPlayers.Value;
         else
             players = GetComponent<NPCThreatComponent>().Players;

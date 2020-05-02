@@ -29,6 +29,7 @@ public class DebugManager : MonoBehaviour
 }
 
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(DebugManager))]
 public class DebugManagerEditor : Editor
 {
@@ -51,3 +52,4 @@ public class DebugManagerEditor : Editor
         }
     }
 }
+#endif

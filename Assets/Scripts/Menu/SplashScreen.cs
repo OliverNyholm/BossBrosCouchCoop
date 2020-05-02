@@ -16,6 +16,7 @@ public class SplashScreen : MonoBehaviour
 
     void Start()
     {
+        Application.targetFrameRate = 300;
         myStartScale = myInstructionsText.rectTransform.localScale;
 
         myKeyboardListener = PlayerControls.CreateWithKeyboardBindings();

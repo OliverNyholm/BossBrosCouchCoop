@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(SpellOverTime)), CanEditMultipleObjects]
 public class SpellOverTimeInspectorEditor : SpellInspectorEditor
 {
@@ -86,3 +87,4 @@ public class SpellOverTimeInspectorEditor : SpellInspectorEditor
         }
     }
 }
+#endif

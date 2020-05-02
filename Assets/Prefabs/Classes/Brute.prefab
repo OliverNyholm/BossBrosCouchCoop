@@ -2595,7 +2595,7 @@ MonoBehaviour:
   mySpells:
   - {fileID: 1504369000683004, guid: 514d6da34d22c8e42bc9f3dc233bb07f, type: 3}
   - {fileID: 1894928944319450, guid: e0c2d32b3c4488c4ca7400732b9e3838, type: 3}
-  - {fileID: 1310371387935930, guid: 2a2919ac58a524c4ba3a6dec1ec28854, type: 3}
+  - {fileID: 1359873473471380, guid: eca74c57a23e9e04baadcd20d2714375, type: 3}
   - {fileID: 1436276555340398, guid: fb9b32489f063c84ba4835356b385bdb, type: 3}
   myCooldownTimers:
   - 0
@@ -2653,6 +2653,10 @@ MonoBehaviour:
   myDamageMitigator: 1
   myAutoAttackRange: 4
   myAutoAttackDamage: 15
+  myRangeCylinder:
+    myRadius: 1.5
+    myHeight: 5
+    myDrawGizmos: 1
   myCanBeStunned: 1
 --- !u!114 &2621394626236190062
 MonoBehaviour:

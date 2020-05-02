@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using System.IO;
+
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
 
 [DisallowMultipleComponent]
 public class UniqueID : MonoBehaviour

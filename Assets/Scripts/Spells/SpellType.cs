@@ -23,6 +23,7 @@ public enum SpellOverTimeType
     Stats = 1 << 3
 }
 
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(SpellType))]
 [CustomPropertyDrawer(typeof(SpellOverTimeType))]
 public class EnumFlagsAttributeDrawer : PropertyDrawer
@@ -210,3 +211,4 @@ public class EnumFlagsAttributeDrawer : PropertyDrawer
         return typedValues;
     }
 }
+#endif

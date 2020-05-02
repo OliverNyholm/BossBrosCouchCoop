@@ -52,17 +52,17 @@ public class DynamicCamera : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         CalculateCameraFactors(out Vector3 centerPoint);
         transform.position = Vector3.SmoothDamp(transform.position, centerPoint, ref myMoveVelocity, myDampTime);
 
         //CalculateZoom(centerPoint);
 
-        for (int index = 0; index < myPlayerTransforms.Count; index++)
-        {
-            Debug.DrawLine(myPlayerTransforms[index].position, centerPoint);
-        }
+        //for (int index = 0; index < myPlayerTransforms.Count; index++)
+        //{
+        //    Debug.DrawLine(myPlayerTransforms[index].position, centerPoint);
+        //}
     }
 
     private void CalculateCameraFactors(out Vector3 aCenterPoint)

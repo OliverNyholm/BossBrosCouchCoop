@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(Spell), true), CanEditMultipleObjects]
 public class SpellInspectorEditor : Editor
 {
@@ -156,3 +157,4 @@ public class SpellInspectorEditor : Editor
         EditorGUILayout.PropertyField(mySpellVFX, new GUIContent("On Hit VFX"));
     }
 }
+#endif

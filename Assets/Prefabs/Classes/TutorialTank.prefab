@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 6624274502170959152}
   - component: {fileID: 5877306991437688831}
   m_Layer: 9
-  m_Name: TutorialDamager
+  m_Name: TutorialTank
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -278,13 +278,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d622a94a3ce4984d8669a172cc9676c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myClassName: Tutorial Damage Dealer
-  myClassRole: 0
-  mySprite: {fileID: 21300000, guid: 18bbcb53e225cce479b88bbb889feaa6, type: 3}
+  myClassName: Tutorial Tank
+  myClassRole: 3
+  mySprite: {fileID: 21300000, guid: 4a9c64b90c49a964a93c12fa89c6c76e, type: 3}
   mySpells:
-  - {fileID: 1203039460516580923, guid: 92f85d839bf7ecb4a8a78607c4820c4f, type: 3}
+  - {fileID: 1894928944319450, guid: c34e6dd923fc0d748a3553998799fb9b, type: 3}
   - {fileID: 8698807325168387182, guid: a633001c3db0a804fb8e4f0ba5f6e09a, type: 3}
-  - {fileID: 1804010322533665679, guid: 2360db9967a4b3b448ef803fff3179c6, type: 3}
+  - {fileID: 8698807325168387182, guid: a633001c3db0a804fb8e4f0ba5f6e09a, type: 3}
   - {fileID: 4197443041585209252, guid: 2713f80dcf3152c4d8c30e9b4b316006, type: 3}
   myCooldownTimers:
   - 0
@@ -322,8 +322,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d2c069978184cd4788cd4ddd56cf980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myMaxHealth: 500
-  myCurrentHealth: 500
+  myMaxHealth: 800
+  myCurrentHealth: 800
 --- !u!114 &2323411973733766126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,7 +343,7 @@ MonoBehaviour:
   myAutoAttackRange: 4
   myAutoAttackDamage: 15
   myRangeCylinder:
-    myRadius: 1.5
+    myRadius: 0.87
     myHeight: 5
     myDrawGizmos: 1
   myCanBeStunned: 1
@@ -360,7 +360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myAvatarSprite: {fileID: 21300000, guid: fde8a96a0fd94ab448e4d6f0dfbbfdf2, type: 3}
-  myClassSprite: {fileID: 21300000, guid: 08579bde325e3a244afd7c9b4efc90d4, type: 3}
+  myClassSprite: {fileID: 21300000, guid: 4a9c64b90c49a964a93c12fa89c6c76e, type: 3}
   myCharacterColor: {r: 0, g: 0, b: 0, a: 0}
   myName: 
 --- !u!114 &4596228283134681531

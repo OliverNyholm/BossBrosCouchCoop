@@ -6,7 +6,15 @@ using BehaviorDesigner.Runtime;
 public class TutorialTanking : TutorialCompletion
 {
     [SerializeField]
+    private GameObject myTutorialClass = null;
+    [SerializeField]
     private GameObject myBoss = null;
+
+    [SerializeField]
+    private GameManager myGameManager = null;
+
+    [SerializeField]
+    private DynamicCamera myDynamicCamera = null;
 
     private Subscriber mySubscriber;
 
@@ -14,6 +22,9 @@ public class TutorialTanking : TutorialCompletion
     {
         if (!base.StartTutorial())
             return false;
+
+        myGameManager.ChangeClassInGame(myTutorialClass);
+        myDynamicCamera.ReplacePlayersToTarget(myTargetHandler);
 
         myTargetHandler.AddEnemy(myBoss, true);
         myBoss.GetComponent<Health>().EventOnHealthZero += OnTargetDied;

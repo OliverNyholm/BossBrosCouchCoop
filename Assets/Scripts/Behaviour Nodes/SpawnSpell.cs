@@ -53,7 +53,7 @@ public class SpawnSpell : Action
             myEmptyTransformHolder.transform.parent = mySpawnTransform.Value;
             myEmptyTransformHolder.transform.localPosition = Vector3.zero;
             myEmptyTransformHolder.transform.localRotation = Quaternion.identity;
-            myEmptyTransformHolder.transform.localScale = Vector3.zero;
+            myEmptyTransformHolder.transform.localScale = Vector3.one;
         }
         else if(mySpawnPosition.Value != null)
         {

@@ -29,7 +29,7 @@ public class TutorialCompletion : MonoBehaviour
 
     private void Start()
     {
-        if(myGate)
+        if (myGate)
             myFinishRoutine = LowerGateRoutine;
     }
 
@@ -50,7 +50,14 @@ public class TutorialCompletion : MonoBehaviour
     protected void EndTutorial()
     {
         //myTutorialPanel.gameObject.SetActive(false);
-        StartCoroutine(myFinishRoutine());
+        TutorialGate gate = myGate.GetComponent<TutorialGate>();
+        if (gate)
+        {
+            gate.Open();
+        }
+        else if (myFinishRoutine != null)
+            StartCoroutine(myFinishRoutine());
+        
     }
 
     IEnumerator LowerGateRoutine()
@@ -71,7 +78,7 @@ public class TutorialCompletion : MonoBehaviour
             yield return null;
         }
     }
-    
+
     public virtual void OnChildTriggerEnter(Collider aChildCollider, Collider aHit)
     {
         if (aChildCollider == myStartCollider)

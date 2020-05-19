@@ -9,12 +9,16 @@ public class TutorialPanel : MonoBehaviour
     [SerializeField]
     private Text myTutorialText = null;
     [SerializeField]
-    private Image myInfoImage = null;
+    private List<Image> myInfoImages = new List<Image>();
 
-    public void SetData(string aTutorialText, Sprite aTutorialImageSprite)
+    public void SetData(List<TutorialPanelImage> somePanelImages, string aTutorialText)
     {
-        GetComponent<CanvasGroup>().alpha = 1.0f;
         myTutorialText.text = aTutorialText;
-        myInfoImage.sprite = aTutorialImageSprite;
+
+        for (int index = 0; index < myInfoImages.Count; index++)
+        {
+            myInfoImages[index].sprite = somePanelImages[index].myImageSprite;
+            myInfoImages[index].material = somePanelImages[index].myImageGif;
+        }
     }
 }

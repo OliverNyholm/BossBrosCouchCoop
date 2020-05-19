@@ -10,14 +10,14 @@ public class TutorialInfoBoard : MonoBehaviour
     private string myTutorialText = "No tutorial text set!";
 
     [SerializeField]
-    private Sprite myTutorialImageSprite = null;
+    private List<TutorialPanelImage> myTutorialImages = new List<TutorialPanelImage>();
 
     private int myPlayersByBoardCount = 0;
-    private TutorialPanel myTutorialPanel;
+    private TutorialPanelManager myTutorialPanelManager;
 
     private void Awake()
     {
-        myTutorialPanel = FindObjectOfType<TutorialPanel>();
+        myTutorialPanelManager = FindObjectOfType<TutorialPanelManager>();
     }
 
     private void Update()
@@ -31,11 +31,13 @@ public class TutorialInfoBoard : MonoBehaviour
         if (!other.GetComponent<PlayerMovementComponent>())
             return;
 
+        other.GetComponent<PlayerCastingComponent>().enabled = false;
+
         myPlayersByBoardCount++;
         if(myPlayersByBoardCount == 1)
         {
-            myTutorialPanel.gameObject.SetActive(true);
-            myTutorialPanel.SetData(myTutorialText, myTutorialImageSprite);
+            myTutorialPanelManager.GetComponent<Canvas>().enabled = true;
+            myTutorialPanelManager.SetTutorialPanel(myTutorialImages, myTutorialText);
         }
     }
 
@@ -44,8 +46,10 @@ public class TutorialInfoBoard : MonoBehaviour
         if (!other.GetComponent<PlayerMovementComponent>())
             return;
 
+        other.GetComponent<PlayerCastingComponent>().enabled = true;
+
         myPlayersByBoardCount--;
         if(myPlayersByBoardCount == 0)
-            myTutorialPanel.gameObject.SetActive(false);
+            myTutorialPanelManager.GetComponent<Canvas>().enabled = false;
     }
 }

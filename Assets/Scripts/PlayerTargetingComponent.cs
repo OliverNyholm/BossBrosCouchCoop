@@ -59,6 +59,11 @@ public class PlayerTargetingComponent : TargetingComponent
 
     public override void SetTarget(GameObject aTarget)
     {
+        PlayerCastingComponent castingComponent = GetComponent<PlayerCastingComponent>();
+
+        if (!castingComponent)
+            return;
+
         if (Target)
         {
             Target.GetComponentInChildren<TargetProjector>().DropTargetProjection(myPlayer.PlayerIndex);
@@ -73,7 +78,7 @@ public class PlayerTargetingComponent : TargetingComponent
             Target.GetComponent<Health>().EventOnHealthZero += OnTargetDied;
         }
 
-        GetComponent<PlayerCastingComponent>().SetShouldAutoAttack(Target && Target.tag == "Enemy");
+        castingComponent.SetShouldAutoAttack(Target && Target.tag == "Enemy");
     }
 
     private void DetectTargetingInput()

@@ -8,6 +8,7 @@ public class PlayerCastingComponent : CastingComponent
 
     private PlayerTargetingComponent myTargetingComponent;
     private PlayerUIComponent myUIComponent;
+    private PlayerControlsVibrationManager myPlayerControlsVibrationsManager;
     private Class myClass;
 
     private float myStartTimeOfHoldingKeyDown;
@@ -28,6 +29,7 @@ public class PlayerCastingComponent : CastingComponent
         myClass = GetComponent<Class>();
         myTargetingComponent = GetComponent<PlayerTargetingComponent>();
         myUIComponent = GetComponent<PlayerUIComponent>();
+        myPlayerControlsVibrationsManager = GetComponent<PlayerControlsVibrationManager>();
     }
 
     private void Update()
@@ -47,6 +49,7 @@ public class PlayerCastingComponent : CastingComponent
     public void SetPlayerController(PlayerControls aPlayerControls)
     {
         myPlayerControls = aPlayerControls;
+        myPlayerControlsVibrationsManager.SetPlayerControls(aPlayerControls);
     }
 
     public void SetShouldAutoAttack(bool aValue)
@@ -152,7 +155,7 @@ public class PlayerCastingComponent : CastingComponent
 
         if (myClass.IsSpellOnCooldown(aKeyIndex))
         {
-            myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.Cooldown);
+            ShowError(SpellErrorHandler.SpellError.Cooldown);
             return;
         }
 
@@ -309,19 +312,19 @@ public class PlayerCastingComponent : CastingComponent
     {
         if (myIsCasting)
         {
-            myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.AlreadyCasting);
+            ShowError(SpellErrorHandler.SpellError.AlreadyCasting);
             return false;
         }
 
         if (GetComponent<Resource>().myCurrentResource < aSpellScript.myResourceCost)
         {
-            myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.OutOfResources);
+            ShowError(SpellErrorHandler.SpellError.OutOfResources);
             return false;
         }
 
         if (!aSpellScript.IsCastableWhileMoving() && GetComponent<PlayerMovementComponent>().IsMoving())
         {
-            myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.CantMoveWhileCasting);
+            ShowError(SpellErrorHandler.SpellError.CantMoveWhileCasting);
             return false;
         }
 
@@ -337,7 +340,7 @@ public class PlayerCastingComponent : CastingComponent
             }
             else
             {
-                myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.NoTarget);
+                ShowError(SpellErrorHandler.SpellError.NoTarget);
                 return false;
             }
         }
@@ -345,42 +348,42 @@ public class PlayerCastingComponent : CastingComponent
         bool isDead = target.GetComponent<Health>().IsDead();
         if (!isDead && UtilityFunctions.HasSpellType(aSpellScript.mySpellType, SpellType.Ressurect))
         {
-            myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.NotDead);
+            ShowError(SpellErrorHandler.SpellError.NotDead);
             return false;
         }
         if (isDead && !UtilityFunctions.HasSpellType(aSpellScript.mySpellType, SpellType.Ressurect))
         {
-            myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.IsDead);
+            ShowError(SpellErrorHandler.SpellError.IsDead);
             return false;
         }
 
         if(!target.GetComponent<Stats>().IsInRange(transform.position, aSpellScript.myRange))
         {
-            myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.OutOfRange);
+            ShowError(SpellErrorHandler.SpellError.OutOfRange);
             return false;
         }
 
         if (!GetComponent<Character>().CanRaycastToObject(target))
         {
-            myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.NoVision);
+            ShowError(SpellErrorHandler.SpellError.NoVision);
             return false;
         }
 
         if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && target.tag == "Enemy")
         {
-            myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.WrongTargetEnemy);
+            ShowError(SpellErrorHandler.SpellError.WrongTargetEnemy);
             return false;
         }
 
         if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && target.tag == "Player")
         {
-            myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.WrongTargetPlayer);
+            ShowError(SpellErrorHandler.SpellError.WrongTargetPlayer);
             return false;
         }
 
         if (!aSpellScript.myCanCastOnSelf && target == transform.gameObject)
         {
-            myUIComponent.HighlightSpellError(SpellErrorHandler.SpellError.NotSelfCast);
+            ShowError(SpellErrorHandler.SpellError.NotSelfCast);
             return false;
         }
 
@@ -428,5 +431,11 @@ public class PlayerCastingComponent : CastingComponent
     {
         base.OnDeath();
         myShouldAutoAttack = false;
+    }
+
+    private void ShowError(SpellErrorHandler.SpellError aSpellError)
+    {
+        myUIComponent.HighlightSpellError(aSpellError);
+        myPlayerControlsVibrationsManager.VibratePlayerCastingError(aSpellError);
     }
 }

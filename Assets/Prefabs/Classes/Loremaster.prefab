@@ -84,6 +84,7 @@ GameObject:
   - component: {fileID: 6891261198601719468}
   - component: {fileID: 6999705435931279163}
   - component: {fileID: -942560800864424704}
+  - component: {fileID: 4417087826188333001}
   m_Layer: 9
   m_Name: Loremaster
   m_TagString: Player
@@ -342,6 +343,10 @@ MonoBehaviour:
   myDamageMitigator: 1
   myAutoAttackRange: 4
   myAutoAttackDamage: 15
+  myRangeCylinder:
+    myRadius: 1.5
+    myHeight: 5
+    myDrawGizmos: 1
   myCanBeStunned: 1
 --- !u!114 &5963056479277741322
 MonoBehaviour:
@@ -400,6 +405,18 @@ MonoBehaviour:
   myBaseSpeed: 8
   myJumpSpeed: 15
   myGravity: 30
+--- !u!114 &4417087826188333001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471470350278489138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c409e28fbf9d1b4eb7e1d921a14176f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &554936064146875867
 GameObject:
   m_ObjectHideFlags: 0

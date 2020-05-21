@@ -1094,6 +1094,7 @@ GameObject:
   - component: {fileID: 2730382254367083222}
   - component: {fileID: 2731497943279249348}
   - component: {fileID: 2510328537831070502}
+  - component: {fileID: -7790157425111228868}
   m_Layer: 9
   m_Name: Mercenary
   m_TagString: Player
@@ -1352,6 +1353,10 @@ MonoBehaviour:
   myDamageMitigator: 1
   myAutoAttackRange: 4
   myAutoAttackDamage: 30
+  myRangeCylinder:
+    myRadius: 1.5
+    myHeight: 5
+    myDrawGizmos: 1
   myCanBeStunned: 1
 --- !u!114 &1190581535706158497
 MonoBehaviour:
@@ -1410,6 +1415,18 @@ MonoBehaviour:
   myBaseSpeed: 8
   myJumpSpeed: 15
   myGravity: 30
+--- !u!114 &-7790157425111228868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302742793040746010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c409e28fbf9d1b4eb7e1d921a14176f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4305123239099748776
 GameObject:
   m_ObjectHideFlags: 0

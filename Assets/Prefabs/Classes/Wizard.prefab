@@ -435,6 +435,7 @@ GameObject:
   - component: {fileID: -321900848552790307}
   - component: {fileID: 1406363582910237006}
   - component: {fileID: 165147996328065651}
+  - component: {fileID: 2728000081974791495}
   m_Layer: 9
   m_Name: Wizard
   m_TagString: Player
@@ -693,6 +694,10 @@ MonoBehaviour:
   myDamageMitigator: 1
   myAutoAttackRange: 4
   myAutoAttackDamage: 20
+  myRangeCylinder:
+    myRadius: 1.5
+    myHeight: 5
+    myDrawGizmos: 1
   myCanBeStunned: 1
 --- !u!114 &5574125979014605446
 MonoBehaviour:
@@ -751,6 +756,18 @@ MonoBehaviour:
   myBaseSpeed: 8
   myJumpSpeed: 15
   myGravity: 30
+--- !u!114 &2728000081974791495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079121835491590065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c409e28fbf9d1b4eb7e1d921a14176f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2116757723059095858
 GameObject:
   m_ObjectHideFlags: 0

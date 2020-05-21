@@ -103,4 +103,19 @@ public class PlayerControls : PlayerActionSet
 
         return actions;
     }
+
+    public void Vibrate(float anIntensity)
+    {
+        Device.Vibrate(anIntensity, anIntensity);
+    }
+
+    public void Vibrate(float aLeftIntensity, float aRightIntensity)
+    {
+        Device.Vibrate(aLeftIntensity, aRightIntensity);
+    }
+
+    public void StopVibrating()
+    {
+        Device.StopVibration();
+    }
 }

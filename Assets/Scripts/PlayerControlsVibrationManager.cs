@@ -13,10 +13,10 @@ public class PlayerControlsVibrationManager : MonoBehaviour
         myPlayerControls = aPlayerControls;
     }
 
-    private void OnDisable()
-    {
-        StopVibrations();
-    }
+    //private void OnDestroy()
+    //{
+    //    StopVibrations();
+    //}
 
     public void VibratePlayerCastingError(SpellErrorHandler.SpellError aSpellError)
     {
@@ -45,18 +45,16 @@ public class PlayerControlsVibrationManager : MonoBehaviour
             default:
                 break;
         }
-
     }
 
     IEnumerator QuickVibration()
     {
-        Debug.Log("Quick Vibration");
         const float duration = 0.05f;
-        float timeStamp = Time.time;
+        float timeStamp = Time.unscaledTime;
 
         myPlayerControls.Vibrate(40);
 
-        while(Time.time - timeStamp < duration)
+        while(Time.unscaledTime - timeStamp < duration)
         {
             yield return null;
         }
@@ -66,13 +64,12 @@ public class PlayerControlsVibrationManager : MonoBehaviour
 
     IEnumerator LongVibration()
     {
-        Debug.Log("Long Vibration");
         const float duration = 0.15f;
-        float timeStamp = Time.time;
+        float timeStamp = Time.unscaledTime;
 
         myPlayerControls.Vibrate(60);
 
-        while (Time.time - timeStamp < duration)
+        while (Time.unscaledTime - timeStamp < duration)
         {
             yield return null;
         }
@@ -82,26 +79,25 @@ public class PlayerControlsVibrationManager : MonoBehaviour
 
     IEnumerator OneSmallOneBig()
     {
-        Debug.Log("OneSmallOneBig Vibration");
         float duration = 0.05f;
-        float timeStamp = Time.time;
+        float timeStamp = Time.unscaledTime;
         myPlayerControls.Vibrate(60);
 
-        while (Time.time - timeStamp < duration)
+        while (Time.unscaledTime - timeStamp < duration)
             yield return null;
 
         myPlayerControls.StopVibrating();
 
         duration = 0.1f;
-        timeStamp = Time.time;
-        while (Time.time - timeStamp < duration)
+        timeStamp = Time.unscaledTime;
+        while (Time.unscaledTime - timeStamp < duration)
             yield return null;
 
         duration = 0.05f;
-        timeStamp = Time.time;
+        timeStamp = Time.unscaledTime;
         myPlayerControls.Vibrate(500);
 
-        while (Time.time - timeStamp < duration)
+        while (Time.unscaledTime - timeStamp < duration)
             yield return null;
 
         myPlayerControls.StopVibrating();

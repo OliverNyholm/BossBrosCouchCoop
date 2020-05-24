@@ -12290,15 +12290,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e722fb7d1eefa4f43acfeab7c5df64c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myTutorialText: 'Bosses will attack the target they are the most angry with. As
-    bosses hit hard, it should be a tank who can handle the damage. Most tanks have
-    a spell that will upset the boss a lot.
-
-
-    In this tutorial, you will need
-    to coordinate to have the ogre switching targets with your rude abilities, while
-    the ogre slowly dies in the lava.'
-  myTutorialImages: []
+  myTutorialText: Bosses attack targets they are the most upset with. Take turns
+    being rude to survive.
+  myTutorialImages:
+  - myImageSprite: {fileID: 0}
+    myImageGif: {fileID: 2100000, guid: b7c0818c89ccb3f4d85c10f9f86e5891, type: 2}
 --- !u!4 &355663182 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3481130395519500688, guid: ef5c1417aeb647d48932f9790c0357ab,
@@ -14936,7 +14932,7 @@ PrefabInstance:
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -55.93
+      value: -57
       objectReference: {fileID: 0}
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
@@ -14946,7 +14942,7 @@ PrefabInstance:
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -114
+      value: 45.6
       objectReference: {fileID: 0}
     - target: {fileID: 1881610307647148225, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
@@ -15219,7 +15215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 1c68615c6c4dc704ea43ea802b44b055, type: 2}
+  m_Material: {fileID: 2100000, guid: 23b6df9573a954645a1d51161b0b6369, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -19580,7 +19576,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myTutorialText: Step into the arena, and try surviving! Remember to heal everyone
     with low health!
-  myTutorialImages: []
+  myTutorialImages:
+  - myImageSprite: {fileID: 21300000, guid: 25e1a2e274258b745af0f2a632078b9d, type: 3}
+    myImageGif: {fileID: 0}
 --- !u!1001 &1272942944
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20075,7 +20073,7 @@ PrefabInstance:
         type: 3}
       propertyPath: myDebugPlayerData.myColorScheme
       value: 
-      objectReference: {fileID: 11400000, guid: 8d3c2a235a25230488559a9e173bb6c9,
+      objectReference: {fileID: 11400000, guid: 4fe8f25f743136d46b1eb469f7d597e2,
         type: 2}
     - target: {fileID: 3448170462930489257, guid: 503cc89a2de43d243aca431dd077b45f,
         type: 3}
@@ -23790,7 +23788,9 @@ MonoBehaviour:
     selecting a target with the left bumper. Standing close makes you auto attack,
     but you can use your spells as well. Take note if nothing happens above your
     HUD.
-  myTutorialImages: []
+  myTutorialImages:
+  - myImageSprite: {fileID: 21300000, guid: 12a2b678c0a2bc04598fa69df3f9538f, type: 3}
+    myImageGif: {fileID: 0}
 --- !u!1001 &1876844733
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ public class Leap : Spell {
         // Planar distance between objects
         float distance = Vector3.Distance(planarTarget, planarPostion);
         // Distance along the y axis between objects
-        float yOffset = transform.position.y - myTarget.transform.position.y;
+        float yOffset = myParent.transform.position.y - myTarget.transform.position.y;
 
         float initialVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle) + yOffset));
 

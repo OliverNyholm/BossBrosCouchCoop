@@ -19,6 +19,8 @@ public class PlayerControls : PlayerActionSet
     public PlayerAction ToggleUIText;
     public PlayerTwoAxisAction Movement;
 
+    public bool myIsController = false;
+
 
     public PlayerControls()
     {
@@ -69,6 +71,8 @@ public class PlayerControls : PlayerActionSet
         actions.ToggleInfo.AddDefaultBinding(Key.I);
         actions.ToggleUIText.AddDefaultBinding(Key.U);
 
+        actions.myIsController = false;
+
         return actions;
     }
 
@@ -101,21 +105,26 @@ public class PlayerControls : PlayerActionSet
         actions.ToggleInfo.AddDefaultBinding(InputControlType.DPadUp);
         actions.ToggleUIText.AddDefaultBinding(InputControlType.DPadRight);
 
+        actions.myIsController = true;
+
         return actions;
     }
 
     public void Vibrate(float anIntensity)
     {
-        Device.Vibrate(anIntensity, anIntensity);
+        if (myIsController)
+            Device.Vibrate(anIntensity, anIntensity);
     }
 
     public void Vibrate(float aLeftIntensity, float aRightIntensity)
     {
-        Device.Vibrate(aLeftIntensity, aRightIntensity);
+        if (myIsController)
+            Device.Vibrate(aLeftIntensity, aRightIntensity);
     }
 
     public void StopVibrating()
     {
-        Device.StopVibration();
+        if (myIsController)
+            Device.StopVibration();
     }
 }

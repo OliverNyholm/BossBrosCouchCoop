@@ -6,7 +6,7 @@ public class TutorialPushBoulder : TutorialCompletion
 {
     [Header("The spell to try out")]
     [SerializeField]
-    private Spell myPushSpell = null;
+    private GameObject myPushSpell = null;
 
     [SerializeField]
     private GameObject myBoulder = null;
@@ -21,6 +21,14 @@ public class TutorialPushBoulder : TutorialCompletion
 
     List<Vector3> myFlightPositions = new List<Vector3>(32);
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        Spell spell = myPushSpell.GetComponent<Spell>();
+        spell.CreatePooledObjects(PoolManager.Instance, 6);
+    }
+
     protected override bool StartTutorial()
     {
         if (!base.StartTutorial())
@@ -28,6 +36,11 @@ public class TutorialPushBoulder : TutorialCompletion
 
         myTargetHandler.AddEnemy(myBoulder, true);
         myBoulder.GetComponent<Health>().EventOnHealthZero += OnTargetDied;
+        myBoulder.GetComponentInChildren<TutorialBoulder>().EnableBoulder();
+
+        foreach (GameObject player in Players)
+            player.GetComponent<Class>().ReplaceSpell(myPushSpell, 0);
+
 
         return true;
     }
@@ -35,6 +48,7 @@ public class TutorialPushBoulder : TutorialCompletion
     private void OnTargetDied()
     {
         myTargetHandler.RemoveEnemy(myBoulder);
+        myBoulder.GetComponentInChildren<TutorialBoulder>().DisableBoulder();
         StartCoroutine(BoulderFlyingCoroutine());
     }
 

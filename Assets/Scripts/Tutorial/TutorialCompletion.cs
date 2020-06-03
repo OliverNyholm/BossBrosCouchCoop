@@ -21,7 +21,7 @@ public class TutorialCompletion : MonoBehaviour
     protected delegate IEnumerator FinishRoutine();
     protected FinishRoutine myFinishRoutine;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         myTutorialPanel = FindObjectOfType<TutorialPanel>();
         myTargetHandler = FindObjectOfType<TargetHandler>();

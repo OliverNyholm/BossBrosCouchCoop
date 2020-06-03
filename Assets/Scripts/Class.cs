@@ -39,7 +39,10 @@ public class Class : MonoBehaviour
         for (int index = 0; index < mySpells.Length; index++)
         {
             if (mySpells[index] == null)
+            {
+                myUIComponent.SetSpellHud(null, index);
                 continue;
+            }
 
             Spell spell = mySpells[index].GetComponent<Spell>();
             spell.CreatePooledObjects(poolManager, 3);
@@ -82,5 +85,22 @@ public class Class : MonoBehaviour
     {
         myCooldownTimers[anIndex] = mySpells[anIndex].GetComponent<Spell>().myCooldown;
         myUIComponent.SetSpellCooldownText(anIndex, myCooldownTimers[anIndex]);
+    }
+
+    public bool HasSpell(int aIndex)
+    {
+        return mySpells[aIndex] != null;
+    }
+
+    public void ReplaceSpell(GameObject aSpell, int aSpellIndex)
+    {
+        mySpells[aSpellIndex] = aSpell;
+        myCooldownTimers[aSpellIndex] = 0.0f;
+        myUIComponent.SetSpellCooldownText(aSpellIndex, 0.0f);
+
+        if (aSpell != null)
+            myUIComponent.SetSpellHud(aSpell.GetComponent<Spell>(), aSpellIndex);
+        else
+            myUIComponent.SetSpellHud(null, aSpellIndex);
     }
 }

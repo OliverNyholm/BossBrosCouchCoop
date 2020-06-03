@@ -16197,7 +16197,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1014785734}
+    m_TransformParent: {fileID: 287498177}
     m_Modifications:
     - target: {fileID: -4216859302048453862, guid: 8faeb5c67b403d140b79e5855a7eb511,
         type: 3}
@@ -16207,52 +16207,52 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 8faeb5c67b403d140b79e5855a7eb511,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.009981155
+      value: 3.050019
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 8faeb5c67b403d140b79e5855a7eb511,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.22314835
+      value: 0.1831496
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 8faeb5c67b403d140b79e5855a7eb511,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.2869469
+      value: -0.28264734
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 8faeb5c67b403d140b79e5855a7eb511,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7931622
+      value: -0.78737944
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 8faeb5c67b403d140b79e5855a7eb511,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.43011725
+      value: -0.44061404
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 8faeb5c67b403d140b79e5855a7eb511,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.32179868
+      value: 0.3255817
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 8faeb5c67b403d140b79e5855a7eb511,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 8faeb5c67b403d140b79e5855a7eb511,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -60.11
+      value: -61.391003
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 8faeb5c67b403d140b79e5855a7eb511,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -148.06
+      value: -146.593
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 8faeb5c67b403d140b79e5855a7eb511,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 20.973
+      value: 19.291
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 8faeb5c67b403d140b79e5855a7eb511,
         type: 3}
@@ -16745,6 +16745,53 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1 &287498176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 287498177}
+  - component: {fileID: 287498178}
+  m_Layer: 0
+  m_Name: BoulderShakePivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &287498177
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287498176}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -3.06, z: 0.04}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 245972368}
+  m_Father: {fileID: 1014785734}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &287498178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287498176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5d6b7048f2f3741a442a0ab35bd158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myNudgeAmount: {x: 7, y: 0, z: 0}
+  myNudgeAwayTimer: 0.7
+  myNudgeBackTimer: 0.3
 --- !u!1 &293335365
 GameObject:
   m_ObjectHideFlags: 0
@@ -20834,6 +20881,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myMaxHealth: 2000
   myCurrentHealth: 2000
+  myHealthPerTick: 0
+  myHealthTickInterval: 1
+  myTimeBeforeHealthRegenerationAfterDamage: 5
+  myShouldSpawnFloatingHealthOnTick: 0
 --- !u!114 &742185128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22668,15 +22719,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1014785733}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -58.03, y: 2.21, z: -55.13}
+  m_LocalRotation: {x: 0.006849318, y: -0, z: -0, w: 0.9999766}
+  m_LocalPosition: {x: -58.03, y: 2.2130566, z: -55.129837}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2045599966}
-  - {fileID: 245972368}
+  - {fileID: 287498177}
   m_Father: {fileID: 1278373220}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.785, y: 0, z: 0}
 --- !u!114 &1014785735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22689,8 +22740,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d2c069978184cd4788cd4ddd56cf980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myMaxHealth: 100
-  myCurrentHealth: 100
+  myMaxHealth: 750
+  myCurrentHealth: 750
+  myHealthPerTick: 400
+  myHealthTickInterval: 1
+  myTimeBeforeHealthRegenerationAfterDamage: 2
+  myShouldSpawnFloatingHealthOnTick: 0
 --- !u!114 &1014785736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24608,7 +24663,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myGate: {fileID: 0}
   myStartCollider: {fileID: 243895}
-  myPushSpell: {fileID: 0}
+  myPushSpell: {fileID: 1203039460516580923, guid: d9638a5b84202e446b92988703664015,
+    type: 3}
   myBoulder: {fileID: 1014785733}
   myBoulderMesh: {fileID: 245972369}
   mySpawnVFX: {fileID: 89034989}
@@ -24921,7 +24977,7 @@ PrefabInstance:
         type: 3}
       propertyPath: myDebugPlayerData.myClassData
       value: 
-      objectReference: {fileID: 11400000, guid: 549949e763dc75f4696e541743aa8658,
+      objectReference: {fileID: 11400000, guid: 0a232610f349f2d428c041f983447e53,
         type: 2}
     - target: {fileID: 3448170462930489301, guid: 503cc89a2de43d243aca431dd077b45f,
         type: 3}
@@ -39360,6 +39416,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myMaxHealth: 1400
   myCurrentHealth: 1400
+  myHealthPerTick: 0
+  myHealthTickInterval: 1
+  myTimeBeforeHealthRegenerationAfterDamage: 5
+  myShouldSpawnFloatingHealthOnTick: 0
 --- !u!114 &2060391942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42014,6 +42074,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myMaxHealth: 5000
   myCurrentHealth: 5000
+  myHealthPerTick: 0
+  myHealthTickInterval: 1
+  myTimeBeforeHealthRegenerationAfterDamage: 5
+  myShouldSpawnFloatingHealthOnTick: 0
 --- !u!114 &4580075521834013333
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -103,6 +103,9 @@ public class PlayerCastingComponent : CastingComponent
 
     public void CheckSpellToCast(int aKeyIndex)
     {
+        if (!myClass.HasSpell(aKeyIndex))
+            return;
+
         if (!myClass.IsSpellCastOnFriends(aKeyIndex))
         {
             CastSpell(aKeyIndex, true);

@@ -7,6 +7,13 @@ public class Health : MonoBehaviour
 
     public int myCurrentHealth = 100;
 
+    public int myHealthPerTick = 0;
+    public float myHealthTickInterval = 1.0f;
+    private float myHealthTickTimestamp;
+    public float myTimeBeforeHealthRegenerationAfterDamage = 5.0f;
+    private float myTimeBeforeHealthRegenerationTimestamp;
+    public bool myShouldSpawnFloatingHealthOnTick = false;
+
     public delegate void HealthChanged(float aHealthPercentage, string aHealthText, int aShieldValue, bool aIsDamage);
     public delegate void ThreatGenerated(int aThreatPercentage, int anID, bool anIsDamage);
     public delegate void HealthZero();
@@ -17,9 +24,40 @@ public class Health : MonoBehaviour
 
     private List<SpellOverTime> myShields = new List<SpellOverTime>();
 
+    private void Update()
+    {
+        if (myHealthPerTick == 0)
+            return;
+
+        if (myCurrentHealth == myMaxHealth)
+            return;
+
+        if (IsDead())
+            return;
+
+        if (Time.time < myTimeBeforeHealthRegenerationTimestamp)
+            return;
+
+        if (Time.time > myHealthTickTimestamp)
+        {
+            myHealthTickTimestamp = Time.time;
+            GainHealth(myHealthPerTick, myShouldSpawnFloatingHealthOnTick);
+        }
+    }
+
     public int TakeDamage(int aValue, Color aDamagerColor)
     {
         int damage = CalculateMitigations(aValue);
+        string damageText = damage.ToString();
+        if (aValue != damage)
+        {
+            int absorbed = aValue - damage;
+            damageText = damage.ToString() + " (-" + absorbed.ToString() + ")";
+        }
+
+        if (damage <= 0.0f)
+            return damage;
+
         myCurrentHealth -= damage;
         if (myCurrentHealth <= 0)
         {
@@ -27,12 +65,7 @@ public class Health : MonoBehaviour
             OnHealthZero();
         }
 
-        string damageText = damage.ToString();
-        if(aValue != damage)
-        {
-            int absorbed = aValue - damage;
-            damageText = damage.ToString() + " (-" + absorbed.ToString() +")";
-        }
+        myTimeBeforeHealthRegenerationTimestamp = Time.time + myTimeBeforeHealthRegenerationAfterDamage;
 
         OnHealthChanged(true);
         SpawnFloatingText(damageText, aDamagerColor, CalculateSizeModifier(damage));
@@ -40,7 +73,7 @@ public class Health : MonoBehaviour
         return damage;
     }
 
-    public void GainHealth(int aValue)
+    public void GainHealth(int aValue, bool aShouldSpawnFloatingText = true)
     {
         myCurrentHealth += aValue;
         if (myCurrentHealth > myMaxHealth)
@@ -49,7 +82,9 @@ public class Health : MonoBehaviour
         }
 
         OnHealthChanged(false);
-        SpawnFloatingText(aValue.ToString(), Color.yellow, CalculateSizeModifier(aValue));
+
+        if (aShouldSpawnFloatingText)
+            SpawnFloatingText(aValue.ToString(), Color.yellow, CalculateSizeModifier(aValue));
     }
 
     public void ReviveToFullHealth()

@@ -10,6 +10,9 @@ public class PlayerUIComponent : UIComponent
 
     private SpellErrorHandler mySpellErrorHandler;
 
+    [SerializeField]
+    private Sprite myNoSpellSprite;
+
     protected override void Awake()
     {
         base.Awake();
@@ -74,8 +77,16 @@ public class PlayerUIComponent : UIComponent
     public void SetSpellHud(Spell aSpell, int anIndex)
     {
         myActionButtons[anIndex] = myActionBar.transform.GetChild(anIndex).gameObject;
-        myActionButtons[anIndex].GetComponent<Image>().sprite = aSpell.mySpellIcon;
-        myActionButtons[anIndex].GetComponent<ActionKey>().SetSpellInfo(aSpell.myQuickInfo);
+        if (aSpell == null)
+        {
+            myActionButtons[anIndex].GetComponent<Image>().sprite = myNoSpellSprite;
+            myActionButtons[anIndex].GetComponent<ActionKey>().SetSpellInfo("");
+        }
+        else
+        {
+            myActionButtons[anIndex].GetComponent<Image>().sprite = aSpell.mySpellIcon;
+            myActionButtons[anIndex].GetComponent<ActionKey>().SetSpellInfo(aSpell.myQuickInfo);
+        }
     }
 
     public void HighlightSpellError(SpellErrorHandler.SpellError aSpellError)

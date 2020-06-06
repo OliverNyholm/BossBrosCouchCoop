@@ -10,12 +10,9 @@ public class ToonShaderLightSettings : MonoBehaviour
 	void OnEnable()
 	{
 		mainLight = GetComponent<Light>();
-	}
+        Shader.SetGlobalVector("_ToonLightDirection", -transform.forward);
+        Shader.SetGlobalColor("_ToonLightColor", mainLight.color);
+        Shader.SetGlobalFloat("_ToonLightIntensity", mainLight.intensity);
+    }
 
-	void Update()
-	{
-		Shader.SetGlobalVector("_ToonLightDirection", -transform.forward);
-		Shader.SetGlobalColor("_ToonLightColor", mainLight.color);
-		Shader.SetGlobalFloat("_ToonLightIntensity", mainLight.intensity);
-	}
 }

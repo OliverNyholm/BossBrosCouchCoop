@@ -6,25 +6,27 @@ using BehaviorDesigner.Runtime;
 public class TutorialTanking : TutorialCompletion
 {
     [SerializeField]
-    private GameObject myTutorialClass = null;
+    private GameObject myTauntSpell = null;
     [SerializeField]
     private GameObject myBoss = null;
 
-    [SerializeField]
-    private GameManager myGameManager = null;
-
-    [SerializeField]
-    private DynamicCamera myDynamicCamera = null;
-
     private Subscriber mySubscriber;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        Spell spell = myTauntSpell.GetComponent<Spell>();
+        spell.CreatePooledObjects(PoolManager.Instance, 6);
+    }
 
     protected override bool StartTutorial()
     {
         if (!base.StartTutorial())
             return false;
 
-        myGameManager.ChangeClassInGame(myTutorialClass);
-        myDynamicCamera.ReplacePlayersToTarget(myTargetHandler);
+        foreach (GameObject player in Players)
+            player.GetComponent<Class>().ReplaceSpell(myTauntSpell, 0);
 
         myTargetHandler.AddEnemy(myBoss, true);
         myBoss.GetComponent<Health>().EventOnHealthZero += OnTargetDied;

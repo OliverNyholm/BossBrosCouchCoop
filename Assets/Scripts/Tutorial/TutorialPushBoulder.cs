@@ -19,8 +19,6 @@ public class TutorialPushBoulder : TutorialCompletion
     public float myBoulderGravity = 500.0f;
     public Transform myTargetHitWallTransform = null;
 
-    List<Vector3> myFlightPositions = new List<Vector3>(32);
-
     protected override void Awake()
     {
         base.Awake();

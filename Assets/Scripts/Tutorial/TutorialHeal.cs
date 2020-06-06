@@ -4,30 +4,29 @@ using UnityEngine;
 
 public class TutorialHeal : TutorialCompletion
 {
-    [Header("The class to try out healing with")]
+    [Header("The heal spell")]
     [SerializeField]
-    private GameObject myTutorialHealer = null;
+    private GameObject myHealSpell = null;
 
-    [SerializeField]
-    private GameManager myGameManager = null;
+    protected override void Awake()
+    {
+        base.Awake();
 
-    [SerializeField]
-    private DynamicCamera myDynamicCamera = null;
+        Spell spell = myHealSpell.GetComponent<Spell>();
+        spell.CreatePooledObjects(PoolManager.Instance, 6);
+    }
 
     protected override bool StartTutorial()
     {
         if (!base.StartTutorial())
             return false;
 
-        myGameManager.ChangeClassInGame(myTutorialHealer);
-        myDynamicCamera.ReplacePlayersToTarget(myTargetHandler);
-
-        Players = new List<GameObject>(myTargetHandler.GetAllPlayers());
-
         foreach (GameObject player in Players)
         {
+            player.GetComponent<Class>().ReplaceSpell(myHealSpell, 0);
+
             Health health = player.GetComponent<Health>();
-            health.EventOnHealthChange += OnHealthChanged;
+                health.EventOnHealthChange += OnHealthChanged;
         }
 
         return true;

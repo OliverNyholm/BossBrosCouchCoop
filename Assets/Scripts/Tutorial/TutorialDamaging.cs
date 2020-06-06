@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class TutorialDamaging : TutorialCompletion
 {
-    [Header("The class to try out damaging with")]
     [SerializeField]
-    private GameObject myTutorialClass = null;
+    private GameObject myDamageSpell = null;
 
     [Header("The targets to kill")]
     [SerializeField]
@@ -14,21 +13,23 @@ public class TutorialDamaging : TutorialCompletion
     [SerializeField]
     private GameObject myRangeTarget = null;
 
-    [SerializeField]
-    private GameManager myGameManager = null;
-
-    [SerializeField]
-    private DynamicCamera myDynamicCamera = null;
-
     int myKilledCount = 0;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        Spell spell = myDamageSpell.GetComponent<Spell>();
+        spell.CreatePooledObjects(PoolManager.Instance, 6);
+    }
 
     protected override bool StartTutorial()
     {
         if (!base.StartTutorial())
             return false;
 
-        myGameManager.ChangeClassInGame(myTutorialClass);
-        myDynamicCamera.ReplacePlayersToTarget(myTargetHandler);
+        foreach (GameObject player in Players)
+            player.GetComponent<Class>().ReplaceSpell(myDamageSpell, 0);
 
         myTargetHandler.AddEnemy(myGroundTarget, true);
         myTargetHandler.AddEnemy(myRangeTarget, true);

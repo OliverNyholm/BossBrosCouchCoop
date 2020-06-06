@@ -12,14 +12,28 @@ public class TutorialHealWithCombat : TutorialCompletion
     private List<ParticleSystem> myBurningEyes = new List<ParticleSystem>();
 
     [SerializeField]
+    private GameObject myHealSpell = null;
+
+    [SerializeField]
     private Collider myStartFightCollider = null;
 
     private Subscriber mySubscriber;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        Spell spell = myHealSpell.GetComponent<Spell>();
+        spell.CreatePooledObjects(PoolManager.Instance, 6);
+    }
 
     protected override bool StartTutorial()
     {
         if (!base.StartTutorial())
             return false;
+
+        foreach (GameObject player in Players)
+            player.GetComponent<Class>().ReplaceSpell(myHealSpell, 0);
 
         return true;
     }

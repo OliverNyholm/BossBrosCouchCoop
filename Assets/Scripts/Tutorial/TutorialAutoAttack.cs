@@ -5,50 +5,44 @@ using UnityEngine;
 public class TutorialAutoAttack : TutorialCompletion
 {
     [SerializeField]
-    private GameObject myAutoAttackPrefab = null;
-
+    private GameObject myBirchToHit = null;
     [SerializeField]
-    private List<GameObject> myTargetsToHit = new List<GameObject>();
+    private BoxCollider myColliderToDisable = null;
+    [SerializeField]
+    private GameObject myBirchMesh = null;
+    [SerializeField]
+    private ParticleSystem myBirchDestroyedVFX = null;
 
     protected override bool StartTutorial()
     {
         if (!base.StartTutorial())
             return false;
 
-        foreach (GameObject player in Players)
-        {
-            player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned += OnSpellSpawned;
-        }
-
-        for (int index = 0; index < myTargetsToHit.Count; index++)
-        {
-            myTargetHandler.AddEnemy(myTargetsToHit[index], true);
-        }
+        myTargetHandler.AddEnemy(myBirchToHit, true);
+        myBirchToHit.GetComponent<Health>().EventOnHealthZero += OnTargetDied;
 
         return true;
     }
 
-    public void OnSpellSpawned(GameObject aPlayer, GameObject aSpell, int aSpellIndex)
+    private void OnTargetDied()
     {
-        if (aSpell != myAutoAttackPrefab)
-            return;
+        myBirchToHit.GetComponent<Health>().EventOnHealthZero -= OnTargetDied;
+        myBirchMesh.SetActive(false);
+        myColliderToDisable.enabled = false;
+        myTargetHandler.RemoveEnemy(myBirchToHit);
+        myBirchDestroyedVFX.Play();
+        EndTutorial();
+    }
 
-        if (myCompletedPlayers.Contains(aPlayer))
-            return;
-
-        myCompletedPlayers.Add(aPlayer);
-        if (myCompletedPlayers.Count == Players.Count)
+    IEnumerator RemoveHudEnumerator()
+    {
+        float duration = 0.5f;
+        while(duration > 0.0f)
         {
-            foreach (GameObject player in Players)
-            {
-                player.GetComponent<PlayerCastingComponent>().myEventOnSpellSpawned -= OnSpellSpawned;
-                player.GetComponent<PlayerTargetingComponent>().SetTarget(null);
-            }
-            for (int index = 0; index < myTargetsToHit.Count; index++)
-            {
-                myTargetHandler.RemoveEnemy(myTargetsToHit[index]);
-            }
-            EndTutorial();
+            duration -= Time.deltaTime;
+            yield return null;
         }
+
+        myTargetHandler.RemoveEnemy(myBirchToHit);
     }
 }

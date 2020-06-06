@@ -49,7 +49,9 @@ public class TutorialCompletion : MonoBehaviour
 
     protected void EndTutorial()
     {
-        //myTutorialPanel.gameObject.SetActive(false);
+        if (!myGate)
+            return;
+
         TutorialGate gate = myGate.GetComponent<TutorialGate>();
         if (gate)
         {

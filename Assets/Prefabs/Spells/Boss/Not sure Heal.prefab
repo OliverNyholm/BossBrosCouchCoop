@@ -147,10 +147,10 @@ MonoBehaviour:
   myTutorialInfo: 
   myName: Heal
   mySpellType: 2
-  myAttackType: 4
   mySpellTarget: 2
   myAnimationType: 0
   myDamage: 500
+  myHealValue: 500
   myResourceCost: 0
   myThreatModifier: 1
   mySpeed: 0
@@ -164,7 +164,7 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 8300000, guid: 2b20ddac57d2421418e7a9fa07a795b6, type: 3}
     mySpawnSound: {fileID: 0}

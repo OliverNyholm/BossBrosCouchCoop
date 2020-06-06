@@ -1,20 +1,37 @@
-void LWRPLightingFunction_float(float3 ObjPos, out float3 Direction, out float3 Color, out float ShadowAttenuation)
+void MainLight_half(float3 WorldPos, out half3 Direction, out half3 Color, out half DistanceAtten, out half ShadowAtten)
 {
-#ifdef LIGHTWEIGHT_LIGHTING_INCLUDED
-
-	//Actual light data from the pipeline
-	Light light = GetMainLight(GetShadowCoord(GetVertexPositionInputs(ObjPos)));
-	Direction = light.direction;
-	Color = light.color;
-	ShadowAttenuation = light.shadowAttenuation;
-
+#if SHADERGRAPH_PREVIEW
+    Direction = half3(0.5, 0.5, 0);
+    Color = 1;
+    DistanceAtten = 1;
+    ShadowAtten = 1;
 #else
+    #if SHADOWS_SCREEN
+        half4 clipPos = TransformWorldToHClip(WorldPos);
+        half4 shadowCoord = ComputeScreenPos(clipPos);
+    #else
+        half4 shadowCoord = TransformWorldToShadowCoord(WorldPos);
+    #endif
+        DirectionalLightData light = _DirectionalLightDatas[0];
+        i_lightDir = -light.forward.xyz;
+        i_color = light.color;
 
-	//Hardcoded data, used for the preview shader inside the graph
-	//where light functions are not available
-	Direction = float3(-0.5, 0.5, -0.5);
-	Color = float3(1, 1, 1);
-	ShadowAttenuation = 0.4;
+        Light mainLight = GetMainLight(shadowCoord);
+        Direction = -light.forward.xyz;
+        Color = light.color;
+        //DistanceAtten = mainLight.distanceAttenuation;
+        DistanceAtten = 1;
+        ShadowAtten = light.shadowDimmer;
+    #if !defined(_MAIN_LIGHT_SHADOWS) || defined(_RECEIVE_SHADOWS_OFF)
+        ShadowAtten = 1.0h;
+    #endif
 
+    #if SHADOWS_SCREEN
+        ShadowAtten = SampleScreenSpaceShadowmap(shadowCoord);
+    #else
+        ShadowSamplingData shadowSamplingData = GetMainLightShadowSamlingData();
+        half shadowStrength = GetMainLightShadowStrenght();
+        ShadowAtten = SampleShadowmap(shadowCoord, TEXTURE2D_ARGS(_MainLightShadowmapTexture, sampler_MainLightShadowmapTexture), shadowSamplingData, shadowStrength, false);
+    #endif
 #endif
 }

@@ -43,7 +43,21 @@ public class TutorialDamaging : TutorialCompletion
     private void OnTargetDied()
     {
         myKilledCount++;
-        if(myKilledCount == 2)
+
+        if (myGroundTarget.GetComponent<Health>().IsDead())
+        {
+            ParticleSystem particleSystem = myGroundTarget.GetComponentInChildren<ParticleSystem>();
+            if(!particleSystem.IsAlive())
+                particleSystem.Play();
+        }
+        if (myRangeTarget.GetComponent<Health>().IsDead())
+        {
+            ParticleSystem particleSystem = myRangeTarget.GetComponentInChildren<ParticleSystem>();
+            if (!particleSystem.IsAlive())
+                particleSystem.Play();
+        }
+
+        if (myKilledCount == 2)
         {
             myTargetHandler.RemoveEnemy(myGroundTarget);
             myTargetHandler.RemoveEnemy(myRangeTarget);

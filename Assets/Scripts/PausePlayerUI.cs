@@ -26,7 +26,10 @@ public class PausePlayerUI : MonoBehaviour
         {
             GameObject spell = aClass.mySpells[index];
             if (!spell)
+            {
+                mySpellDescriptions[index].SetSpellDetails(null);
                 continue;
+            }
 
             mySpellDescriptions[index].SetSpellDetails(spell.GetComponent<Spell>());
         }

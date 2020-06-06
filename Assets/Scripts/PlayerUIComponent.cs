@@ -11,7 +11,7 @@ public class PlayerUIComponent : UIComponent
     private SpellErrorHandler mySpellErrorHandler;
 
     [SerializeField]
-    private Sprite myNoSpellSprite;
+    private Sprite myNoSpellSprite = null;
 
     protected override void Awake()
     {

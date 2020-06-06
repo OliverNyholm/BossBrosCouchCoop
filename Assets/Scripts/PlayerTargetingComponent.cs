@@ -201,7 +201,7 @@ public class PlayerTargetingComponent : TargetingComponent
             SetTarget(bestTarget);
     }
 
-    private void DetermineNewEnemyTarget()
+    public void DetermineNewEnemyTarget()
     {
         const float resetTargetTimer = 2.0f;
         if (Time.time - myLatestSelectedTargetTime > resetTargetTimer)

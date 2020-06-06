@@ -19,6 +19,9 @@ public class TutorialPanel : MonoBehaviour
         {
             myInfoImages[index].sprite = somePanelImages[index].myImageSprite;
             myInfoImages[index].material = somePanelImages[index].myImageGif;
+
+            if (myInfoImages[index].material)
+                myInfoImages[index].material.SetFloat("_EnableTime", Time.time);
         }
     }
 }

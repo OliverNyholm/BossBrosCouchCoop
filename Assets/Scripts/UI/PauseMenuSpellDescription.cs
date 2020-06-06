@@ -15,6 +15,15 @@ public class PauseMenuSpellDescription : MonoBehaviour
 
     public void SetSpellDetails(Spell aSpell)
     {
+        if(!aSpell)
+        {
+            mySpellImage.GetComponent<Image>().enabled = false;
+            mySpellName.text = "No Spell";
+            mySpellDescription.text = "";
+            return;
+        }
+
+        mySpellImage.GetComponent<Image>().enabled = true;
         mySpellImage.sprite = aSpell.mySpellIcon;
         mySpellName.text = aSpell.name;
         mySpellDescription.text = aSpell.myTutorialInfo;

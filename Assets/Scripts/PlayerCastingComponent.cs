@@ -108,6 +108,9 @@ public class PlayerCastingComponent : CastingComponent
 
         if (!myClass.IsSpellCastOnFriends(aKeyIndex))
         {
+            if (myTargetingComponent.Target == null)
+                myTargetingComponent.DetermineNewEnemyTarget();
+
             CastSpell(aKeyIndex, true);
             return;
         }

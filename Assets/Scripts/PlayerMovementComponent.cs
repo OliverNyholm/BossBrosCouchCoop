@@ -80,9 +80,6 @@ public class PlayerMovementComponent : MovementComponent
         if (!myIsGrounded)
             return;
 
-        if (myCastingComponent.HasRecentlyFinishedHealTargeting())
-            return;
-
         Vector2 leftStickAxis = myPlayerControls.Movement;
 
         myVelocity = (leftStickAxis.x * myCameraXZTransform.myRight + leftStickAxis.y * myCameraXZTransform.myForwards).normalized;
@@ -92,7 +89,7 @@ public class PlayerMovementComponent : MovementComponent
         if (isMoving)
             RotatePlayer();
 
-        if (myTargetingComponent.IsHealTargeting())
+        if (myTargetingComponent.IsHealTargeting() || myCastingComponent.StillHasSameLookDirectionAfterReleasingManualHeal())
         {
             myVelocity = Vector2.zero;
             return;

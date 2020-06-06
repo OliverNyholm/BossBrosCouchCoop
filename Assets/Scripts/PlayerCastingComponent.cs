@@ -11,10 +11,10 @@ public class PlayerCastingComponent : CastingComponent
     private PlayerControlsVibrationManager myPlayerControlsVibrationsManager;
     private Class myClass;
 
+    private Vector3 myHealTargetingReleaseDirection;
     private float myStartTimeOfHoldingKeyDown;
     private bool myIsFriendlySpellKeyHeldDown;
-    private float myStartTimeOfReleasingHealingKeyDown;
-    private float myNoMovementDurationAfterManualHealing;
+    private bool myHasChangedMovementDirectionAfterCastingManualHeal;
     private int myFriendlySpellKeyHeldDownIndex;
 
     private bool myShouldAutoAttack;
@@ -25,11 +25,12 @@ public class PlayerCastingComponent : CastingComponent
     protected override void Awake()
     {
         base.Awake();
-
         myClass = GetComponent<Class>();
         myTargetingComponent = GetComponent<PlayerTargetingComponent>();
         myUIComponent = GetComponent<PlayerUIComponent>();
         myPlayerControlsVibrationsManager = GetComponent<PlayerControlsVibrationManager>();
+
+        myHasChangedMovementDirectionAfterCastingManualHeal = true;
     }
 
     private void Update()
@@ -38,6 +39,9 @@ public class PlayerCastingComponent : CastingComponent
             return;
 
         DetectSpellInput();
+
+        if (!myHasChangedMovementDirectionAfterCastingManualHeal)
+            CheckHasChangedLookDirectionAfterManualHeal();
 
         if (ShouldHealTargetBeEnabled())
             myTargetingComponent.EnableManualHealTargeting(myFriendlySpellKeyHeldDownIndex);
@@ -126,9 +130,18 @@ public class PlayerCastingComponent : CastingComponent
         return myIsFriendlySpellKeyHeldDown && Time.time - myStartTimeOfHoldingKeyDown > myTargetingComponent.GetSmartTargetHoldDownMaxDuration();
     }
 
-    public bool HasRecentlyFinishedHealTargeting()
+    public bool StillHasSameLookDirectionAfterReleasingManualHeal()
     {
-        return Time.time - myStartTimeOfReleasingHealingKeyDown < myNoMovementDurationAfterManualHealing;
+        return !myHasChangedMovementDirectionAfterCastingManualHeal;
+    }
+
+    private void CheckHasChangedLookDirectionAfterManualHeal()
+    {
+        if (myPlayerControls.Movement == Vector3.zero)
+            myHasChangedMovementDirectionAfterCastingManualHeal = true;
+
+        if (Vector3.Dot(transform.forward, myHealTargetingReleaseDirection) < 0.7f)
+            myHasChangedMovementDirectionAfterCastingManualHeal = true;
     }
 
     public void CastFriendlySpell(int aKeyIndex)
@@ -145,9 +158,9 @@ public class PlayerCastingComponent : CastingComponent
         else
         {
             CastSpell(aKeyIndex, false);
-            myStartTimeOfReleasingHealingKeyDown = Time.time;
         }
 
+        myHealTargetingReleaseDirection = transform.forward;
         myIsFriendlySpellKeyHeldDown = false;
         myTargetingComponent.DisableManualHealTargeting(myFriendlySpellKeyHeldDownIndex);
     }
@@ -185,13 +198,12 @@ public class PlayerCastingComponent : CastingComponent
             myClass.SetSpellOnCooldown(aKeyIndex);
             GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
             myAnimatorWrapper.SetTrigger(spellScript.myAnimationType);
-            myNoMovementDurationAfterManualHealing = 0.0f;
             return;
         }
 
         myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
+        myHasChangedMovementDirectionAfterCastingManualHeal = false;
 
-        myNoMovementDurationAfterManualHealing = 0.2f;
         myUIComponent.SetCastbarStartValues(spellScript);
         myTargetingComponent.SetSpellTarget(myTargetingComponent.Target);
         myCastingRoutine = StartCoroutine(CastbarProgress(aKeyIndex));
@@ -312,6 +324,12 @@ public class PlayerCastingComponent : CastingComponent
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
 
         myEventOnSpellSpawned?.Invoke(gameObject, instance, aKeyIndex);
+    }
+
+    protected override void StopCasting(bool aWasInterruped)
+    {
+        base.StopCasting(aWasInterruped);
+        myHasChangedMovementDirectionAfterCastingManualHeal = true;
     }
 
     protected override bool IsAbleToCastSpell(Spell aSpellScript)

@@ -147,6 +147,10 @@ public class PlayerTargetingComponent : TargetingComponent
             float score = 0.0f;
             GameObject playerGO = players[index];
 
+            Health health = playerGO.GetComponent<Health>();
+            if (health.IsDead())
+                continue;
+
             if (index == selfIndex && !aSpell.myCanCastOnSelf)
             {
                 //If there has been no valid target yet, and the current target is the player whom can't cast on self -> put best target to player one or two.
@@ -171,7 +175,7 @@ public class PlayerTargetingComponent : TargetingComponent
             if (distance > aSpell.myRange || !GetComponent<Character>().CanRaycastToObject(playerGO))
                 continue;
 
-            float healthPercentage = playerGO.GetComponent<Health>().GetHealthPercentage();
+            float healthPercentage = health.GetHealthPercentage();
             if (playerGO.GetComponent<Class>().myClassRole == Class.ClassRole.Tank)
             {
                 score += 0.2f;

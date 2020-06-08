@@ -11,7 +11,7 @@ public class PlayerUIComponent : UIComponent
     private SpellErrorHandler mySpellErrorHandler;
 
     [SerializeField]
-    private bool myUseCastbarAbovePlayer;
+    private bool myUseCastbarAbovePlayer = false;
 
     [SerializeField]
     private Sprite myNoSpellSprite = null;
@@ -95,6 +95,9 @@ public class PlayerUIComponent : UIComponent
         {
             myActionButtons[anIndex].GetComponent<Image>().sprite = aSpell.mySpellIcon;
             myActionButtons[anIndex].GetComponent<ActionKey>().SetSpellInfo(aSpell.myQuickInfo);
+
+            Vector3 inversePosition = myActionButtons[anIndex].GetComponentInParent<Canvas>().transform.InverseTransformPoint(myActionButtons[anIndex].transform.position);
+            FindObjectOfType<TutorialHighlightManager>().HighlightArea(inversePosition, Vector3.one * 0.4f);
         }
     }
 

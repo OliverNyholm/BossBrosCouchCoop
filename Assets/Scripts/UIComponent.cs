@@ -13,7 +13,7 @@ public class UIComponent : MonoBehaviour
 
     private CharacterHUD myCharacterHUD;
     private CharacterHUD myTargetHUD;
-    private Castbar myCastbar;
+    protected Castbar myCastbar;
 
     private Health myHealth;
     private Resource myResource;

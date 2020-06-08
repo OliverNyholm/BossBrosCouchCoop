@@ -17,13 +17,19 @@ public class Castbar : MonoBehaviour
     private Text myCastTimeUI = null;
 
     private Coroutine fadeCoroutine;
+    private CanvasGroup myCanvasGroup;
+
+    private void Awake()
+    {
+        myCanvasGroup = GetComponent<CanvasGroup>();
+    }
 
     public void ShowCastbar()
     {
         if (fadeCoroutine != null)
             StopCoroutine(fadeCoroutine);
 
-        GetComponent<CanvasGroup>().alpha = 1.0f;
+        myCanvasGroup.alpha = 1.0f;
     }
 
     public void HideCastbar()
@@ -31,7 +37,7 @@ public class Castbar : MonoBehaviour
         if (fadeCoroutine != null)
             StopCoroutine(fadeCoroutine);
 
-        GetComponent<CanvasGroup>().alpha = 0.0f;
+        myCanvasGroup.alpha = 0.0f;
     }
 
     public void FadeOutCastbar()
@@ -43,10 +49,10 @@ public class Castbar : MonoBehaviour
     {
         float timeLeft = myFadeoutSpeed;
 
-        while (GetComponent<CanvasGroup>().alpha > 0.0f)
+        while (myCanvasGroup.alpha > 0.0f)
         {
             timeLeft -= Time.deltaTime;
-            GetComponent<CanvasGroup>().alpha = timeLeft / myFadeoutSpeed;
+            myCanvasGroup.alpha = timeLeft / myFadeoutSpeed;
             yield return null;
         }
     }

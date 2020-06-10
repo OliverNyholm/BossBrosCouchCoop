@@ -15,6 +15,8 @@ public class TutorialCompletion : MonoBehaviour
     protected List<GameObject> myCompletedPlayers = new List<GameObject>();
     protected TutorialPanel myTutorialPanel;
     protected TargetHandler myTargetHandler;
+    protected TutorialHighlightManager myHighlightManager;
+    protected Camera myMainCamera;
 
     private bool myHasStarted = false;
 
@@ -25,6 +27,8 @@ public class TutorialCompletion : MonoBehaviour
     {
         myTutorialPanel = FindObjectOfType<TutorialPanel>();
         myTargetHandler = FindObjectOfType<TargetHandler>();
+        myHighlightManager = FindObjectOfType<TutorialHighlightManager>();
+        myMainCamera = Camera.main;
     }
 
     private void Start()
@@ -47,7 +51,7 @@ public class TutorialCompletion : MonoBehaviour
         return true;
     }
 
-    protected void EndTutorial()
+    protected virtual void EndTutorial()
     {
         if (!myGate)
             return;
@@ -58,8 +62,7 @@ public class TutorialCompletion : MonoBehaviour
             gate.Open();
         }
         else if (myFinishRoutine != null)
-            StartCoroutine(myFinishRoutine());
-        
+            StartCoroutine(myFinishRoutine());        
     }
 
     IEnumerator LowerGateRoutine()

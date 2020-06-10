@@ -6,6 +6,35 @@ public class TutorialMove : TutorialCompletion
 {
     [SerializeField]
     private Collider myMoveToCollider = null;
+    
+    [SerializeField]
+    private GameObject myHighlightObject = null;
+    [SerializeField]
+    private float myHighlightScale = 1.0f;
+    [SerializeField]
+    private bool myHighlightOnStart = false;
+
+    protected override bool StartTutorial()
+    {
+        if (!base.StartTutorial())
+            return false;
+
+        if (myHighlightOnStart && myHighlightObject)
+        {
+            myHighlightManager.HighlightArea(myHighlightObject, Vector3.one * myHighlightScale);
+        }
+
+        return true;
+    }
+
+    protected override void EndTutorial()
+    {
+        if(!myHighlightOnStart && myHighlightObject)
+            myHighlightManager.HighlightArea(myHighlightObject, Vector3.one * myHighlightScale);
+
+
+        base.EndTutorial();
+    }
 
     public override void OnChildTriggerEnter(Collider aChildCollider, Collider aHit)
     {

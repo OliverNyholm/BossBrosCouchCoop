@@ -21,6 +21,10 @@ public class TutorialAutoAttack : TutorialCompletion
         myTargetHandler.AddEnemy(myBirchToHit, true);
         myBirchToHit.GetComponent<Health>().EventOnHealthZero += OnTargetDied;
 
+        GameObject birchHud = FindObjectOfType<BossHudHandler>().myBossHuds[myBirchToHit.GetInstanceID()];       
+        Vector3 inversePosition = birchHud.GetComponentInParent<Canvas>().transform.InverseTransformPoint(birchHud.transform.position);
+        FindObjectOfType<TutorialHighlightManager>().HighlightArea(inversePosition, Vector3.one * 1.3f);
+
         return true;
     }
 

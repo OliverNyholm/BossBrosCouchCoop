@@ -107,8 +107,8 @@ MonoBehaviour:
   myThreatModifier: 20
   mySpeed: 0
   myCastTime: 0
-  myCooldown: 3
-  myRange: 25
+  myCooldown: 1.5
+  myRange: 40
   myStunDuration: 0
   myCastbarColor: {r: 1, g: 0.55655974, b: 0, a: 1}
   mySpellIcon: {fileID: 21300000, guid: e8e4bd8bc47ec8540833bdc7c10616c6, type: 3}
@@ -121,7 +121,8 @@ MonoBehaviour:
     myCastSound: {fileID: 8300000, guid: f98f145d42bd9aa47abb30c7b087cbac, type: 3}
     mySpawnSound: {fileID: 8300000, guid: f98f145d42bd9aa47abb30c7b087cbac, type: 3}
     myHitSound: {fileID: 8300000, guid: f98f145d42bd9aa47abb30c7b087cbac, type: 3}
-  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
+  mySpawnOnHitVFXOnSelf: 1
+  mySpellVFX: {fileID: 897728436608619979, guid: 4eb8d2047d45fc446a05a61aefe6950a,
     type: 3}
 --- !u!82 &2380167774674227379
 AudioSource:

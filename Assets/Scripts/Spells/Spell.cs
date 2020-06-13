@@ -59,6 +59,8 @@ public class Spell : PoolableObject
     //[Header("The sound effects for the spell")]
     [SerializeField]
     [HideInInspector] protected SpellSFX mySpellSFX;
+    [SerializeField]
+    [HideInInspector] protected bool mySpawnOnHitVFXOnSelf;
 
     //[Header("The spawned effect for the spell")]
     [SerializeField]
@@ -260,18 +262,22 @@ public class Spell : PoolableObject
 
         PoolManager poolManager = PoolManager.Instance;
         GameObject vfxGO = poolManager.GetPooledObject(mySpellVFX.GetComponent<UniqueID>().GetID()); ;
-        if (target)
+        if(mySpawnOnHitVFXOnSelf)
+        {
+            vfxGO.transform.parent = myParent.transform;
+            vfxGO.transform.localPosition = Vector3.zero;
+        }
+        else if (target)
         {
             vfxGO.transform.parent = target.transform;
             vfxGO.transform.localPosition = Vector3.zero;
-            vfxGO.transform.rotation = Quaternion.Euler(-90f, 0.0f, 0.0f);
         }
         else
         {
-
             vfxGO.transform.position = transform.position;
-            vfxGO.transform.rotation = Quaternion.Euler(-90f, 0.0f, 0.0f);
         }
+        vfxGO.transform.rotation = Quaternion.Euler(-90f, 0.0f, 0.0f);
+
 
         vfxGO.GetComponent<AudioSource>().clip = mySpellSFX.myHitSound;
         vfxGO.GetComponent<AudioSource>().Play();

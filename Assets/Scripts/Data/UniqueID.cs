@@ -64,19 +64,20 @@ public class UniqueIDEditor : Editor
 
         EditorGUILayout.Space();
 
+
+        if (GUILayout.Button("Generate Unique ID"))
+        {
+
+            SerializedProperty id = serializedObject.FindProperty("myID");
+            id.intValue = (int)myUniqueID.GenerateID();
+            serializedObject.ApplyModifiedProperties();
+
+            EditorUtility.SetDirty(myUniqueID);
+            EditorSceneManager.MarkSceneDirty(myUniqueID.gameObject.scene);
+        }
+
         if (myUniqueID.GetID() == uint.MaxValue)
         {
-            if (GUILayout.Button("Generate Unique ID"))
-            {                
-
-                SerializedProperty id = serializedObject.FindProperty("myID");
-                id.intValue = (int)myUniqueID.GenerateID();
-                serializedObject.ApplyModifiedProperties();
-
-                EditorUtility.SetDirty(myUniqueID);
-                EditorSceneManager.MarkSceneDirty(myUniqueID.gameObject.scene);
-            }
-
             EditorGUILayout.HelpBox("Component has not generated an actual unique ID yet!", MessageType.Warning);
         }
     }

@@ -29,6 +29,7 @@ public class SpellInspectorEditor : Editor
         myAnimationType,
         mySpellSFX,
         mySpellVFX,
+        mySpawnOnHitVFXOnSelf,
         myShouldRotate,
 
         myCastbarColor,
@@ -61,6 +62,7 @@ public class SpellInspectorEditor : Editor
         myAnimationType = serializedObject.FindProperty("myAnimationType");
         mySpellSFX = serializedObject.FindProperty("mySpellSFX");
         mySpellVFX = serializedObject.FindProperty("mySpellVFX");
+        mySpawnOnHitVFXOnSelf = serializedObject.FindProperty("mySpawnOnHitVFXOnSelf");
         myShouldRotate = serializedObject.FindProperty("myShouldRotate");
 
         myCastbarColor = serializedObject.FindProperty("myCastbarColor");
@@ -155,6 +157,7 @@ public class SpellInspectorEditor : Editor
         EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myHitSound"), new GUIContent("Sound When Spell Hits Target"));
 
         EditorGUILayout.PropertyField(mySpellVFX, new GUIContent("On Hit VFX"));
+        EditorGUILayout.PropertyField(mySpawnOnHitVFXOnSelf, new GUIContent("On Hit VFX Spawn On Self"));
     }
 }
 #endif

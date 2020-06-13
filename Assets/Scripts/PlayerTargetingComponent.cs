@@ -224,6 +224,10 @@ public class PlayerTargetingComponent : TargetingComponent
             if (enemies[index] == Target)
                 continue;
 
+            float deathScore = 0.0f;
+            if (enemies[index].GetComponent<Health>().IsDead())
+                deathScore = -50000.0f;
+
             if (myPreviouslyTargetedEnemies.Contains(enemies[index]))
                 continue;
 
@@ -234,7 +238,7 @@ public class PlayerTargetingComponent : TargetingComponent
 
             float dotAngle = Vector3.Dot(transform.forward, toTarget);
 
-            float score = (1 + dotAngle) * (100.0f - distance);
+            float score = (1 + dotAngle) * (100.0f - distance) + deathScore;
             if(score > bestScore)
             {
                 bestScore = score;

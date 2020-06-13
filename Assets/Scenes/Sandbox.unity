@@ -818,6 +818,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myMaxHealth: 200000
   myCurrentHealth: 10000
+  myHealthPerTick: 0
+  myHealthTickInterval: 1
+  myTimeBeforeHealthRegenerationAfterDamage: 5
+  myShouldSpawnFloatingHealthOnTick: 0
 --- !u!95 &261754184
 Animator:
   serializedVersion: 3
@@ -3905,6 +3909,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myMaxHealth: 2000000
   myCurrentHealth: 1900000
+  myHealthPerTick: 0
+  myHealthTickInterval: 1
+  myTimeBeforeHealthRegenerationAfterDamage: 5
+  myShouldSpawnFloatingHealthOnTick: 0
 --- !u!114 &1066126327403314803
 MonoBehaviour:
   m_ObjectHideFlags: 0

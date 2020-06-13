@@ -180,8 +180,19 @@ public class Spell : PoolableObject
         if (aTarget)
             target = aTarget;
 
+        Vector3 damageFloatSpawnPosition = transform.position;
+        if(mySpeed <= 0.0f)
+        {
+            Vector3 toParent = (myParent.transform.position - transform.position);
+            float distance = toParent.magnitude;
+            toParent /= distance;
+
+            const float distanceFromParent = 2.0f;
+            damageFloatSpawnPosition += toParent * Mathf.Min(distance - distanceFromParent, target.GetComponent<Stats>().myRangeCylinder.myRadius);
+        }
+
         int parentID = myParent.GetInstanceID();
-        int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<UIComponent>().myCharacterColor);
+        int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<UIComponent>().myCharacterColor, damageFloatSpawnPosition);
         target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID, true);
 
         if (myParent.tag == "Player")

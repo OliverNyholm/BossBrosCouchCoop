@@ -46,6 +46,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -57,6 +58,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -120,7 +122,7 @@ Transform:
   m_GameObject: {fileID: 1864518658577844}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 4.28, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.02, y: 0.02, z: 1}
   m_Children:
   - {fileID: 4826833152669444}
   m_Father: {fileID: 0}
@@ -140,10 +142,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: deae1b3c8e7942543871ea8b6998cd38, type: 3}
+  - {fileID: 2100000, guid: a770befd3e62d1942a70bc900fe525bb, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -151,6 +154,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -173,15 +177,15 @@ TextMesh:
   m_GameObject: {fileID: 1864518658577844}
   m_Text: LOL
   m_OffsetZ: 0
-  m_CharacterSize: 0.4
+  m_CharacterSize: 1
   m_LineSpacing: 1
   m_Anchor: 1
   m_Alignment: 1
   m_TabSize: 1
-  m_FontSize: 20
+  m_FontSize: 500
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: deae1b3c8e7942543871ea8b6998cd38, type: 3}
+  m_Font: {fileID: 12800000, guid: a770befd3e62d1942a70bc900fe525bb, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190335
@@ -197,8 +201,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4452ef3ff3fa7004e8df35e6f15550f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myDuration: 2
+  myDuration: 1
   mySpeed: 2
+  myRandomXRange: {x: -0.8, y: 0.8}
+  myRandomYRange: {x: 2, y: 2.5}
+  myScaleDownCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0023301672
+      value: -0.1326294
+      inSlope: 0.07949492
+      outSlope: 0.07949492
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.38367563
+    - serializedVersion: 3
+      time: 0.22235243
+      value: -0.3095581
+      inSlope: 0.6346181
+      outSlope: 0.6346181
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.23727804
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.90663004
+      value: 0.9809698
+      inSlope: 0.2976119
+      outSlope: 0.2976119
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.1441815
+      outWeight: 0.36672235
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.20381516
+      outSlope: 0.20381516
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &8877782167351184945
 MonoBehaviour:
   m_ObjectHideFlags: 0

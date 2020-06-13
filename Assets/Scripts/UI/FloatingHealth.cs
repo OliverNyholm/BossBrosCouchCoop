@@ -5,53 +5,53 @@ using UnityEngine;
 public class FloatingHealth : PoolableObject
 {
     private TextMesh myTextMesh;
-    private TextMesh myOutLineTextMesh;
     public float myDuration;
     public float mySpeed;
+
+    [SerializeField]
+    private Vector2 myRandomXRange = new Vector2(-2.0f, 2.0f);
+    [SerializeField]
+    private Vector2 myRandomYRange = new Vector2(1.0f, 2.0f);
+    private Vector3 myInitialScale;
 
     private Camera myMainCamera;
 
     private float myLifeTime;
+    public AnimationCurve myScaleDownCurve = null;
 
     private void Awake()
     {
         myTextMesh = transform.GetComponent<TextMesh>();
-        myOutLineTextMesh = transform.Find("Outline").gameObject.GetComponent<TextMesh>();
 
+        myInitialScale = transform.localScale;
         myMainCamera = Camera.main;
     }
 
     void Update()
     {
         myTextMesh.transform.rotation = myMainCamera.transform.rotation;
-        myOutLineTextMesh.transform.rotation = myMainCamera.transform.rotation;
 
         myLifeTime -= Time.deltaTime;
         if (myLifeTime <= 0.0f)
             ReturnToPool();
 
-        else if (myLifeTime <= 1.0f)
-        {
-            Color fadeColor = new Color(myTextMesh.color.r, myTextMesh.color.g, myTextMesh.color.b, myLifeTime);
-            myTextMesh.color = fadeColor;
-            fadeColor = new Color(myOutLineTextMesh.color.r, myOutLineTextMesh.color.g, myOutLineTextMesh.color.b, myLifeTime);
-            myOutLineTextMesh.color = fadeColor;
-        }
-
         transform.position += Vector3.up * mySpeed * Time.deltaTime;
     }
 
-    public void SetText(string aText, Color aColor, float aSizeModifier)
+    public void SetText(string aText, Color aColor, Vector3 aSpawnLocation)
     {
+        Vector3 randomOffset = new Vector2(Random.Range(myRandomXRange.x, myRandomXRange.y), Random.Range(myRandomYRange.x, myRandomYRange.y));
+        transform.position = aSpawnLocation + randomOffset;
+
         myTextMesh.text = aText;
-        myOutLineTextMesh.text = aText;
         myTextMesh.color = aColor;
 
-        myTextMesh.characterSize *= aSizeModifier;
+        LeanTween.scale(gameObject, Vector3.zero, myLifeTime).setEase(myScaleDownCurve);
     }
 
     public override void Reset()
     {
         myLifeTime = myDuration;
+        transform.localScale = myInitialScale;
     }
 }

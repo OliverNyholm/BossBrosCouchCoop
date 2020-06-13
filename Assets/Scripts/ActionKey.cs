@@ -58,7 +58,11 @@ public class ActionKey : MonoBehaviour
     {
         if (aDuration > 0.0f)
         {
-            myCooldownText.text = aDuration.ToString("0.0");
+            if (aDuration > 2.0f)
+                myCooldownText.text = aDuration.ToString("0");
+            else
+                myCooldownText.text = aDuration.ToString("0.0");
+
             myImage.color = new Color(0.8f, 0.3f, 0.3f, 0.5f);
             myStartColor = myImage.color;
             IsSpellOnCooldown = true;

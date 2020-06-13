@@ -83,7 +83,7 @@ public class PlayerUIComponent : UIComponent
         }
     }
 
-    public void SetSpellHud(Spell aSpell, int anIndex)
+    public void SetSpellHud(Spell aSpell, int anIndex, bool aShouldHighlightSpell = false)
     {
         myActionButtons[anIndex] = myActionBar.transform.GetChild(anIndex).gameObject;
         if (aSpell == null)
@@ -96,8 +96,11 @@ public class PlayerUIComponent : UIComponent
             myActionButtons[anIndex].GetComponent<Image>().sprite = aSpell.mySpellIcon;
             myActionButtons[anIndex].GetComponent<ActionKey>().SetSpellInfo(aSpell.myQuickInfo);
 
-            Vector3 inversePosition = myActionButtons[anIndex].GetComponentInParent<Canvas>().transform.InverseTransformPoint(myActionButtons[anIndex].transform.position);
-            FindObjectOfType<TutorialHighlightManager>().HighlightArea(inversePosition, Vector3.one * 0.4f);
+            if (aShouldHighlightSpell)
+            {
+                Vector3 inversePosition = myActionButtons[anIndex].GetComponentInParent<Canvas>().transform.InverseTransformPoint(myActionButtons[anIndex].transform.position);
+                FindObjectOfType<TutorialHighlightManager>().HighlightArea(inversePosition, Vector3.one * 0.4f);
+            }
         }
     }
 

@@ -99,7 +99,7 @@ public class Class : MonoBehaviour
         myUIComponent.SetSpellCooldownText(aSpellIndex, 0.0f);
 
         if (aSpell != null)
-            myUIComponent.SetSpellHud(aSpell.GetComponent<Spell>(), aSpellIndex);
+            myUIComponent.SetSpellHud(aSpell.GetComponent<Spell>(), aSpellIndex, true);
         else
             myUIComponent.SetSpellHud(null, aSpellIndex);
     }

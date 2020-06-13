@@ -79,9 +79,6 @@ public class TutorialHealWithCombat : TutorialCompletion
             StartTutorial();
 
         if (aChildCollider == myStartFightCollider)
-        {
-            myTutorialPanel.gameObject.SetActive(false);
             StartFight();
-        }
     }
 }

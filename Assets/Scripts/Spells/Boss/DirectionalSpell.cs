@@ -35,7 +35,7 @@ public class DirectionalSpell : Spell
         if (other.gameObject.tag == myAttackTag)
         {
             if (!other.GetComponent<Health>().IsDead() && myDamage > 0.0f)
-                other.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor);
+                other.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor, other.transform.position);
         }
         
         if(other.gameObject.tag == "Terrain")

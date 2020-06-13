@@ -62,7 +62,7 @@ public class AreaEffect : MonoBehaviour
     private void DealDamage(ref int aIndex)
     {
         Health healthComponent = myObjectsInTrigger[aIndex].GetComponent<Health>();
-        healthComponent.TakeDamage(myTickValue, Color.red);
+        healthComponent.TakeDamage(myTickValue, Color.red, myObjectsInTrigger[aIndex].transform.position);
         if (healthComponent.IsDead())
         {
             myObjectsInTrigger.RemoveAt(aIndex);

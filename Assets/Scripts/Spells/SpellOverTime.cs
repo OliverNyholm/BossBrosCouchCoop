@@ -186,7 +186,7 @@ public class SpellOverTime : Spell
         myNumberOfTicksDealt++;
         if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.DOT))
         {
-            myTarget.GetComponent<Health>().TakeDamage(myTickDamage, myParent.GetComponent<UIComponent>().myCharacterColor);
+            myTarget.GetComponent<Health>().TakeDamage(myTickDamage, myParent.GetComponent<UIComponent>().myCharacterColor, myTarget.transform.position);
             if (myParent.GetComponent<Player>() != null)
                 PostMaster.Instance.PostMessage(new Message(MessageCategory.DamageDealt, new Vector2(myParent.GetInstanceID(), myTickDamage)));
         }

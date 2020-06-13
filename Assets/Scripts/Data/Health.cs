@@ -45,7 +45,7 @@ public class Health : MonoBehaviour
         }
     }
 
-    public int TakeDamage(int aValue, Color aDamagerColor)
+    public int TakeDamage(int aValue, Color aDamagerColor, Vector3 aDamagePosition)
     {
         int damage = CalculateMitigations(aValue);
         string damageText = damage.ToString();
@@ -56,7 +56,12 @@ public class Health : MonoBehaviour
         }
 
         if (damage <= 0.0f)
+        {
+            if (aValue != damage)
+                SpawnFloatingText("Absorbed", aDamagerColor, aDamagePosition);
+
             return damage;
+        }
 
         myCurrentHealth -= damage;
         if (myCurrentHealth <= 0)
@@ -68,7 +73,11 @@ public class Health : MonoBehaviour
         myTimeBeforeHealthRegenerationTimestamp = Time.time + myTimeBeforeHealthRegenerationAfterDamage;
 
         OnHealthChanged(true);
-        SpawnFloatingText(damageText, aDamagerColor, CalculateSizeModifier(damage));
+
+        if (aValue > 2000 && IsDead())
+            SpawnFloatingText("Instant Kill", aDamagerColor, aDamagePosition);
+        else
+            SpawnFloatingText(damageText, aDamagerColor, aDamagePosition);
 
         return damage;
     }
@@ -84,7 +93,7 @@ public class Health : MonoBehaviour
         OnHealthChanged(false);
 
         if (aShouldSpawnFloatingText)
-            SpawnFloatingText(aValue.ToString(), Color.yellow, CalculateSizeModifier(aValue));
+            SpawnFloatingText(aValue.ToString(), Color.yellow, transform.position);
     }
 
     public void ReviveToFullHealth()
@@ -92,7 +101,7 @@ public class Health : MonoBehaviour
         myCurrentHealth = MaxHealth;
         OnHealthChanged(false);
 
-        SpawnFloatingText("Revived", Color.yellow, 1.2f);
+        SpawnFloatingText("Revived", Color.yellow, transform.position);
     }
 
     public bool IsDead()
@@ -124,7 +133,7 @@ public class Health : MonoBehaviour
     {
         myShields.Add(aShield);
         OnHealthChanged(false);
-        SpawnFloatingText("Shield, " + aShield.GetRemainingShieldHealth().ToString(), Color.yellow, 1.0f);
+        SpawnFloatingText("Shield, " + aShield.GetRemainingShieldHealth().ToString(), Color.yellow, transform.position);
     }
 
     public void RemoveShield(SpellOverTime aSpell)
@@ -140,7 +149,7 @@ public class Health : MonoBehaviour
         }
 
         OnHealthChanged(false);
-        SpawnFloatingText("Shield faded", Color.yellow, 1.0f);
+        SpawnFloatingText("Shield faded", Color.yellow, transform.position);
     }
 
     public void GenerateThreat(int aThreatValue, int anID, bool anIgnoreCombatState)
@@ -158,16 +167,13 @@ public class Health : MonoBehaviour
         EventOnHealthZero?.Invoke();
     }
 
-    private void SpawnFloatingText(string aText, Color aColor, float aSizeModifier)
+    private void SpawnFloatingText(string aText, Color aColor, Vector3 aSpawnLocation)
     {
-        Vector3 randomOffset = new Vector2(Random.Range(-2.0f, 2.0f), Random.Range(0.0f, 2.0f));
-
         GameObject floatingHealthGO = PoolManager.Instance.GetFloatingHealth();
         floatingHealthGO.transform.parent = transform;
-        floatingHealthGO.transform.position = transform.position + randomOffset;
 
         FloatingHealth floatingHealth = floatingHealthGO.GetComponent<FloatingHealth>();
-        floatingHealth.SetText(aText, aColor, aSizeModifier);
+        floatingHealth.SetText(aText, aColor, aSpawnLocation);
     }
 
     public float CalculateSizeModifier(int aDamage)

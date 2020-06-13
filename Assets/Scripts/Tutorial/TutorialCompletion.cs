@@ -13,7 +13,6 @@ public class TutorialCompletion : MonoBehaviour
 
     public List<GameObject> Players { get; set; } = new List<GameObject>();
     protected List<GameObject> myCompletedPlayers = new List<GameObject>();
-    protected TutorialPanel myTutorialPanel;
     protected TargetHandler myTargetHandler;
     protected TutorialHighlightManager myHighlightManager;
     protected Camera myMainCamera;
@@ -25,7 +24,6 @@ public class TutorialCompletion : MonoBehaviour
 
     protected virtual void Awake()
     {
-        myTutorialPanel = FindObjectOfType<TutorialPanel>();
         myTargetHandler = FindObjectOfType<TargetHandler>();
         myHighlightManager = FindObjectOfType<TutorialHighlightManager>();
         myMainCamera = Camera.main;

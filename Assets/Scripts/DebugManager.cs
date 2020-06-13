@@ -19,11 +19,11 @@ public class DebugManager : MonoBehaviour
         TargetHandler targetHandler = GameManager.FindObjectOfType<TargetHandler>();
         foreach (GameObject player in targetHandler.GetAllPlayers())
         {
-            player.GetComponent<Health>().TakeDamage(100000, Color.black);
+            player.GetComponent<Health>().TakeDamage(100000, Color.black, player.transform.position);
         }
         foreach (GameObject enemy in targetHandler.GetAllEnemies())
         {
-            enemy.GetComponent<Health>().TakeDamage(100000, Color.black);
+            enemy.GetComponent<Health>().TakeDamage(100000, Color.black, enemy.transform.position);
         }
     }
 }

@@ -18,6 +18,11 @@ public class TutorialInfoBoard : MonoBehaviour
     private void Awake()
     {
         myTutorialPanelManager = FindObjectOfType<TutorialPanelManager>();
+        for (int index = 0; index < myTutorialImages.Count; index++)
+        {
+            if(myTutorialImages[index].myImageGif != null)
+                myTutorialImages[index].myImageGif = new Material(myTutorialImages[index].myImageGif);
+        }
     }
 
     private void Update()

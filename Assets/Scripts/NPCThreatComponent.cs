@@ -20,6 +20,9 @@ public class NPCThreatComponent : MonoBehaviour
 
     private Subscriber mySubscriber;
 
+    public delegate void OnTaunted();
+    public event OnTaunted EventOnTaunted;
+
     private void Awake()
     {
         myTargetingComponent = GetComponent<TargetingComponent>();
@@ -124,6 +127,7 @@ public class NPCThreatComponent : MonoBehaviour
             {
                 myTargetIndex = index;
                 SetTarget(myTargetIndex);
+                EventOnTaunted?.Invoke();
                 AddThreat(2000, aTaunterID, true);
                 break;
             }

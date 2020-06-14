@@ -72,6 +72,15 @@ public class CharacterGameData : MonoBehaviour
         return false;
     }
 
+    public void GiveClassAndColorsToPlayers(ClassData aClassData, List<ColorScheme> someColorSchemes)
+    {
+        for (int index = 0; index < mySelectedCharacters.Count; index++)
+        {
+            mySelectedCharacters[index].myClassData = aClassData;
+            mySelectedCharacters[index].myColorScheme = someColorSchemes[index];
+        }
+    }
+
     public List<PlayerSelectData> GetPlayerData()
     {
         return mySelectedCharacters;

@@ -47,6 +47,9 @@ public class Health : MonoBehaviour
 
     public int TakeDamage(int aValue, Color aDamagerColor, Vector3 aDamagePosition)
     {
+        if (IsDead())
+            return aValue;
+
         int damage = CalculateMitigations(aValue);
         string damageText = damage.ToString();
         if (aValue != damage)

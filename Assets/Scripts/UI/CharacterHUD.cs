@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-
+using TMPro;
 public class CharacterHUD : MonoBehaviour
 {
     [SerializeField]
@@ -19,7 +19,7 @@ public class CharacterHUD : MonoBehaviour
     [SerializeField]
     private Text myResourceText = null;
     [SerializeField]
-    private Text myNameText = null;
+    private TextMeshProUGUI myNameText = null;
     [SerializeField]
     private GameObject myBuffParent = null;
     [SerializeField]

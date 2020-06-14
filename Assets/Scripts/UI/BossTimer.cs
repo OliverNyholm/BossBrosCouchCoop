@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BossTimer : PoolableObject
 {
@@ -10,9 +11,9 @@ public class BossTimer : PoolableObject
     [SerializeField]
     private Image myTimerBar = null;
     [SerializeField]
-    private Text myAttackName = null;
+    private TextMeshProUGUI myAttackName = null;
     [SerializeField]
-    private Text myAttackTimer = null;
+    private TextMeshProUGUI myAttackTimer = null;
 
     private float myStartTimer;
     private float myTimer;

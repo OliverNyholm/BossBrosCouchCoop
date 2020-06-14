@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DamageMeter : MonoBehaviour
 {
@@ -101,7 +102,7 @@ public class DamageMeter : MonoBehaviour
             damageBar.fillAmount = percentage;
             damageBar.color = damager.Value.myColor;
 
-            transform.GetChild(index).GetComponentInChildren<Text>().text = ((float)damager.Value.myDamage / 1000).ToString("0.0");
+            transform.GetChild(index).GetComponentInChildren<TextMeshProUGUI>().text = ((float)damager.Value.myDamage / 1000).ToString("0.0");
             index++;
         }
     }

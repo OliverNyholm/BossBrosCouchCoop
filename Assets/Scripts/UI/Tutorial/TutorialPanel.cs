@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TutorialPanel : MonoBehaviour
 {
     [Header("Children that show Tutorial Facts")]
     [SerializeField]
-    private Text myTutorialText = null;
+    private TextMeshProUGUI myTutorialText = null;
     [SerializeField]
     private List<Image> myInfoImages = new List<Image>();
 

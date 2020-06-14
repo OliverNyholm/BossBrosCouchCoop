@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SpellErrorHandler : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class SpellErrorHandler : MonoBehaviour
     public Sprite myIsDeadIcon = null;
     public Sprite myIsNotSelfCastIcon = null;
 
-    private Text myErrorText = null;
+    private TextMeshProUGUI myErrorText = null;
     private Color myErrorTextColor;
 
     private Coroutine myHighlightErrorIconRoutine;
@@ -39,7 +40,7 @@ public class SpellErrorHandler : MonoBehaviour
 
     private void Awake()
     {
-        myErrorText = GetComponent<Text>();
+        myErrorText = GetComponent<TextMeshProUGUI>();
         myErrorTextColor = myErrorText.color;
         myErrorText.color = new Color(0f, 0f, 0f, 0f);
     }

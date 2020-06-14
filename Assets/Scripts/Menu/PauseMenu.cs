@@ -37,9 +37,8 @@ public class PauseMenu : MonoBehaviour
 
     private PlayerControls myKeyboardListener;
     private PlayerControls myJoystickListener;
-    private bool myIsInTutorial = false;
 
-    private void Awake()
+    private void Start()
     {
         myButtons = new List<Button>
         {
@@ -48,15 +47,6 @@ public class PauseMenu : MonoBehaviour
             myControlsButton
         };
 
-        if (FindObjectOfType<TutorialEndLevel>())
-        {
-            myCharacterSelectButton.GetComponentInChildren<Text>().text = "Return to Level Select";
-            myIsInTutorial = true;
-        }
-    }
-
-    private void Start()
-    {
         myKeyboardListener = PlayerControls.CreateWithKeyboardBindings();
         myJoystickListener = PlayerControls.CreateWithJoystickBindings();
 
@@ -136,10 +126,7 @@ public class PauseMenu : MonoBehaviour
     public void LoadCharacterSelect()
     {
         Resume();
-        if (myIsInTutorial)
-            SceneManager.LoadScene("LevelSelect");
-        else
-            SceneManager.LoadScene("CharacterSelect");
+        SceneManager.LoadScene("CharacterSelect");
     }
 
     public void ToggleControls()

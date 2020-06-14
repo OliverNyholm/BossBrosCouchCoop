@@ -15,14 +15,7 @@ public class LevelSelector : MonoBehaviour
     [SerializeField]
     private LevelSelectCanvas myLevelInfoCanvas = null;
 
-    [Header("The tutorial class for tutorial level")]
-    [SerializeField]
-    private ClassData myTutorialClass = null;
-    [SerializeField]
-    private List<ColorScheme> myColorSchemes = new List<ColorScheme>();
-
     private LevelSelectCamera myCamera;
-    private CharacterGameData myCharacterGameData;
 
     private LevelProgression myLevelProgression;
 
@@ -30,7 +23,6 @@ public class LevelSelector : MonoBehaviour
     private PlayerControls myJoystickListener;
 
     private bool myFirstUpdate;
-
     void Start()
     {
         myKeyboardListener = PlayerControls.CreateWithKeyboardBindings();
@@ -41,8 +33,8 @@ public class LevelSelector : MonoBehaviour
 
         myLevelProgression = FindObjectOfType<LevelProgression>();
 
-        myCharacterGameData = FindObjectOfType<CharacterGameData>();
-        myCurrentLevelIndex = myCharacterGameData.myCurrentLevelIndex;
+        CharacterGameData gameData = FindObjectOfType<CharacterGameData>();
+        myCurrentLevelIndex = gameData.myCurrentLevelIndex;
         myCamera.SetTargetPositionInstant(myLevels[myCurrentLevelIndex].transform);
         myLevelInfoCanvas.SetCanvasData(myLevels[myCurrentLevelIndex], myLevelProgression.IsLevelAvailable(myCurrentLevelIndex));
     }
@@ -52,7 +44,7 @@ public class LevelSelector : MonoBehaviour
         myJoystickListener.Destroy();
         myKeyboardListener.Destroy();
     }
-
+    
     void Update()
     {
         if (myFirstUpdate)
@@ -66,7 +58,7 @@ public class LevelSelector : MonoBehaviour
         if (WasLeftClicked())
             NextLevel(-1);
 
-        if (WasBossInfoClicked())
+        if(WasBossInfoClicked())
         {
             FindObjectOfType<BossDetailsPanel>().ToggleBossDetails(myLevels[myCurrentLevelIndex]);
         }
@@ -78,24 +70,18 @@ public class LevelSelector : MonoBehaviour
             gameData.myCurrentLevelIndex = myCurrentLevelIndex;
 
             SetLevelsToUnlock(myLevels[myCurrentLevelIndex]);
-
-            if (myCurrentLevelIndex == 0)
-            {
-                myCharacterGameData.GiveClassAndColorsToPlayers(myTutorialClass, myColorSchemes);
-                SceneManager.LoadScene(gameData.mySceneToLoad);
-            }
-            else
-                SceneManager.LoadScene("CharacterSelect");
+            
+            SceneManager.LoadScene("CharacterSelect");
         }
 
-        if (WasBackClicked())
+        if(WasBackClicked())
         {
             SceneManager.LoadScene("PlayerSelect");
         }
     }
 
     private void NextLevel(int aModifier)
-    {
+    {        
         myCurrentLevelIndex += aModifier;
         if (myCurrentLevelIndex < 0 || myCurrentLevelIndex >= myLevels.Count)
         {
@@ -157,7 +143,7 @@ public class LevelSelector : MonoBehaviour
             GameObject levelToUnlock = aLevelInfo.myLevelsToUnlock[unlockIndex];
             for (int levelIndex = 0; levelIndex < myLevels.Count; levelIndex++)
             {
-                if (myLevels[levelIndex].gameObject == levelToUnlock)
+                if(myLevels[levelIndex].gameObject == levelToUnlock)
                 {
                     levelIndexes.Add(levelIndex);
                     break;

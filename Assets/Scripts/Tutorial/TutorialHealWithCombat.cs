@@ -17,6 +17,9 @@ public class TutorialHealWithCombat : TutorialCompletion
     [SerializeField]
     private Collider myStartFightCollider = null;
 
+    [SerializeField]
+    private GameObject myHighlightBossTimerObject = null;
+
     private Subscriber mySubscriber;
 
     protected override void Awake()
@@ -51,6 +54,8 @@ public class TutorialHealWithCombat : TutorialCompletion
         mySubscriber = new Subscriber();
         mySubscriber.EventOnReceivedMessage += ReceiveMessage;
 
+        StartCoroutine(HighlightBossTimer());
+
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.TutorialHealFightComplete);
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.Wipe);
     }
@@ -80,5 +85,18 @@ public class TutorialHealWithCombat : TutorialCompletion
 
         if (aChildCollider == myStartFightCollider)
             StartFight();
+    }
+
+    private IEnumerator HighlightBossTimer()
+    {
+        float waitDuration = 1.0f;
+        while (waitDuration > 0.0f)
+        {
+            waitDuration -= Time.deltaTime;
+            yield return null;
+        }
+
+        Vector3 inversePosition = myHighlightBossTimerObject.GetComponentInParent<Canvas>().transform.InverseTransformPoint(myHighlightBossTimerObject.transform.position);        
+        FindObjectOfType<TutorialHighlightManager>().HighlightArea(inversePosition, Vector3.one);
     }
 }

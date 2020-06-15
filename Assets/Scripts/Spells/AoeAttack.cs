@@ -11,9 +11,12 @@ public class AoeAttack : Spell
     [SerializeField]
     private string myAttackTag = "Enemy";
 
+    private bool myHasRechedTarget = false;
+
     protected override void Update()
     {
-        base.Update();
+        if(!myHasRechedTarget)
+            base.Update();
 
         myLifeTime -= Time.deltaTime;
         if (myLifeTime <= 0.0f)
@@ -24,6 +27,8 @@ public class AoeAttack : Spell
 
     protected override void OnReachTarget()
     {
+        myHasRechedTarget = true;
+
         if (myTarget)
             DealSpellEffect();
 
@@ -42,5 +47,11 @@ public class AoeAttack : Spell
             if (myDamage > 0.0f)
                 other.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor.linear, other.transform.position);
         }
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        myHasRechedTarget = false;
     }
 }

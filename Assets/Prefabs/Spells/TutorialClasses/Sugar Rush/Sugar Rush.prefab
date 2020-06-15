@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1983804006253038
+--- !u!1 &1423380903055156
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,81 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4319644148406474}
-  - component: {fileID: 8196386965853612943}
-  - component: {fileID: -5745426637000047865}
-  - component: {fileID: 4141274285427440124}
-  - component: {fileID: -4828055537990238932}
+  - component: {fileID: 4887214456255646}
+  - component: {fileID: 9088086734368364426}
+  - component: {fileID: -3014266418265328286}
+  - component: {fileID: -1518101963397814658}
   m_Layer: 0
-  m_Name: Lightning
+  m_Name: Sugar Rush
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4319644148406474
+--- !u!4 &4887214456255646
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983804006253038}
+  m_GameObject: {fileID: 1423380903055156}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1474582, y: 0.6805223, z: 0.6294943}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8196386965853612943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983804006253038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8462d372ec43cf14db592b02f1887893, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myQuickInfo: Lightning
-  myTutorialInfo: 
-  myName: Lightning
-  mySpellType: 1
-  mySpellTarget: 4
-  myAnimationType: 0
-  myDamage: 50
-  myHealValue: 0
-  myResourceCost: 0
-  myThreatModifier: 1
-  mySpeed: 0
-  myCastTime: 0
-  myCooldown: 0
-  myRange: 0
-  myStunDuration: 0
-  myCastbarColor: {r: 0, g: 0.2075593, b: 0.3679245, a: 0}
-  mySpellIcon: {fileID: 0}
-  myIsCastableWhileMoving: 0
-  myCanCastOnSelf: 0
-  myIsOnlySelfCast: 0
-  myShouldRotate: 0
-  mySpawnedOnHit: {fileID: 0}
-  mySpellSFX:
-    myCastSound: {fileID: 0}
-    mySpawnSound: {fileID: 0}
-    myHitSound: {fileID: 8300000, guid: 0e046981b256580489bedbb3759bfd51, type: 3}
-  mySpawnOnHitVFXOnSelf: 0
-  mySpellVFX: {fileID: 7311185079315158179, guid: 0680cc7327227dd4bb30d136b2364fd6,
-    type: 3}
-  myAttackTag: Player
---- !u!82 &-5745426637000047865
+--- !u!82 &9088086734368364426
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983804006253038}
+  m_GameObject: {fileID: 1423380903055156}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -172,29 +129,66 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!135 &4141274285427440124
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983804006253038}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-4828055537990238932
+--- !u!114 &-3014266418265328286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983804006253038}
+  m_GameObject: {fileID: 1423380903055156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c54a6f777942aaa4eb9911fc688d3df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myQuickInfo: Sugar Rush
+  myTutorialInfo: Increases movement speed greatly.
+  myName: Sugar Rush
+  mySpellType: 0
+  mySpellTarget: 0
+  myAnimationType: 0
+  myDamage: 0
+  myHealValue: 0
+  myResourceCost: 40
+  myThreatModifier: 1
+  mySpeed: 0
+  myCastTime: 0
+  myCooldown: 15
+  myRange: 0
+  myStunDuration: 0
+  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
+  mySpellIcon: {fileID: 21300000, guid: 044f5cc1a395d7242ab8c08004f9e6e0, type: 3}
+  myIsCastableWhileMoving: 0
+  myCanCastOnSelf: 0
+  myIsOnlySelfCast: 1
+  myShouldRotate: 0
+  mySpawnedOnHit: {fileID: 0}
+  mySpellSFX:
+    myCastSound: {fileID: 0}
+    mySpawnSound: {fileID: 0}
+    myHitSound: {fileID: 0}
+  mySpawnOnHitVFXOnSelf: 0
+  mySpellVFX: {fileID: 897728436608619979, guid: fa563a829e3bbc0438bc27a71778fb67,
+    type: 3}
+  myIsCastManually: 1
+  myDuration: 6
+  mySpellOverTimeType: 8
+  mySpeedMultiplier: 0.5
+  myAttackSpeed: 0
+  myDamageIncrease: 0
+  myDamageMitigator: 0
+  myShieldValue: 0
+  myNumberOfTicks: 3
+--- !u!114 &-1518101963397814658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423380903055156}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myID: 27
+  myID: 86

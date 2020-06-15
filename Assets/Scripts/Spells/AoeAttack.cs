@@ -11,18 +11,27 @@ public class AoeAttack : Spell
     [SerializeField]
     private string myAttackTag = "Enemy";
 
-    protected override void Start()
-    {
-        base.Start();
-        SpawnVFX(2.5f);
-    }
-
     protected override void Update()
     {
+        base.Update();
+
         myLifeTime -= Time.deltaTime;
         if (myLifeTime <= 0.0f)
         {
             ReturnToPool();
+        }
+    }
+
+    protected override void OnReachTarget()
+    {
+        if (myTarget)
+            DealSpellEffect();
+
+        SpawnVFX(2.5f);
+
+        if (mySpawnedOnHit != null)
+        {
+            SpawnOnHitObject();
         }
     }
 

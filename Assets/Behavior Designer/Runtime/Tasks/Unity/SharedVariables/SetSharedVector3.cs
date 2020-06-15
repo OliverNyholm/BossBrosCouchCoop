@@ -14,12 +14,26 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity.SharedVariables
         [Tooltip("The SharedVector3 to set")]
         public SharedVector3 targetVariable;
 
+        public bool myShouldSnapToGround = false;
+
         public override TaskStatus OnUpdate()
         {
             if (sharedGameObject.Value == null)
                 targetVariable.Value = targetValue.Value;
             else
                 targetVariable.Value = sharedGameObject.Value.transform.position;
+
+            if(myShouldSnapToGround)
+            {
+                Ray ray = new Ray(targetVariable.Value + Vector3.up, Vector3.down);
+                LayerMask layerMask = LayerMask.GetMask("Terrain");
+
+                RaycastHit hitInfo;
+                if (Physics.Raycast(ray, out hitInfo, 100.0f, layerMask))
+                {
+                    targetVariable.Value = hitInfo.point + Vector3.up * 0.01f;
+                }
+            }
 
             return TaskStatus.Success;
         }

@@ -1,19 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.HighDefinition;
 
 public class HighlightAreaLogic : PoolableObject
 {
     private Material myMaterial;
-    private DecalProjector myDecalProjector;
+    private MeshRenderer myDecalProjector;
 
     private float myDuration;
     private float myLifeTime;
 
     private void Awake()
     {
-        myDecalProjector = GetComponentInChildren<DecalProjector>();
+        myDecalProjector = GetComponentInChildren<MeshRenderer>();
         myMaterial = new Material(myDecalProjector.material);
 
         myDecalProjector.material = myMaterial;

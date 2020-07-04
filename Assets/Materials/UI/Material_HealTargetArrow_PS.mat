@@ -8,16 +8,15 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Material_HealTargetArrow_PS
-  m_Shader: {fileID: -6465566751694194690, guid: b68654d132a2fcd4eaa5e72c09ad964f,
+  m_Shader: {fileID: -6465566751694194690, guid: 7b5bd2c03d18e1147b0e2b8b5f930295,
     type: 3}
   m_ShaderKeywords: _ALPHATEST_ON _BLENDMODE_ALPHA _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap:
     MotionVector: User
-    RenderType: Transparent
   disabledShaderPasses:
   - MOTIONVECTORS
   - TransparentBackface
@@ -25,6 +24,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_75AD100E:
+        m_Texture: {fileID: 2800000, guid: 0901b6f3cb23d3a45b2eee350568b4ee, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_3B21A246_Out_0:
         m_Texture: {fileID: 2800000, guid: 0901b6f3cb23d3a45b2eee350568b4ee, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}

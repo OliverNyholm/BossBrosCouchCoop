@@ -1,16 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.HighDefinition;
 
 public class TargetProjector : MonoBehaviour
 {
     private Material myMaterial;
-    private DecalProjector myDecalProjector;
+    private MeshRenderer myDecalProjector;
 
     private void Awake()
     {
-        myDecalProjector = GetComponent<DecalProjector>();
+        myDecalProjector = GetComponent<MeshRenderer>();
         myMaterial = new Material(myDecalProjector.material);
 
         myDecalProjector.material = myMaterial;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterSelectCastingComponent : PlayerCastingComponent
 {
     private CharacterSelector myCharacterSelector;
+    private GameObject myAttackObject = null;
 
     private float myHeldDownTimeStamp = float.MaxValue;
     private float myTimeUntilShowSpellDetails = 1.0f;
@@ -17,6 +18,11 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
         myPlayerControls = myCharacterSelector.PlayerControls;
     }
 
+    private void Start()
+    {
+        myAttackObject = GameObject.Find("AttackObject");
+    }
+
     void Update()
     {
         DetectSpellInput();
@@ -27,7 +33,7 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
         if (!myIsShowingInfo && Time.time - myHeldDownTimeStamp > myTimeUntilShowSpellDetails)
         {
             myIsShowingInfo = true;
-            myCharacterSelector.ShowSpellInfo(myHeldDownSpellIndex);
+            myCharacterSelector.ShowSpellInfo(myClass.GetSpell(myHeldDownSpellIndex).GetComponent<Spell>());
         }
     }
 
@@ -54,6 +60,9 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
             myHeldDownTimeStamp = Time.time;
         }
 
+        if(myHeldDownTimeStamp == Time.time)
+            myUIComponent.SpellHeldDown(myHeldDownSpellIndex);
+
         if (myPlayerControls.Action1.WasReleased)
             ButtonReleased(0);
         else if (myPlayerControls.Action2.WasReleased)
@@ -67,10 +76,13 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
     private void ButtonReleased(int aSpellIndex)
     {
         if (myIsShowingInfo)
-            myCharacterSelector.HideSpellInfo(aSpellIndex);
+        {
+            myCharacterSelector.HideSpellInfo();
+        }
         else
             CastSpell(aSpellIndex);
 
+        myUIComponent.SpellReleased(aSpellIndex);
         myIsShowingInfo = false;
         myHeldDownSpellIndex = -1;
     }
@@ -80,8 +92,10 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
         GameObject spell = myClass.GetSpell(aKeyIndex);
         Spell spellScript = spell.GetComponent<Spell>();
 
-        if (GetComponent<Health>().IsDead())
-            return;
+        if (spellScript.IsCastOnFriends())
+            myTargetingComponent.SetTarget(gameObject);
+        else
+            myTargetingComponent.SetTarget(myAttackObject);
 
         if (!spellScript.myIsOnlySelfCast)
             myTargetingComponent.SpellTarget = myTargetingComponent.Target;
@@ -94,6 +108,7 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
         if (spellScript.myCastTime <= 0.0f)
         {
             SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
+            myClass.SetSpellOnCooldown(aKeyIndex);
             myAnimatorWrapper.SetTrigger(spellScript.myAnimationType);
             return;
         }

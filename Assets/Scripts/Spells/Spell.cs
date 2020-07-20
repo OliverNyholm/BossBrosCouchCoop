@@ -149,7 +149,9 @@ public class Spell : PoolableObject
         }
         if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Taunt))
         {
-            myTarget.GetComponent<NPCThreatComponent>().SetTaunt(myParent.GetInstanceID(), 3.0f);
+            NPCThreatComponent threatComponent = myTarget.GetComponent<NPCThreatComponent>();
+            if(threatComponent)
+                threatComponent.SetTaunt(myParent.GetInstanceID(), 3.0f);
         }
     }
 

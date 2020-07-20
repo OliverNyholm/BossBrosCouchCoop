@@ -9,8 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4156694405244688}
-  - component: {fileID: 33545036324759554}
-  - component: {fileID: 23245613497242262}
   - component: {fileID: 114541188085284706}
   - component: {fileID: 2380167774674227379}
   - component: {fileID: 7992671557417663231}
@@ -35,53 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &33545036324759554
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1894928944319450}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &23245613497242262
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1894928944319450}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RenderingLayerMask: 4294967295
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: f422daac75b75ce40bad5d08ace9243b, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!114 &114541188085284706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +72,8 @@ MonoBehaviour:
     myCastSound: {fileID: 8300000, guid: f98f145d42bd9aa47abb30c7b087cbac, type: 3}
     mySpawnSound: {fileID: 8300000, guid: f98f145d42bd9aa47abb30c7b087cbac, type: 3}
     myHitSound: {fileID: 8300000, guid: f98f145d42bd9aa47abb30c7b087cbac, type: 3}
-  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
+  mySpawnOnHitVFXOnSelf: 1
+  mySpellVFX: {fileID: 897728436608619979, guid: 4eb8d2047d45fc446a05a61aefe6950a,
     type: 3}
 --- !u!82 &2380167774674227379
 AudioSource:

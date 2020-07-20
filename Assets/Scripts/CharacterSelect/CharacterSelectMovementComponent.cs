@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class CharacterSelectMovementComponent : PlayerMovementComponent
 {
     private NavMeshAgent myNavmeshAgent;
-    private AnimatorWrapper myAnimatorWrapper;
     private Vector3 myStartPosition;
     private Quaternion myStartRotation;
 

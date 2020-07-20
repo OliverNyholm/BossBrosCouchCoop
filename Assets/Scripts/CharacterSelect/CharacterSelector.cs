@@ -30,6 +30,9 @@ public class CharacterSelector : MonoBehaviour
     [SerializeField]
     private List<GameObject> mySpells = new List<GameObject>(4);
 
+    [SerializeField]
+    private CharacterSelectSpellInfo mySpellInfo = null;
+
     public PlayerControls PlayerControls { get; set; }
     private CharacterSelectManager myManager;
     private ClassData myCurrentClassData;
@@ -65,12 +68,12 @@ public class CharacterSelector : MonoBehaviour
         if (PlayerControls == null)
             return;
 
-        if (PlayerControls.Action2.WasPressed || PlayerControls.Action3.WasPressed)
+        if (PlayerControls.TargetEnemy.WasPressed)
         {
             myManager.PlayerSetState(this, --State);
         }
 
-        if (PlayerControls.Action1.WasPressed || PlayerControls.Start.WasPressed)
+        if (PlayerControls.Jump.WasPressed || PlayerControls.Start.WasPressed)
         {
             if (State == SelectionState.Ready)
                 myManager.StartPlaying();
@@ -171,13 +174,13 @@ public class CharacterSelector : MonoBehaviour
         return mySpells;
     }
 
-    public void ShowSpellInfo(int aSpellIndex)
+    public void ShowSpellInfo(Spell aSpell)
     {
-
+        mySpellInfo.ShowSpellInfo(aSpell);
     }
 
-    public void HideSpellInfo(int aSpellIndex)
+    public void HideSpellInfo()
     {
-
+        mySpellInfo.HideSpellInfo();
     }
 }

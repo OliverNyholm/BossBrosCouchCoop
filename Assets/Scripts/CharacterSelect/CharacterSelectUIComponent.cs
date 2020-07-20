@@ -31,14 +31,19 @@ public class CharacterSelectUIComponent : PlayerUIComponent
 
     public override void SetSpellHud(Spell aSpell, int anIndex, bool aShouldHighlightSpell = false)
     {
+        ActionKey actionKey = myActionButtons[anIndex].GetComponent<ActionKey>();
         if (aSpell == null)
         {
             myActionButtons[anIndex].GetComponent<Image>().sprite = myNoSpellSprite;
+            actionKey.SetSpellName("None");
+            actionKey.SetSpellInfo("No spell on this button");
             //myActionButtons[anIndex].GetComponent<ActionKey>().SetSpellInfo("");
         }
         else
         {
             myActionButtons[anIndex].GetComponent<Image>().sprite = aSpell.mySpellIcon;
+            actionKey.SetSpellName(aSpell.myName);
+            actionKey.SetSpellInfo(aSpell.myTutorialInfo);
             //myActionButtons[anIndex].GetComponent<ActionKey>().SetSpellInfo(aSpell.myQuickInfo);
         }
     }

@@ -8,9 +8,9 @@ public class PlayerMovementComponent : MovementComponent
     public float myJumpSpeed;
     public float myGravity;
 
+    protected AnimatorWrapper myAnimatorWrapper;
     private CharacterController myController;
     private PlayerControls myPlayerControls;
-    private AnimatorWrapper myAnimatorWrapper;
     private PlayerCastingComponent myCastingComponent;
     private PlayerTargetingComponent myTargetingComponent;
 

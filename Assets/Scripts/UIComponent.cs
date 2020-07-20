@@ -96,12 +96,14 @@ public class UIComponent : MonoBehaviour
 
     public void AddBuff(Sprite aBuffIcon)
     {
-        myCharacterHUD.AddBuff(aBuffIcon);
+        if(myCharacterHUD)
+            myCharacterHUD.AddBuff(aBuffIcon);
     }
 
     public void RemoveBuff(int anIndex)
     {
-        myCharacterHUD.RemoveBuff(anIndex);
+        if(myCharacterHUD)
+            myCharacterHUD.RemoveBuff(anIndex);
     }
 
     public void SetTargetHUD(GameObject aTarget)

@@ -19,6 +19,10 @@ public class CharacterSelectManager : MonoBehaviour
     [SerializeField]
     private List<ColorScheme> myColorSchemes = new List<ColorScheme>();
 
+    [Header("The colors to be selectable")]
+    [SerializeField]
+    private List<GameObject> myGnomes = new List<GameObject>();
+
     private CharacterGameData myCharacterGameData = null;
 
     private List<int> myPlayerClassIndex;
@@ -48,30 +52,37 @@ public class CharacterSelectManager : MonoBehaviour
         List<PlayerSelectData> characters = myCharacterGameData.GetPlayerData();
         for (int index = 0; index < characters.Count; index++)
         {
-            SetupCharacterSelector(GetAvailableCharacterSelector(), characters[index]);
+            SetupCharacterSelector(GetAvailableCharacterSelector(out int availableIndex), characters[index]);
             myPlayers[index].SetActive(true);
+            myGnomes[index].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(myPlayers[availableIndex].GetComponent<CharacterSelector>());
+            myGnomes[index].GetComponent<CharacterSelectTargetingComponent>().SetPlayerIndex(index);
         }
 
-        if(characters.Count == 0)
+        if (characters.Count == 0)
         {
             PlayerSelectData selectData = new PlayerSelectData(PlayerControls.CreateWithKeyboardBindings(), null, null, "DebugPlayer");
-            SetupCharacterSelector(GetAvailableCharacterSelector(), selectData);
+            SetupCharacterSelector(GetAvailableCharacterSelector(out int availableIndex), selectData);
             myPlayers[0].SetActive(true);
-
+            myGnomes[0].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(myPlayers[availableIndex].GetComponent<CharacterSelector>());
+            myGnomes[0].GetComponent<CharacterSelectTargetingComponent>().SetPlayerIndex(0);
             myCharacterGameData.AddPlayerData(selectData.myPlayerControls, "DebugPlayer");
         }
         
         myNextLevel = myCharacterGameData.mySceneToLoad;
     }
 
-    CharacterSelector GetAvailableCharacterSelector()
+    CharacterSelector GetAvailableCharacterSelector(out int anIndex)
     {
         for (int index = 0; index < myPlayers.Count; index++)
         {
             if (myPlayers[index].GetComponent<CharacterSelector>().PlayerControls == null)
+            {
+                anIndex = index;
                 return myPlayers[index].GetComponent<CharacterSelector>();
+            }
         }
 
+        anIndex = -1;
         return null;
     }
 

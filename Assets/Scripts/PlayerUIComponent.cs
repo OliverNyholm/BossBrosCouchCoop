@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerUIComponent : UIComponent
 {
     private GameObject myActionBar;
-    private GameObject[] myActionButtons;
+    protected GameObject[] myActionButtons;
 
     private SpellErrorHandler mySpellErrorHandler;
 
@@ -14,7 +14,7 @@ public class PlayerUIComponent : UIComponent
     private bool myUseCastbarAbovePlayer = false;
 
     [SerializeField]
-    private Sprite myNoSpellSprite = null;
+    protected Sprite myNoSpellSprite = null;
 
     protected override void Awake()
     {
@@ -83,7 +83,7 @@ public class PlayerUIComponent : UIComponent
         }
     }
 
-    public void SetSpellHud(Spell aSpell, int anIndex, bool aShouldHighlightSpell = false)
+    public virtual void SetSpellHud(Spell aSpell, int anIndex, bool aShouldHighlightSpell = false)
     {
         myActionButtons[anIndex] = myActionBar.transform.GetChild(anIndex).gameObject;
         if (aSpell == null)

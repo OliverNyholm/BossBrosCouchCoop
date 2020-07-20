@@ -17,7 +17,7 @@ public class Class : MonoBehaviour
     [HideInInspector]
     public int mySpellSize = 4;
 
-    private PlayerUIComponent myUIComponent;
+    protected PlayerUIComponent myUIComponent;
 
     public enum ClassRole
     {
@@ -32,7 +32,7 @@ public class Class : MonoBehaviour
         myUIComponent = GetComponent<PlayerUIComponent>();
     }
 
-    public void Start()
+    protected virtual void Start()
     {
         PoolManager poolManager = PoolManager.Instance;
 
@@ -84,7 +84,8 @@ public class Class : MonoBehaviour
     public void SetSpellOnCooldown(int anIndex)
     {
         myCooldownTimers[anIndex] = mySpells[anIndex].GetComponent<Spell>().myCooldown;
-        myUIComponent.SetSpellCooldownText(anIndex, myCooldownTimers[anIndex]);
+        if(myUIComponent)
+            myUIComponent.SetSpellCooldownText(anIndex, myCooldownTimers[anIndex]);
     }
 
     public bool HasSpell(int aIndex)

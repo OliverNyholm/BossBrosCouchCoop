@@ -2,36 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using InControl;
 
 public class CharacterSelector : MonoBehaviour
 {
-    [Header("Image to show player color")]
-    [SerializeField]
-    private Image myAvatar = null;
-
     [Header("Image to show class icon")]
     [SerializeField]
     private Image myClassIcon = null;
 
     [Header("Text to show player name")]
     [SerializeField]
-    private Text myNameText = null;
+    private TextMeshProUGUI myNameText = null;
 
     [Header("Text to show class name")]
     [SerializeField]
-    private Text myClassNameText = null;
+    private TextMeshProUGUI myClassNameText = null;
 
     [Header("Text to show class description")]
     [SerializeField]
-    private Text myDescriptionText = null;
+    private TextMeshProUGUI myDescriptionText = null;
 
     [Header("Text to show current insctructions")]
     [SerializeField]
-    private Text myInstructionsText = null;
+    private TextMeshProUGUI myInstructionsText = null;
+
+    [SerializeField]
+    private List<GameObject> mySpells = new List<GameObject>(4);
 
     public PlayerControls PlayerControls { get; set; }
     private CharacterSelectManager myManager;
+    private ClassData myCurrentClassData;
+
+    public delegate void OnClassChanged();
+    public event OnClassChanged EventOnClassChanged;
+
 
     float myPreviousLeftAxis;
     float myPreviousRightAxis;
@@ -111,7 +116,6 @@ public class CharacterSelector : MonoBehaviour
         myManager = aManager;
         myNameText.text = aName;
 
-        myAvatar.enabled = true;
         myClassIcon.enabled = true;
         myNameText.enabled = true;
         myClassNameText.enabled = true;
@@ -125,7 +129,6 @@ public class CharacterSelector : MonoBehaviour
         PlayerControls = null;
         myManager = null;
 
-        myAvatar.enabled = false;
         myClassIcon.enabled = false;
         myNameText.enabled = false;
         myClassNameText.enabled = false;
@@ -135,14 +138,17 @@ public class CharacterSelector : MonoBehaviour
     public void SetColor(ColorScheme aColorScheme)
     {
         myNameText.color = aColorScheme.myColor;
-        myAvatar.sprite = aColorScheme.myAvatar;
     }
 
     public void SetClass(ClassData aClassData)
     {
+        myCurrentClassData = aClassData;
+
         myClassIcon.sprite = aClassData.myIconSprite;
         myClassNameText.text = aClassData.myName;
         myDescriptionText.text = aClassData.myDescription;
+
+        EventOnClassChanged?.Invoke();
     }
 
     public void SetInstructions(string aInstruction)
@@ -153,5 +159,25 @@ public class CharacterSelector : MonoBehaviour
     public string GetName()
     {
         return myNameText.text;
+    }
+
+    public ClassData GetCurrentClassData()
+    {
+        return myCurrentClassData;
+    }
+
+    public List<GameObject> GetSpells()
+    {
+        return mySpells;
+    }
+
+    public void ShowSpellInfo(int aSpellIndex)
+    {
+
+    }
+
+    public void HideSpellInfo(int aSpellIndex)
+    {
+
     }
 }

@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class PlayerCastingComponent : CastingComponent
 {
-    private PlayerControls myPlayerControls;
+    protected PlayerControls myPlayerControls;
 
-    private PlayerTargetingComponent myTargetingComponent;
-    private PlayerUIComponent myUIComponent;
+    protected PlayerTargetingComponent myTargetingComponent;
+    protected PlayerUIComponent myUIComponent;
     private PlayerControlsVibrationManager myPlayerControlsVibrationsManager;
-    private Class myClass;
+    private PlayerMovementComponent myMovementComponent;
+    protected Class myClass;
 
     private Vector3 myHealTargetingReleaseDirection;
     private float myStartTimeOfHoldingKeyDown;
@@ -27,6 +28,7 @@ public class PlayerCastingComponent : CastingComponent
         base.Awake();
         myClass = GetComponent<Class>();
         myTargetingComponent = GetComponent<PlayerTargetingComponent>();
+        myMovementComponent = GetComponent<PlayerMovementComponent>();
         myUIComponent = GetComponent<PlayerUIComponent>();
         myPlayerControlsVibrationsManager = GetComponent<PlayerControlsVibrationManager>();
 
@@ -229,7 +231,7 @@ public class PlayerCastingComponent : CastingComponent
 
             progress += rate * Time.deltaTime;
 
-            if (!spellScript.IsCastableWhileMoving() && GetComponent<PlayerMovementComponent>().IsMoving() || Input.GetKeyDown(KeyCode.Escape))
+            if (!spellScript.IsCastableWhileMoving() && myMovementComponent && myMovementComponent.IsMoving() || Input.GetKeyDown(KeyCode.Escape))
             {
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
@@ -267,7 +269,7 @@ public class PlayerCastingComponent : CastingComponent
 
             progress += rate * Time.deltaTime;
 
-            if (GetComponent<PlayerMovementComponent>().IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
+            if (myMovementComponent && myMovementComponent.IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
             {
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
@@ -346,7 +348,7 @@ public class PlayerCastingComponent : CastingComponent
             return false;
         }
 
-        if (!aSpellScript.IsCastableWhileMoving() && GetComponent<PlayerMovementComponent>().IsMoving())
+        if (!aSpellScript.IsCastableWhileMoving() && myMovementComponent && myMovementComponent.IsMoving())
         {
             ShowError(SpellErrorHandler.SpellError.CantMoveWhileCasting);
             return false;
@@ -457,7 +459,7 @@ public class PlayerCastingComponent : CastingComponent
         myShouldAutoAttack = false;
     }
 
-    private void ShowError(SpellErrorHandler.SpellError aSpellError)
+    protected void ShowError(SpellErrorHandler.SpellError aSpellError)
     {
         myUIComponent.HighlightSpellError(aSpellError);
         myPlayerControlsVibrationsManager.VibratePlayerCastingError(aSpellError);

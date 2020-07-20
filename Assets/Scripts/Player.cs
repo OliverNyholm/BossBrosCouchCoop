@@ -13,7 +13,7 @@ public class Player : Character
 
     public int PlayerIndex { get; set; }
 
-    private void Start()
+    protected virtual void Start()
     {
         myTargetHandler = GameObject.Find("GameManager").GetComponent<TargetHandler>();
 

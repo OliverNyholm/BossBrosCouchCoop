@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;
 
 public class ActionKey : MonoBehaviour
 {
     [Header("Text to show cooldown")]
     [SerializeField]
-    private Text myCooldownText = null;
+    private TextMeshProUGUI myCooldownText = null;
 
     [Header("Text to show info about spell")]
     [SerializeField]

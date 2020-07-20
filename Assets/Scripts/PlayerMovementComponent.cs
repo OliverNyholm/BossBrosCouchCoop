@@ -17,12 +17,12 @@ public class PlayerMovementComponent : MovementComponent
     private Health myHealth;
     private Stats myStats;
 
-    private Vector3 myVelocity;
+    protected Vector3 myVelocity;
     private CameraXZTransform myCameraXZTransform;
 
-    private bool myIsGrounded;
+    protected bool myIsGrounded;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         myController = GetComponent<CharacterController>();
         myAnimatorWrapper = GetComponent<AnimatorWrapper>();
@@ -32,7 +32,7 @@ public class PlayerMovementComponent : MovementComponent
         myStats = GetComponent<Stats>();
     }
 
-    void Start()
+    protected virtual void Start()
     {
         Camera camera = Camera.main;
         myCameraXZTransform.myForwards = camera.transform.forward;
@@ -53,7 +53,7 @@ public class PlayerMovementComponent : MovementComponent
         myPlayerControls = aPlayerControls;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         myVelocity.y -= myGravity * Time.deltaTime;
         myController.Move(myVelocity * Time.deltaTime);
@@ -106,7 +106,7 @@ public class PlayerMovementComponent : MovementComponent
         }
     }
 
-    bool IsGrounded()
+    protected bool IsGrounded()
     {
         if (myVelocity.y > 0.0f)
             return false;

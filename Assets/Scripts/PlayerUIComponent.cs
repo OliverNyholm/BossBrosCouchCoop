@@ -83,7 +83,7 @@ public class PlayerUIComponent : UIComponent
         }
     }
 
-    public virtual void SetSpellHud(Spell aSpell, int anIndex, bool aShouldHighlightSpell = false)
+    public void SetSpellHud(Spell aSpell, int anIndex, bool aShouldHighlightSpell = false)
     {
         myActionButtons[anIndex] = myActionBar.transform.GetChild(anIndex).gameObject;
         if (aSpell == null)

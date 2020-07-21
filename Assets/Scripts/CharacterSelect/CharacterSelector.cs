@@ -33,6 +33,8 @@ public class CharacterSelector : MonoBehaviour
     [SerializeField]
     private CharacterSelectSpellInfo mySpellInfo = null;
 
+    private GnomeAppearance myGnomeAppearance;
+
     public PlayerControls PlayerControls { get; set; }
     private CharacterSelectManager myManager;
     private ClassData myCurrentClassData;
@@ -113,11 +115,12 @@ public class CharacterSelector : MonoBehaviour
         myPreviousRightAxis = PlayerControls.Right.RawValue > 0.0f ? 1.0f : 0.0f;
     }
 
-    public void Show(PlayerControls aPlayerControls, string aName, CharacterSelectManager aManager)
+    public void Show(PlayerControls aPlayerControls, string aName, CharacterSelectManager aManager, GnomeAppearance aGnomeAppearance)
     {
         PlayerControls = aPlayerControls;
         myManager = aManager;
         myNameText.text = aName;
+        myGnomeAppearance = aGnomeAppearance;
 
         myClassIcon.enabled = true;
         myNameText.enabled = true;
@@ -141,6 +144,7 @@ public class CharacterSelector : MonoBehaviour
     public void SetColor(ColorScheme aColorScheme)
     {
         myNameText.color = aColorScheme.myColor;
+        myGnomeAppearance.SetColorMaterial(aColorScheme.myMaterial);
     }
 
     public void SetClass(ClassData aClassData)
@@ -150,6 +154,12 @@ public class CharacterSelector : MonoBehaviour
         myClassIcon.sprite = aClassData.myIconSprite;
         myClassNameText.text = aClassData.myName;
         myDescriptionText.text = aClassData.myDescription;
+
+        myClassNameText.color = aClassData.myClassColor;
+        myDescriptionText.color = aClassData.myClassColor;
+
+        myGnomeAppearance.EquipItemInHand(aClassData.myLeftItem, true);
+        myGnomeAppearance.EquipItemInHand(aClassData.myRightItem, false);
 
         EventOnClassChanged?.Invoke();
     }

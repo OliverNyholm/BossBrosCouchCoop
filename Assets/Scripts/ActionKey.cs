@@ -95,6 +95,13 @@ public class ActionKey : MonoBehaviour
             myInfoText.text = aInfo;
     }
 
+    public void SetTextColor(Color aColor)
+    {
+        myNameText.color = aColor;
+        if (myInfoText)
+            myInfoText.color = aColor;
+    }
+
     public void SetPulsation(bool aValue)
     {
         myIsPulsing = aValue;

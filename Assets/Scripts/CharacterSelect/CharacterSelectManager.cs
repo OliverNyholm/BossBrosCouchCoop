@@ -40,30 +40,39 @@ public class CharacterSelectManager : MonoBehaviour
         {
             CharacterSelector characterSelector = myPlayers[index].GetComponent<CharacterSelector>();
             PlayerSetState(characterSelector, CharacterSelector.SelectionState.Class);
+
             myPlayerClassIndex.Add(index);
             myPlayerColorIndex.Add(index);
-
-            characterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]]);
-            characterSelector.SetColor(myColorSchemes[myPlayerColorIndex[index]]);
             myPlayers[index].SetActive(false);
+            myGnomes[index].SetActive(false);
         }
 
         myCharacterGameData = FindObjectOfType<CharacterGameData>();
         List<PlayerSelectData> characters = myCharacterGameData.GetPlayerData();
         for (int index = 0; index < characters.Count; index++)
         {
-            SetupCharacterSelector(GetAvailableCharacterSelector(out int availableIndex), characters[index]);
             myPlayers[index].SetActive(true);
-            myGnomes[index].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(myPlayers[availableIndex].GetComponent<CharacterSelector>());
+            myGnomes[index].SetActive(true);
+            CharacterSelector characterSelector = GetAvailableCharacterSelector(out int availableIndex);
+            SetupCharacterSelector(characterSelector, characters[index], availableIndex);
+            characterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]]);
+            characterSelector.SetColor(myColorSchemes[myPlayerColorIndex[index]]);
+
+            myGnomes[index].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(characterSelector);
             myGnomes[index].GetComponent<CharacterSelectTargetingComponent>().SetPlayerIndex(index);
         }
 
         if (characters.Count == 0)
         {
-            PlayerSelectData selectData = new PlayerSelectData(PlayerControls.CreateWithKeyboardBindings(), null, null, "DebugPlayer");
-            SetupCharacterSelector(GetAvailableCharacterSelector(out int availableIndex), selectData);
             myPlayers[0].SetActive(true);
-            myGnomes[0].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(myPlayers[availableIndex].GetComponent<CharacterSelector>());
+            myGnomes[0].SetActive(true);
+            PlayerSelectData selectData = new PlayerSelectData(PlayerControls.CreateWithKeyboardBindings(), null, null, "DebugPlayer");
+            CharacterSelector characterSelector = GetAvailableCharacterSelector(out int availableIndex);
+            SetupCharacterSelector(characterSelector, selectData, availableIndex);
+            characterSelector.SetClass(myClassHuds[myPlayerClassIndex[0]]);
+            characterSelector.SetColor(myColorSchemes[myPlayerColorIndex[0]]);
+
+            myGnomes[0].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(characterSelector);
             myGnomes[0].GetComponent<CharacterSelectTargetingComponent>().SetPlayerIndex(0);
             myCharacterGameData.AddPlayerData(selectData.myPlayerControls, "DebugPlayer");
         }
@@ -86,12 +95,12 @@ public class CharacterSelectManager : MonoBehaviour
         return null;
     }
 
-    void SetupCharacterSelector(CharacterSelector aCharacterSelector, PlayerSelectData aCharacterSelectData)
+    void SetupCharacterSelector(CharacterSelector aCharacterSelector, PlayerSelectData aCharacterSelectData, int anIndex)
     {
         if (!aCharacterSelector)
             return;
 
-        aCharacterSelector.Show(aCharacterSelectData.myPlayerControls, aCharacterSelectData.myName, this);
+        aCharacterSelector.Show(aCharacterSelectData.myPlayerControls, aCharacterSelectData.myName, this, myGnomes[anIndex].GetComponentInChildren<GnomeAppearance>());
         PlayerSetState(aCharacterSelector, CharacterSelector.SelectionState.Class);
     }
 
@@ -148,6 +157,9 @@ public class CharacterSelectManager : MonoBehaviour
     {
         for (int index = 0; index < myPlayers.Count; index++)
         {
+            if (!myPlayers[index].activeInHierarchy)
+                continue;
+
             CharacterSelector characterSelector = myPlayers[index].GetComponent<CharacterSelector>();
             if (characterSelector.State >= aState)
                 continue;

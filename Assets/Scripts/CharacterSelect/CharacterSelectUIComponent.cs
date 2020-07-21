@@ -10,7 +10,7 @@ public class CharacterSelectUIComponent : PlayerUIComponent
     protected override void Awake()
     {
         myActionButtons = new GameObject[GetComponent<Class>().mySpellSize];
-    }        
+    }
 
     public void SetCharacterSelector(CharacterSelector aCharacterSelector)
     {
@@ -29,22 +29,13 @@ public class CharacterSelectUIComponent : PlayerUIComponent
         myCastbar.GetComponent<Canvas>().worldCamera = Camera.main;
     }
 
-    public override void SetSpellHud(Spell aSpell, int anIndex, bool aShouldHighlightSpell = false)
+    public void SetSpellHud(Spell aSpell, Color aClassColor, int anIndex)
     {
+        myActionButtons[anIndex].GetComponent<Image>().sprite = aSpell.mySpellIcon;
+
         ActionKey actionKey = myActionButtons[anIndex].GetComponent<ActionKey>();
-        if (aSpell == null)
-        {
-            myActionButtons[anIndex].GetComponent<Image>().sprite = myNoSpellSprite;
-            actionKey.SetSpellName("None");
-            actionKey.SetSpellInfo("No spell on this button");
-            //myActionButtons[anIndex].GetComponent<ActionKey>().SetSpellInfo("");
-        }
-        else
-        {
-            myActionButtons[anIndex].GetComponent<Image>().sprite = aSpell.mySpellIcon;
-            actionKey.SetSpellName(aSpell.myName);
-            actionKey.SetSpellInfo(aSpell.myTutorialInfo);
-            //myActionButtons[anIndex].GetComponent<ActionKey>().SetSpellInfo(aSpell.myQuickInfo);
-        }
+        actionKey.SetSpellName(aSpell.myName);
+        actionKey.SetSpellInfo(aSpell.myTutorialInfo);
+        actionKey.SetTextColor(aClassColor);
     }
 }

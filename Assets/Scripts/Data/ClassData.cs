@@ -8,8 +8,13 @@ public class ClassData : ScriptableObject
 {
     public List<GameObject> mySpells = new List<GameObject>(4);
     [Header("Details")]
+    public GameObject myRightItem;
+    public GameObject myLeftItem;
+
+    [Space(2)]
     public GameObject myClass;
     public Sprite myIconSprite;
+    public Color myClassColor;
     public string myName;
     public string myDescription;
 }

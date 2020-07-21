@@ -28,11 +28,13 @@ public class CharacterSelectClass : Class
 
         mySpells = aClassData.mySpells.ToArray();
 
+        CharacterSelectUIComponent csUIComponent = myUIComponent as CharacterSelectUIComponent;
+
         for (int index = 0; index < mySpells.Length; index++)
         {
             if (mySpells[index] == null)
             {
-                myUIComponent.SetSpellHud(null, index);
+                csUIComponent.SetSpellHud(null, aClassData.myClassColor,  index);
                 myCooldownTimers[index] = 0.01f;
                 continue;
             }
@@ -40,7 +42,7 @@ public class CharacterSelectClass : Class
             Spell spell = mySpells[index].GetComponent<Spell>();
             spell.CreatePooledObjects(poolManager, 3);
 
-            myUIComponent.SetSpellHud(spell, index);
+            csUIComponent.SetSpellHud(spell, aClassData.myClassColor, index);
             myCooldownTimers[index] = 0.01f;
         }
     }

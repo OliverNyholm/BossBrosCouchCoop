@@ -19,9 +19,11 @@ public class CharacterSelectManager : MonoBehaviour
     [SerializeField]
     private List<ColorScheme> myColorSchemes = new List<ColorScheme>();
 
-    [Header("The colors to be selectable")]
+    [Space(5)]
     [SerializeField]
     private List<GameObject> myGnomes = new List<GameObject>();
+    [SerializeField]
+    private List<Sprite> myClassRoleSprites = new List<Sprite>();
 
     private CharacterGameData myCharacterGameData = null;
 
@@ -55,7 +57,7 @@ public class CharacterSelectManager : MonoBehaviour
             myGnomes[index].SetActive(true);
             CharacterSelector characterSelector = GetAvailableCharacterSelector(out int availableIndex);
             SetupCharacterSelector(characterSelector, characters[index], availableIndex);
-            characterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]]);
+            characterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]], myClassRoleSprites);
             characterSelector.SetColor(myColorSchemes[myPlayerColorIndex[index]]);
 
             myGnomes[index].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(characterSelector);
@@ -69,7 +71,7 @@ public class CharacterSelectManager : MonoBehaviour
             PlayerSelectData selectData = new PlayerSelectData(PlayerControls.CreateWithKeyboardBindings(), null, null, "DebugPlayer");
             CharacterSelector characterSelector = GetAvailableCharacterSelector(out int availableIndex);
             SetupCharacterSelector(characterSelector, selectData, availableIndex);
-            characterSelector.SetClass(myClassHuds[myPlayerClassIndex[0]]);
+            characterSelector.SetClass(myClassHuds[myPlayerClassIndex[0]], myClassRoleSprites);
             characterSelector.SetColor(myColorSchemes[myPlayerColorIndex[0]]);
 
             myGnomes[0].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(characterSelector);
@@ -111,7 +113,7 @@ public class CharacterSelectManager : MonoBehaviour
             if (myPlayers[index].GetComponent<CharacterSelector>() == aCharacterSelector)
             {
                 myPlayerClassIndex[index] = GetNextAvailableOption(CharacterSelector.SelectionState.Class, myClassHuds, myPlayerClassIndex, myPlayerClassIndex[index], aModifier);
-                aCharacterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]]);
+                aCharacterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]], myClassRoleSprites);
             }
         }
     }
@@ -167,7 +169,7 @@ public class CharacterSelectManager : MonoBehaviour
             if (!IsSelectionAvailable(characterSelector.State, myPlayerClassIndex, myPlayerClassIndex[index]))
             {
                 myPlayerClassIndex[index] = GetNextAvailableOption(characterSelector.State, myClassHuds, myPlayerClassIndex, myPlayerClassIndex[index]);
-                characterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]]);
+                characterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]], myClassRoleSprites);
             }
             if (!IsSelectionAvailable(characterSelector.State, myPlayerColorIndex, myPlayerColorIndex[index]))
             {

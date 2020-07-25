@@ -82,5 +82,8 @@ public class Player : Character
         GnomeAppearance gnomeAppearance = GetComponentInChildren<GnomeAppearance>();
         gnomeAppearance.EquipItemInHand(aClassData.myLeftItem, true);
         gnomeAppearance.EquipItemInHand(aClassData.myRightItem, false);
+
+        GetComponent<Stats>().myAutoAttackDamage = aClassData.myAutoAttackDamage;
+        GetComponent<CastingComponent>().myAutoAttackCooldownReset = aClassData.myTimeBetweenAutoAttacks;
     }
 }

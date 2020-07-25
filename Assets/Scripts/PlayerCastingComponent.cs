@@ -77,7 +77,7 @@ public class PlayerCastingComponent : CastingComponent
         }
 
         myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
-        myAutoAttackCooldown = 1.2f;
+        myAutoAttackCooldown = myAutoAttackCooldownReset;
 
         myTargetingComponent.SpellTarget = myTargetingComponent.Target;
         SpawnSpell(-1, myTargetingComponent.SpellTarget.transform.position);

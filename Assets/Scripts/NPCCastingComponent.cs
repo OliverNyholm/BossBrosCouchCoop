@@ -165,7 +165,7 @@ public class NPCCastingComponent : CastingComponent
         }
 
         myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
-        myAutoAttackCooldown = 1.2f;
+        myAutoAttackCooldown = myAutoAttackCooldownReset;
 
         GameObject target = myTargetingComponent.Target;
         SpawnSpell(PoolManager.Instance.GetAutoAttackPrefab(), target, target.transform);

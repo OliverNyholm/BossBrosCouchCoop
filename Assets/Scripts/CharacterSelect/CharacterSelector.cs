@@ -10,6 +10,8 @@ public class CharacterSelector : MonoBehaviour
     [Header("Image to show class icon")]
     [SerializeField]
     private Image myClassIcon = null;
+    [SerializeField]
+    private Image myRoleIcon = null;
 
     [Header("Text to show player name")]
     [SerializeField]
@@ -123,6 +125,7 @@ public class CharacterSelector : MonoBehaviour
         myGnomeAppearance = aGnomeAppearance;
 
         myClassIcon.enabled = true;
+        myRoleIcon.enabled = true;
         myNameText.enabled = true;
         myClassNameText.enabled = true;
         myDescriptionText.enabled = true;
@@ -136,6 +139,7 @@ public class CharacterSelector : MonoBehaviour
         myManager = null;
 
         myClassIcon.enabled = false;
+        myRoleIcon.enabled = false;
         myNameText.enabled = false;
         myClassNameText.enabled = false;
         myDescriptionText.enabled = false;
@@ -148,11 +152,12 @@ public class CharacterSelector : MonoBehaviour
         myGnomeAppearance.GetComponentInParent<CharacterSelectUIComponent>().SetCharacterColor(aColorScheme.myColor);
     }
 
-    public void SetClass(ClassData aClassData)
+    public void SetClass(ClassData aClassData, List<Sprite> someClassRoleSprite)
     {
         myCurrentClassData = aClassData;
 
         myClassIcon.sprite = aClassData.myIconSprite;
+        myRoleIcon.sprite = someClassRoleSprite[(int)aClassData.myClassRole];
         myClassNameText.text = aClassData.myName;
         myDescriptionText.text = aClassData.myDescription;
 

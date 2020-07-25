@@ -26,4 +26,8 @@ public class ClassData : ScriptableObject
     public Color myClassColor;
     public string myName;
     public string myDescription;
+
+    [Space(2)]
+    public int myAutoAttackDamage = 20;
+    public float myTimeBetweenAutoAttacks = 1.2f;
 }

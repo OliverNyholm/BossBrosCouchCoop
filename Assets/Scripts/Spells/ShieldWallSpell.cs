@@ -11,6 +11,8 @@ public class ShieldWallSpell : Spell
     protected override void DealSpellEffect()
     {
         GameObject shield = PoolManager.Instance.GetPooledObject(myShieldWallPrefab.GetComponent<UniqueID>().GetID());
+        if (!shield)
+            return;
 
         SetSpellParent(myParent, shield);
     }

@@ -145,6 +145,7 @@ public class CharacterSelector : MonoBehaviour
     {
         myNameText.color = aColorScheme.myColor;
         myGnomeAppearance.SetColorMaterial(aColorScheme.myMaterial);
+        myGnomeAppearance.GetComponentInParent<CharacterSelectUIComponent>().SetCharacterColor(aColorScheme.myColor);
     }
 
     public void SetClass(ClassData aClassData)

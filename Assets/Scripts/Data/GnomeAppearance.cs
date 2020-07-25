@@ -13,7 +13,7 @@ public class GnomeAppearance : MonoBehaviour
 
     public void SetColorMaterial(Material aMaterial)
     {
-        myMeshRenderer.sharedMaterial = aMaterial;
+        myMeshRenderer.material = aMaterial;
     }
 
     public void EquipItemInHand(GameObject anItem, bool aIsLeftHand)

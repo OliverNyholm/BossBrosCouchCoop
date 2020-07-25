@@ -138,10 +138,10 @@ public class CharacterSelectManager : MonoBehaviour
                 SceneManager.LoadScene("LevelSelect");
                 break;
             case CharacterSelector.SelectionState.Class:
-                aCharacterSelector.SetInstructions("Choose your class and press A when ready");
+                aCharacterSelector.SetInstructions("Choose your class and press Right Bumper when ready.");
                 break;
             case CharacterSelector.SelectionState.Color:
-                aCharacterSelector.SetInstructions("Choose a color and press A when ready");
+                aCharacterSelector.SetInstructions("Choose a colour and press Right Bumper when happy!");
                 RemoveSameSelections(aState);
                 break;
             case CharacterSelector.SelectionState.Ready:

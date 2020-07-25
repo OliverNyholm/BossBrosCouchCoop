@@ -8,9 +8,6 @@ public class Class : MonoBehaviour
     public string myClassName;
     public ClassRole myClassRole;
 
-    [Header("Image to show on hud")]
-    public Sprite mySprite;
-
     public GameObject[] mySpells;
     public float[] myCooldownTimers;
 
@@ -18,14 +15,6 @@ public class Class : MonoBehaviour
     public int mySpellSize = 4;
 
     protected PlayerUIComponent myUIComponent;
-
-    public enum ClassRole
-    {
-        MeleeDps,
-        RangedDps,
-        Healer,
-        Tank
-    }
 
     public void Awake()
     {
@@ -103,5 +92,13 @@ public class Class : MonoBehaviour
             myUIComponent.SetSpellHud(aSpell.GetComponent<Spell>(), aSpellIndex, true);
         else
             myUIComponent.SetSpellHud(null, aSpellIndex);
+    }
+
+    public void SetClassData(ClassData aClassData)
+    {
+        for (int index = 0; index < aClassData.mySpells.Count; index++)
+            mySpells[index] = aClassData.mySpells[index];
+
+        myClassRole = aClassData.myClassRole;
     }
 }

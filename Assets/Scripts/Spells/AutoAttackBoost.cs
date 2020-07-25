@@ -10,7 +10,7 @@ public class AutoAttackBoost : Spell
 
     private Animator myParentAnimator;
 
-    protected override void Start()
+    public override void Restart()
     {
         myParentAnimator = myParent.GetComponent<Animator>();
 

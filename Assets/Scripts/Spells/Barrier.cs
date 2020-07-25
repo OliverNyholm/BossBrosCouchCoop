@@ -21,7 +21,7 @@ public class Barrier : Spell
         myTargetHandler = FindObjectOfType<TargetHandler>();
     }
 
-    protected override void Start()
+    public override void Restart()
     {
         AddBuff(myParent);
         StartCoroutine(gameObject);

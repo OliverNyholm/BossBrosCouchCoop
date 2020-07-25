@@ -14,11 +14,6 @@ public class DirectionalSpell : Spell
 
     private Vector3 myDirection;
 
-    protected override void Start()
-    {
-        base.Start();
-    }
-
     protected override void Update()
     {
         myLifeTime -= Time.deltaTime;

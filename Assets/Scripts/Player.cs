@@ -73,4 +73,14 @@ public class Player : Character
         GetComponent<PlayerTargetingComponent>().SetPlayerController(aPlayerControls);
         GetComponent<PlayerCastingComponent>().SetPlayerController(aPlayerControls);
     }
+
+    public void SetClassData(ClassData aClassData)
+    {
+        Class playerClass = GetComponent<Class>();
+        playerClass.SetClassData(aClassData);
+
+        GnomeAppearance gnomeAppearance = GetComponentInChildren<GnomeAppearance>();
+        gnomeAppearance.EquipItemInHand(aClassData.myLeftItem, true);
+        gnomeAppearance.EquipItemInHand(aClassData.myRightItem, false);
+    }
 }

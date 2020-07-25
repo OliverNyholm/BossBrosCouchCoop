@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PercentageSpell : Spell
 {
-    protected override void Start()
+    public override void Restart()
     {
         myDamage = (int)(myTarget.GetComponent<Health>().MaxHealth * ((float)myDamage / 100));
     }

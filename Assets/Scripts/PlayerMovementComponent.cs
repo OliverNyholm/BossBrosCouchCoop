@@ -77,6 +77,9 @@ public class PlayerMovementComponent : MovementComponent
 
     private void DetectMovementInput()
     {
+        if (Time.timeScale <= 0.0f)
+            return;
+
         if (!myIsGrounded)
             return;
 

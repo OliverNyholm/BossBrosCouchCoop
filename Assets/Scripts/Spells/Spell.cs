@@ -69,7 +69,7 @@ public class Spell : PoolableObject
     protected GameObject myParent;
     protected GameObject myTarget;
 
-    protected virtual void Start()
+    public virtual void Restart()
     {
         if (myShouldRotate)
         {

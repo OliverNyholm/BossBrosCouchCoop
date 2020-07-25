@@ -135,6 +135,7 @@ public class NPCCastingComponent : CastingComponent
         spellScript.AddDamageIncrease(myStats.myDamageIncrease);
 
         spellScript.SetTarget(aTarget);
+        spellScript.Restart();
 
         if (aTarget && aSpawnTransform.position != aTarget.transform.position)
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);

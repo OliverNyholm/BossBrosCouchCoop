@@ -85,6 +85,9 @@ public class PlayerCastingComponent : CastingComponent
 
     private void DetectSpellInput()
     {
+        if (Time.timeScale <= 0.0f)
+            return;
+
         if (myPlayerControls.Action1.WasPressed)
             CheckSpellToCast(0);
         else if (myPlayerControls.Action2.WasPressed)
@@ -303,6 +306,9 @@ public class PlayerCastingComponent : CastingComponent
             instance = PoolManager.Instance.GetPooledObject(myClass.GetSpell(aKeyIndex).GetComponent<UniqueID>().GetID());
         }
 
+        if (!instance)
+            return;
+
         instance.transform.position = aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f);
 
         GameObject target = myTargetingComponent.SpellTarget;
@@ -322,7 +328,9 @@ public class PlayerCastingComponent : CastingComponent
         else
             spellScript.SetTarget(transform.gameObject);
 
-        if (aSpawnPosition == transform.position)
+        spellScript.Restart();
+
+        if (aSpawnPosition == transform.position && spellScript.GetSpellSFX().mySpawnSound)
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
 
         myEventOnSpellSpawned?.Invoke(gameObject, instance, aKeyIndex);

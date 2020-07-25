@@ -83,6 +83,9 @@ public class PlayerTargetingComponent : TargetingComponent
 
     private void DetectTargetingInput()
     {
+        if (Time.timeScale <= 0.0f)
+            return;
+
         if (myPlayerControls.TargetEnemy.WasPressed && !myIsHealTargetingEnabled)
             DetermineNewEnemyTarget();
     }
@@ -176,7 +179,7 @@ public class PlayerTargetingComponent : TargetingComponent
                 continue;
 
             float healthPercentage = health.GetHealthPercentage();
-            if (playerGO.GetComponent<Class>().myClassRole == Class.ClassRole.Tank)
+            if (playerGO.GetComponent<Class>().myClassRole == ClassRole.Tank)
             {
                 score += 0.2f;
                 healthPercentage -= 0.15f;

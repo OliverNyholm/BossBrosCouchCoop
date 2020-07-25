@@ -38,4 +38,9 @@ public class CharacterSelectUIComponent : PlayerUIComponent
         actionKey.SetSpellInfo(aSpell.myTutorialInfo);
         actionKey.SetTextColor(aClassColor);
     }
+
+    public void SetCharacterColor(Color aColor)
+    {
+        myCharacterColor = aColor;
+    }
 }

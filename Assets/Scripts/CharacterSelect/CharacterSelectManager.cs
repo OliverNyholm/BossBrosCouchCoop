@@ -36,21 +36,31 @@ public class CharacterSelectManager : MonoBehaviour
 
     void Start()
     {
-        myPlayerClassIndex = new List<int>();
-        myPlayerColorIndex = new List<int>();
-        for (int index = 0; index < myPlayers.Count; index++)
+        myCharacterGameData = FindObjectOfType<CharacterGameData>();
+        List<PlayerSelectData> characters = myCharacterGameData.GetPlayerData();
+
+        myPlayerClassIndex = new List<int>(myPlayers.Count);
+        myPlayerColorIndex = new List<int>(myPlayers.Count);
+        for (int index = 0; index < myPlayers.Count; index++) //This loop could probably be combined with the latter one...
         {
             CharacterSelector characterSelector = myPlayers[index].GetComponent<CharacterSelector>();
             PlayerSetState(characterSelector, CharacterSelector.SelectionState.Class);
 
-            myPlayerClassIndex.Add(index);
-            myPlayerColorIndex.Add(index);
+            if(characters.Count - 1 >= index && characters[index].myClassData)
+            {
+                myPlayerClassIndex.Add(GetClassIndex(characters[index].myClassData));
+                myPlayerColorIndex.Add(GetColorIndex(characters[index].myColorScheme));
+            }
+            else
+            {
+                myPlayerClassIndex.Add(index);
+                myPlayerColorIndex.Add(index);
+            }
+
             myPlayers[index].SetActive(false);
             myGnomes[index].SetActive(false);
         }
 
-        myCharacterGameData = FindObjectOfType<CharacterGameData>();
-        List<PlayerSelectData> characters = myCharacterGameData.GetPlayerData();
         for (int index = 0; index < characters.Count; index++)
         {
             myPlayers[index].SetActive(true);
@@ -221,5 +231,15 @@ public class CharacterSelectManager : MonoBehaviour
         }
 
         SceneManager.LoadScene(myNextLevel);
+    }
+
+    private int GetClassIndex(ClassData aClassData)
+    {
+        return myClassHuds.IndexOf(aClassData);
+    }
+
+    private int GetColorIndex(ColorScheme aColorScheme)
+    {
+        return myColorSchemes.IndexOf(aColorScheme);
     }
 }

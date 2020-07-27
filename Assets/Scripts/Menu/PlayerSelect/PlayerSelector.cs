@@ -42,11 +42,6 @@ public class PlayerSelector : MonoBehaviour
         mySelectionHighlight.SetActive(false);
     }
 
-    private void OnEnable()
-    {
-        myInitializeTimer = 0.3f;
-    }
-
     private void Start()
     {
         if (myLetters == null)
@@ -108,6 +103,7 @@ public class PlayerSelector : MonoBehaviour
 
         SetHighlightPosition();
 
+        myInitializeTimer = 0.3f;
         State = SelectionState.Name;
     }
 
@@ -115,6 +111,8 @@ public class PlayerSelector : MonoBehaviour
     {
         PlayerControls = null;
         myManager = null;
+
+        mySelectionHighlight.SetActive(false);
 
         myNameText.enabled = false;
     }

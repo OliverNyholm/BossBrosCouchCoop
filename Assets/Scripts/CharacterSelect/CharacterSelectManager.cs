@@ -223,6 +223,16 @@ public class CharacterSelectManager : MonoBehaviour
     {
         for (int index = 0; index < myPlayers.Count; index++)
         {
+            CharacterSelector playerSelector = myPlayers[index].GetComponent<CharacterSelector>();
+            if (playerSelector.PlayerControls == null)
+                continue;
+
+            if (playerSelector.State != CharacterSelector.SelectionState.Ready)
+                return;
+        }
+
+        for (int index = 0; index < myPlayers.Count; index++)
+        {
             PlayerControls playerControls = myPlayers[index].GetComponent<CharacterSelector>().PlayerControls;
             if (playerControls == null)
                 continue;

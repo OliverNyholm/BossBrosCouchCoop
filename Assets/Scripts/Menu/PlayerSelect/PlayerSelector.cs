@@ -2,29 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerSelector : MonoBehaviour
 {
-    [Header("Text to show name")]
     [SerializeField]
-    private Text myNameText = null;
+    private TextMeshProUGUI myNameText = null;
 
-    [Header("Text to show current insctructions")]
     [SerializeField]
-    private Text myInstructionsText = null;
+    private TextMeshProUGUI myInstructionsText = null;
+
+    [SerializeField]
+    private GameObject mySelectionHighlight = null;
 
     public PlayerControls PlayerControls { get; set; }
     private PlayerSelectManager myManager;
 
-    private float myInitializeTimer;
-    private float myHoldDownTimer;
+    private KeyboardKey myHoveredKey = null;
 
-    private readonly string myAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ-1234567890\'_";
-    private char[] myLetters;
-    private int myCharPosition;
-    private int myCharIndex;
     private const int myMaxNameLength = 12;
+    private char[] myLetters;
 
+    private float myInitializeTimer = 0.3f;
+
+    private Vector4 myPreviousControllerLeftAxis;
 
     public enum SelectionState
     {
@@ -34,6 +35,17 @@ public class PlayerSelector : MonoBehaviour
     }
 
     public SelectionState State { get; set; }
+
+    private void Awake()
+    {
+        mySelectionHighlight.GetComponent<Image>().material = new Material(mySelectionHighlight.GetComponent<Image>().material);
+        mySelectionHighlight.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        myInitializeTimer = 0.3f;
+    }
 
     private void Start()
     {
@@ -45,13 +57,7 @@ public class PlayerSelector : MonoBehaviour
             {
                 myLetters[index] = '_';
             }
-
-            myCharPosition = 0;
-            myCharIndex = myAlphabet.IndexOf(myLetters[myCharPosition]);
-            SetLetter(0);
         }
-
-        myInitializeTimer = 0.3f;
     }
 
     private void Update()
@@ -69,7 +75,7 @@ public class PlayerSelector : MonoBehaviour
             return;
         }
 
-        if (PlayerControls.Start.WasPressed)
+        if (PlayerControls.Jump.WasPressed)
         {
             if (State == SelectionState.Ready)
                 myManager.StartPlaying();
@@ -77,7 +83,7 @@ public class PlayerSelector : MonoBehaviour
                 myManager.PlayerSetState(this, ++State);
         }
 
-        if (PlayerControls.Action2.WasPressed && State == SelectionState.Ready)
+        if (PlayerControls.TargetEnemy.WasPressed)
         {
             myManager.PlayerSetState(this, --State);
             return;
@@ -86,74 +92,23 @@ public class PlayerSelector : MonoBehaviour
         if (State == SelectionState.Ready)
             return;
 
-        if (PlayerControls.Right.WasPressed)
-        {
-            SetLetter(1);
-            myHoldDownTimer = 0.5f;
-        }
-        if (PlayerControls.Left.WasPressed)
-        {
-            SetLetter(-1);
-            myHoldDownTimer = 0.5f;
-        }
-
-        if (PlayerControls.Right.IsPressed)
-        {
-            myHoldDownTimer -= Time.deltaTime;
-            if (myHoldDownTimer <= 0.0f)
-            {
-                SetLetter(1);
-                myHoldDownTimer = 0.1f;
-            }
-        }
-        if (PlayerControls.Left.IsPressed)
-        {
-            myHoldDownTimer -= Time.deltaTime;
-            if (myHoldDownTimer <= 0.0f)
-            {
-                SetLetter(-1);
-                myHoldDownTimer = 0.1f;
-            }
-        }
-
-        if (PlayerControls.Action1.WasPressed)
-        {
-            if (HasCreatedDoubleBlankspace())
-                return;
-
-            myCharPosition++;
-            if (myCharPosition >= myMaxNameLength)
-                myCharPosition = myMaxNameLength - 1;
-
-            myCharIndex = myAlphabet.IndexOf(myLetters[myCharPosition]);
-            SetLetter(0);
-        }
-        if (PlayerControls.Action2.WasPressed)
-        {
-            myCharPosition--;
-            if (myCharPosition < 0)
-            {
-                myCharPosition = 0;
-                myManager.PlayerSetState(this, --State);
-                return;
-            }
-
-            myCharIndex = myAlphabet.IndexOf(myLetters[myCharPosition]);
-            SetLetter(0);
-        }
+        CheckInput();
     }
 
-    public void Show(PlayerControls aPlayerControls, PlayerSelectManager aManager)
+    public void Show(PlayerControls aPlayerControls, PlayerSelectManager aManager, KeyboardKey aKeyboardKey, int aPlayerIndex)
     {
         PlayerControls = aPlayerControls;
         myManager = aManager;
+        myHoveredKey = aKeyboardKey;
 
         myNameText.enabled = true;
+        myNameText.text = "";
+        mySelectionHighlight.SetActive(true);
+        mySelectionHighlight.GetComponent<Image>().material.SetInt("_PlayerIndex", aPlayerIndex);
+
+        SetHighlightPosition();
 
         State = SelectionState.Name;
-
-        myInitializeTimer = 0.3f;
-        myCharPosition = 0;
     }
 
     public void Hide()
@@ -171,77 +126,108 @@ public class PlayerSelector : MonoBehaviour
 
     public string GetName()
     {
-        myNameText.text = myNameText.text.Replace('_', ' ');
-        myNameText.text = myNameText.text.Replace("<color=red>", "");
-        myNameText.text = myNameText.text.Replace("</color>", "");
-
         return myNameText.text;
     }
 
-    private void SetLetter(int aMoveDirection)
+    public void SetPlayerName(string aString)
     {
-        myCharIndex += aMoveDirection;
-        if (myCharIndex < 0)
-            myCharIndex = myAlphabet.Length - 1;
-        if (myCharIndex >= myAlphabet.Length)
-            myCharIndex = 0;
+        myNameText.text = aString;
+    }
 
-        myLetters[myCharPosition] = myAlphabet[myCharIndex];
-        myNameText.text = new string(myLetters);
+    private void SetHighlightPosition()
+    {
+        RectTransform keyTransform = myHoveredKey.transform.GetComponent<RectTransform>();
+        RectTransform selectionTransform = mySelectionHighlight.GetComponent<RectTransform>();
+        selectionTransform.anchorMin = keyTransform.anchorMin;
+        selectionTransform.anchorMax = keyTransform.anchorMax;
+    }
 
-        //Replaces all underlines with blankspaces
-        myNameText.text = myNameText.text.Replace('_', ' ');
-
-        //Replaces current positons blankspace with an underline so players know their selected position
-        if (myNameText.text.Length > myCharPosition && myNameText.text[myCharPosition] == ' ')
-        {
-            myNameText.text = myNameText.text.Insert(myCharPosition + 1, "_");
-            myNameText.text = myNameText.text.Remove(myCharPosition, 1);
-        }
-
-        //Remove all double blankspaces
-        while (myNameText.text.Contains("  "))
-            myNameText.text = myNameText.text.Replace("  ", " ");
-
-        if (myCharPosition == myNameText.text.Length)
-            myNameText.text += "</color>";
+    private void CheckInput()
+    {
+        if (PlayerControls.myIsController)
+            CheckControllerInput();
         else
-            myNameText.text = myNameText.text.Insert(myCharPosition + 1, "</color>");
-
-        myNameText.text = myNameText.text.Insert(myCharPosition, "<color=red>");
+            CheckKeyboardInput();
     }
 
-    public bool HasCreatedDoubleBlankspace()
+    private void CheckControllerInput()
     {
-        if (myCharPosition == 0)
-            return false;
+        const float controllerThreshold = 0.4f;
+        if (myPreviousControllerLeftAxis[0] == 0.0f && PlayerControls.Up.RawValue > controllerThreshold)
+            GetNextKey(1);
+        if (myPreviousControllerLeftAxis[1] == 0.0f && PlayerControls.Down.RawValue > controllerThreshold)
+            GetNextKey(2);
+        if (myPreviousControllerLeftAxis[2] == 0.0f && PlayerControls.Left.RawValue > controllerThreshold)
+            GetNextKey(3);
+        if (myPreviousControllerLeftAxis[3] == 0.0f && PlayerControls.Right.RawValue > controllerThreshold)
+            GetNextKey(4);
 
-        if (myCharPosition == myMaxNameLength - 1)
-            return false;
+        myPreviousControllerLeftAxis[0] = PlayerControls.Up.RawValue > controllerThreshold ? 1.0f : 0.0f;
+        myPreviousControllerLeftAxis[1] = PlayerControls.Down.RawValue > controllerThreshold ? 1.0f : 0.0f;
+        myPreviousControllerLeftAxis[2] = PlayerControls.Left.RawValue > controllerThreshold ? 1.0f : 0.0f;
+        myPreviousControllerLeftAxis[3] = PlayerControls.Right.RawValue > controllerThreshold ? 1.0f : 0.0f;
 
-        if (myLetters[myCharPosition - 1] == '_' && myLetters[myCharPosition] == '_')
-            return true;
-
-        return false;
+        if (PlayerControls.Action1.WasPressed)
+        {
+            AddLetter();
+        }
+        if (PlayerControls.Action2.WasPressed)
+        {
+            RemoveLetter();
+        }
     }
 
-    public void SetLetters(string aName)
+    private void CheckKeyboardInput()
+    {        
+        if (PlayerControls.Up.WasPressed)
+        {
+            GetNextKey(1);
+        }
+        if (PlayerControls.Down.WasPressed)
+        {
+            GetNextKey(2);
+        }
+        if (PlayerControls.Left.WasPressed)
+        {
+            GetNextKey(3);
+        }
+        if (PlayerControls.Right.WasPressed)
+        {
+            GetNextKey(4);
+        }
+
+        if (PlayerControls.Action1.WasPressed)
+        {
+            AddLetter();
+        }
+        if (PlayerControls.Action2.WasPressed)
+        {
+            RemoveLetter();
+        }
+    }
+
+    private void GetNextKey(int aDirection)
     {
-        myLetters = new char[myMaxNameLength];
-        for (int index = 0; index < myMaxNameLength; index++)
-        {
-            myLetters[index] = '_';
-        }
+        myHoveredKey = myManager.GetKeyboardKey(myHoveredKey, aDirection);
+        SetHighlightPosition();
+    }
+    private void AddLetter()
+    {
+        if (myNameText.text.Length == myMaxNameLength)
+            return;
 
-        for (int index = 0; index < aName.Length; index++)
-        {
-            myLetters[index] = aName[index];
-        }
+        char newChar = myHoveredKey.GetLetter();
+        if (newChar.Equals(' ') && myNameText.text[myNameText.text.Length - 1].Equals(' ')) //Don't add multiple spaces
+            return;
 
-        myCharPosition = aName.Length - 2;
-        if (myCharPosition < 0)
-            myCharPosition = 0;
-        myCharIndex = myAlphabet.IndexOf(myLetters[myCharPosition]);
-        SetLetter(0);
+        myNameText.text = myNameText.text + newChar;
+    }
+
+    private void RemoveLetter()
+    {
+        if (myNameText.text.Length > 1)
+            myNameText.text = myNameText.text.Substring(0, myNameText.text.Length - 1);
+        else
+            myNameText.text = "";
     }
 }

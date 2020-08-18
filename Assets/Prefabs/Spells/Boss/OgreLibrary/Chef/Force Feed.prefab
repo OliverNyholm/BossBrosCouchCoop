@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5106910963297085249}
   - component: {fileID: 1553472525573092830}
   m_Layer: 0
-  m_Name: Decapitate
+  m_Name: Force Feed
   m_TagString: Spell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -167,6 +167,7 @@ MonoBehaviour:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 8300000, guid: 29bf85fa43689764eaacceb4614b3cc4, type: 3}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
 --- !u!114 &1553472525573092830

@@ -11,6 +11,9 @@ public class UIComponent : MonoBehaviour
     public Color myCharacterColor;
     public string myName;
 
+    [SerializeField]
+    private bool myUseCastbarAboveCharacter = true;
+
     private CharacterHUD myCharacterHUD;
     private CharacterHUD myTargetHUD;
     protected Castbar myCastbar;
@@ -32,7 +35,19 @@ public class UIComponent : MonoBehaviour
 
         myCharacterHUD = aUIParent.Find("CharacterHud").GetComponent<CharacterHUD>();
         myTargetHUD = aUIParent.Find("TargetHud").GetComponent<CharacterHUD>();
-        myCastbar = aUIParent.Find("Castbar Background").GetComponent<Castbar>();
+
+        if (myUseCastbarAboveCharacter)
+        {
+            myCastbar = GetComponentInChildren<Castbar>();
+            if(myCastbar)
+                myCastbar.GetComponent<Canvas>().worldCamera = Camera.main;
+            else
+                myCastbar = aUIParent.Find("Castbar Background").GetComponent<Castbar>();
+        }
+        else
+        {
+            myCastbar = aUIParent.Find("Castbar Background").GetComponent<Castbar>();
+        }
 
         myCharacterHUD.SetName(myName);
         myCharacterHUD.SetClassSprite(myClassSprite);

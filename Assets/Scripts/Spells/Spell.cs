@@ -187,7 +187,8 @@ public class Spell : PoolableObject
         {
             Vector3 toParent = (myParent.transform.position - transform.position);
             float distance = toParent.magnitude;
-            toParent /= distance;
+            if(distance > 0.0f)
+                toParent /= distance;
 
             const float distanceFromParent = 2.0f;
             damageFloatSpawnPosition += toParent * Mathf.Min(distance - distanceFromParent, target.GetComponent<Stats>().myRangeCylinder.myRadius);

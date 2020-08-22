@@ -126,13 +126,16 @@ public class NPCCastingComponent : CastingComponent
     public void SpawnSpell(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform)
     {
         GameObject spellGO = PoolManager.Instance.GetPooledObject(aSpell.GetComponent<UniqueID>().GetID());
-        spellGO.transform.position = aSpawnTransform.position;
-        spellGO.transform.rotation = aSpawnTransform.rotation;
-        spellGO.transform.localScale = aSpawnTransform.localScale;
 
         Spell spellScript = spellGO.GetComponent<Spell>();
         spellScript.SetParent(transform.gameObject);
         spellScript.AddDamageIncrease(myStats.myDamageIncrease);
+
+        if (spellScript.mySpeed == 0.0f && aTarget)
+            aSpawnTransform.position = aTarget.transform.position;
+
+        spellGO.transform.position = aSpawnTransform.position;
+        spellGO.transform.rotation = aSpawnTransform.rotation;
 
         spellScript.SetTarget(aTarget);
         spellScript.Restart();

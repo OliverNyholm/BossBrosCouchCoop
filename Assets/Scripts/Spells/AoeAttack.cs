@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AoeAttack : Spell
 {
-
     private float myLifeTime = 0.05f;
 
     [Header("The target to damage")]
@@ -12,6 +11,13 @@ public class AoeAttack : Spell
     private string myAttackTag = "Enemy";
 
     private bool myHasRechedTarget = false;
+
+    TargetHandler myTargetHandler;
+
+    private void Awake()
+    {
+        myTargetHandler = FindObjectOfType<TargetHandler>();
+    }
 
     protected override void Update()
     {
@@ -33,6 +39,7 @@ public class AoeAttack : Spell
             DealSpellEffect();
 
         SpawnVFX(2.5f);
+        DealDamageToSurroundingTargets();
 
         if (mySpawnedOnHit != null)
         {
@@ -40,12 +47,19 @@ public class AoeAttack : Spell
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void DealDamageToSurroundingTargets()
     {
-        if (other.gameObject.tag == myAttackTag)
+        if (myDamage <= 0.0f)
+            return;
+
+        float radiusSqr = Mathf.Pow(GetComponent<SphereCollider>().radius * transform.lossyScale.x, 2);
+        List<GameObject> targets = myAttackTag == "Enemy" ? myTargetHandler.GetAllEnemies() : myTargetHandler.GetAllPlayers();
+        foreach (GameObject target in targets)
         {
-            if (myDamage > 0.0f)
-                other.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor.linear, other.transform.position);
+            if((target.transform.position - transform.position).sqrMagnitude <= radiusSqr)
+            {
+                target.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor.linear, target.transform.position);
+            }
         }
     }
 

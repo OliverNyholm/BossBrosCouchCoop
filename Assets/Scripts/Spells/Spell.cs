@@ -182,8 +182,10 @@ public class Spell : PoolableObject
         if (aTarget)
             target = aTarget;
 
+        bool isPlayer = myParent.GetComponent<Player>() != null;
+
         Vector3 damageFloatSpawnPosition = transform.position;
-        if(mySpeed <= 0.0f)
+        if(mySpeed <= 0.0f && isPlayer)
         {
             Vector3 toParent = (myParent.transform.position - transform.position);
             float distance = toParent.magnitude;
@@ -198,7 +200,7 @@ public class Spell : PoolableObject
         int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<UIComponent>().myCharacterColor, damageFloatSpawnPosition);
         target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID, true);
 
-        if (myParent.tag == "Player")
+        if (isPlayer)
             PostMaster.Instance.PostMessage(new Message(MessageCategory.DamageDealt, new Vector2(parentID, damageDone)));
     }
 

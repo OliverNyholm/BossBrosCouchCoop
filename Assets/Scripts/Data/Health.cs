@@ -70,12 +70,13 @@ public class Health : MonoBehaviour
         if (myCurrentHealth <= 0)
         {
             myCurrentHealth = 0;
+            OnHealthChanged(true);
             OnHealthZero();
         }
+        else
+            OnHealthChanged(true);
 
         myTimeBeforeHealthRegenerationTimestamp = Time.time + myTimeBeforeHealthRegenerationAfterDamage;
-
-        OnHealthChanged(true);
 
         if (aValue > 2000 && IsDead())
             SpawnFloatingText("Instant Kill", aDamagerColor, aDamagePosition);

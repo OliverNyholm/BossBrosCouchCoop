@@ -20877,6 +20877,7 @@ MonoBehaviour:
   myClassSprite: {fileID: 21300000, guid: b8a8052f67b060c43915aca9d609bd1c, type: 3}
   myCharacterColor: {r: 0.8932913, g: 0, b: 0.98039216, a: 1}
   myName: Ogre Banner
+  myUseCastbarAboveCharacter: 1
 --- !u!114 &742185130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20891,7 +20892,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myClassName: 
   myClassRole: 0
-  mySprite: {fileID: 21300000, guid: 08579bde325e3a244afd7c9b4efc90d4, type: 3}
   mySpells: []
   myCooldownTimers:
   - 0
@@ -21591,6 +21591,7 @@ MonoBehaviour:
   myClassSprite: {fileID: 0}
   myCharacterColor: {r: 1, g: 0, b: 0.76618385, a: 1}
   myName: Totem
+  myUseCastbarAboveCharacter: 1
 --- !u!1 &845088197
 GameObject:
   m_ObjectHideFlags: 0
@@ -27812,6 +27813,7 @@ MonoBehaviour:
   myClassSprite: {fileID: 21300000, guid: b8a8052f67b060c43915aca9d609bd1c, type: 3}
   myCharacterColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
   myName: Boulder
+  myUseCastbarAboveCharacter: 1
 --- !u!65 &1014785738
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -29905,6 +29907,7 @@ MonoBehaviour:
   myClassSprite: {fileID: 21300000, guid: b8a8052f67b060c43915aca9d609bd1c, type: 3}
   myCharacterColor: {r: 0, g: 0.6509434, b: 0.34547535, a: 1}
   myName: Ogre Banner
+  myUseCastbarAboveCharacter: 1
 --- !u!82 &1295716091
 AudioSource:
   m_ObjectHideFlags: 0
@@ -30015,7 +30018,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myClassName: 
   myClassRole: 0
-  mySprite: {fileID: 21300000, guid: 08579bde325e3a244afd7c9b4efc90d4, type: 3}
   mySpells: []
   myCooldownTimers:
   - 0
@@ -55410,6 +55412,7 @@ MonoBehaviour:
   myClassSprite: {fileID: 21300000, guid: 08579bde325e3a244afd7c9b4efc90d4, type: 3}
   myCharacterColor: {r: 0, g: 1, b: 0.6971648, a: 1}
   myName: Fallen Tree
+  myUseCastbarAboveCharacter: 1
 --- !u!82 &2028998319
 AudioSource:
   m_ObjectHideFlags: 0
@@ -55520,7 +55523,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myClassName: 
   myClassRole: 0
-  mySprite: {fileID: 21300000, guid: 08579bde325e3a244afd7c9b4efc90d4, type: 3}
   mySpells: []
   myCooldownTimers:
   - 0
@@ -55563,8 +55565,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d2c069978184cd4788cd4ddd56cf980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myMaxHealth: 300
-  myCurrentHealth: 50
+  myMaxHealth: 500
+  myCurrentHealth: 300
   myHealthPerTick: 0
   myHealthTickInterval: 1
   myTimeBeforeHealthRegenerationAfterDamage: 5
@@ -57651,6 +57653,7 @@ MonoBehaviour:
   myClassSprite: {fileID: 21300000, guid: b8a8052f67b060c43915aca9d609bd1c, type: 3}
   myCharacterColor: {r: 0.5660378, g: 0, b: 0.4646879, a: 1}
   myName: Boss
+  myUseCastbarAboveCharacter: 1
 --- !u!4 &2706589737524509606
 Transform:
   m_ObjectHideFlags: 0

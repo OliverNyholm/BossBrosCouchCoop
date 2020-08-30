@@ -31,7 +31,8 @@ public class Barrier : Spell
     {
         for (int index = 0; index < myActiveBuffs.Count; index++)
         {
-            myActiveBuffs[index].RemoveSpellOverTime();
+            if(myActiveBuffs[index])
+                myActiveBuffs[index].RemoveSpellOverTime();
         }
 
         myActiveBuffs.Clear();

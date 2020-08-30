@@ -264,11 +264,10 @@ public class PlayerCastingComponent : CastingComponent
         float progress = 0.0f;
 
         myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
-        UIComponent uiComponent = GetComponent<UIComponent>();
 
         while (progress <= 1.0f)
         {
-            uiComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
+            myUIComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
 
             progress += rate * Time.deltaTime;
 

@@ -19,16 +19,16 @@ public class TargetProjector : MonoBehaviour
         switch (aPlayerIndex)
         {
             case 1:
-                myMaterial.SetColor("_PlayerOneColor", aColor);
+                myMaterial.SetColor("_TopLeftColor", aColor);
                 break;
             case 2:
-                myMaterial.SetColor("_PlayerTwoColor", aColor);
+                myMaterial.SetColor("_TopRightColor", aColor);
                 break;
             case 3:
-                myMaterial.SetColor("_PlayerThreeColor", aColor);
+                myMaterial.SetColor("_BottomLeftColor", aColor);
                 break;
             case 4:
-                myMaterial.SetColor("_PlayerFourColor", aColor);
+                myMaterial.SetColor("_BottomRightColor", aColor);
                 break;
         }
     }
@@ -39,16 +39,16 @@ public class TargetProjector : MonoBehaviour
         switch (aPlayerIndex)
         {
             case 1:
-                myMaterial.SetColor("_PlayerOneColor", off);
+                myMaterial.SetColor("_TopLeftColor", off);
                 break;
             case 2:
-                myMaterial.SetColor("_PlayerTwoColor", off);
+                myMaterial.SetColor("_TopRightColor", off);
                 break;
             case 3:
-                myMaterial.SetColor("_PlayerThreeColor", off);
+                myMaterial.SetColor("_BottomLeftColor", off);
                 break;
             case 4:
-                myMaterial.SetColor("_PlayerFourColor", off);
+                myMaterial.SetColor("_BottomRightColor", off);
                 break;
         }
     }

@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;
 
 public class ActionKey : MonoBehaviour
 {
     [Header("Text to show cooldown")]
     [SerializeField]
-    private Text myCooldownText = null;
+    private TextMeshProUGUI myCooldownText = null;
 
     [Header("Text to show info about spell")]
     [SerializeField]
-    private Text myInfoText = null;
+    private TextMeshProUGUI myNameText = null;
+    [SerializeField]
+    private TextMeshProUGUI myInfoText = null;
 
     [Header("The target scale multiplier of spellIcon on use")]
     [SerializeField]
@@ -81,9 +84,22 @@ public class ActionKey : MonoBehaviour
         myInfoText.enabled = !myInfoText.enabled;
     }
 
+    public void SetSpellName(string aName)
+    {
+        myNameText.text = aName;
+    }
+
     public void SetSpellInfo(string aInfo)
     {
-        myInfoText.text = aInfo;
+        if(myInfoText)
+            myInfoText.text = aInfo;
+    }
+
+    public void SetTextColor(Color aColor)
+    {
+        myNameText.color = aColor;
+        if (myInfoText)
+            myInfoText.color = aColor;
     }
 
     public void SetPulsation(bool aValue)

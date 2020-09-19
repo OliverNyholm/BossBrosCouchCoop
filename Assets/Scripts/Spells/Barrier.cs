@@ -21,7 +21,7 @@ public class Barrier : Spell
         myTargetHandler = FindObjectOfType<TargetHandler>();
     }
 
-    protected override void Start()
+    public override void Restart()
     {
         AddBuff(myParent);
         StartCoroutine(gameObject);
@@ -31,7 +31,8 @@ public class Barrier : Spell
     {
         for (int index = 0; index < myActiveBuffs.Count; index++)
         {
-            myActiveBuffs[index].RemoveSpellOverTime();
+            if(myActiveBuffs[index])
+                myActiveBuffs[index].RemoveSpellOverTime();
         }
 
         myActiveBuffs.Clear();
@@ -39,6 +40,9 @@ public class Barrier : Spell
 
     protected override void Update()
     {
+        if (!myTargetHandler)
+            return;
+
        List<GameObject> players = myTargetHandler.GetAllPlayers();
         for (int index = 0; index < players.Count; index++)
         {

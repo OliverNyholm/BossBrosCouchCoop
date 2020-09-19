@@ -46,8 +46,10 @@ public abstract class CastingComponent : MonoBehaviour
     public void StartChannel(float aDuration, Spell aSpellScript, GameObject aChannelGO, float aStunDuration = 1.0f)
     {
         GetComponent<UIComponent>().SetCastbarChannelingStartValues(aSpellScript, aDuration);
-        GetComponent<AudioSource>().clip = aSpellScript.GetSpellSFX().myCastSound;
-        GetComponent<AudioSource>().Play();
+
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.clip = aSpellScript.GetSpellSFX().myCastSound;
+        audioSource.Play();
 
         myChannelGameObject = aChannelGO;
         myCastingRoutine = StartCoroutine(SpellChannelRoutine(aDuration, aStunDuration));

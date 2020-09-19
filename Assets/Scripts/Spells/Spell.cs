@@ -69,7 +69,7 @@ public class Spell : PoolableObject
     protected GameObject myParent;
     protected GameObject myTarget;
 
-    protected virtual void Start()
+    public virtual void Restart()
     {
         if (myShouldRotate)
         {
@@ -149,7 +149,9 @@ public class Spell : PoolableObject
         }
         if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Taunt))
         {
-            myTarget.GetComponent<NPCThreatComponent>().SetTaunt(myParent.GetInstanceID(), 3.0f);
+            NPCThreatComponent threatComponent = myTarget.GetComponent<NPCThreatComponent>();
+            if(threatComponent)
+                threatComponent.SetTaunt(myParent.GetInstanceID(), 3.0f);
         }
     }
 
@@ -180,12 +182,15 @@ public class Spell : PoolableObject
         if (aTarget)
             target = aTarget;
 
+        bool isPlayer = myParent.GetComponent<Player>() != null;
+
         Vector3 damageFloatSpawnPosition = transform.position;
-        if(mySpeed <= 0.0f)
+        if(mySpeed <= 0.0f && isPlayer)
         {
             Vector3 toParent = (myParent.transform.position - transform.position);
             float distance = toParent.magnitude;
-            toParent /= distance;
+            if(distance > 0.0f)
+                toParent /= distance;
 
             const float distanceFromParent = 2.0f;
             damageFloatSpawnPosition += toParent * Mathf.Min(distance - distanceFromParent, target.GetComponent<Stats>().myRangeCylinder.myRadius);
@@ -195,7 +200,7 @@ public class Spell : PoolableObject
         int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<UIComponent>().myCharacterColor, damageFloatSpawnPosition);
         target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID, true);
 
-        if (myParent.tag == "Player")
+        if (isPlayer)
             PostMaster.Instance.PostMessage(new Message(MessageCategory.DamageDealt, new Vector2(parentID, damageDone)));
     }
 

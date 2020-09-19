@@ -85,11 +85,12 @@ public class GameManager : MonoBehaviour
         if (mySpawnPoints.Count > 0)
             spawnPoint = mySpawnPoints[aIndex % mySpawnPoints.Count].position;
 
-        GameObject playerGO = Instantiate(aCharacter.myClassData.myClass, spawnPoint, Quaternion.identity);
+        GameObject playerGO = Instantiate(aCharacter.myClassData.myGnome, spawnPoint, Quaternion.identity);
         playerGO.name = aCharacter.myName;
-        playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material = aCharacter.myColorScheme.myMaterial;
+        playerGO.GetComponentInChildren<GnomeAppearance>().SetColorMaterial(aCharacter.myColorScheme.myMaterial);
 
         Player player = playerGO.GetComponent<Player>();
+        player.SetClassData(aCharacter.myClassData);
         player.SetPlayerControls(aCharacter.myPlayerControls);
         player.PlayerIndex = aIndex + 1;
 
@@ -113,7 +114,7 @@ public class GameManager : MonoBehaviour
         if (mySpawnPoints.Count > 0)
             spawnPoint = mySpawnPoints[0 % mySpawnPoints.Count].position;
 
-        GameObject playerGO = Instantiate(myDebugPlayerData.myClassData.myClass, spawnPoint, Quaternion.identity);
+        GameObject playerGO = Instantiate(myDebugPlayerData.myClassData.myGnome, spawnPoint, Quaternion.identity);
         playerGO.name = myDebugPlayerData.myName;
 
         PlayerControls keyboardListener = PlayerControls.CreateWithKeyboardBindings();
@@ -121,6 +122,7 @@ public class GameManager : MonoBehaviour
         playerGO.GetComponent<Stats>().myDamageMitigator = 0.0f;
 
         myDebugPlayer = playerGO.GetComponent<Player>();
+        myDebugPlayer.SetClassData(myDebugPlayerData.myClassData);
         myDebugPlayer.SetPlayerControls(keyboardListener);
         myDebugPlayer.PlayerIndex = aPlayerIndex;
 

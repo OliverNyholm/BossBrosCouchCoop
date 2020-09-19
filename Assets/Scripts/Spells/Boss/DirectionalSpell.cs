@@ -7,6 +7,7 @@ public class DirectionalSpell : Spell
     [Header("Lifetime of movement until removed")]
     [SerializeField]
     private float myLifeTime = 0.05f;
+    private float myLifeTimeReset;
 
     [Header("The target to damage")]
     [SerializeField]
@@ -14,9 +15,15 @@ public class DirectionalSpell : Spell
 
     private Vector3 myDirection;
 
-    protected override void Start()
+    private void Awake()
     {
-        base.Start();
+        myLifeTimeReset = myLifeTime;
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        myLifeTime = myLifeTimeReset;
     }
 
     protected override void Update()

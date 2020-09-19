@@ -156,9 +156,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myQuickInfo: Heal over Time
   myTutorialInfo: Revitalize is a instant cast healing spell. Using it on an ally
-    will allow them to regenerate their Health over Time (HoT).
+    will allow them to regenerate  Health over Time (HoT). Lasts a few seconds.
   myName: Revitalize
-  myAttackType: 0
+  mySpellType: 0
   mySpellTarget: 2
   myAnimationType: 0
   myDamage: 400
@@ -181,6 +181,7 @@ MonoBehaviour:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 0}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 2989814573608996187, guid: b3e288b451638e845a75f5ac1c747a5f,
     type: 3}
   myIsCastManually: 1

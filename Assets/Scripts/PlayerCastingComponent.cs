@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class PlayerCastingComponent : CastingComponent
 {
-    private PlayerControls myPlayerControls;
+    protected PlayerControls myPlayerControls;
 
-    private PlayerTargetingComponent myTargetingComponent;
-    private PlayerUIComponent myUIComponent;
+    protected PlayerTargetingComponent myTargetingComponent;
+    protected PlayerUIComponent myUIComponent;
     private PlayerControlsVibrationManager myPlayerControlsVibrationsManager;
-    private Class myClass;
+    private PlayerMovementComponent myMovementComponent;
+    protected Class myClass;
 
     private Vector3 myHealTargetingReleaseDirection;
     private float myStartTimeOfHoldingKeyDown;
@@ -27,6 +28,7 @@ public class PlayerCastingComponent : CastingComponent
         base.Awake();
         myClass = GetComponent<Class>();
         myTargetingComponent = GetComponent<PlayerTargetingComponent>();
+        myMovementComponent = GetComponent<PlayerMovementComponent>();
         myUIComponent = GetComponent<PlayerUIComponent>();
         myPlayerControlsVibrationsManager = GetComponent<PlayerControlsVibrationManager>();
 
@@ -75,7 +77,7 @@ public class PlayerCastingComponent : CastingComponent
         }
 
         myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
-        myAutoAttackCooldown = 1.2f;
+        myAutoAttackCooldown = myAutoAttackCooldownReset;
 
         myTargetingComponent.SpellTarget = myTargetingComponent.Target;
         SpawnSpell(-1, myTargetingComponent.SpellTarget.transform.position);
@@ -83,6 +85,9 @@ public class PlayerCastingComponent : CastingComponent
 
     private void DetectSpellInput()
     {
+        if (Time.timeScale <= 0.0f)
+            return;
+
         if (myPlayerControls.Action1.WasPressed)
             CheckSpellToCast(0);
         else if (myPlayerControls.Action2.WasPressed)
@@ -229,7 +234,7 @@ public class PlayerCastingComponent : CastingComponent
 
             progress += rate * Time.deltaTime;
 
-            if (!spellScript.IsCastableWhileMoving() && GetComponent<PlayerMovementComponent>().IsMoving() || Input.GetKeyDown(KeyCode.Escape))
+            if (!spellScript.IsCastableWhileMoving() && myMovementComponent && myMovementComponent.IsMoving() || Input.GetKeyDown(KeyCode.Escape))
             {
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
@@ -259,15 +264,14 @@ public class PlayerCastingComponent : CastingComponent
         float progress = 0.0f;
 
         myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
-        UIComponent uiComponent = GetComponent<UIComponent>();
 
         while (progress <= 1.0f)
         {
-            uiComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
+            myUIComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
 
             progress += rate * Time.deltaTime;
 
-            if (GetComponent<PlayerMovementComponent>().IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
+            if (myMovementComponent && myMovementComponent.IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
             {
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
@@ -301,6 +305,9 @@ public class PlayerCastingComponent : CastingComponent
             instance = PoolManager.Instance.GetPooledObject(myClass.GetSpell(aKeyIndex).GetComponent<UniqueID>().GetID());
         }
 
+        if (!instance)
+            return;
+
         instance.transform.position = aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f);
 
         GameObject target = myTargetingComponent.SpellTarget;
@@ -320,7 +327,9 @@ public class PlayerCastingComponent : CastingComponent
         else
             spellScript.SetTarget(transform.gameObject);
 
-        if (aSpawnPosition == transform.position)
+        spellScript.Restart();
+
+        if (aSpawnPosition == transform.position && spellScript.GetSpellSFX().mySpawnSound)
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
 
         myEventOnSpellSpawned?.Invoke(gameObject, instance, aKeyIndex);
@@ -346,7 +355,7 @@ public class PlayerCastingComponent : CastingComponent
             return false;
         }
 
-        if (!aSpellScript.IsCastableWhileMoving() && GetComponent<PlayerMovementComponent>().IsMoving())
+        if (!aSpellScript.IsCastableWhileMoving() && myMovementComponent && myMovementComponent.IsMoving())
         {
             ShowError(SpellErrorHandler.SpellError.CantMoveWhileCasting);
             return false;
@@ -457,7 +466,7 @@ public class PlayerCastingComponent : CastingComponent
         myShouldAutoAttack = false;
     }
 
-    private void ShowError(SpellErrorHandler.SpellError aSpellError)
+    protected void ShowError(SpellErrorHandler.SpellError aSpellError)
     {
         myUIComponent.HighlightSpellError(aSpellError);
         myPlayerControlsVibrationsManager.VibratePlayerCastingError(aSpellError);

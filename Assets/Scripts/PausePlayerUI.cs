@@ -19,7 +19,7 @@ public class PausePlayerUI : MonoBehaviour
 
     public void SetClassDetails(Class aClass)
     {
-        myClassIcon.sprite = aClass.mySprite;
+        myClassIcon.sprite = aClass.GetComponent<PlayerUIComponent>().myClassSprite;
         myClassName.text = aClass.myClassName;
 
         for (int index = 0; index < mySpellDescriptions.Count; index++)

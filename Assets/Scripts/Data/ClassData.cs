@@ -3,11 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum ClassRole
+{
+    MeleeDps,
+    RangedDps,
+    Healer,
+    Tank
+}
+
 [CreateAssetMenu(fileName = "Class", menuName = "Scriptables/Class")]
 public class ClassData : ScriptableObject
 {
-    public GameObject myClass;
+    public List<GameObject> mySpells = new List<GameObject>(4);
+    [Header("Details")]
+    public GameObject myRightItem;
+    public GameObject myLeftItem;
+
+    [Space(2)]
+    public GameObject myGnome;
+    public ClassRole myClassRole;
     public Sprite myIconSprite;
+    public Color myClassColor;
     public string myName;
     public string myDescription;
+
+    [Space(2)]
+    public int myAutoAttackDamage = 20;
+    public float myTimeBetweenAutoAttacks = 1.2f;
 }

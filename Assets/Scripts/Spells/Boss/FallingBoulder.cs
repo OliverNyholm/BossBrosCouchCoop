@@ -15,6 +15,12 @@ public class FallingBoulder : Spell
 
     List<int> myTargetsHit = new List<int>();
 
+    public override void Reset()
+    {
+        base.Reset();
+        myTargetsHit.Clear();
+    }
+
     protected override void OnFirstUpdate()
     {
         base.OnFirstUpdate();

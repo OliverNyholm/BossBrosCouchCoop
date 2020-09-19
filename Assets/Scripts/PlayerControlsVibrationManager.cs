@@ -13,10 +13,10 @@ public class PlayerControlsVibrationManager : MonoBehaviour
         myPlayerControls = aPlayerControls;
     }
 
-    //private void OnDestroy()
-    //{
-    //    StopVibrations();
-    //}
+    private void OnDestroy()
+    {
+        StopVibrations();
+    }
 
     public void VibratePlayerCastingError(SpellErrorHandler.SpellError aSpellError)
     {

@@ -15,7 +15,7 @@ public class AoeHeal : Spell
 
     private GameObject myVFX;
 
-    protected override void Start()
+    public override void Restart()
     {
         myPlayers = FindObjectOfType<TargetHandler>().GetAllPlayers();
 

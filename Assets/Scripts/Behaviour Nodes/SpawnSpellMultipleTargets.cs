@@ -10,6 +10,7 @@ public class SpawnSpellMultipleTargets : Action
     public GameObject mySpell = null;
     public int mySpellMaxCount = 4;
 
+    public bool mySpawnOnPlayers = false;
     public SharedTransform mySpawnTransform = null;
 
     [BehaviorDesigner.Runtime.Tasks.Tooltip("Enable if you want the spell to spawn without vision, resource, etc checks.")]
@@ -46,7 +47,7 @@ public class SpawnSpellMultipleTargets : Action
         myHasSpawnedSpell = false;
         NPCCastingComponent castingComponent = GetComponent<NPCCastingComponent>();
         castingComponent.IsInterruptable = myIsInterruptable;
-        myCanCastSpell = castingComponent.CastSpell(mySpell, myTargets.Value[0], mySpawnTransform.Value, myShouldIgnoreCastability);
+        myCanCastSpell = castingComponent.CastSpell(mySpell, myTargets.Value[0], mySpawnOnPlayers ? myTargets.Value[0].transform : mySpawnTransform.Value, myShouldIgnoreCastability);
     }
 
     public override TaskStatus OnUpdate()
@@ -89,7 +90,7 @@ public class SpawnSpellMultipleTargets : Action
         myHasSpawnedSpell = true;
         for (int index = 1; index < myTargets.Value.Count; index++)
         {
-            GetComponent<NPCCastingComponent>().SpawnSpell(mySpell, myTargets.Value[index], mySpawnTransform.Value);
+            GetComponent<NPCCastingComponent>().SpawnSpell(mySpell, myTargets.Value[index], mySpawnOnPlayers ? myTargets.Value[index].transform : mySpawnTransform.Value);
         }
     }
 

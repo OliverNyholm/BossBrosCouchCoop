@@ -95,9 +95,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: Damage 150
-  myTutorialInfo: The brute does a heavy blow towards the enemy, striking it and
-    dealing a moderate amount of damage. Great for keeping targets attacking the
-    brute.
+  myTutorialInfo: Close combat attack that strikes hard on the victim. Great for
+    keeping targets attacking the brute.
   myName: Strike
   mySpellType: 1
   mySpellTarget: 4
@@ -122,6 +121,7 @@ MonoBehaviour:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 8300000, guid: 04114ae66b464ff41b14ea806beaa345, type: 3}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
 --- !u!82 &8892797277364096202

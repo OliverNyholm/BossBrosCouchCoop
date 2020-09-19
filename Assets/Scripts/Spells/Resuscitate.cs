@@ -7,7 +7,7 @@ public class Resuscitate : Spell
     [SerializeField]
     private float myChannelTime;
 
-    protected override void Start()
+    public override void Restart()
     {
         StartCoroutine();
         SpawnVFX(myChannelTime + 1.5f);

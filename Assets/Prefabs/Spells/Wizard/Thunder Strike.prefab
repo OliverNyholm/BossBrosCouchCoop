@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myQuickInfo: Damage 500
   myTutorialInfo: Casting this spell will summon a storm above your target, lashing
-    out a thunder strike on your foe.
+    out a thunder strike on your foe for a lot of damage.
   myName: Thunder Strike
   mySpellType: 1
   mySpellTarget: 4
@@ -72,6 +72,7 @@ MonoBehaviour:
     myCastSound: {fileID: 8300000, guid: b7da691db0371774aac829700141a460, type: 3}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 8300000, guid: 0e046981b256580489bedbb3759bfd51, type: 3}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 7311185079315158179, guid: 0680cc7327227dd4bb30d136b2364fd6,
     type: 3}
 --- !u!82 &-5745426637000047865

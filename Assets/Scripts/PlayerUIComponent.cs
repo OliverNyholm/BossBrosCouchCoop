@@ -6,15 +6,12 @@ using UnityEngine.UI;
 public class PlayerUIComponent : UIComponent
 {
     private GameObject myActionBar;
-    private GameObject[] myActionButtons;
+    protected GameObject[] myActionButtons;
 
     private SpellErrorHandler mySpellErrorHandler;
 
     [SerializeField]
-    private bool myUseCastbarAbovePlayer = false;
-
-    [SerializeField]
-    private Sprite myNoSpellSprite = null;
+    protected Sprite myNoSpellSprite = null;
 
     protected override void Awake()
     {
@@ -34,12 +31,6 @@ public class PlayerUIComponent : UIComponent
     public override void SetupHud(Transform aUIParent)
     {
         base.SetupHud(aUIParent);
-
-        if (myUseCastbarAbovePlayer)
-        {
-            myCastbar = GetComponentInChildren<Castbar>();
-            myCastbar.GetComponent<Canvas>().worldCamera = Camera.main;
-        }
 
         GetComponentInChildren<TargetProjector>().SetPlayerColor(myCharacterColor);
 

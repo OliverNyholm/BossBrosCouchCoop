@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: Block projectiles
-  myTutorialInfo: The brute gives his shield some liquour, enchancing it and causing
-    it to grow in size and destroy any enemy projectiles for a few seconds.
+  myTutorialInfo: A magical shield that will destroy all hostile spells that it comes
+    in contact with.
   myName: Shield Wall
   mySpellType: 0
   mySpellTarget: 0
@@ -72,6 +72,7 @@ MonoBehaviour:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 8300000, guid: 3262c985deb9a494b9b580b7cc9b1580, type: 3}
     myHitSound: {fileID: 0}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 0}
   myShieldWallPrefab: {fileID: 1068469352923482, guid: 14b475929ae66914b8351de6a9a60e06,
     type: 3}

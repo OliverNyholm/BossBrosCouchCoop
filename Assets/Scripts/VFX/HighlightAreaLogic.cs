@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class HighlightAreaLogic : PoolableObject
 {
-    private Material myMaterial;
     private MeshRenderer myDecalProjector;
 
     private float myDuration;
@@ -13,31 +12,36 @@ public class HighlightAreaLogic : PoolableObject
     private void Awake()
     {
         myDecalProjector = GetComponentInChildren<MeshRenderer>();
-        myMaterial = new Material(myDecalProjector.material);
-
-        myDecalProjector.material = myMaterial;
+        myDecalProjector.material = new Material(myDecalProjector.material);
     }
 
-    public void SetData(float aDuration)
+    public void SetData(float aDuration, float aRadius)
     {
         myDuration = aDuration;
+
+        Transform decalTransform = transform.GetChild(0);
+        Vector3 decalScale = decalTransform.lossyScale;
+        decalScale.x = aRadius * 2.0f;
+        decalScale.z = aRadius * 2.0f;
+        decalTransform.localScale = decalScale;
     }
 
     private void OnEnable()
     {
         myLifeTime = 0.0f;
-        myMaterial.SetFloat("_Percentage", 1.0f);
+        myDecalProjector.material.SetFloat("_LifetimePercentage", 1.0f);
     }
 
     void Update()
     {
         myLifeTime += Time.deltaTime;
 
-        myMaterial.SetFloat("_Percentage", 1.0f - myLifeTime / myDuration);
+        myDecalProjector.material.SetFloat("_LifetimePercentage", 1.0f - myLifeTime / myDuration);
     }
 
     public override void Reset()
     {
-        
+        myLifeTime = 0;
+        myDecalProjector.material.SetFloat("_LifetimePercentage", 1.0f);
     }
 }

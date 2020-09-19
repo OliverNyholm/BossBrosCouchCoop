@@ -13,7 +13,7 @@ public class Player : Character
 
     public int PlayerIndex { get; set; }
 
-    private void Start()
+    protected virtual void Start()
     {
         myTargetHandler = GameObject.Find("GameManager").GetComponent<TargetHandler>();
 
@@ -72,5 +72,18 @@ public class Player : Character
         GetComponent<PlayerMovementComponent>().SetPlayerController(aPlayerControls);
         GetComponent<PlayerTargetingComponent>().SetPlayerController(aPlayerControls);
         GetComponent<PlayerCastingComponent>().SetPlayerController(aPlayerControls);
+    }
+
+    public void SetClassData(ClassData aClassData)
+    {
+        Class playerClass = GetComponent<Class>();
+        playerClass.SetClassData(aClassData);
+
+        GnomeAppearance gnomeAppearance = GetComponentInChildren<GnomeAppearance>();
+        gnomeAppearance.EquipItemInHand(aClassData.myLeftItem, true);
+        gnomeAppearance.EquipItemInHand(aClassData.myRightItem, false);
+
+        GetComponent<Stats>().myAutoAttackDamage = aClassData.myAutoAttackDamage;
+        GetComponent<CastingComponent>().myAutoAttackCooldownReset = aClassData.myTimeBetweenAutoAttacks;
     }
 }

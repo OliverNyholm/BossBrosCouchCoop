@@ -15,7 +15,32 @@ public class PlayerSelectManager : MonoBehaviour
     private PlayerControls myKeyboardListener;
     private PlayerControls myJoystickListener;
 
+    [SerializeField]
+    private List<KeyboardKey> myFirstRowKeys = new List<KeyboardKey>();
+    [SerializeField]
+    private List<KeyboardKey> mySecondRowKeys = new List<KeyboardKey>();
+    [SerializeField]
+    private List<KeyboardKey> myThirdRowKeys = new List<KeyboardKey>();
+
+    private List<List<KeyboardKey>> myKeys = new List<List<KeyboardKey>>(3);
+
     private bool myFirstUpdate;
+
+    private void Awake()
+    {
+        for (int index = 0; index < myFirstRowKeys.Count; index++)
+            myFirstRowKeys[index].SetColumnAndRow(index, 0);
+
+        for (int index = 0; index < mySecondRowKeys.Count; index++)
+            mySecondRowKeys[index].SetColumnAndRow(index, 1);
+
+        for (int index = 0; index < myThirdRowKeys.Count; index++)
+            myThirdRowKeys[index].SetColumnAndRow(index, 2);
+
+        myKeys.Add(myFirstRowKeys);
+        myKeys.Add(mySecondRowKeys);
+        myKeys.Add(myThirdRowKeys);
+    }
 
     void Start()
     {
@@ -33,10 +58,10 @@ public class PlayerSelectManager : MonoBehaviour
 
         for (int index = 0; index < selectionData.Count; index++)
         {
-            PlayerSelector selector = GetAvailablePlayerSelector();
-            selector.Show(selectionData[index].myPlayerControls, this);
+            PlayerSelector selector = GetAvailablePlayerSelector(out int availableIndex);
+            selector.Show(selectionData[index].myPlayerControls, this, myKeys[0][0], availableIndex);
             PlayerSetState(selector, PlayerSelector.SelectionState.Name);
-            selector.SetLetters(selectionData[index].myName);
+            selector.SetPlayerName(selectionData[index].myName);
         }
         myCharacterGameData.ClearPlayerData();
         myFirstUpdate = true;
@@ -65,14 +90,14 @@ public class PlayerSelectManager : MonoBehaviour
             if (!IsInputDeviceAvailable(inputDevice))
                 return;
 
-            SetupPlayerSelector(GetAvailablePlayerSelector(), inputDevice);
+            SetupPlayerSelector(GetAvailablePlayerSelector(out int availableIndex), inputDevice, availableIndex);
         }
         if (myKeyboardListener != null && JoinButtonWasPressedOnListener(myKeyboardListener))
         {
             if (!IsKeyboardAvailable())
                 return;
 
-            SetupPlayerSelector(GetAvailablePlayerSelector(), null);
+            SetupPlayerSelector(GetAvailablePlayerSelector(out int availableIndex), null, availableIndex);
         }
 
         if (ExitButtonWasPressedOnListener(myJoystickListener))
@@ -121,26 +146,30 @@ public class PlayerSelectManager : MonoBehaviour
 
     bool JoinButtonWasPressedOnListener(PlayerControls aPlayerControls)
     {
-        return aPlayerControls.Action1.WasPressed || aPlayerControls.Start.WasPressed;
+        return aPlayerControls.Jump.WasPressed;
     }
 
     bool ExitButtonWasPressedOnListener(PlayerControls aPlayerControls)
     {
-        return aPlayerControls.Action2.WasPressed || aPlayerControls.Action3.WasPressed;
+        return aPlayerControls.TargetEnemy.WasPressed;
     }
 
-    PlayerSelector GetAvailablePlayerSelector()
+    PlayerSelector GetAvailablePlayerSelector(out int anAvailableIndex)
     {
+        anAvailableIndex = -1;
         for (int index = 0; index < myPlayers.Count; index++)
         {
             if (myPlayers[index].GetComponent<PlayerSelector>().PlayerControls == null)
+            {
+                anAvailableIndex = index;
                 return myPlayers[index].GetComponent<PlayerSelector>();
+            }
         }
 
         return null;
     }
 
-    void SetupPlayerSelector(PlayerSelector aPlayerSelector, InputDevice aInputDevice)
+    void SetupPlayerSelector(PlayerSelector aPlayerSelector, InputDevice aInputDevice, int aPlayerIndex)
     {
         if (!aPlayerSelector)
             return;
@@ -153,12 +182,44 @@ public class PlayerSelectManager : MonoBehaviour
         }
         else
         {
-            //playerControls = PlayerControls.CreateWithJoystickBindings();
             playerControls = myKeyboardListener;
         }
 
-        aPlayerSelector.Show(playerControls, this);
+        aPlayerSelector.Show(playerControls, this, myKeys[0][0], aPlayerIndex);
         PlayerSetState(aPlayerSelector, PlayerSelector.SelectionState.Name);
+    }
+
+    public KeyboardKey GetKeyboardKey(KeyboardKey aCurrentKey, int aDirection)
+    {
+        int nextRow = aCurrentKey.GetRowIndex();
+        int nextColumn = aCurrentKey.GetColumnIndex();
+        switch (aDirection)
+        {
+            case 1: //up
+                nextRow -= 1;
+                break;
+            case 2: //down
+                nextRow += 1;
+                break;
+            case 3: //left
+                nextColumn -= 1;
+                break;
+            case 4: //right
+                nextColumn += 1;
+                break;
+            default:
+                return null;
+        }
+
+        if (nextRow < 0 || nextRow >= myKeys.Count)
+            return aCurrentKey;
+
+        if (nextColumn >= myKeys[nextRow].Count)
+            nextColumn = 0;
+        else if (nextColumn == -1)
+            nextColumn = myKeys[nextRow].Count - 1;
+
+        return myKeys[nextRow][nextColumn];
     }
 
     public void PlayerSetState(PlayerSelector aPlayerSelector, PlayerSelector.SelectionState aState)
@@ -167,74 +228,32 @@ public class PlayerSelectManager : MonoBehaviour
         switch (aPlayerSelector.State)
         {
             case PlayerSelector.SelectionState.Back:
-                aPlayerSelector.SetInstructions("Press A to join.");
+                aPlayerSelector.SetInstructions("Press Right Bumper to join.");
                 aPlayerSelector.Hide();
                 break;
             case PlayerSelector.SelectionState.Name:
-                aPlayerSelector.SetInstructions("Choose your name by moving left/right and A/B. Press Start when ready.");
+                aPlayerSelector.SetInstructions("Choose your name by moving the stick and A/B. Press Right Bumper when ready.");
                 break;
             case PlayerSelector.SelectionState.Ready:
-                aPlayerSelector.SetInstructions("Press Start when everyone is ready");
-                RemoveSameSelections(aState);
+                aPlayerSelector.SetInstructions("Press Right Bumper when everyone is ready");
                 break;
             default:
                 break;
         }
     }
 
-    private void RemoveSameSelections(PlayerSelector.SelectionState aState)
+    public void StartPlaying()
     {
         for (int index = 0; index < myPlayers.Count; index++)
         {
             PlayerSelector playerSelector = myPlayers[index].GetComponent<PlayerSelector>();
-            if (playerSelector.State >= aState)
+            if (playerSelector.PlayerControls == null)
                 continue;
 
-            //if (!IsSelectionAvailable(playerSelector.State, myPlayerClassIndex, myPlayerClassIndex[index]))
-            //{
-            //    myPlayerClassIndex[index] = GetNextAvailableOption(playerSelector.State, myClassHuds, myPlayerClassIndex, myPlayerClassIndex[index]);
-            //    playerSelector.SetClass(myClassHuds[myPlayerClassIndex[index]]);
-            //}
-            //if (!IsSelectionAvailable(playerSelector.State, myPlayerColorIndex, myPlayerColorIndex[index]))
-            //{
-            //    myPlayerColorIndex[index] = GetNextAvailableOption(playerSelector.State, myColorSchemes, myPlayerColorIndex, myPlayerColorIndex[index]);
-            //    playerSelector.SetColor(myColorSchemes[myPlayerColorIndex[index]]);
-            //}
-        }
-    }
-
-    private bool IsSelectionAvailable(PlayerSelector.SelectionState aState, List<int> aPlayerIndexList, int aIndex)
-    {
-        for (int index = 0; index < aPlayerIndexList.Count; index++)
-        {
-            if (myPlayers[index].GetComponent<PlayerSelector>().State > aState && aPlayerIndexList[index] == aIndex)
-                return false;
+            if (playerSelector.State != PlayerSelector.SelectionState.Ready)
+                return;
         }
 
-        return true;
-    }
-
-    private int GetNextAvailableOption<T>(PlayerSelector.SelectionState aState, List<T> aOptionList, List<int> aPlayerIndexList, int aIndex, int aDirection = 1)
-    {
-        aIndex += aDirection;
-        for (int counter = 0; counter < aOptionList.Count; counter++)
-        {
-            if (aIndex >= aOptionList.Count)
-                aIndex = 0;
-            if (aIndex < 0)
-                aIndex = aOptionList.Count - 1;
-
-            if (IsSelectionAvailable(aState, aPlayerIndexList, aIndex))
-                return aIndex;
-
-            aIndex += aDirection;
-        }
-
-        return -1;
-    }
-
-    public void StartPlaying()
-    {
         for (int index = 0; index < myPlayers.Count; index++)
         {
             PlayerControls playerControls = myPlayers[index].GetComponent<PlayerSelector>().PlayerControls;

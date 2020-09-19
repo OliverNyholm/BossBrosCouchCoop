@@ -17,7 +17,7 @@ public class Meditate : Spell
 
     private GameObject myVFX;
 
-    protected override void Start()
+    public override void Restart()
     {
         const int NrOfTicks = 10;
 

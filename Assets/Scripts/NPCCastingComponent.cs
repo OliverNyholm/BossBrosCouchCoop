@@ -93,11 +93,10 @@ public class NPCCastingComponent : CastingComponent
         float progress = 0.0f;
 
         myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
-        UIComponent uiComponent = GetComponent<UIComponent>();
 
         while (progress <= 1.0f)
         {
-            uiComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
+            myUIComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
 
             progress += rate * Time.deltaTime;
 
@@ -126,15 +125,19 @@ public class NPCCastingComponent : CastingComponent
     public void SpawnSpell(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform)
     {
         GameObject spellGO = PoolManager.Instance.GetPooledObject(aSpell.GetComponent<UniqueID>().GetID());
-        spellGO.transform.position = aSpawnTransform.position;
-        spellGO.transform.rotation = aSpawnTransform.rotation;
-        spellGO.transform.localScale = aSpawnTransform.localScale;
 
         Spell spellScript = spellGO.GetComponent<Spell>();
         spellScript.SetParent(transform.gameObject);
         spellScript.AddDamageIncrease(myStats.myDamageIncrease);
 
+        if (spellScript.mySpeed == 0.0f && aTarget)
+            aSpawnTransform.position = aTarget.transform.position;
+
+        spellGO.transform.position = aSpawnTransform.position;
+        spellGO.transform.rotation = aSpawnTransform.rotation;
+
         spellScript.SetTarget(aTarget);
+        spellScript.Restart();
 
         if (aTarget && aSpawnTransform.position != aTarget.transform.position)
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
@@ -164,7 +167,7 @@ public class NPCCastingComponent : CastingComponent
         }
 
         myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
-        myAutoAttackCooldown = 1.2f;
+        myAutoAttackCooldown = myAutoAttackCooldownReset;
 
         GameObject target = myTargetingComponent.Target;
         SpawnSpell(PoolManager.Instance.GetAutoAttackPrefab(), target, target.transform);

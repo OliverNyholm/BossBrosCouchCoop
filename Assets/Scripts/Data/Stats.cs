@@ -67,14 +67,19 @@ public class Stats : MonoBehaviour
     public void AddSpellOverTime(SpellOverTime aSpell)
     {
         mySpellOverTimeGOs.Add(aSpell);
-        GetComponent<UIComponent>().AddBuff(aSpell.mySpellIcon);
+
+        UIComponent uiComponent = GetComponent<UIComponent>();
+        if(uiComponent)
+            uiComponent.AddBuff(aSpell.mySpellIcon);
     }
 
     public void RemoveSpellOverTime(SpellOverTime aSpell)
     {
         int index = FindIndexOfSpellOverTime(aSpell);
         mySpellOverTimeGOs.RemoveAt(index);
-        GetComponent<UIComponent>().RemoveBuff(index);
+        UIComponent uiComponent = GetComponent<UIComponent>();
+        if (uiComponent)
+            uiComponent.RemoveBuff(index);
     }
 
     public void RemoveSpellOverTimeIfExists(SpellOverTime aSpell)

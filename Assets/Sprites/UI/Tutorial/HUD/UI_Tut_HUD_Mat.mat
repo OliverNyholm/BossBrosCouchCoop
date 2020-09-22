@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: UI_Tut_HUD_Mat
-  m_Shader: {fileID: -6465566751694194690, guid: 9830e8bfa4638c7429777c3eab7588e3,
+  m_Shader: {fileID: -6465566751694194690, guid: d2e171776b36cb44ea0bf9803c70206f,
     type: 3}
   m_ShaderKeywords: _BLENDMODE_ALPHA _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
@@ -30,22 +30,33 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap:
     MotionVector: User
-    RenderType: Transparent
   disabledShaderPasses:
   - MOTIONVECTORS
   - TransparentBackface
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_FC906FB9:
+        m_Texture: {fileID: 2800000, guid: 72e5d0ad715dc2045bdcb4d10b00302a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 72e5d0ad715dc2045bdcb4d10b00302a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_168953FD: 8
     - Vector1_215A361B: 29
+    - Vector1_29C8EBB0: 28
     - Vector1_336FCB4D: 8
+    - Vector1_3B827AAD: 4
     - Vector1_41C367AD: 2
     - Vector1_7805B3A3: 4
+    - Vector1_BE2DD1F5: 28
+    - Vector1_C46B424D: 8
+    - Vector1_D9639C76: 2
+    - Vector1_DE090849: 2
+    - Vector1_E5ECE9EF: 4
     - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 10
     - _AlphaSrcBlend: 1
@@ -55,7 +66,7 @@ Material:
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
-    - _EnableTime: 9.94
+    - _EnableTime: 0
     - _ReceivesSSR: 0
     - _RenderQueueType: 5
     - _RequireSplitLighting: 0

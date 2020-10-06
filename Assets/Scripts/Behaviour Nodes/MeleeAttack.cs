@@ -11,13 +11,13 @@ public class MeleeAttack : Action
     public SharedFloat myAutoAttackRange;
     public SharedFloat myAutoAttackCooldown;
 
-    private NavMeshAgent myNavmeshAgent;
-    private Animator myAnimator;
+    private NPCMovementComponent myMovementComponent;
+    private NPCCastingComponent myCastingComponent;
 
     public override void OnStart()
     {
-        myNavmeshAgent = GetComponent<NavMeshAgent>();
-        myAnimator = GetComponent<Animator>();
+        myMovementComponent = GetComponent<NPCMovementComponent>();
+        myCastingComponent = GetComponent<NPCCastingComponent>();
     }
 
     public override TaskStatus OnUpdate()
@@ -30,32 +30,24 @@ public class MeleeAttack : Action
         float autoAttackRange = myAutoAttackRange.Value;
         float moveMinDistance = autoAttackRange - attackRangeOffset;
         if (distanceSqr > moveMinDistance * moveMinDistance)
-        {
-            myNavmeshAgent.destination = myTarget.Value.transform.position;
-            myAnimator.SetBool("IsRunning", true);
-        }
+            myMovementComponent.MoveTo(myTarget.Value.transform.position);
         else
         {
-            myNavmeshAgent.destination = transform.position;
-            myAnimator.SetBool("IsRunning", false);
+            transform.rotation = Quaternion.LookRotation((myTarget.Value.transform.position - transform.position).normalized, Vector3.up);
+            myMovementComponent.Stop();
         }
 
         if (myAutoAttackCooldown.Value > 0.0f)
             return TaskStatus.Running;
 
         if (distanceSqr < autoAttackRange * autoAttackRange)
-        {
-            myNavmeshAgent.destination = transform.position;
-            myAnimator.SetBool("IsRunning", false);
-            GetComponent<NPCCastingComponent>().AutoAttack();
-        }
+            myCastingComponent.AutoAttack();
 
         return TaskStatus.Running;
     }
 
     public override void OnEnd()
     {
-        myNavmeshAgent.destination = transform.position;
-        myAnimator.SetBool("IsRunning", false);
+        myMovementComponent.Stop();
     }
 }

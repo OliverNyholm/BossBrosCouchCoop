@@ -245,7 +245,7 @@ public class CharacterSelectManager : MonoBehaviour
 
     private int GetClassIndex(ClassData aClassData)
     {
-        return myClassHuds.IndexOf(aClassData);
+        return Mathf.Clamp(myClassHuds.IndexOf(aClassData), 0, myClassHuds.Count - 1);
     }
 
     private int GetColorIndex(ColorScheme aColorScheme)

@@ -10,7 +10,8 @@ public struct ThreatData
 
 public class ThreatHolder
 {
-   private ThreatData[] myThreatData = new ThreatData[32];
+   private const int MaxThreatSize = 32;
+   private ThreatData[] myThreatData = new ThreatData[MaxThreatSize];
    private float myThreatLifetime = 10.0f;
 
     private int myInternalArrayCounter = 0;
@@ -44,7 +45,8 @@ public class ThreatHolder
         myThreatData[myInternalArrayCounter].myThreatAmount = aThreatAmount;
         myThreatData[myInternalArrayCounter].myExpirationTime = Time.time + myThreatLifetime;
 
-        myInternalArrayCounter++;
+        if(myInternalArrayCounter < MaxThreatSize - 1)
+            myInternalArrayCounter++;
     }
 
     public void RemoveThreat(int anIndex)

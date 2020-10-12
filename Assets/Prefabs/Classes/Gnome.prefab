@@ -2625,7 +2625,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myClassName: Brute
   myClassRole: 0
-  mySprite: {fileID: 21300000, guid: 4a9c64b90c49a964a93c12fa89c6c76e, type: 3}
   mySpells:
   - {fileID: 1504369000683004, guid: 514d6da34d22c8e42bc9f3dc233bb07f, type: 3}
   - {fileID: 1894928944319450, guid: e0c2d32b3c4488c4ca7400732b9e3838, type: 3}
@@ -2667,8 +2666,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d2c069978184cd4788cd4ddd56cf980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myMaxHealth: 1000
-  myCurrentHealth: 1000
+  myMaxHealth: 600
+  myCurrentHealth: 600
   myHealthPerTick: 0
   myHealthTickInterval: 1
   myTimeBeforeHealthRegenerationAfterDamage: 5
@@ -2712,7 +2711,7 @@ MonoBehaviour:
   myClassSprite: {fileID: 21300000, guid: 4a9c64b90c49a964a93c12fa89c6c76e, type: 3}
   myCharacterColor: {r: 0, g: 0, b: 0, a: 0}
   myName: 
-  myUseCastbarAbovePlayer: 1
+  myUseCastbarAboveCharacter: 1
   myNoSpellSprite: {fileID: 21300000, guid: 8b6fcb4ee8108544d98efcbafd3ed0df, type: 3}
 --- !u!114 &5325252420937882099
 MonoBehaviour:

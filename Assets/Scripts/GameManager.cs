@@ -220,6 +220,10 @@ public class GameManager : MonoBehaviour
                 continue;
             npc.GetComponent<NPCThreatComponent>().AddPlayer(newPlayer);
         }
+
+        DynamicCamera dynamicCamera = FindObjectOfType<DynamicCamera>();
+        if (dynamicCamera)
+            dynamicCamera.myPlayerTransforms.Add(newPlayer.transform);
     }
 
     private Vector3 ColorToRGBVector(Color aColor)

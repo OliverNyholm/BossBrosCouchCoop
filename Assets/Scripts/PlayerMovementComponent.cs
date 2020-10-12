@@ -21,6 +21,8 @@ public class PlayerMovementComponent : MovementComponent
     private CameraXZTransform myCameraXZTransform;
 
     protected bool myIsGrounded;
+    private Vector3 myPreviousGroundPosition;
+    private float myStartFallingTimestamp;
 
     protected virtual void Awake()
     {
@@ -44,6 +46,8 @@ public class PlayerMovementComponent : MovementComponent
         myCameraXZTransform.myRight.Normalize();
 
         myVelocity = Vector3.zero;
+        myPreviousGroundPosition = transform.position;
+        myStartFallingTimestamp = 0.0f;
 
         myHealth.EventOnHealthZero += OnDeath;
     }
@@ -58,12 +62,7 @@ public class PlayerMovementComponent : MovementComponent
         myVelocity.y -= myGravity * Time.deltaTime;
         myController.Move(myVelocity * Time.deltaTime);
 
-        //myController.isGrounded unstable further ahead is seems...
-        myIsGrounded = IsGrounded();
-        if (!myAnimatorWrapper.GetBool(AnimationVariable.IsGrounded) && myIsGrounded)
-            myAnimatorWrapper.SetBool(AnimationVariable.IsGrounded, true);
-
-        SlideOnAngledSurface();
+        UpdateGrounded();
 
         if (myHealth.IsDead())
             return;
@@ -117,7 +116,7 @@ public class PlayerMovementComponent : MovementComponent
         const float offsetLength = 0.3f;
         Vector3 offset = new Vector3(0.0f, offsetLength, 0.0f);
 
-        float distance = 0.3f + offsetLength;
+        float distance = 0.5f + offsetLength;
         Ray ray = new Ray(transform.position + offset, Vector3.down);
         LayerMask layerMask = LayerMask.GetMask("Terrain");
 
@@ -129,6 +128,34 @@ public class PlayerMovementComponent : MovementComponent
         }
 
         return false;
+    }
+
+    private void UpdateGrounded()
+    {
+        bool wasGrounded = myIsGrounded;
+
+        myIsGrounded = IsGrounded();
+        if (!myAnimatorWrapper.GetBool(AnimationVariable.IsGrounded) && myIsGrounded)
+            myAnimatorWrapper.SetBool(AnimationVariable.IsGrounded, true);
+
+        if (myIsGrounded)
+            myPreviousGroundPosition = transform.position;
+
+        if (!myIsGrounded && wasGrounded)
+            myStartFallingTimestamp = Time.time;
+
+        SlideOnAngledSurface();
+        HandleEndlessFalling();
+    }
+
+    private void HandleEndlessFalling()
+    {
+        if (myIsGrounded)
+            return;
+
+        const float endlessFallingDuration = 5.0f;
+        if (Time.time - myStartFallingTimestamp > endlessFallingDuration)
+            transform.position = myPreviousGroundPosition;
     }
 
     private void SlideOnAngledSurface()

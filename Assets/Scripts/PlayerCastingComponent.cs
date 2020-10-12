@@ -201,7 +201,7 @@ public class PlayerCastingComponent : CastingComponent
         {
             SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
-            GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
+            //GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
             myAnimatorWrapper.SetTrigger(spellScript.myAnimationType);
             return;
         }
@@ -251,7 +251,7 @@ public class PlayerCastingComponent : CastingComponent
         {
             SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
-            GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
+            //GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
         }
     }
 
@@ -349,11 +349,11 @@ public class PlayerCastingComponent : CastingComponent
             return false;
         }
 
-        if (GetComponent<Resource>().myCurrentResource < aSpellScript.myResourceCost)
-        {
-            ShowError(SpellErrorHandler.SpellError.OutOfResources);
-            return false;
-        }
+        //if (GetComponent<Resource>().myCurrentResource < aSpellScript.myResourceCost)
+        //{
+        //    ShowError(SpellErrorHandler.SpellError.OutOfResources);
+        //    return false;
+        //}
 
         if (!aSpellScript.IsCastableWhileMoving() && myMovementComponent && myMovementComponent.IsMoving())
         {

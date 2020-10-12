@@ -101,13 +101,13 @@ MonoBehaviour:
   mySpellType: 1
   mySpellTarget: 4
   myAnimationType: 4
-  myDamage: 150
+  myDamage: 100
   myHealValue: 0
   myResourceCost: 50
   myThreatModifier: 1
   mySpeed: 0
   myCastTime: 0
-  myCooldown: 0.2
+  myCooldown: 1
   myRange: 8.2
   myStunDuration: 0
   myCastbarColor: {r: 1, g: 0.55655974, b: 0, a: 1}
@@ -121,6 +121,7 @@ MonoBehaviour:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 8300000, guid: 9bb18b6a1a81bd84888cd763d0677c45, type: 3}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
 --- !u!82 &4419037672812535998

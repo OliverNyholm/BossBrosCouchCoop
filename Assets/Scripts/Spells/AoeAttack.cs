@@ -4,61 +4,52 @@ using UnityEngine;
 
 public class AoeAttack : Spell
 {
-    private float myLifeTime = 0.05f;
-
-    [Header("The target to damage")]
     [SerializeField]
-    private string myAttackTag = "Enemy";
-
-    private bool myHasRechedTarget = false;
+    private float myRadius = 10.0f;
 
     TargetHandler myTargetHandler;
+
+    GameObject myInitialTarget = null;
 
     private void Awake()
     {
         myTargetHandler = FindObjectOfType<TargetHandler>();
     }
 
-    protected override void Update()
-    {
-        if(!myHasRechedTarget)
-            base.Update();
-
-        myLifeTime -= Time.deltaTime;
-        if (myLifeTime <= 0.0f)
-        {
-            ReturnToPool();
-        }
-    }
-
     protected override void OnReachTarget()
     {
-        myHasRechedTarget = true;
-
         if (myTarget)
+        {
+            myInitialTarget = myTarget;
             DealSpellEffect();
+            if (mySpawnedOnHit != null)
+                SpawnOnHitObject();
+        }
 
         SpawnVFX(2.5f);
-        DealDamageToSurroundingTargets();
+        DealEffectToSurroundingTargets();
 
-        if (mySpawnedOnHit != null)
-        {
-            SpawnOnHitObject();
-        }
+        ReturnToPool();
     }
 
-    private void DealDamageToSurroundingTargets()
+    private void DealEffectToSurroundingTargets()
     {
-        if (myDamage <= 0.0f)
+        if (myDamage <= 0.0f && myHealValue <= 0.0f)
             return;
 
-        float radiusSqr = Mathf.Pow(GetComponent<SphereCollider>().radius * transform.lossyScale.x, 2);
-        List<GameObject> targets = myAttackTag == "Enemy" ? myTargetHandler.GetAllEnemies() : myTargetHandler.GetAllPlayers();
+        float radiusSqr = myRadius * myRadius;
+        List<GameObject> targets = mySpellTarget == SpellTarget.Enemy ? myTargetHandler.GetAllEnemies() : myTargetHandler.GetAllPlayers();
         foreach (GameObject target in targets)
         {
+            if (myInitialTarget == target)
+                continue;
+
             if((target.transform.position - transform.position).sqrMagnitude <= radiusSqr)
             {
-                target.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor.linear, target.transform.position);
+                myTarget = target;
+                DealSpellEffect();
+                if (mySpawnedOnHit != null)
+                    SpawnOnHitObject();
             }
         }
     }
@@ -66,6 +57,6 @@ public class AoeAttack : Spell
     public override void Reset()
     {
         base.Reset();
-        myHasRechedTarget = false;
+        myInitialTarget = null;
     }
 }

@@ -136,8 +136,11 @@ public class Spell : PoolableObject
         }
         if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal))
         {
-            myTarget.GetComponent<Health>().GainHealth(myHealValue);
-            PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myHealValue)));
+            if(myHealValue > 0.0f)
+            {
+                myTarget.GetComponent<Health>().GainHealth(myHealValue);
+                PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myHealValue)));
+            }
         }
 
         if (myStunDuration > 0.0f)
@@ -159,8 +162,8 @@ public class Spell : PoolableObject
     {
         PoolManager poolManager = PoolManager.Instance;
         GameObject spawnObject = poolManager.GetPooledObject(mySpawnedOnHit.GetComponent<UniqueID>().GetID());
-        spawnObject.GetComponent<SpawnObjectSpell>().SetParent(myParent);
-        spawnObject.GetComponent<SpawnObjectSpell>().SetTarget(myTarget);
+        spawnObject.GetComponent<Spell>().SetParent(myParent);
+        spawnObject.GetComponent<Spell>().SetTarget(myTarget);
 
         spawnObject.transform.localPosition = transform.position;
         spawnObject.transform.localRotation = Quaternion.identity;
@@ -259,7 +262,7 @@ public class Spell : PoolableObject
     public virtual bool IsCastOnFriends()
     {
         if (myIsOnlySelfCast)
-            return false;
+            return true;
 
         return UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal | SpellType.Ressurect);
     }

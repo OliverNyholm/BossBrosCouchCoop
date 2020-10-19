@@ -123,6 +123,12 @@ public class PlayerCastingComponent : CastingComponent
             CastSpell(aKeyIndex, true);
             return;
         }
+        else if (myClass.GetSpell(aKeyIndex).GetComponent<Spell>().myIsOnlySelfCast)
+        {
+            CastSpell(aKeyIndex, true);
+            return;
+        }
+
 
         myUIComponent.SpellHeldDown(aKeyIndex);
         myStartTimeOfHoldingKeyDown = Time.time;

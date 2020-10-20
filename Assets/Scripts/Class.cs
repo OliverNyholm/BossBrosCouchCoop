@@ -34,7 +34,7 @@ public class Class : MonoBehaviour
             }
 
             Spell spell = mySpells[index].GetComponent<Spell>();
-            spell.CreatePooledObjects(poolManager, 3);
+            spell.CreatePooledObjects(poolManager, spell.myPoolSize);
 
             myUIComponent.SetSpellHud(spell, index);
         }

@@ -61,6 +61,7 @@ public class CharacterSelectManager : MonoBehaviour
             myGnomes[index].SetActive(false);
         }
 
+        TargetHandler targetHandler = FindObjectOfType<TargetHandler>();
         for (int index = 0; index < characters.Count; index++)
         {
             myPlayers[index].SetActive(true);
@@ -72,6 +73,8 @@ public class CharacterSelectManager : MonoBehaviour
 
             myGnomes[index].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(characterSelector);
             myGnomes[index].GetComponent<CharacterSelectTargetingComponent>().SetPlayerIndex(index);
+
+            targetHandler.AddPlayer(myGnomes[index]);
         }
 
         if (characters.Count == 0)
@@ -87,8 +90,13 @@ public class CharacterSelectManager : MonoBehaviour
             myGnomes[0].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(characterSelector);
             myGnomes[0].GetComponent<CharacterSelectTargetingComponent>().SetPlayerIndex(0);
             myCharacterGameData.AddPlayerData(selectData.myPlayerControls, "DebugPlayer");
+
+            targetHandler.AddPlayer(myGnomes[0]);
+            DebugActivateOtherGnomes(targetHandler, 1);
+            DebugActivateOtherGnomes(targetHandler, 2);
+            DebugActivateOtherGnomes(targetHandler, 3);
         }
-        
+
         myNextLevel = myCharacterGameData.mySceneToLoad;
     }
 
@@ -251,5 +259,20 @@ public class CharacterSelectManager : MonoBehaviour
     private int GetColorIndex(ColorScheme aColorScheme)
     {
         return myColorSchemes.IndexOf(aColorScheme);
+    }
+
+    private void DebugActivateOtherGnomes(TargetHandler aTargetHandler, int anIndex)
+    {
+        myGnomes[anIndex].SetActive(true);
+        PlayerSelectData selectData = new PlayerSelectData(PlayerControls.CreateWithJoystickBindings(), null, null, "DebugPlayer");
+        CharacterSelector characterSelector = GetAvailableCharacterSelector(out int availableIndex);
+        SetupCharacterSelector(characterSelector, selectData, availableIndex);
+        characterSelector.SetClass(myClassHuds[myPlayerClassIndex[anIndex]], myClassRoleSprites);
+        characterSelector.SetColor(myColorSchemes[myPlayerColorIndex[anIndex]]);
+
+        myGnomes[anIndex].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(characterSelector);
+        myGnomes[anIndex].GetComponent<CharacterSelectTargetingComponent>().SetPlayerIndex(anIndex);
+
+        aTargetHandler.AddPlayer(myGnomes[anIndex]);
     }
 }

@@ -16,6 +16,7 @@ public class CharacterSelectMovementComponent : PlayerMovementComponent
 
         myNavmeshAgent = GetComponent<NavMeshAgent>();
         myAnimatorWrapper = GetComponent<AnimatorWrapper>();
+        myStats = GetComponent<Stats>();
     }
 
     protected override void Start()

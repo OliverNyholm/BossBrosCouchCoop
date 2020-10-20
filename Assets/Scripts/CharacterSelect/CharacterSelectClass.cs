@@ -40,7 +40,7 @@ public class CharacterSelectClass : Class
             }
 
             Spell spell = mySpells[index].GetComponent<Spell>();
-            spell.CreatePooledObjects(poolManager, 3);
+            spell.CreatePooledObjects(poolManager, spell.myPoolSize * 2);
 
             csUIComponent.SetSpellHud(spell, aClassData.myClassColor, index);
             myCooldownTimers[index] = 0.01f;

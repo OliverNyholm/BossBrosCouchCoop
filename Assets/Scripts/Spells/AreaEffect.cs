@@ -108,6 +108,9 @@ public class AreaEffect : MonoBehaviour
     private void AddBuff(GameObject aPlayer)
     {
         GameObject pooledObject = PoolManager.Instance.GetPooledObject(mySpellOverTime.GetComponent<UniqueID>().GetID());
+        if (!pooledObject)
+            return;
+
         SpellOverTime spellOverTime = pooledObject.GetComponent<SpellOverTime>();
         spellOverTime.SetTarget(aPlayer);
         spellOverTime.transform.parent = aPlayer.transform;

@@ -125,6 +125,8 @@ public class NPCCastingComponent : CastingComponent
     public void SpawnSpell(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform)
     {
         GameObject spellGO = PoolManager.Instance.GetPooledObject(aSpell.GetComponent<UniqueID>().GetID());
+        if (!spellGO)
+            return;
 
         Spell spellScript = spellGO.GetComponent<Spell>();
         spellScript.SetParent(transform.gameObject);

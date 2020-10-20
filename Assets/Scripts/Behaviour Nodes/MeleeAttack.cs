@@ -33,7 +33,9 @@ public class MeleeAttack : Action
             myMovementComponent.MoveTo(myTarget.Value.transform.position);
         else
         {
-            transform.rotation = Quaternion.LookRotation((myTarget.Value.transform.position - transform.position).normalized, Vector3.up);
+            Vector3 toTarget = (myTarget.Value.transform.position - transform.position);
+            toTarget.y = 0.0f;
+            transform.rotation = Quaternion.LookRotation(toTarget.normalized, Vector3.up);
             myMovementComponent.Stop();
         }
 

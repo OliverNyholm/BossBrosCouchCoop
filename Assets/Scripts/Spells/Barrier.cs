@@ -81,6 +81,9 @@ public class Barrier : Spell
     private void AddBuff(GameObject aPlayer)
     {
         GameObject barrierBuff = PoolManager.Instance.GetPooledObject(mySpawnedOnHit.GetComponent<UniqueID>().GetID());
+        if (!barrierBuff)
+            return;
+
         SpellOverTime spellOverTime = barrierBuff.GetComponent<SpellOverTime>();
         spellOverTime.SetParent(myParent);
         spellOverTime.SetTarget(aPlayer);

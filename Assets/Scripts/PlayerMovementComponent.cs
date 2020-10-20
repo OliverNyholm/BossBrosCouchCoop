@@ -15,7 +15,7 @@ public class PlayerMovementComponent : MovementComponent
     private PlayerTargetingComponent myTargetingComponent;
 
     private Health myHealth;
-    private Stats myStats;
+    protected Stats myStats;
 
     protected Vector3 myVelocity;
     private CameraXZTransform myCameraXZTransform;

@@ -16,6 +16,8 @@ public class Spell : PoolableObject
 
     [HideInInspector] public string myName;
 
+    [HideInInspector] public int myPoolSize = 3;
+
     [HideInInspector] public SpellType mySpellType;
     [HideInInspector] public SpellTarget mySpellTarget;
     [HideInInspector] public SpellAnimationType myAnimationType;
@@ -162,6 +164,9 @@ public class Spell : PoolableObject
     {
         PoolManager poolManager = PoolManager.Instance;
         GameObject spawnObject = poolManager.GetPooledObject(mySpawnedOnHit.GetComponent<UniqueID>().GetID());
+        if (!spawnObject)
+            return;
+
         spawnObject.GetComponent<Spell>().SetParent(myParent);
         spawnObject.GetComponent<Spell>().SetTarget(myTarget);
 
@@ -281,6 +286,9 @@ public class Spell : PoolableObject
 
         PoolManager poolManager = PoolManager.Instance;
         GameObject vfxGO = poolManager.GetPooledObject(mySpellVFX.GetComponent<UniqueID>().GetID()); ;
+        if (!vfxGO)
+            return null;
+
         if(mySpawnOnHitVFXOnSelf)
         {
             vfxGO.transform.parent = myParent.transform;

@@ -34,6 +34,9 @@ public class SpawnObject : Action
     {
         PoolManager poolManager = PoolManager.Instance;
         GameObject gameObject = poolManager.GetPooledObject(myObject.GetComponent<UniqueID>().GetID());
+        if (!gameObject)
+            return;
+
         gameObject.transform.parent = myEmptyTransformHolder.transform;
 
         if (mySpawnTransform.Value != null)

@@ -49,6 +49,7 @@ MonoBehaviour:
   myTutorialInfo: Place a cauldron on the ground. Friends nearby will regenerate
     health slowly by standing next to it.
   myName: Healing Cauldron
+  myPoolSize: 2
   mySpellType: 2
   mySpellTarget: 2
   myAnimationType: 0
@@ -78,6 +79,7 @@ MonoBehaviour:
   myObjectToSpawn: {fileID: 8097369550521473238, guid: 11bb634d199391a4595497ded6867bf0,
     type: 3}
   mySpawnObjectLifetime: 10
+  mySpawnOffset: {x: -0.4, y: 0.3, z: 0.5}
 --- !u!82 &-6455141422337824190
 AudioSource:
   m_ObjectHideFlags: 0

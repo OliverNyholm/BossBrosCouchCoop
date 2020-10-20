@@ -24,6 +24,9 @@ public class BossTimerManager : MonoBehaviour
     public int AddBossTimer(string aName, float aDuration, Sprite aSprite, Color aColor)
     {
         GameObject instance = myPoolManager.GetPooledObject(myTimerPrefabID);
+        if (!instance)
+            return -1;
+
         instance.transform.SetParent(transform, false);
 
         BossTimer bossTimer = instance.GetComponent<BossTimer>();

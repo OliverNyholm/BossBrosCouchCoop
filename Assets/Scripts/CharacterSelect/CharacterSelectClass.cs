@@ -35,8 +35,6 @@ public class CharacterSelectClass : Class
             if (mySpells[index] == null)
             {
                 csUIComponent.SetSpellHud(null, aClassData.myClassColor,  index);
-                myCooldownTimers[index] = 0.0f;
-                myUIComponent.SetSpellCooldownText(index, myCooldownTimers[index]);
                 continue;
             }
 

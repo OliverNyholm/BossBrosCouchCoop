@@ -9,11 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8803165340018615047}
-  - component: {fileID: 8803165340018615042}
   - component: {fileID: 8803165340018615043}
   - component: {fileID: 4700144320854121638}
   m_Layer: 0
-  m_Name: Destruction
+  m_Name: Lava Pillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,19 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -29.702002, z: 0}
---- !u!135 &8803165340018615042
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8803165340018615040}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8803165340018615043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,10 +47,11 @@ MonoBehaviour:
   myQuickInfo: 
   myTutorialInfo: 
   myName: Lava Pillar
-  mySpellType: 0
-  mySpellTarget: 4
+  myPoolSize: 3
+  mySpellType: 1
+  mySpellTarget: 2
   myAnimationType: 0
-  myDamage: 350
+  myDamage: 500
   myHealValue: 0
   myResourceCost: 0
   myThreatModifier: 1
@@ -87,7 +74,7 @@ MonoBehaviour:
   mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 1144211659505583100, guid: d353dbfc9b7c5934a86bd59fcd26dfb7,
     type: 3}
-  myAttackTag: Player
+  myRadius: 17
 --- !u!114 &4700144320854121638
 MonoBehaviour:
   m_ObjectHideFlags: 0

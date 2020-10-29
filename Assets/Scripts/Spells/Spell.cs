@@ -193,15 +193,23 @@ public class Spell : PoolableObject
         bool isPlayer = myParent.GetComponent<Player>() != null;
 
         Vector3 damageFloatSpawnPosition = transform.position;
-        if(mySpeed <= 0.0f && isPlayer)
+        if(mySpeed <= 0.0f)
         {
-            Vector3 toParent = (myParent.transform.position - transform.position);
-            float distance = toParent.magnitude;
-            if(distance > 0.0f)
-                toParent /= distance;
+            if(isPlayer)
+            {
+                Vector3 toParent = (myParent.transform.position - transform.position);
+                float distance = toParent.magnitude;
+                if(distance > 0.0f)
+                    toParent /= distance;
 
-            const float distanceFromParent = 2.0f;
-            damageFloatSpawnPosition += toParent * Mathf.Min(distance - distanceFromParent, target.GetComponent<Stats>().myRangeCylinder.myRadius);
+                const float distanceFromParent = 2.0f;
+                damageFloatSpawnPosition += toParent * Mathf.Min(distance - distanceFromParent, target.GetComponent<Stats>().myRangeCylinder.myRadius);
+            }
+            else
+            {
+                if (this is AoeAttack)
+                    damageFloatSpawnPosition = target.transform.position;
+            }
         }
 
         int parentID = myParent.GetInstanceID();

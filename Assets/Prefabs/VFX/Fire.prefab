@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7665508333966892878}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.26, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.21, z: 0}
+  m_LocalScale: {x: 13, y: 0.2, z: 13}
   m_Children: []
   m_Father: {fileID: 2163397943843203286}
   m_RootOrder: 1
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2a4acfae4fa29ad4cba8f2f43c621d4c, type: 2}
+  - {fileID: 2100000, guid: 18975d45082cc9947ad3d45e275afda2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 2354279051243901802}
   - component: {fileID: -4492957559568755691}
   - component: {fileID: -3159380036468732023}
+  - component: {fileID: 9078887994686092457}
   m_Layer: 0
   m_Name: Fire
   m_TagString: Untagged
@@ -4853,7 +4854,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mySpellTarget: 2
   mySpellType: 1
-  myTickValue: 100
+  myTickValue: 70
   myDurationPerTick: 1
   mySpellOverTime: {fileID: 0}
   myMaxSpellsOverTime: 10
@@ -4868,7 +4869,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 6.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-4492957559568755691
 MonoBehaviour:
@@ -4893,6 +4894,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b21e6109fee3ce43b789e174fa20d14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9078887994686092457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8097369550521473238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f28cbef83f6b8e0478becf790afccfde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &4570283757680027403

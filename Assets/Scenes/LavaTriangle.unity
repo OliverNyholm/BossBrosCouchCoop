@@ -437,7 +437,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: -1554072231753903580, guid: 9fe210cab9a53114e981fc3d18ebe782, type: 3}
 --- !u!114 &448157368
@@ -455,6 +455,18 @@ MonoBehaviour:
   myDirection: {x: 0, y: 0, z: 0}
   myMovementSpeed: 1
   myEulerRotation: {x: 0, y: 6, z: 0}
+--- !u!114 &448157369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 448157365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c6536e8068ba9749a9bf4ed28cf1ec4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &466421539
 GameObject:
   m_ObjectHideFlags: 0
@@ -3505,7 +3517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce21cdc1ae203c408ff0ac479c0d2f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myThreatValues: 
 --- !u!114 &2697255863002573309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3532,6 +3543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myBaseSpeed: 8
+  myCanBeAffectedByMovingPlatform: 0
 --- !u!114 &2697255863002573311
 MonoBehaviour:
   m_ObjectHideFlags: 0

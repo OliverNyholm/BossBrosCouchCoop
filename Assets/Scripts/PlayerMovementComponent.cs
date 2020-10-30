@@ -123,8 +123,21 @@ public class PlayerMovementComponent : MovementComponent
         RaycastHit hitInfo;
         if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
         {
-            if (Vector3.Dot(hitInfo.normal, Vector3.down) < -0.5f)
+            if (Vector3.Dot(hitInfo.normal, Vector3.down) < -0.6f)
+            {
+                MovablePlatform movablePlatform = hitInfo.collider.gameObject.GetComponent<MovablePlatform>();
+                if(movablePlatform)
+                {
+                    movablePlatform.AddToPlatform(gameObject);
+                }
                 return true;
+            }
+        }
+
+        if(myMovablePlatform)
+        {
+            myMovablePlatform.RemoveFromPlatform(gameObject);
+            myMovablePlatform = null;
         }
 
         return false;

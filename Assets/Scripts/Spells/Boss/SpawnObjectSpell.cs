@@ -13,6 +13,9 @@ public class SpawnObjectSpell : Spell
     private float mySpawnObjectLifetime = 1.0f;
 
     [SerializeField]
+    private bool myShouldSnapObjectToGround = false;
+
+    [SerializeField]
     private Vector3 mySpawnOffset = Vector3.zero;
 
     protected override void DealSpellEffect()
@@ -31,6 +34,26 @@ public class SpawnObjectSpell : Spell
 
         spawnObject.transform.localPosition = spawnPosition;
         spawnObject.transform.localRotation = Quaternion.identity;
+
+        if(myShouldSnapObjectToGround)
+        {
+            float distance = 5.0f;
+            Ray ray = new Ray(spawnObject.transform.position + Vector3.up, Vector3.down);
+            LayerMask layerMask = LayerMask.GetMask("Terrain");
+
+            RaycastHit hitInfo;
+            if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
+            {
+                spawnObject.transform.localPosition = hitInfo.point;
+                MovablePlatformObject movableObject = spawnObject.GetComponent<MovablePlatformObject>();
+                if (movableObject)
+                {
+                    MovablePlatform movablePlatform = hitInfo.collider.gameObject.GetComponent<MovablePlatform>();
+                    if (movablePlatform)
+                        movableObject.AddSelfToPlatform(movablePlatform);
+                }
+            }
+        }
 
         poolManager.AddTemporaryObject(spawnObject, mySpawnObjectLifetime);
     }

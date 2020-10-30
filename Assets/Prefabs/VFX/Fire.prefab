@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7665508333966892878}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.21, z: 0}
-  m_LocalScale: {x: 13, y: 0.2, z: 13}
+  m_LocalPosition: {x: 0, y: 0.09, z: 0}
+  m_LocalScale: {x: 13, y: 0.1, z: 13}
   m_Children: []
   m_Father: {fileID: 2163397943843203286}
   m_RootOrder: 1
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 18975d45082cc9947ad3d45e275afda2, type: 2}
+  - {fileID: 2100000, guid: 2a4acfae4fa29ad4cba8f2f43c621d4c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4965,6 +4965,26 @@ PrefabInstance:
       propertyPath: m_Materials.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3933980596897875515, guid: d164a6aba067df14e9207bcb647fbb97,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3933980596897875515, guid: d164a6aba067df14e9207bcb647fbb97,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3933980596897875515, guid: d164a6aba067df14e9207bcb647fbb97,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3933980596897875515, guid: d164a6aba067df14e9207bcb647fbb97,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7078676451436182390, guid: d164a6aba067df14e9207bcb647fbb97,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -5084,6 +5104,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PS_GroundExplo
+      objectReference: {fileID: 0}
+    - target: {fileID: 8979926154799442138, guid: d164a6aba067df14e9207bcb647fbb97,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8979926154799442139, guid: d164a6aba067df14e9207bcb647fbb97,
         type: 3}

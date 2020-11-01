@@ -79,9 +79,7 @@ public class PlayerMovementComponent : MovementComponent
         if (Time.timeScale <= 0.0f)
             return;
 
-        if (!myIsGrounded)
-            return;
-
+        Vector3 previousVelocity = myVelocity;
         Vector2 leftStickAxis = myPlayerControls.Movement;
 
         myVelocity = (leftStickAxis.x * myCameraXZTransform.myRight + leftStickAxis.y * myCameraXZTransform.myForwards).normalized;
@@ -90,6 +88,12 @@ public class PlayerMovementComponent : MovementComponent
         bool isMoving = IsMoving();
         if (isMoving)
             RotatePlayer();
+
+        if (!myIsGrounded)
+        {
+            myVelocity.y = previousVelocity.y;
+            return;
+        }
 
         if (myTargetingComponent.IsHealTargeting() || myCastingComponent.StillHasSameLookDirectionAfterReleasingManualHeal())
         {

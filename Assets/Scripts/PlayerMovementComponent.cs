@@ -21,6 +21,7 @@ public class PlayerMovementComponent : MovementComponent
     private CameraXZTransform myCameraXZTransform;
 
     protected bool myIsGrounded;
+    private bool myHasJumped = false;
     private Vector3 myPreviousGroundPosition;
     private float myStartFallingTimestamp;
 
@@ -92,23 +93,29 @@ public class PlayerMovementComponent : MovementComponent
         if (!myIsGrounded)
         {
             myVelocity.y = previousVelocity.y;
-            return;
+        }
+        else
+        {
+            if (myTargetingComponent.IsHealTargeting() || myCastingComponent.StillHasSameLookDirectionAfterReleasingManualHeal())
+            {
+                myVelocity = Vector2.zero;
+                return;
+            }
+
+            myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, isMoving);
         }
 
-        if (myTargetingComponent.IsHealTargeting() || myCastingComponent.StillHasSameLookDirectionAfterReleasingManualHeal())
+        if (myPlayerControls.Jump.WasPressed && !myHasJumped)
         {
-            myVelocity = Vector2.zero;
-            return;
-        }
+            if (myIsGrounded || Time.time - myStartFallingTimestamp < 0.2f)
+            {
+                myVelocity.y = myJumpSpeed;
+                myAnimatorWrapper.ResetTrigger(AnimationVariable.Land);
+                myAnimatorWrapper.SetBool(AnimationVariable.IsGrounded, false);
+                myAnimatorWrapper.SetTrigger(AnimationVariable.Jump);
 
-        myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, isMoving);
-
-        if (myPlayerControls.Jump.WasPressed)
-        {
-            myVelocity.y = myJumpSpeed;
-            myAnimatorWrapper.ResetTrigger(AnimationVariable.Land);
-            myAnimatorWrapper.SetBool(AnimationVariable.IsGrounded, false);
-            myAnimatorWrapper.SetTrigger(AnimationVariable.Jump);
+                myHasJumped = true;
+            }
         }
     }
 
@@ -172,6 +179,8 @@ public class PlayerMovementComponent : MovementComponent
 
             if (!myAnimatorWrapper.GetBool(AnimationVariable.IsGrounded) && myIsGrounded)
                 myAnimatorWrapper.SetBool(AnimationVariable.IsGrounded, true);
+
+            myHasJumped = false;
         }
 
         SlideOnAngledSurface();

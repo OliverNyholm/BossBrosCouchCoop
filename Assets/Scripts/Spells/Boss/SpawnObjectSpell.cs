@@ -37,19 +37,13 @@ public class SpawnObjectSpell : Spell
 
         if(myShouldSnapObjectToGround)
         {
-            float distance = 5.0f;
-            Ray ray = new Ray(spawnObject.transform.position + Vector3.up, Vector3.down);
-            LayerMask layerMask = LayerMask.GetMask("Terrain");
-
-            RaycastHit hitInfo;
-            if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
+            if (UtilityFunctions.FindGroundFromLocation(spawnObject.transform.position, out Vector3 hitLocation, out MovablePlatform movablePlatform))
             {
-                spawnObject.transform.localPosition = hitInfo.point;
-                MovablePlatformObject movableObject = spawnObject.GetComponent<MovablePlatformObject>();
-                if (movableObject)
+                spawnObject.transform.localPosition = hitLocation;
+                if(movablePlatform)
                 {
-                    MovablePlatform movablePlatform = hitInfo.collider.gameObject.GetComponent<MovablePlatform>();
-                    if (movablePlatform)
+                    MovablePlatformObject movableObject = spawnObject.GetComponent<MovablePlatformObject>();
+                    if(movableObject)
                         movableObject.AddSelfToPlatform(movablePlatform);
                 }
             }

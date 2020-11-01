@@ -10,10 +10,14 @@ public class AreaEffect : MonoBehaviour
     [Header("Damage per tick")]
     [SerializeField]
     private int myTickValue = 100;
+    [SerializeField]
+    private bool myShouldDealEffectOnContact = true;
 
     [Header("Duration between each tick")]
     [SerializeField]
     private float myDurationPerTick = 1.0f;
+    [SerializeField]
+    private float myInitialDelay = 0.0f;
     private float myTimer;
 
     [SerializeField]
@@ -26,6 +30,8 @@ public class AreaEffect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        myTimer = myInitialDelay;
+
         if (mySpellOverTime)
             mySpellOverTime.GetComponent<Spell>().CreatePooledObjects(PoolManager.Instance, myMaxSpellsOverTime);
     }
@@ -79,6 +85,9 @@ public class AreaEffect : MonoBehaviour
 
         myObjectsInTrigger.Add(aOther.gameObject);
 
+        if (!myShouldDealEffectOnContact || myInitialDelay > 0.0f)
+            return;
+
         if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Damage))
         {
             int index = myObjectsInTrigger.Count - 1;
@@ -98,6 +107,11 @@ public class AreaEffect : MonoBehaviour
             return;
 
         myObjectsInTrigger.Remove(aOther.gameObject);
+    }
+
+    private void OnEnable()
+    {
+        myTimer = myInitialDelay;
     }
 
     private void OnDisable()

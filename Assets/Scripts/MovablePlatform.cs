@@ -5,16 +5,16 @@ using UnityEngine;
 public class MovablePlatform : MonoBehaviour
 {  
     private List<Transform> myObjectsToMove;
-    private PlayerWrapper[] myPlayers;
+    private CharacterWrapper[] myCharacters;
 
     private TargetHandler myTargetHandler;
 
     private Vector3 myPreviousPosition;
     private Quaternion myPreviosRotation;
 
-    private struct PlayerWrapper
+    private struct CharacterWrapper
     {
-        public GameObject myPlayer;
+        public GameObject myCharacter;
         public MovementComponent myMovementComponent;
         public bool myIsOnPlatform;
     }
@@ -23,7 +23,7 @@ public class MovablePlatform : MonoBehaviour
     {
         myTargetHandler = FindObjectOfType<TargetHandler>();
         myObjectsToMove = new List<Transform>(8);
-        myPlayers = new PlayerWrapper[4];
+        myCharacters = new CharacterWrapper[8];
     }
 
     private void Start()
@@ -31,8 +31,15 @@ public class MovablePlatform : MonoBehaviour
         List<GameObject> players = myTargetHandler.GetAllPlayers();
         for (int index = 0; index < players.Count; index++)
         {
-            myPlayers[index].myPlayer = players[index];
-            myPlayers[index].myMovementComponent = players[index].GetComponent<PlayerMovementComponent>();
+            myCharacters[index].myCharacter = players[index];
+            myCharacters[index].myMovementComponent = players[index].GetComponent<PlayerMovementComponent>();
+        }
+
+        List<GameObject> enemies = myTargetHandler.GetAllEnemies();
+        for (int index = 0; index < enemies.Count; index++)
+        {
+            myCharacters[players.Count + index].myCharacter = enemies[index];
+            myCharacters[players.Count + index].myMovementComponent = enemies[index].GetComponent<MovementComponent>();
         }
 
         myPreviousPosition = transform.position;
@@ -44,13 +51,16 @@ public class MovablePlatform : MonoBehaviour
         Vector3 movementDifference = transform.position - myPreviousPosition;
         Quaternion rotationDifference = transform.rotation * Quaternion.Inverse(myPreviosRotation);
 
-        for (int index = 0; index < myPlayers.Length; index++)
+        for (int index = 0; index < myCharacters.Length; index++)
         {
-            PlayerWrapper player = myPlayers[index];
-            if (!player.myIsOnPlatform || player.myMovementComponent.IsMoving())
+            CharacterWrapper character = myCharacters[index];
+            if (!character.myCharacter)
                 continue;
 
-            MoveObject(player.myPlayer.transform, movementDifference, rotationDifference);
+            if (!character.myIsOnPlatform || character.myMovementComponent.IsMoving())
+                continue;
+
+            MoveObject(character.myCharacter.transform, movementDifference, rotationDifference);
         }
 
         for (int index = 0; index < myObjectsToMove.Count; index++)
@@ -75,13 +85,16 @@ public class MovablePlatform : MonoBehaviour
 
     public void AddToPlatform(GameObject aGameObject)
     {
-        if(aGameObject.GetComponent<Player>())
+        if(aGameObject.GetComponent<Character>())
         {
-            for (int index = 0; index < myPlayers.Length; index++)
+            for (int index = 0; index < myCharacters.Length; index++)
             {
-                if (myPlayers[index].myPlayer == aGameObject)
+                if (myCharacters[index].myCharacter == null)
+                    myCharacters[index].myCharacter = aGameObject;
+
+                if (myCharacters[index].myCharacter == aGameObject)
                 {
-                    myPlayers[index].myIsOnPlatform = true;
+                    myCharacters[index].myIsOnPlatform = true;
                     break;
                 }
             }
@@ -94,13 +107,13 @@ public class MovablePlatform : MonoBehaviour
 
     public void RemoveFromPlatform(GameObject aGameObject)
     {
-        if (aGameObject.GetComponent<Player>())
+        if (aGameObject.GetComponent<Character>())
         {
-            for (int index = 0; index < myPlayers.Length; index++)
+            for (int index = 0; index < myCharacters.Length; index++)
             {
-                if (myPlayers[index].myPlayer == aGameObject)
+                if (myCharacters[index].myCharacter == aGameObject)
                 {
-                    myPlayers[index].myIsOnPlatform = false;
+                    myCharacters[index].myIsOnPlatform = false;
                     break;
                 }
             }

@@ -27,9 +27,31 @@ public class NPCMovementComponent : MovementComponent
         GetComponent<Health>().EventOnHealthZero += OnDeath;
     }
 
+    public void Update()
+    {
+        if (!myCanBeAffectedByMovingPlatform)
+            return;
+
+        if (UtilityFunctions.FindGroundFromLocation(transform.position, out Vector3 hitLocation, out MovablePlatform movablePlatform))
+        {
+            if (myMovablePlatform != movablePlatform)
+            {
+                if (myMovablePlatform)
+                    myMovablePlatform.RemoveFromPlatform(gameObject);
+
+                myMovablePlatform = movablePlatform;
+                if(myMovablePlatform)
+                    myMovablePlatform.AddToPlatform(gameObject);
+            }
+        }
+    }
+
     public void OnDisable()
     {
         GetComponent<Health>().EventOnHealthZero -= OnDeath;
+
+        if(myMovablePlatform)
+            myMovablePlatform.RemoveFromPlatform(gameObject);
     }
 
     public void MoveTo(Vector3 aTargetPosition)
@@ -62,6 +84,9 @@ public class NPCMovementComponent : MovementComponent
 
     public override bool IsMoving()
     {
+        if (myNavmeshAgent.isStopped)
+            return false;
+
         if (myNavmeshAgent.hasPath)
             return true;
 

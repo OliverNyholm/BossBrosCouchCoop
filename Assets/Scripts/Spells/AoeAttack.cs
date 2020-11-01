@@ -41,7 +41,11 @@ public class AoeAttack : Spell
         List<GameObject> targets = mySpellTarget == SpellTarget.Enemy ? myTargetHandler.GetAllEnemies() : myTargetHandler.GetAllPlayers();
         foreach (GameObject target in targets)
         {
-            if (myInitialTarget == target)
+            if (myInitialTarget == target || !target)
+                continue;
+
+            Health health = target.GetComponent<Health>();
+            if (health && health.IsDead())
                 continue;
 
             if((target.transform.position - transform.position).sqrMagnitude <= radiusSqr)

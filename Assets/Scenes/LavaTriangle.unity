@@ -531,6 +531,7 @@ MonoBehaviour:
   mySpellType: 1
   myTickValue: 100
   myDurationPerTick: 1
+  myInitialDelay: 0
   mySpellOverTime: {fileID: 0}
   myMaxSpellsOverTime: 10
 --- !u!4 &522631109 stripped
@@ -3543,7 +3544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myBaseSpeed: 8
-  myCanBeAffectedByMovingPlatform: 0
+  myCanBeAffectedByMovingPlatform: 1
 --- !u!114 &2697255863002573311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3581,7 +3582,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2697255863002573306}
   m_LocalRotation: {x: -0, y: -0.9996334, z: -0, w: 0.02707767}
-  m_LocalPosition: {x: -0.24913467, y: 0.53861773, z: 16.31937}
+  m_LocalPosition: {x: -0.24913467, y: 0.53861773, z: 11.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2695096934524003398}

@@ -142,7 +142,11 @@ public class NPCCastingComponent : CastingComponent
         spellScript.Restart();
 
         if (aTarget && aSpawnTransform.position != aTarget.transform.position)
-            GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
+        {
+            AudioClip spawnSound = spellScript.GetSpellSFX().mySpawnSound;
+            if(spawnSound)
+                GetComponent<AudioSource>().PlayOneShot(spawnSound);
+        }
 
         GetComponent<BehaviorTree>().SendEvent("SpellSpawned");
     }

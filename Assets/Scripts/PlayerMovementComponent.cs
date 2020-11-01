@@ -126,9 +126,14 @@ public class PlayerMovementComponent : MovementComponent
             if (Vector3.Dot(hitInfo.normal, Vector3.down) < -0.6f)
             {
                 MovablePlatform movablePlatform = hitInfo.collider.gameObject.GetComponent<MovablePlatform>();
-                if(movablePlatform)
+                if(myMovablePlatform != movablePlatform)
                 {
-                    movablePlatform.AddToPlatform(gameObject);
+                    if(myMovablePlatform)
+                        myMovablePlatform.RemoveFromPlatform(gameObject);
+
+                    myMovablePlatform = movablePlatform;
+                    if(myMovablePlatform)
+                        myMovablePlatform.AddToPlatform(gameObject);
                 }
                 return true;
             }
@@ -148,14 +153,22 @@ public class PlayerMovementComponent : MovementComponent
         bool wasGrounded = myIsGrounded;
 
         myIsGrounded = IsGrounded();
-        if (!myAnimatorWrapper.GetBool(AnimationVariable.IsGrounded) && myIsGrounded)
-            myAnimatorWrapper.SetBool(AnimationVariable.IsGrounded, true);
 
         if (myIsGrounded)
             myPreviousGroundPosition = transform.position;
 
-        if (!myIsGrounded && wasGrounded)
+        if (!myIsGrounded && wasGrounded) //Started falling/jumping
+        {
             myStartFallingTimestamp = Time.time;
+        }
+        else if(myIsGrounded && !wasGrounded) //Landed
+        {
+            if (myHealth.IsDead())
+                myVelocity = Vector3.zero;
+
+            if (!myAnimatorWrapper.GetBool(AnimationVariable.IsGrounded) && myIsGrounded)
+                myAnimatorWrapper.SetBool(AnimationVariable.IsGrounded, true);
+        }
 
         SlideOnAngledSurface();
         HandleEndlessFalling();

@@ -530,6 +530,7 @@ MonoBehaviour:
   mySpellTarget: 2
   mySpellType: 1
   myTickValue: 100
+  myShouldDealEffectOnContact: 1
   myDurationPerTick: 1
   myInitialDelay: 0
   mySpellOverTime: {fileID: 0}
@@ -650,6 +651,12 @@ PrefabInstance:
       propertyPath: mySpawnPoints.Array.data[3]
       value: 
       objectReference: {fileID: 2004643467}
+    - target: {fileID: 3448170462930489257, guid: 503cc89a2de43d243aca431dd077b45f,
+        type: 3}
+      propertyPath: myDebugPlayerData.myClassData
+      value: 
+      objectReference: {fileID: 11400000, guid: 027f3f981548233438e7d41da8b3c1e2,
+        type: 2}
     - target: {fileID: 3448170462930489301, guid: 503cc89a2de43d243aca431dd077b45f,
         type: 3}
       propertyPath: m_Name

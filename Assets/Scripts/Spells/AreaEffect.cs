@@ -88,6 +88,9 @@ public class AreaEffect : MonoBehaviour
         if (!myShouldDealEffectOnContact || myInitialDelay > 0.0f)
             return;
 
+        if (myTimer / myDurationPerTick < 0.2f) //Avoid double tick
+            return;
+
         if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Damage))
         {
             int index = myObjectsInTrigger.Count - 1;

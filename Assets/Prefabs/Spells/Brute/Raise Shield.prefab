@@ -158,7 +158,8 @@ MonoBehaviour:
   myTutorialInfo: By raising his shield, the brute reduces damage taken for a few
     seconds.
   myName: Raise Shield
-  myAttackType: 0
+  myPoolSize: 3
+  mySpellType: 0
   mySpellTarget: 0
   myAnimationType: 6
   myDamage: 0
@@ -181,6 +182,7 @@ MonoBehaviour:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 0}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 0}
   myIsCastManually: 1
   myDuration: 6
@@ -188,6 +190,6 @@ MonoBehaviour:
   mySpeedMultiplier: 0
   myAttackSpeed: 0
   myDamageIncrease: 0
-  myDamageMitigator: 0.4
+  myDamageMitigator: -0.4
   myShieldValue: 0
   myNumberOfTicks: 3

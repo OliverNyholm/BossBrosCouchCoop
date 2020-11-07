@@ -37,7 +37,7 @@ public abstract class Character : MonoBehaviour
 
     public bool CanRaycastToObject(GameObject anObject)
     {
-        Vector3 hardcodedEyePosition = new Vector3(0.0f, 0.7f, 0.0f);
+        Vector3 hardcodedEyePosition = new Vector3(0.0f, 1.4f, 0.0f);
         Vector3 infrontOfPlayer = (transform.position + hardcodedEyePosition) + transform.forward;
         Vector3 direction = (anObject.transform.position + hardcodedEyePosition) - infrontOfPlayer;
 

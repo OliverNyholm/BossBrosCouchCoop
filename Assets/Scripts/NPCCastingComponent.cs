@@ -125,6 +125,8 @@ public class NPCCastingComponent : CastingComponent
     public void SpawnSpell(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform)
     {
         GameObject spellGO = PoolManager.Instance.GetPooledObject(aSpell.GetComponent<UniqueID>().GetID());
+        if (!spellGO)
+            return;
 
         Spell spellScript = spellGO.GetComponent<Spell>();
         spellScript.SetParent(transform.gameObject);
@@ -140,7 +142,11 @@ public class NPCCastingComponent : CastingComponent
         spellScript.Restart();
 
         if (aTarget && aSpawnTransform.position != aTarget.transform.position)
-            GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
+        {
+            AudioClip spawnSound = spellScript.GetSpellSFX().mySpawnSound;
+            if(spawnSound)
+                GetComponent<AudioSource>().PlayOneShot(spawnSound);
+        }
 
         GetComponent<BehaviorTree>().SendEvent("SpellSpawned");
     }

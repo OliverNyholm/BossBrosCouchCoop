@@ -34,10 +34,42 @@ public class GetRandomPlayer : Action
         do
         {
             randomPlayer = Random.Range(0, players.Count);
-        } while (myShouldExcludePlayer && randomPlayer == myPlayerIndexToExclude.Value);
+        } while (ShouldRepickRandom(randomPlayer, players));
 
         myGameObject.Value = players[randomPlayer];
 
         return TaskStatus.Success;
+    }
+
+    private bool ShouldRepickRandom(int aRandomIndex, List<GameObject> somePlayer)
+    {
+        int deathCount = 0;
+        for (int index = 0; index < somePlayer.Count; index++)
+        {
+            if (!somePlayer[index])
+            {
+                if (aRandomIndex == index)
+                    return true;
+                else
+                    continue;
+            }
+
+            if(somePlayer[index].GetComponent<Health>().IsDead())
+            {
+                deathCount++;
+                if (aRandomIndex == index)
+                    return true;
+            }
+        }
+
+        //If we don't care about who we pick as random and current target isn't dead, go ahead.
+        if (!myShouldExcludePlayer)
+            return false;
+
+        //If we care about excluding, but our current target is the only one alive we'll go with it anyway.
+        if (deathCount == somePlayer.Count - 1)
+            return false;
+
+        return true;
     }
 }

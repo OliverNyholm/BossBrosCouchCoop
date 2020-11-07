@@ -12,13 +12,42 @@ public class SpawnObjectSpell : Spell
     [SerializeField]
     private float mySpawnObjectLifetime = 1.0f;
 
+    [SerializeField]
+    private bool myShouldSnapObjectToGround = false;
+
+    [SerializeField]
+    private Vector3 mySpawnOffset = Vector3.zero;
+
     protected override void DealSpellEffect()
     {
         PoolManager poolManager = PoolManager.Instance;
         GameObject spawnObject = poolManager.GetPooledObject(myObjectToSpawn.GetComponent<UniqueID>().GetID());
 
-        spawnObject.transform.localPosition = transform.position;
+        if (!spawnObject)
+            return;
+
+        Vector3 spawnPosition;
+        if (myIsOnlySelfCast)
+            spawnPosition = myParent.transform.position + myParent.transform.rotation * mySpawnOffset;
+        else
+            spawnPosition = transform.position + transform.rotation * mySpawnOffset;
+
+        spawnObject.transform.localPosition = spawnPosition;
         spawnObject.transform.localRotation = Quaternion.identity;
+
+        if(myShouldSnapObjectToGround)
+        {
+            if (UtilityFunctions.FindGroundFromLocation(spawnObject.transform.position, out Vector3 hitLocation, out MovablePlatform movablePlatform))
+            {
+                spawnObject.transform.localPosition = hitLocation;
+                if(movablePlatform)
+                {
+                    MovablePlatformObject movableObject = spawnObject.GetComponent<MovablePlatformObject>();
+                    if(movableObject)
+                        movableObject.AddSelfToPlatform(movablePlatform);
+                }
+            }
+        }
 
         poolManager.AddTemporaryObject(spawnObject, mySpawnObjectLifetime);
     }

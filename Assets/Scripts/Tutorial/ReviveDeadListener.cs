@@ -18,7 +18,6 @@ public class ReviveDeadListener : MonoBehaviour
     private List<int> myDeadPlayerIds = new List<int>();
     private Subscriber mySubscriber;
 
-
     private void Awake()
     {
         mySubscriber = new Subscriber();

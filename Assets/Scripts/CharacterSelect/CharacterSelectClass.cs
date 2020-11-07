@@ -35,26 +35,15 @@ public class CharacterSelectClass : Class
             if (mySpells[index] == null)
             {
                 csUIComponent.SetSpellHud(null, aClassData.myClassColor,  index);
-<<<<<<< HEAD
-                myCooldownTimers[index] = 0.01f;
-=======
->>>>>>> master
                 continue;
             }
 
             Spell spell = mySpells[index].GetComponent<Spell>();
-<<<<<<< HEAD
-            spell.CreatePooledObjects(poolManager, 3);
-
-            csUIComponent.SetSpellHud(spell, aClassData.myClassColor, index);
-            myCooldownTimers[index] = 0.01f;
-=======
             spell.CreatePooledObjects(poolManager, spell.myPoolSize * 2);
 
             csUIComponent.SetSpellHud(spell, aClassData.myClassColor, index);
             myCooldownTimers[index] = 0.0f;
             myUIComponent.SetSpellCooldownText(index, myCooldownTimers[index]);
->>>>>>> master
         }
     }
 }

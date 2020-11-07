@@ -68,7 +68,10 @@ public class ThrowItemSpell : Spell
         myRigidBody.useGravity = true;
 
         myHasDealtDamage = true;
+<<<<<<< HEAD
 
         Debug.Log("Food hit: " + aCollision.gameObject.name);
+=======
+>>>>>>> master
     }
 }

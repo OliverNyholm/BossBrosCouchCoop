@@ -14,11 +14,13 @@ public class TargetHandler : MonoBehaviour
 
     private void Start()
     {
-        myBossHudHandler = FindObjectsOfType<BossHudHandler>()[0];
-
-        for (int index = 0, count = myNPCs.Count; index < count; index++)
+        myBossHudHandler = FindObjectOfType<BossHudHandler>();
+        if(myBossHudHandler)
         {
-            myBossHudHandler.AddBossHud(myNPCs[index]);
+            for (int index = 0, count = myNPCs.Count; index < count; index++)
+            {
+                myBossHudHandler.AddBossHud(myNPCs[index]);
+            }
         }
 
         for (int index = 0; index < myNPCs.Count; index++)

@@ -11,7 +11,7 @@ public class NPCThreatComponent : MonoBehaviour
     private NPCComponent myNPCComponent;
     private Health myHealth;
     public List<GameObject> Players { get; set; } = new List<GameObject>();
-    public List<int> myThreatValues = new List<int>();
+    public List<ThreatHolder> myThreatValues = new List<ThreatHolder>();
 
     private int myTargetIndex;
 
@@ -36,7 +36,7 @@ public class NPCThreatComponent : MonoBehaviour
     void Start()
     {
         myHealth.EventOnThreatGenerated += AddThreat;
-        myHealth.EventOnHealthZero += OnDeath;
+        myHealth.EventOnHealthZero += ClearAllPlayersThreat;
 
         Subscribe();
     }
@@ -97,17 +97,35 @@ public class NPCThreatComponent : MonoBehaviour
         if (myIsTaunted)
             return myTargetIndex;
 
-        int highestAggro = 0;
+        int highestThreatIndex = 0;        
         if (myThreatValues.Count == 1)
-            return highestAggro;
+            return highestThreatIndex;
 
-        for (int index = 1; index < myThreatValues.Count; index++)
+        float timeNow = Time.time;
+        float highestThreatValue = float.MinValue;
+        if (myTargetIndex != -1) //Do this so if everyone is on 0 threat for some reason, the boss will chose the latest target.
         {
-            if (myThreatValues[index] > myThreatValues[highestAggro] && !Players[index].GetComponent<Health>().IsDead())
-                highestAggro = index;
+            if (!Players[myTargetIndex].GetComponent<Health>().IsDead())
+            {
+                highestThreatValue = myThreatValues[myTargetIndex].CalculateAndTrimThreatAmount(timeNow);
+                highestThreatIndex = myTargetIndex;
+            }
         }
 
-        return highestAggro;
+        for (int index = 0; index < myThreatValues.Count; index++)
+        {
+            if (myTargetIndex == index || Players[index].GetComponent<Health>().IsDead())
+                continue;
+                
+            float threatAmount = myThreatValues[index].CalculateAndTrimThreatAmount(timeNow);
+            if (threatAmount > highestThreatValue)
+            {
+                highestThreatValue = threatAmount;
+                highestThreatIndex = index;
+            }
+        }
+
+        return highestThreatIndex;
     }
 
     public void PlayerSpotted(GameObject aGameObject)
@@ -125,10 +143,12 @@ public class NPCThreatComponent : MonoBehaviour
         {
             if (Players[index].GetInstanceID() == aTaunterID)
             {
+                ClearAllPlayersThreat();
+
                 myTargetIndex = index;
                 SetTarget(myTargetIndex);
                 EventOnTaunted?.Invoke();
-                AddThreat(2000, aTaunterID, true);
+                AddThreat(1000, aTaunterID, true);
                 break;
             }
         }
@@ -143,7 +163,7 @@ public class NPCThreatComponent : MonoBehaviour
     public void AddPlayer(GameObject aPlayer)
     {
         Players.Add(aPlayer);
-        myThreatValues.Add(0);
+        myThreatValues.Add(new ThreatHolder());
     }
 
     private bool AreAllPlayersDead()
@@ -183,15 +203,15 @@ public class NPCThreatComponent : MonoBehaviour
         {
             if (Players[index].GetInstanceID() == anID)
             {
-                myThreatValues[index] += aThreatValue;
+                myThreatValues[index].AddThreat(aThreatValue);
                 break;
             }
         }
     }
 
-    private void OnDeath()
+    private void ClearAllPlayersThreat()
     {
-        myThreatValues.ForEach(item => { item = 0; });
+        myThreatValues.ForEach(item => { item.ClearAllThreat(); });
     }
 
     private void ReceiveMessage(Message anAiMessage)
@@ -217,13 +237,17 @@ public class NPCThreatComponent : MonoBehaviour
                     {
                         if (Players[index].GetInstanceID() == id)
                         {
+                            myThreatValues[index].ClearAllThreat();
+
                             if (index == myTargetIndex)
                                 DropTarget();
 
                             if (AreAllPlayersDead())
+                            {
+                                ClearAllPlayersThreat();
                                 myNPCComponent.SetState(NPCComponent.CombatState.Disengage);
+                            }
 
-                            //RemovePlayer(index);
                             break;
                         }
                     }

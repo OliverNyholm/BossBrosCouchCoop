@@ -36,7 +36,8 @@ public class SpellInspectorEditor : Editor
         mySpellIcon,
         myName,
         myQuickInfo,
-        myTutorialInfo;
+        myTutorialInfo,
+        myPoolSize;
 
     public virtual void OnEnable()
     {
@@ -70,6 +71,7 @@ public class SpellInspectorEditor : Editor
         myName = serializedObject.FindProperty("myName");
         myQuickInfo = serializedObject.FindProperty("myQuickInfo");
         myTutorialInfo = serializedObject.FindProperty("myTutorialInfo");
+        myPoolSize = serializedObject.FindProperty("myPoolSize");
     }
 
     public override void OnInspectorGUI()
@@ -80,6 +82,7 @@ public class SpellInspectorEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.HelpBox("Spell Base", MessageType.None);
 
+        EditorGUILayout.PropertyField(myPoolSize);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("mySpawnedOnHit"));
         EditorGUILayout.PropertyField(mySpellTarget);
         EditorGUILayout.PropertyField(mySpellType);

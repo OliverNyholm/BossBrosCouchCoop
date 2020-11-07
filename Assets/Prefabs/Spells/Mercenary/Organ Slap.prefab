@@ -98,10 +98,11 @@ MonoBehaviour:
   myTutorialInfo: The mercenary will place a well aimed punch, striking one of the
     organs of the enemy; dealing a lot of damage.
   myName: Organ Punch
+  myPoolSize: 3
   mySpellType: 1
   mySpellTarget: 4
   myAnimationType: 5
-  myDamage: 500
+  myDamage: 300
   myHealValue: 0
   myResourceCost: 120
   myThreatModifier: 1
@@ -121,6 +122,7 @@ MonoBehaviour:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 8300000, guid: a4c14f6bb9424bd46a4c5a8a63f15003, type: 3}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
 --- !u!82 &-7549963756373708671

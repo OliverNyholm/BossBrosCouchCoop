@@ -273,9 +273,6 @@ public class PlayerMovementComponent : MovementComponent
 
     private void RotatePlayer()
     {
-        if (myVelocity == Vector3.zero)
-            return;
-
         transform.rotation = Quaternion.LookRotation(myVelocity, Vector3.up);
     }
 

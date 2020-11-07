@@ -11,13 +11,13 @@ public class MeleeAttack : Action
     public SharedFloat myAutoAttackRange;
     public SharedFloat myAutoAttackCooldown;
 
-    private NPCMovementComponent myMovementComponent;
-    private NPCCastingComponent myCastingComponent;
+    private NavMeshAgent myNavmeshAgent;
+    private Animator myAnimator;
 
     public override void OnStart()
     {
-        myMovementComponent = GetComponent<NPCMovementComponent>();
-        myCastingComponent = GetComponent<NPCCastingComponent>();
+        myNavmeshAgent = GetComponent<NavMeshAgent>();
+        myAnimator = GetComponent<Animator>();
     }
 
     public override TaskStatus OnUpdate()
@@ -30,26 +30,32 @@ public class MeleeAttack : Action
         float autoAttackRange = myAutoAttackRange.Value;
         float moveMinDistance = autoAttackRange - attackRangeOffset;
         if (distanceSqr > moveMinDistance * moveMinDistance)
-            myMovementComponent.MoveTo(myTarget.Value.transform.position);
+        {
+            myNavmeshAgent.destination = myTarget.Value.transform.position;
+            myAnimator.SetBool("IsRunning", true);
+        }
         else
         {
-            Vector3 toTarget = (myTarget.Value.transform.position - transform.position);
-            toTarget.y = 0.0f;
-            transform.rotation = Quaternion.LookRotation(toTarget.normalized, Vector3.up);
-            myMovementComponent.Stop();
+            myNavmeshAgent.destination = transform.position;
+            myAnimator.SetBool("IsRunning", false);
         }
 
         if (myAutoAttackCooldown.Value > 0.0f)
             return TaskStatus.Running;
 
         if (distanceSqr < autoAttackRange * autoAttackRange)
-            myCastingComponent.AutoAttack();
+        {
+            myNavmeshAgent.destination = transform.position;
+            myAnimator.SetBool("IsRunning", false);
+            GetComponent<NPCCastingComponent>().AutoAttack();
+        }
 
         return TaskStatus.Running;
     }
 
     public override void OnEnd()
     {
-        myMovementComponent.Stop();
+        myNavmeshAgent.destination = transform.position;
+        myAnimator.SetBool("IsRunning", false);
     }
 }

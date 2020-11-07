@@ -20,8 +20,6 @@ public class PostMaster : ScriptableObject
                 myInstance.mySubscribers[(int)message.Type][index].ReceiveMessage(message);
             }
         }
-
-        myMessages.Clear();
     }
 
     public static PostMaster Instance

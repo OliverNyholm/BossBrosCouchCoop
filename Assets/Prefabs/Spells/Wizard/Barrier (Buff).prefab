@@ -60,12 +60,11 @@ MonoBehaviour:
   myQuickInfo: Reduces Damage Taken
   myTutorialInfo: 
   myName: Barrier
-  myPoolSize: 3
   mySpellType: 0
+  myAttackType: 0
   mySpellTarget: 0
   myAnimationType: 0
   myDamage: 0
-  myHealValue: 0
   myResourceCost: 0
   myThreatModifier: 1
   mySpeed: 0
@@ -79,12 +78,12 @@ MonoBehaviour:
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
+  myBuff: {fileID: 0}
   mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 0}
-  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 0}
   myIsCastManually: 0
   myDuration: 10
@@ -92,6 +91,6 @@ MonoBehaviour:
   mySpeedMultiplier: 0
   myAttackSpeed: 0
   myDamageIncrease: 0
-  myDamageMitigator: -0.5
+  myDamageMitigator: 0.5
   myShieldValue: 0
   myNumberOfTicks: 3

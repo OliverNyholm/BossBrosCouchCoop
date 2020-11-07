@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Barrier : Spell
 {
+
+    [SerializeField]
+    private GameObject myBarrierPrefab = null;
+
     [SerializeField]
     private float myChannelTime = 0.0f;
 
@@ -21,8 +25,6 @@ public class Barrier : Spell
     {
         AddBuff(myParent);
         StartCoroutine(gameObject);
-
-        transform.parent = myParent.transform;
     }
 
     private void OnDisable()
@@ -44,16 +46,8 @@ public class Barrier : Spell
        List<GameObject> players = myTargetHandler.GetAllPlayers();
         for (int index = 0; index < players.Count; index++)
         {
-            GameObject player = players[index];
-            if (!player)
-                continue;
-
-            Health health = player.GetComponent<Health>();
-            if (health && health.IsDead())
-                continue;
-
-            float sqrDistance = Vector3.SqrMagnitude(gameObject.transform.position - player.transform.position);
-            if (DoesPlayerHaveBuff(player, out int buffIndex))
+            float sqrDistance = Vector3.SqrMagnitude(gameObject.transform.position - players[index].transform.position);
+            if (DoesPlayerHaveBuff(players[index], out int buffIndex))
             {
                 if (sqrDistance > myRadius * myRadius)
                 {
@@ -65,7 +59,7 @@ public class Barrier : Spell
             {
                 if(sqrDistance <= myRadius * myRadius)
                 {
-                    AddBuff(player);
+                    AddBuff(players[index]);
                 }
             }
         }
@@ -79,14 +73,14 @@ public class Barrier : Spell
     public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
     {
         base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
+
+        if(myBarrierPrefab)
+        aPoolManager.AddPoolableObjects(myBarrierPrefab, myBarrierPrefab.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
     }
 
     private void AddBuff(GameObject aPlayer)
     {
         GameObject barrierBuff = PoolManager.Instance.GetPooledObject(mySpawnedOnHit.GetComponent<UniqueID>().GetID());
-        if (!barrierBuff)
-            return;
-
         SpellOverTime spellOverTime = barrierBuff.GetComponent<SpellOverTime>();
         spellOverTime.SetParent(myParent);
         spellOverTime.SetTarget(aPlayer);

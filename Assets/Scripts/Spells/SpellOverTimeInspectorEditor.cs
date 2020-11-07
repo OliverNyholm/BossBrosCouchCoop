@@ -43,9 +43,6 @@ public class SpellOverTimeInspectorEditor : SpellInspectorEditor
         serializedObject.Update();
 
         EditorGUILayout.PropertyField(myIsCastManually, new GUIContent("Is Cast Manually"));
-        if(!myIsCastManually.boolValue)
-            EditorGUILayout.PropertyField(myPoolSize);
-
         EditorGUILayout.HelpBox("Spell Over Time Values", MessageType.None);
 
         EditorGUILayout.PropertyField(myDuration, new GUIContent("Spell Duration"));

@@ -123,9 +123,6 @@ public class CharacterHUD : MonoBehaviour
     public void AddBuff(Sprite aSprite)
     {
         GameObject buff = myPoolManager.GetPooledObject(myBuffPrefab.GetComponent<UniqueID>().GetID());
-        if (!buff)
-            return;
-
         buff.transform.SetParent(myBuffParent.transform, false);
 
         buff.GetComponent<Image>().sprite = aSprite;

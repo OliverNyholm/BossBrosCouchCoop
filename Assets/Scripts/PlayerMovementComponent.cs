@@ -15,15 +15,12 @@ public class PlayerMovementComponent : MovementComponent
     private PlayerTargetingComponent myTargetingComponent;
 
     private Health myHealth;
-    protected Stats myStats;
+    private Stats myStats;
 
     protected Vector3 myVelocity;
     private CameraXZTransform myCameraXZTransform;
 
     protected bool myIsGrounded;
-    private bool myHasJumped = false;
-    private Vector3 myPreviousGroundPosition;
-    private float myStartFallingTimestamp;
 
     protected virtual void Awake()
     {
@@ -47,8 +44,6 @@ public class PlayerMovementComponent : MovementComponent
         myCameraXZTransform.myRight.Normalize();
 
         myVelocity = Vector3.zero;
-        myPreviousGroundPosition = transform.position;
-        myStartFallingTimestamp = 0.0f;
 
         myHealth.EventOnHealthZero += OnDeath;
     }
@@ -63,7 +58,12 @@ public class PlayerMovementComponent : MovementComponent
         myVelocity.y -= myGravity * Time.deltaTime;
         myController.Move(myVelocity * Time.deltaTime);
 
-        UpdateGrounded();
+        //myController.isGrounded unstable further ahead is seems...
+        myIsGrounded = IsGrounded();
+        if (!myAnimatorWrapper.GetBool(AnimationVariable.IsGrounded) && myIsGrounded)
+            myAnimatorWrapper.SetBool(AnimationVariable.IsGrounded, true);
+
+        SlideOnAngledSurface();
 
         if (myHealth.IsDead())
             return;
@@ -80,7 +80,9 @@ public class PlayerMovementComponent : MovementComponent
         if (Time.timeScale <= 0.0f)
             return;
 
-        Vector3 previousVelocity = myVelocity;
+        if (!myIsGrounded)
+            return;
+
         Vector2 leftStickAxis = myPlayerControls.Movement;
 
         myVelocity = (leftStickAxis.x * myCameraXZTransform.myRight + leftStickAxis.y * myCameraXZTransform.myForwards).normalized;
@@ -90,32 +92,20 @@ public class PlayerMovementComponent : MovementComponent
         if (isMoving)
             RotatePlayer();
 
-        if (!myIsGrounded)
+        if (myTargetingComponent.IsHealTargeting() || myCastingComponent.StillHasSameLookDirectionAfterReleasingManualHeal())
         {
-            myVelocity.y = previousVelocity.y;
-        }
-        else
-        {
-            if (myTargetingComponent.IsHealTargeting() || myCastingComponent.StillHasSameLookDirectionAfterReleasingManualHeal())
-            {
-                myVelocity = Vector2.zero;
-                return;
-            }
-
-            myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, isMoving);
+            myVelocity = Vector2.zero;
+            return;
         }
 
-        if (myPlayerControls.Jump.WasPressed && !myHasJumped)
-        {
-            if (myIsGrounded || Time.time - myStartFallingTimestamp < 0.2f)
-            {
-                myVelocity.y = myJumpSpeed;
-                myAnimatorWrapper.ResetTrigger(AnimationVariable.Land);
-                myAnimatorWrapper.SetBool(AnimationVariable.IsGrounded, false);
-                myAnimatorWrapper.SetTrigger(AnimationVariable.Jump);
+        myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, isMoving);
 
-                myHasJumped = true;
-            }
+        if (myPlayerControls.Jump.WasPressed)
+        {
+            myVelocity.y = myJumpSpeed;
+            myAnimatorWrapper.ResetTrigger(AnimationVariable.Land);
+            myAnimatorWrapper.SetBool(AnimationVariable.IsGrounded, false);
+            myAnimatorWrapper.SetTrigger(AnimationVariable.Jump);
         }
     }
 
@@ -127,74 +117,18 @@ public class PlayerMovementComponent : MovementComponent
         const float offsetLength = 0.3f;
         Vector3 offset = new Vector3(0.0f, offsetLength, 0.0f);
 
-        float distance = 0.5f + offsetLength;
+        float distance = 0.3f + offsetLength;
         Ray ray = new Ray(transform.position + offset, Vector3.down);
         LayerMask layerMask = LayerMask.GetMask("Terrain");
 
         RaycastHit hitInfo;
         if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
         {
-            if (Vector3.Dot(hitInfo.normal, Vector3.down) < -0.6f)
-            {
-                MovablePlatform movablePlatform = hitInfo.collider.gameObject.GetComponent<MovablePlatform>();
-                if(myMovablePlatform != movablePlatform)
-                {
-                    if(myMovablePlatform)
-                        myMovablePlatform.RemoveFromPlatform(gameObject);
-
-                    myMovablePlatform = movablePlatform;
-                    if(myMovablePlatform)
-                        myMovablePlatform.AddToPlatform(gameObject);
-                }
+            if (Vector3.Dot(hitInfo.normal, Vector3.down) < -0.5f)
                 return true;
-            }
-        }
-
-        if(myMovablePlatform)
-        {
-            myMovablePlatform.RemoveFromPlatform(gameObject);
-            myMovablePlatform = null;
         }
 
         return false;
-    }
-
-    private void UpdateGrounded()
-    {
-        bool wasGrounded = myIsGrounded;
-
-        myIsGrounded = IsGrounded();
-
-        if (myIsGrounded)
-            myPreviousGroundPosition = transform.position;
-
-        if (!myIsGrounded && wasGrounded) //Started falling/jumping
-        {
-            myStartFallingTimestamp = Time.time;
-        }
-        else if(myIsGrounded && !wasGrounded) //Landed
-        {
-            if (myHealth.IsDead())
-                myVelocity = Vector3.zero;
-
-            if (!myAnimatorWrapper.GetBool(AnimationVariable.IsGrounded) && myIsGrounded)
-                myAnimatorWrapper.SetBool(AnimationVariable.IsGrounded, true);
-
-            myHasJumped = false;
-        }
-
-        SlideOnAngledSurface();
-        HandleEndlessFalling();
-    }
-
-    private void HandleEndlessFalling()
-    {
-        if (myIsGrounded)
-            return;
-
-        const float endlessFallingDuration = 5.0f;
-        if (Time.time - myStartFallingTimestamp > endlessFallingDuration)
-            transform.position = myPreviousGroundPosition;
     }
 
     private void SlideOnAngledSurface()

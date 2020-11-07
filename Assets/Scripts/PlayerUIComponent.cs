@@ -43,9 +43,7 @@ public class PlayerUIComponent : UIComponent
         if (myActionButtons[anIndex] == null)
             return;
 
-        ActionKey actionKey = myActionButtons[anIndex].GetComponent<ActionKey>();
-        if(actionKey)
-            actionKey.SetCooldown(aDuration);
+        myActionButtons[anIndex].GetComponent<ActionKey>().SetCooldown(aDuration);
     }
 
     public void SpellPressed(int anIndex)

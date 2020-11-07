@@ -34,7 +34,7 @@ public class BossTimer : PoolableObject
         myTimer -= Time.deltaTime;
 
         myTimerBar.fillAmount = myTimer / myStartTimer;
-        myAttackTimer.text = myTimer < 3.0f ? myTimer.ToString("0.0") : myTimer.ToString("0");
+        myAttackTimer.text = myTimer.ToString("0.0");
     }
 
     public override void Reset()

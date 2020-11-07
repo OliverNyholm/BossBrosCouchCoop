@@ -30,12 +30,6 @@ public class HighlightArea : Action
         myTimer = myHighlightDuration;
 
         myHightlightObject = PoolManager.Instance.GetPooledObject(myUniqueID);
-        if (myHightlightObject)
-        {
-            myTimer = 0.0f;
-            return;
-        }
-
         myHightlightObject.transform.position = mySpawnPosition.Value;
 
         HighlightAreaLogic logic = myHightlightObject.GetComponent<HighlightAreaLogic>();

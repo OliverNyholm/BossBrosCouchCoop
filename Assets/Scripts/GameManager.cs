@@ -85,9 +85,6 @@ public class GameManager : MonoBehaviour
         if (mySpawnPoints.Count > 0)
             spawnPoint = mySpawnPoints[aIndex % mySpawnPoints.Count].position;
 
-        if (UtilityFunctions.FindGroundFromLocation(spawnPoint, out Vector3 hitLocation, out MovablePlatform movablePlatform))
-            spawnPoint = hitLocation;
-
         GameObject playerGO = Instantiate(aCharacter.myClassData.myGnome, spawnPoint, Quaternion.identity);
         playerGO.name = aCharacter.myName;
         playerGO.GetComponentInChildren<GnomeAppearance>().SetColorMaterial(aCharacter.myColorScheme.myMaterial);
@@ -116,9 +113,6 @@ public class GameManager : MonoBehaviour
         Vector3 spawnPoint = new Vector3(-1.5f + 0 * 1.0f, 0.0f, -3.0f);
         if (mySpawnPoints.Count > 0)
             spawnPoint = mySpawnPoints[0 % mySpawnPoints.Count].position;
-
-        if (UtilityFunctions.FindGroundFromLocation(spawnPoint, out Vector3 hitLocation, out MovablePlatform movablePlatform))
-            spawnPoint = hitLocation;
 
         GameObject playerGO = Instantiate(myDebugPlayerData.myClassData.myGnome, spawnPoint, Quaternion.identity);
         playerGO.name = myDebugPlayerData.myName;
@@ -226,10 +220,6 @@ public class GameManager : MonoBehaviour
                 continue;
             npc.GetComponent<NPCThreatComponent>().AddPlayer(newPlayer);
         }
-
-        DynamicCamera dynamicCamera = FindObjectOfType<DynamicCamera>();
-        if (dynamicCamera)
-            dynamicCamera.myPlayerTransforms.Add(newPlayer.transform);
     }
 
     private Vector3 ColorToRGBVector(Color aColor)

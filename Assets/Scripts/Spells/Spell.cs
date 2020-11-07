@@ -16,8 +16,6 @@ public class Spell : PoolableObject
 
     [HideInInspector] public string myName;
 
-    [HideInInspector] public int myPoolSize = 3;
-
     [HideInInspector] public SpellType mySpellType;
     [HideInInspector] public SpellTarget mySpellTarget;
     [HideInInspector] public SpellAnimationType myAnimationType;
@@ -138,11 +136,8 @@ public class Spell : PoolableObject
         }
         if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal))
         {
-            if(myHealValue > 0.0f)
-            {
-                myTarget.GetComponent<Health>().GainHealth(myHealValue);
-                PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myHealValue)));
-            }
+            myTarget.GetComponent<Health>().GainHealth(myHealValue);
+            PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myHealValue)));
         }
 
         if (myStunDuration > 0.0f)
@@ -164,11 +159,8 @@ public class Spell : PoolableObject
     {
         PoolManager poolManager = PoolManager.Instance;
         GameObject spawnObject = poolManager.GetPooledObject(mySpawnedOnHit.GetComponent<UniqueID>().GetID());
-        if (!spawnObject)
-            return;
-
-        spawnObject.GetComponent<Spell>().SetParent(myParent);
-        spawnObject.GetComponent<Spell>().SetTarget(myTarget);
+        spawnObject.GetComponent<SpawnObjectSpell>().SetParent(myParent);
+        spawnObject.GetComponent<SpawnObjectSpell>().SetTarget(myTarget);
 
         spawnObject.transform.localPosition = transform.position;
         spawnObject.transform.localRotation = Quaternion.identity;
@@ -193,23 +185,15 @@ public class Spell : PoolableObject
         bool isPlayer = myParent.GetComponent<Player>() != null;
 
         Vector3 damageFloatSpawnPosition = transform.position;
-        if(mySpeed <= 0.0f)
+        if(mySpeed <= 0.0f && isPlayer)
         {
-            if(isPlayer)
-            {
-                Vector3 toParent = (myParent.transform.position - transform.position);
-                float distance = toParent.magnitude;
-                if(distance > 0.0f)
-                    toParent /= distance;
+            Vector3 toParent = (myParent.transform.position - transform.position);
+            float distance = toParent.magnitude;
+            if(distance > 0.0f)
+                toParent /= distance;
 
-                const float distanceFromParent = 2.0f;
-                damageFloatSpawnPosition += toParent * Mathf.Min(distance - distanceFromParent, target.GetComponent<Stats>().myRangeCylinder.myRadius);
-            }
-            else
-            {
-                if (this is AoeAttack)
-                    damageFloatSpawnPosition = target.transform.position;
-            }
+            const float distanceFromParent = 2.0f;
+            damageFloatSpawnPosition += toParent * Mathf.Min(distance - distanceFromParent, target.GetComponent<Stats>().myRangeCylinder.myRadius);
         }
 
         int parentID = myParent.GetInstanceID();
@@ -275,7 +259,7 @@ public class Spell : PoolableObject
     public virtual bool IsCastOnFriends()
     {
         if (myIsOnlySelfCast)
-            return true;
+            return false;
 
         return UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal | SpellType.Ressurect);
     }
@@ -294,9 +278,6 @@ public class Spell : PoolableObject
 
         PoolManager poolManager = PoolManager.Instance;
         GameObject vfxGO = poolManager.GetPooledObject(mySpellVFX.GetComponent<UniqueID>().GetID()); ;
-        if (!vfxGO)
-            return null;
-
         if(mySpawnOnHitVFXOnSelf)
         {
             vfxGO.transform.parent = myParent.transform;

@@ -44,18 +44,16 @@ public class CharacterSelector : MonoBehaviour
     public delegate void OnClassChanged();
     public event OnClassChanged EventOnClassChanged;
 
-    private int myPlayerIndex = -1;
 
-    private bool myCanMoveLeftOrRight = true;
-    private float mySelectedClassRawValue;
-    private float mySelectedClassThreshold = 0.2f;
+    float myPreviousLeftAxis;
+    float myPreviousRightAxis;
 
     public enum SelectionState
     {
         Leave,
         Class,
-        Ready,
-        Count
+        Color,
+        Ready
     }
 
     public SelectionState State { get; set; }
@@ -81,37 +79,42 @@ public class CharacterSelector : MonoBehaviour
 
         if (PlayerControls.Jump.WasPressed || PlayerControls.Start.WasPressed)
         {
-            myManager.PlayerSetState(this, ++State);
+            if (State == SelectionState.Ready)
+                myManager.StartPlaying();
+            else
+                myManager.PlayerSetState(this, ++State);
         }
 
         if (State == SelectionState.Ready)
             return;
 
-        if (myCanMoveLeftOrRight && PlayerControls.Left.RawValue > mySelectedClassThreshold)
+        if (myPreviousLeftAxis == 0.0f && PlayerControls.Left.RawValue > 0.0f)
         {
-            mySelectedClassRawValue = PlayerControls.Left.RawValue;
-            myCanMoveLeftOrRight = false;
             switch (State)
             {
                 case SelectionState.Class:
                     myManager.GetNextCharacter(this, -1);
                     break;
+                case SelectionState.Color:
+                    myManager.GetNextColor(this, -1);
+                    break;
             }
         }
-        if (myCanMoveLeftOrRight && PlayerControls.Right.RawValue > mySelectedClassThreshold)
+        if (myPreviousRightAxis == 0.0f && PlayerControls.Right.RawValue > 0.0f)
         {
-            mySelectedClassRawValue = PlayerControls.Right.RawValue;
-            myCanMoveLeftOrRight = false;
             switch (State)
             {
                 case SelectionState.Class:
                     myManager.GetNextCharacter(this, 1);
                     break;
+                case SelectionState.Color:
+                    myManager.GetNextColor(this, 1);
+                    break;
             }
         }
 
-        float resetThreshold = mySelectedClassThreshold - 0.05f;
-        myCanMoveLeftOrRight = PlayerControls.Right.RawValue < resetThreshold && PlayerControls.Left.RawValue < resetThreshold;
+        myPreviousLeftAxis = PlayerControls.Left.RawValue > 0.0f ? 1.0f : 0.0f;
+        myPreviousRightAxis = PlayerControls.Right.RawValue > 0.0f ? 1.0f : 0.0f;
     }
 
     public void Show(PlayerControls aPlayerControls, string aName, CharacterSelectManager aManager, GnomeAppearance aGnomeAppearance)
@@ -170,16 +173,6 @@ public class CharacterSelector : MonoBehaviour
     public void SetInstructions(string aInstruction)
     {
         myInstructionsText.text = aInstruction;
-    }
-    
-    public void SetIndex(int anIndex)
-    {
-        myPlayerIndex = anIndex;
-    }
-
-    public int GetIndex()
-    {
-        return myPlayerIndex;
     }
 
     public string GetName()

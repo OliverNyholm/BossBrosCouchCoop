@@ -39,9 +39,6 @@ public class TutorialPushBoulder : TutorialCompletion
         foreach (GameObject player in Players)
             player.GetComponent<Class>().ReplaceSpell(myPushSpell, 0);
 
-        int boulderHealth = myPushSpell.GetComponent<Spell>().myDamage * Players.Count;
-        Health health = myBoulder.GetComponent<Health>();
-        health.MaxHealth = boulderHealth;
 
         return true;
     }

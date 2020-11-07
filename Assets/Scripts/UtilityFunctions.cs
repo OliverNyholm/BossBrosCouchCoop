@@ -76,23 +76,4 @@ public static class UtilityFunctions
     {
         return (aSpellTarget & aTargetType) != 0;
     }
-
-    public static bool FindGroundFromLocation(Vector3 aStartLocation, out Vector3 outHitLocation, out MovablePlatform outMovablePlatform)
-    {
-        float distance = 5.0f;
-        Ray ray = new Ray(aStartLocation + Vector3.up, Vector3.down);
-        LayerMask layerMask = LayerMask.GetMask("Terrain");
-
-        RaycastHit hitInfo;
-        if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
-        {
-            outHitLocation = hitInfo.point;
-            outMovablePlatform = hitInfo.collider.gameObject.GetComponent<MovablePlatform>();
-            return true; 
-        }
-
-        outHitLocation = Vector3.zero;
-        outMovablePlatform = null;
-        return false;
-    }
 }

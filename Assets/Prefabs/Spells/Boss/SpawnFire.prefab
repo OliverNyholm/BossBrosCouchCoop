@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1159462510580832
+--- !u!1 &8859320039742480474
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,26 +8,26 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4286628504176774}
-  - component: {fileID: 33020571850446208}
-  - component: {fileID: 23783104684869394}
-  - component: {fileID: 114671693925793848}
-  - component: {fileID: -7549963756373708671}
-  - component: {fileID: 6222842317420569192}
+  - component: {fileID: 8861663845169822078}
+  - component: {fileID: 8830762625180080056}
+  - component: {fileID: 8838085367322804972}
+  - component: {fileID: 5382232612251820723}
+  - component: {fileID: 6525230371375074637}
+  - component: {fileID: -7160572297236797112}
   m_Layer: 0
-  m_Name: Organ Slap
+  m_Name: SpawnFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4286628504176774
+--- !u!4 &8861663845169822078
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159462510580832}
+  m_GameObject: {fileID: 8859320039742480474}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1474582, y: 0.6805223, z: 0.6294943}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -35,21 +35,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &33020571850446208
+--- !u!33 &8830762625180080056
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159462510580832}
+  m_GameObject: {fileID: 8859320039742480474}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &23783104684869394
+--- !u!23 &8838085367322804972
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159462510580832}
+  m_GameObject: {fileID: 8859320039742480474}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 62e4e8e481623414292b6e191475a1af, type: 2}
+  - {fileID: 2100000, guid: 2a4acfae4fa29ad4cba8f2f43c621d4c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,54 +82,13 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114671693925793848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159462510580832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4148e1b28d969ae4aa67f15be58c979c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myQuickInfo: Damage 500
-  myTutorialInfo: The mercenary will place a well aimed punch, striking one of the
-    organs of the enemy; dealing a lot of damage.
-  myName: Organ Punch
-  mySpellType: 1
-  mySpellTarget: 4
-  myAnimationType: 5
-  myDamage: 500
-  myHealValue: 0
-  myResourceCost: 120
-  myThreatModifier: 1
-  mySpeed: 0
-  myCastTime: 0
-  myCooldown: 10
-  myRange: 4
-  myStunDuration: 0
-  myCastbarColor: {r: 1, g: 0.55655974, b: 0, a: 1}
-  mySpellIcon: {fileID: 21300000, guid: 76de94d621baa89468bd0a43a3bdd7a5, type: 3}
-  myIsCastableWhileMoving: 1
-  myCanCastOnSelf: 0
-  myIsOnlySelfCast: 0
-  myShouldRotate: 0
-  mySpawnedOnHit: {fileID: 0}
-  mySpellSFX:
-    myCastSound: {fileID: 0}
-    mySpawnSound: {fileID: 0}
-    myHitSound: {fileID: 8300000, guid: a4c14f6bb9424bd46a4c5a8a63f15003, type: 3}
-  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
-    type: 3}
---- !u!82 &-7549963756373708671
+--- !u!82 &5382232612251820723
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159462510580832}
+  m_GameObject: {fileID: 8859320039742480474}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -219,16 +178,59 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6222842317420569192
+--- !u!114 &6525230371375074637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159462510580832}
+  m_GameObject: {fileID: 8859320039742480474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7873879df63914b40ad89569ce61d1d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myQuickInfo: Spawn fire
+  myTutorialInfo: 
+  myName: Spawn Flames
+  mySpellType: 0
+  mySpellTarget: -1
+  myAnimationType: 0
+  myDamage: 0
+  myHealValue: 0
+  myResourceCost: 0
+  myThreatModifier: 1
+  mySpeed: 30
+  myCastTime: 2
+  myCooldown: 0
+  myRange: 50
+  myStunDuration: 0
+  myCastbarColor: {r: 0.764151, g: 0.046858337, b: 0.11546855, a: 1}
+  mySpellIcon: {fileID: 21300000, guid: fb650a735451f0a4c8d9d019d33ad40d, type: 3}
+  myIsCastableWhileMoving: 1
+  myCanCastOnSelf: 0
+  myIsOnlySelfCast: 0
+  myShouldRotate: 0
+  mySpawnedOnHit: {fileID: 0}
+  mySpellSFX:
+    myCastSound: {fileID: 8300000, guid: f44d29cc6a3c1cc4587265fe961fb955, type: 3}
+    mySpawnSound: {fileID: 0}
+    myHitSound: {fileID: 0}
+  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
+    type: 3}
+  myObjectToSpawn: {fileID: 8097369550521473238, guid: 3656979bb8f936c48a6471e86182350b,
+    type: 3}
+  mySpawnObjectLifetime: 20
+--- !u!114 &-7160572297236797112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8859320039742480474}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myID: 67
+  myID: 14

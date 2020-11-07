@@ -4,56 +4,64 @@ using UnityEngine;
 
 public class AoeAttack : Spell
 {
+    private float myLifeTime = 0.05f;
+
+    [Header("The target to damage")]
     [SerializeField]
-    private float myRadius = 10.0f;
+    private string myAttackTag = "Enemy";
+
+    private bool myHasRechedTarget = false;
 
     TargetHandler myTargetHandler;
-
-    GameObject myInitialTarget = null;
 
     private void Awake()
     {
         myTargetHandler = FindObjectOfType<TargetHandler>();
     }
 
-    protected override void OnReachTarget()
+    protected override void Update()
     {
-        if (myTarget)
+        if(!myHasRechedTarget)
+            base.Update();
+
+        myLifeTime -= Time.deltaTime;
+        if (myLifeTime <= 0.0f)
         {
-            myInitialTarget = myTarget;
-            DealSpellEffect();
-            if (mySpawnedOnHit != null)
-                SpawnOnHitObject();
+            ReturnToPool();
         }
-
-        SpawnVFX(2.5f);
-        DealEffectToSurroundingTargets();
-
-        ReturnToPool();
     }
 
-    private void DealEffectToSurroundingTargets()
+    protected override void OnReachTarget()
     {
-        if (myDamage <= 0.0f && myHealValue <= 0.0f)
+        myHasRechedTarget = true;
+
+        if (myTarget)
+            DealSpellEffect();
+
+        SpawnVFX(2.5f);
+        DealDamageToSurroundingTargets();
+
+        if (mySpawnedOnHit != null)
+        {
+            SpawnOnHitObject();
+        }
+    }
+
+    private void DealDamageToSurroundingTargets()
+    {
+        if (myDamage <= 0.0f)
             return;
 
-        float radiusSqr = myRadius * myRadius;
-        List<GameObject> targets = mySpellTarget == SpellTarget.Enemy ? myTargetHandler.GetAllEnemies() : myTargetHandler.GetAllPlayers();
+        float radiusSqr = Mathf.Pow(GetComponent<SphereCollider>().radius * transform.lossyScale.x, 2);
+        List<GameObject> targets = myAttackTag == "Enemy" ? myTargetHandler.GetAllEnemies() : myTargetHandler.GetAllPlayers();
         foreach (GameObject target in targets)
         {
-            if (myInitialTarget == target || !target)
-                continue;
-
-            Health health = target.GetComponent<Health>();
-            if (health && health.IsDead())
+            if (myTarget == target)
                 continue;
 
             if((target.transform.position - transform.position).sqrMagnitude <= radiusSqr)
             {
-                myTarget = target;
-                DealSpellEffect();
-                if (mySpawnedOnHit != null)
-                    SpawnOnHitObject();
+                target.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor.linear, target.transform.position);
             }
         }
     }
@@ -61,6 +69,6 @@ public class AoeAttack : Spell
     public override void Reset()
     {
         base.Reset();
-        myInitialTarget = null;
+        myHasRechedTarget = false;
     }
 }

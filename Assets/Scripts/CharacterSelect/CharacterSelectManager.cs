@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using InControl;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class CharacterSelectManager : MonoBehaviour
 {
 
     [Header("The HUD gameobjects for each player")]
     [SerializeField]
-    private List<GameObject> myPlayerHuds = new List<GameObject>();
-    [SerializeField]
-    private List<GameObject> myPlayerReadyText = new List<GameObject>();
+    private List<GameObject> myPlayers = new List<GameObject>();
 
     [Header("The classes to be selectable")]
     [SerializeField]
@@ -42,12 +39,11 @@ public class CharacterSelectManager : MonoBehaviour
         myCharacterGameData = FindObjectOfType<CharacterGameData>();
         List<PlayerSelectData> characters = myCharacterGameData.GetPlayerData();
 
-        myPlayerClassIndex = new List<int>(myPlayerHuds.Count);
-        myPlayerColorIndex = new List<int>(myPlayerHuds.Count);
-        for (int index = 0; index < myPlayerHuds.Count; index++) //This loop could probably be combined with the latter one...
+        myPlayerClassIndex = new List<int>(myPlayers.Count);
+        myPlayerColorIndex = new List<int>(myPlayers.Count);
+        for (int index = 0; index < myPlayers.Count; index++) //This loop could probably be combined with the latter one...
         {
-            CharacterSelector characterSelector = myPlayerHuds[index].GetComponent<CharacterSelector>();
-            characterSelector.SetIndex(index);
+            CharacterSelector characterSelector = myPlayers[index].GetComponent<CharacterSelector>();
             PlayerSetState(characterSelector, CharacterSelector.SelectionState.Class);
 
             if(characters.Count - 1 >= index && characters[index].myClassData)
@@ -61,30 +57,26 @@ public class CharacterSelectManager : MonoBehaviour
                 myPlayerColorIndex.Add(index);
             }
 
-            myPlayerHuds[index].SetActive(false);
+            myPlayers[index].SetActive(false);
             myGnomes[index].SetActive(false);
         }
 
-        TargetHandler targetHandler = FindObjectOfType<TargetHandler>();
         for (int index = 0; index < characters.Count; index++)
         {
-            myPlayerHuds[index].SetActive(true);
+            myPlayers[index].SetActive(true);
             myGnomes[index].SetActive(true);
             CharacterSelector characterSelector = GetAvailableCharacterSelector(out int availableIndex);
             SetupCharacterSelector(characterSelector, characters[index], availableIndex);
             characterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]], myClassRoleSprites);
             characterSelector.SetColor(myColorSchemes[myPlayerColorIndex[index]]);
-            myPlayerReadyText[index].GetComponent<TextMeshPro>().color = myColorSchemes[myPlayerColorIndex[index]].myColor;
 
             myGnomes[index].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(characterSelector);
             myGnomes[index].GetComponent<CharacterSelectTargetingComponent>().SetPlayerIndex(index);
-
-            targetHandler.AddPlayer(myGnomes[index]);
         }
 
         if (characters.Count == 0)
         {
-            myPlayerHuds[0].SetActive(true);
+            myPlayers[0].SetActive(true);
             myGnomes[0].SetActive(true);
             PlayerSelectData selectData = new PlayerSelectData(PlayerControls.CreateWithKeyboardBindings(), null, null, "DebugPlayer");
             CharacterSelector characterSelector = GetAvailableCharacterSelector(out int availableIndex);
@@ -95,24 +87,19 @@ public class CharacterSelectManager : MonoBehaviour
             myGnomes[0].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(characterSelector);
             myGnomes[0].GetComponent<CharacterSelectTargetingComponent>().SetPlayerIndex(0);
             myCharacterGameData.AddPlayerData(selectData.myPlayerControls, "DebugPlayer");
-
-            targetHandler.AddPlayer(myGnomes[0]);
-            DebugActivateOtherGnomes(targetHandler, 1);
-            DebugActivateOtherGnomes(targetHandler, 2);
-            DebugActivateOtherGnomes(targetHandler, 3);
         }
-
+        
         myNextLevel = myCharacterGameData.mySceneToLoad;
     }
 
     CharacterSelector GetAvailableCharacterSelector(out int anIndex)
     {
-        for (int index = 0; index < myPlayerHuds.Count; index++)
+        for (int index = 0; index < myPlayers.Count; index++)
         {
-            if (myPlayerHuds[index].GetComponent<CharacterSelector>().PlayerControls == null)
+            if (myPlayers[index].GetComponent<CharacterSelector>().PlayerControls == null)
             {
                 anIndex = index;
-                return myPlayerHuds[index].GetComponent<CharacterSelector>();
+                return myPlayers[index].GetComponent<CharacterSelector>();
             }
         }
 
@@ -131,9 +118,9 @@ public class CharacterSelectManager : MonoBehaviour
 
     public void GetNextCharacter(CharacterSelector aCharacterSelector, int aModifier)
     {
-        for (int index = 0; index < myPlayerHuds.Count; index++)
+        for (int index = 0; index < myPlayers.Count; index++)
         {
-            if (myPlayerHuds[index].GetComponent<CharacterSelector>() == aCharacterSelector)
+            if (myPlayers[index].GetComponent<CharacterSelector>() == aCharacterSelector)
             {
                 myPlayerClassIndex[index] = GetNextAvailableOption(CharacterSelector.SelectionState.Class, myClassHuds, myPlayerClassIndex, myPlayerClassIndex[index], aModifier);
                 aCharacterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]], myClassRoleSprites);
@@ -141,34 +128,37 @@ public class CharacterSelectManager : MonoBehaviour
         }
     }
 
+    public void GetNextColor(CharacterSelector aCharacterSelector, int aModifier)
+    {
+        for (int index = 0; index < myPlayers.Count; index++)
+        {
+            if (myPlayers[index].GetComponent<CharacterSelector>() == aCharacterSelector)
+            {
+                myPlayerColorIndex[index] = GetNextAvailableOption(CharacterSelector.SelectionState.Color, myColorSchemes, myPlayerColorIndex, myPlayerColorIndex[index], aModifier);
+
+                aCharacterSelector.SetColor(myColorSchemes[myPlayerColorIndex[index]]);
+            }
+        }
+    }
+
     public void PlayerSetState(CharacterSelector aCharacterSelector, CharacterSelector.SelectionState aState)
     {
-        if (aState == CharacterSelector.SelectionState.Count)
-        {
-            aCharacterSelector.State = CharacterSelector.SelectionState.Ready;
-            return;
-        }
-
         aCharacterSelector.State = aState;
         switch (aCharacterSelector.State)
         {
             case CharacterSelector.SelectionState.Leave:
-                if (DoAllPlayersHaveSameState(CharacterSelector.SelectionState.Class, aCharacterSelector.GetIndex()))
-                    SceneManager.LoadScene("LevelSelect");
-                else
-                    aCharacterSelector.State = CharacterSelector.SelectionState.Class;
-
+                SceneManager.LoadScene("LevelSelect");
                 break;
             case CharacterSelector.SelectionState.Class:
-                myPlayerReadyText[aCharacterSelector.GetIndex()].GetComponent<MeshRenderer>().enabled = false;
+                aCharacterSelector.SetInstructions("Choose your class and press Right Bumper when ready.");
+                break;
+            case CharacterSelector.SelectionState.Color:
+                aCharacterSelector.SetInstructions("Choose a colour and press Right Bumper when happy!");
+                RemoveSameSelections(aState);
                 break;
             case CharacterSelector.SelectionState.Ready:
+                aCharacterSelector.SetInstructions("Press Start when everyone is ready");
                 RemoveSameSelections(aState);
-                if (DoAllPlayersHaveSameState(CharacterSelector.SelectionState.Ready, aCharacterSelector.GetIndex()))
-                    StartPlaying();
-                else
-                    myPlayerReadyText[aCharacterSelector.GetIndex()].GetComponent<MeshRenderer>().enabled = true;
-
                 break;
             default:
                 break;
@@ -177,12 +167,12 @@ public class CharacterSelectManager : MonoBehaviour
 
     private void RemoveSameSelections(CharacterSelector.SelectionState aState)
     {
-        for (int index = 0; index < myPlayerHuds.Count; index++)
+        for (int index = 0; index < myPlayers.Count; index++)
         {
-            if (!myPlayerHuds[index].activeInHierarchy)
+            if (!myPlayers[index].activeInHierarchy)
                 continue;
 
-            CharacterSelector characterSelector = myPlayerHuds[index].GetComponent<CharacterSelector>();
+            CharacterSelector characterSelector = myPlayers[index].GetComponent<CharacterSelector>();
             if (characterSelector.State >= aState)
                 continue;
 
@@ -191,6 +181,11 @@ public class CharacterSelectManager : MonoBehaviour
                 myPlayerClassIndex[index] = GetNextAvailableOption(characterSelector.State, myClassHuds, myPlayerClassIndex, myPlayerClassIndex[index]);
                 characterSelector.SetClass(myClassHuds[myPlayerClassIndex[index]], myClassRoleSprites);
             }
+            if (!IsSelectionAvailable(characterSelector.State, myPlayerColorIndex, myPlayerColorIndex[index]))
+            {
+                myPlayerColorIndex[index] = GetNextAvailableOption(characterSelector.State, myColorSchemes, myPlayerColorIndex, myPlayerColorIndex[index]);
+                characterSelector.SetColor(myColorSchemes[myPlayerColorIndex[index]]);
+            }
         }
     }
 
@@ -198,7 +193,7 @@ public class CharacterSelectManager : MonoBehaviour
     {
         for (int index = 0; index < aPlayerIndexList.Count; index++)
         {
-            if (myPlayerHuds[index].GetComponent<CharacterSelector>().State > aState && aPlayerIndexList[index] == aIndex)
+            if (myPlayers[index].GetComponent<CharacterSelector>().State > aState && aPlayerIndexList[index] == aIndex)
                 return false;
         }
 
@@ -226,9 +221,9 @@ public class CharacterSelectManager : MonoBehaviour
 
     public void StartPlaying()
     {
-        for (int index = 0; index < myPlayerHuds.Count; index++)
+        for (int index = 0; index < myPlayers.Count; index++)
         {
-            CharacterSelector playerSelector = myPlayerHuds[index].GetComponent<CharacterSelector>();
+            CharacterSelector playerSelector = myPlayers[index].GetComponent<CharacterSelector>();
             if (playerSelector.PlayerControls == null)
                 continue;
 
@@ -236,9 +231,9 @@ public class CharacterSelectManager : MonoBehaviour
                 return;
         }
 
-        for (int index = 0; index < myPlayerHuds.Count; index++)
+        for (int index = 0; index < myPlayers.Count; index++)
         {
-            PlayerControls playerControls = myPlayerHuds[index].GetComponent<CharacterSelector>().PlayerControls;
+            PlayerControls playerControls = myPlayers[index].GetComponent<CharacterSelector>().PlayerControls;
             if (playerControls == null)
                 continue;
 
@@ -250,44 +245,11 @@ public class CharacterSelectManager : MonoBehaviour
 
     private int GetClassIndex(ClassData aClassData)
     {
-        return Mathf.Clamp(myClassHuds.IndexOf(aClassData), 0, myClassHuds.Count - 1);
+        return myClassHuds.IndexOf(aClassData);
     }
 
     private int GetColorIndex(ColorScheme aColorScheme)
     {
         return myColorSchemes.IndexOf(aColorScheme);
-    }
-
-    private void DebugActivateOtherGnomes(TargetHandler aTargetHandler, int anIndex)
-    {
-        myGnomes[anIndex].SetActive(true);
-        PlayerSelectData selectData = new PlayerSelectData(PlayerControls.CreateWithJoystickBindings(), null, null, "DebugPlayer");
-        CharacterSelector characterSelector = GetAvailableCharacterSelector(out int availableIndex);
-        SetupCharacterSelector(characterSelector, selectData, availableIndex);
-        characterSelector.SetClass(myClassHuds[myPlayerClassIndex[anIndex]], myClassRoleSprites);
-        characterSelector.SetColor(myColorSchemes[myPlayerColorIndex[anIndex]]);
-
-        myGnomes[anIndex].GetComponent<CharacterSelectPlayer>().SetCharacterSelector(characterSelector);
-        myGnomes[anIndex].GetComponent<CharacterSelectTargetingComponent>().SetPlayerIndex(anIndex);
-
-        aTargetHandler.AddPlayer(myGnomes[anIndex]);
-    }
-
-    private bool DoAllPlayersHaveSameState(CharacterSelector.SelectionState aState, int anIgnoreIndex)
-    {
-        for (int index = 0; index < myPlayerHuds.Count; index++)
-        {
-            if (anIgnoreIndex == index)
-                continue;
-
-            CharacterSelector characterSelector = myPlayerHuds[index].GetComponent<CharacterSelector>();
-            if (characterSelector.PlayerControls == null)
-                continue;
-
-            if (characterSelector.State != aState)
-                return false;
-        }
-
-        return true;
     }
 }

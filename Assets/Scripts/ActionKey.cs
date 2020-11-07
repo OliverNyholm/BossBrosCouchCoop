@@ -38,7 +38,7 @@ public class ActionKey : MonoBehaviour
 
     public bool IsSpellOnCooldown { get; set; }
 
-    private void Awake()
+    private void Start()
     {
         myStartScale = GetComponent<RectTransform>().localScale;
         myLerpInitScale = myStartScale;

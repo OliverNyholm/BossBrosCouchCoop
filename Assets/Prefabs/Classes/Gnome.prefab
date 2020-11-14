@@ -1516,6 +1516,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 2369549d10eebb949a9a4b2c67b3174a, type: 2}
+  - {fileID: 2100000, guid: 140302353ce6315478c0adeeb5defadc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2686,6 +2687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myBaseSpeed: 8
+  myCanBeAffectedByMovingPlatform: 0
   myJumpSpeed: 15
   myGravity: 30
 --- !u!114 &-1139663040990309293

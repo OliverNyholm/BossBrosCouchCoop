@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4319644148406474}
   - component: {fileID: 8196386965853612943}
   - component: {fileID: -5745426637000047865}
-  - component: {fileID: 4141274285427440124}
   - component: {fileID: -4828055537990238932}
   m_Layer: 0
   m_Name: Lightning
@@ -49,10 +48,11 @@ MonoBehaviour:
   myQuickInfo: Lightning
   myTutorialInfo: 
   myName: Lightning
+  myPoolSize: 3
   mySpellType: 1
-  mySpellTarget: 4
+  mySpellTarget: 2
   myAnimationType: 0
-  myDamage: 150
+  myDamage: 200
   myHealValue: 0
   myResourceCost: 0
   myThreatModifier: 1
@@ -75,7 +75,7 @@ MonoBehaviour:
   mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 7311185079315158179, guid: 0680cc7327227dd4bb30d136b2364fd6,
     type: 3}
-  myAttackTag: Player
+  myRadius: 10
 --- !u!82 &-5745426637000047865
 AudioSource:
   m_ObjectHideFlags: 0
@@ -172,19 +172,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!135 &4141274285427440124
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983804006253038}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-4828055537990238932
 MonoBehaviour:
   m_ObjectHideFlags: 0

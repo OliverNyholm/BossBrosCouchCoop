@@ -56,8 +56,6 @@ public class TutorialHealWithCombat : TutorialCompletion
 
         StartCoroutine(HighlightBossTimer());
 
-        myStartFightCollider.GetComponent<Collider>().enabled = false;
-
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.TutorialHealFightComplete);
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.Wipe);
     }
@@ -77,10 +75,7 @@ public class TutorialHealWithCombat : TutorialCompletion
         if (aMessage.Type == MessageCategory.TutorialHealFightComplete)
             EndTutorial();
         else if(aMessage.Type == MessageCategory.Wipe)
-        {
             Restart();
-            myStartFightCollider.GetComponent<Collider>().enabled = true;
-        }
     }
 
     public override void OnChildTriggerEnter(Collider aChildCollider, Collider aHit)

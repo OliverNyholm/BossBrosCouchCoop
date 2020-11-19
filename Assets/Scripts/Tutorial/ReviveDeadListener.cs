@@ -31,20 +31,27 @@ public class ReviveDeadListener : MonoBehaviour
 
     private void OnMessageReceived(Message aMessage)
     {
-        if(myShouldReviveInstantly)
-        {
-            myPlayers.TryGetValue(aMessage.Data.myInt, out GameObject player);
-            if (!player)
-                return;
-
-            StartCoroutine(InstantReviveCoroutine(player, 0));
-            return;
-        }
-
-        myDeadPlayerIds.Add(aMessage.Data.myInt);
-        if(myDeadPlayerIds.Count == myPlayers.Count)
+        if(aMessage.Type == MessageCategory.RessurectDead)
         {
             ReviveAllDeadPlayers();
+        }
+        else
+        {
+            if(myShouldReviveInstantly)
+            {
+                myPlayers.TryGetValue(aMessage.Data.myInt, out GameObject player);
+                if (!player)
+                    return;
+
+                StartCoroutine(InstantReviveCoroutine(player, 0));
+                return;
+            }
+
+            myDeadPlayerIds.Add(aMessage.Data.myInt);
+            if(myDeadPlayerIds.Count == myPlayers.Count)
+            {
+                ReviveAllDeadPlayers();
+            }
         }
     }
 
@@ -87,9 +94,10 @@ public class ReviveDeadListener : MonoBehaviour
         RevivePlayer(aPlayer, anIndex);
     }
 
-    public void ListenToDeaths()
+    public void ListenToMessages()
     {
         PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.PlayerDied);
+        PostMaster.Instance.RegisterSubscriber(ref mySubscriber, MessageCategory.RessurectDead);
     }
 
     public void StopListening()
@@ -97,6 +105,7 @@ public class ReviveDeadListener : MonoBehaviour
         myPlayers.Clear();
         myDeadPlayerIds.Clear();
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.PlayerDied);
+        PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.RessurectDead);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -104,7 +113,7 @@ public class ReviveDeadListener : MonoBehaviour
         if(other.tag == "Player")
         {
             if (myPlayers.Count == 0)
-                ListenToDeaths();
+                ListenToMessages();
 
             myPlayers.Add(other.gameObject.GetInstanceID(), other.gameObject);
         }

@@ -50,6 +50,7 @@ public class TutorialTanking : TutorialCompletion
     private void OnTargetDied()
     {
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.Wipe);
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.RessurectDead));
         myTargetHandler.RemoveEnemy(myBoss);
         EndTutorial();
     }

@@ -51,6 +51,8 @@ public class TutorialHealWithCombat : TutorialCompletion
             burningEyes.Play();
         }
 
+        myStartFightCollider.enabled = false;
+
         mySubscriber = new Subscriber();
         mySubscriber.EventOnReceivedMessage += ReceiveMessage;
 
@@ -73,9 +75,15 @@ public class TutorialHealWithCombat : TutorialCompletion
             burningEyes.Stop();
 
         if (aMessage.Type == MessageCategory.TutorialHealFightComplete)
+        {
             EndTutorial();
+            PostMaster.Instance.PostMessage(new Message(MessageCategory.RessurectDead));
+        }
         else if(aMessage.Type == MessageCategory.Wipe)
+        {
             Restart();
+            myStartFightCollider.enabled = true;
+        }
     }
 
     public override void OnChildTriggerEnter(Collider aChildCollider, Collider aHit)

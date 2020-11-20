@@ -145,7 +145,8 @@ MonoBehaviour:
   myTutorialInfo: Casting this spell will summon the power of the Gods, increasing
     the damage of your attacks and shortening the duration required to cast spells.
   myName: God Power
-  myAttackType: 0
+  myPoolSize: 3
+  mySpellType: 0
   mySpellTarget: 0
   myAnimationType: 0
   myDamage: 0
@@ -159,16 +160,17 @@ MonoBehaviour:
   myStunDuration: 0
   myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
   mySpellIcon: {fileID: 0}
-  myIsCastableWhileMoving: 1
+  myIsCastableWhileMoving: 0
+  mySpeedWhileCastingNegator: 0
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 1
   myShouldRotate: 0
-  myBuff: {fileID: 0}
   mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 0}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
   myIsCastManually: 1

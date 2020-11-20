@@ -9,8 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4608793966334668}
-  - component: {fileID: 33106368684094124}
-  - component: {fileID: 23116109151941268}
   - component: {fileID: 114415323544407008}
   - component: {fileID: 3108706794410562763}
   - component: {fileID: 2194209996018276474}
@@ -35,53 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &33106368684094124
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1535284190026568}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &23116109151941268
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1535284190026568}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RenderingLayerMask: 4294967295
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 62e4e8e481623414292b6e191475a1af, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!114 &114415323544407008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,6 +49,7 @@ MonoBehaviour:
   myTutorialInfo: To move around quickly and get into range of combat, the mercenary
     can teleport a few meters forward.
   myName: Teleport
+  myPoolSize: 3
   mySpellType: 0
   mySpellTarget: 2
   myAnimationType: 6
@@ -121,9 +73,10 @@ MonoBehaviour:
     myCastSound: {fileID: 8300000, guid: 0bc6d9f63e30ba4448d46f4f4aa5ba8d, type: 3}
     mySpawnSound: {fileID: 8300000, guid: 0bc6d9f63e30ba4448d46f4f4aa5ba8d, type: 3}
     myHitSound: {fileID: 0}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
-  myTeleportDistance: 15
+  myTeleportDistance: 8
 --- !u!82 &3108706794410562763
 AudioSource:
   m_ObjectHideFlags: 0

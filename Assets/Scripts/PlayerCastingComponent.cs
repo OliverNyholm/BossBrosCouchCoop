@@ -18,6 +18,8 @@ public class PlayerCastingComponent : CastingComponent
     private bool myHasChangedMovementDirectionAfterCastingManualHeal;
     private int myFriendlySpellKeyHeldDownIndex;
 
+    private float myCastingWhileMovingBufferTimestamp;
+
     private bool myShouldAutoAttack;
 
     public delegate void EventOnSpellSpawned(GameObject aPlayer, GameObject aSpell, int aSpellIndex);
@@ -215,6 +217,16 @@ public class PlayerCastingComponent : CastingComponent
         myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
         myHasChangedMovementDirectionAfterCastingManualHeal = false;
 
+        if (spellScript.myIsCastableWhileMoving)
+        {
+            mySpellCastingMovementSpeedReducement = spellScript.mySpeedWhileCastingReducement;
+            myStats.mySpeedMultiplier -= mySpellCastingMovementSpeedReducement;
+        }
+        else
+        {
+            mySpellCastingMovementSpeedReducement = 0.0f;
+        }
+
         myUIComponent.SetCastbarStartValues(spellScript);
         myTargetingComponent.SetSpellTarget(myTargetingComponent.Target);
         myCastingRoutine = StartCoroutine(CastbarProgress(aKeyIndex));
@@ -228,7 +240,6 @@ public class PlayerCastingComponent : CastingComponent
         GetComponent<AudioSource>().clip = spellScript.GetSpellSFX().myCastSound;
         GetComponent<AudioSource>().Play();
 
-
         myIsCasting = true;
         float castSpeed = spellScript.myCastTime / myStats.myAttackSpeed;
         float rate = 1.0f / castSpeed;
@@ -240,7 +251,7 @@ public class PlayerCastingComponent : CastingComponent
 
             progress += rate * Time.deltaTime;
 
-            if (!spellScript.IsCastableWhileMoving() && myMovementComponent && myMovementComponent.IsMoving() || Input.GetKeyDown(KeyCode.Escape))
+            if (InterruptDueToMovement(spellScript) || Input.GetKeyDown(KeyCode.Escape))
             {
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
@@ -261,7 +272,7 @@ public class PlayerCastingComponent : CastingComponent
         }
     }
 
-    public override IEnumerator SpellChannelRoutine(float aDuration, float aStunDuration)
+    public override IEnumerator SpellChannelRoutine(Spell aSpell, float aDuration, float aStunDuration)
     {
         myStats.SetStunned(aStunDuration);
         myIsCasting = true;
@@ -277,7 +288,7 @@ public class PlayerCastingComponent : CastingComponent
 
             progress += rate * Time.deltaTime;
 
-            if (myMovementComponent && myMovementComponent.IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
+            if (InterruptDueToMovement(aSpell) || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
             {
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
@@ -337,6 +348,8 @@ public class PlayerCastingComponent : CastingComponent
 
         if (aSpawnPosition == transform.position && spellScript.GetSpellSFX().mySpawnSound)
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
+
+        myCastingWhileMovingBufferTimestamp = Time.time;
 
         myEventOnSpellSpawned?.Invoke(gameObject, instance, aKeyIndex);
     }
@@ -476,5 +489,16 @@ public class PlayerCastingComponent : CastingComponent
     {
         myUIComponent.HighlightSpellError(aSpellError);
         myPlayerControlsVibrationsManager.VibratePlayerCastingError(aSpellError);
+    }
+
+    private bool InterruptDueToMovement(Spell aSpell)
+    {
+        if (aSpell.IsCastableWhileMoving())
+            return false;
+
+        if (Time.time - myCastingWhileMovingBufferTimestamp < 0.2f)
+            return false;
+
+        return myMovementComponent && myMovementComponent.IsMoving();
     }
 }

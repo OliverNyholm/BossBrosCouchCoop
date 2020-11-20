@@ -37,6 +37,7 @@ public class Spell : PoolableObject
     [HideInInspector] public Sprite mySpellIcon;
 
     [HideInInspector] public bool myIsCastableWhileMoving;
+    [HideInInspector] public float mySpeedWhileCastingReducement = 0.0f;
     [HideInInspector] public bool myCanCastOnSelf;
     [HideInInspector] public bool myIsOnlySelfCast;
 

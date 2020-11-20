@@ -14,6 +14,7 @@ public class SpellInspectorEditor : Editor
         mySpeed,
         myRange,
 
+        mySpeedWhileCastingReducement,
         myIsCastableWhileMoving,
         myCanCastOnSelf,
         myIsOnlySelfCast,
@@ -48,6 +49,7 @@ public class SpellInspectorEditor : Editor
         mySpeed = serializedObject.FindProperty("mySpeed");
         myRange = serializedObject.FindProperty("myRange");
 
+        mySpeedWhileCastingReducement = serializedObject.FindProperty("mySpeedWhileCastingReducement");
         myIsCastableWhileMoving = serializedObject.FindProperty("myIsCastableWhileMoving");
         myCanCastOnSelf = serializedObject.FindProperty("myCanCastOnSelf");
         myIsOnlySelfCast = serializedObject.FindProperty("myIsOnlySelfCast");
@@ -114,8 +116,10 @@ public class SpellInspectorEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(myCanCastOnSelf, new GUIContent("Can Cast On Self"));
         EditorGUILayout.PropertyField(myIsOnlySelfCast, new GUIContent("Is Only Self Cast"));
-        if (myCastTime.floatValue > 0.0f)
-            EditorGUILayout.PropertyField(myIsCastableWhileMoving, new GUIContent("Can Move While Casting"));
+
+        EditorGUILayout.PropertyField(myIsCastableWhileMoving, new GUIContent("Can Move While Casting"));
+        if(myIsCastableWhileMoving.boolValue == true)
+            EditorGUILayout.PropertyField(mySpeedWhileCastingReducement, new GUIContent("Movement Speed While Casting Reducement"));
 
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(myThreatModifier, new GUIContent("Threat Modifier"));

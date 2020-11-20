@@ -98,6 +98,7 @@ MonoBehaviour:
   myTutorialInfo: Fire blast is an instant spell, good to use while moving around.
     Using the spell will damage your enemy target.
   myName: Fire Blast
+  myPoolSize: 3
   mySpellType: 1
   mySpellTarget: 4
   myAnimationType: 0
@@ -112,7 +113,8 @@ MonoBehaviour:
   myStunDuration: 0
   myCastbarColor: {r: 1, g: 0.55655974, b: 0, a: 1}
   mySpellIcon: {fileID: 21300000, guid: d62ed47c05ff752478d0bb62abcb45e7, type: 3}
-  myIsCastableWhileMoving: 1
+  myIsCastableWhileMoving: 0
+  mySpeedWhileCastingReducer: 1
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
@@ -121,6 +123,7 @@ MonoBehaviour:
     myCastSound: {fileID: 8300000, guid: 959e8a13530b3024399e5ea6763020d5, type: 3}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 8300000, guid: 60e699caed2d6814d888e8b6afc14b60, type: 3}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 9144942856888348120, guid: cd557b545d6e5dc4d9781b6073eb92cd,
     type: 3}
 --- !u!82 &1838562684178443837

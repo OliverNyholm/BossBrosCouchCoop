@@ -17,6 +17,8 @@ public abstract class CastingComponent : MonoBehaviour
     protected float myAutoAttackCooldown;
     public float myAutoAttackCooldownReset = 1.0f;
 
+    protected float mySpellCastingMovementSpeedReducement = 1.0f;
+
     protected virtual void Awake()
     {
         myAnimatorWrapper = GetComponent<AnimatorWrapper>();
@@ -41,7 +43,7 @@ public abstract class CastingComponent : MonoBehaviour
         }
     }
 
-    public abstract IEnumerator SpellChannelRoutine(float aDuration, float aStunDuration);
+    public abstract IEnumerator SpellChannelRoutine(Spell aSpell, float aDuration, float aStunDuration);
 
     public void StartChannel(float aDuration, Spell aSpellScript, GameObject aChannelGO, float aStunDuration = 1.0f)
     {
@@ -51,8 +53,18 @@ public abstract class CastingComponent : MonoBehaviour
         audioSource.clip = aSpellScript.GetSpellSFX().myCastSound;
         audioSource.Play();
 
+        if (aSpellScript.myIsCastableWhileMoving)
+        {
+            mySpellCastingMovementSpeedReducement = aSpellScript.mySpeedWhileCastingReducement;
+            myStats.mySpeedMultiplier -= mySpellCastingMovementSpeedReducement;
+        }
+        else
+        {
+            mySpellCastingMovementSpeedReducement = 0.0f;
+        }
+
         myChannelGameObject = aChannelGO;
-        myCastingRoutine = StartCoroutine(SpellChannelRoutine(aDuration, aStunDuration));
+        myCastingRoutine = StartCoroutine(SpellChannelRoutine(aSpellScript, aDuration, aStunDuration));
     }
 
     protected abstract bool IsAbleToCastSpell(Spell aSpellScript);
@@ -76,6 +88,8 @@ public abstract class CastingComponent : MonoBehaviour
         GetComponent<AudioSource>().Stop();
 
         GetComponent<UIComponent>().FadeCastbar(aWasInterruped);
+
+        myStats.mySpeedMultiplier += mySpellCastingMovementSpeedReducement;
 
         if (myAnimatorWrapper)
         {

@@ -83,7 +83,7 @@ public class NPCCastingComponent : CastingComponent
         }
     }
 
-    public override IEnumerator SpellChannelRoutine(float aDuration, float aStunDuration)
+    public override IEnumerator SpellChannelRoutine(Spell aSpell, float aDuration, float aStunDuration)
     {
         Stats stats = GetComponent<Stats>();
         stats.SetStunned(aStunDuration);
@@ -100,7 +100,7 @@ public class NPCCastingComponent : CastingComponent
 
             progress += rate * Time.deltaTime;
 
-            if (GetComponent<PlayerMovementComponent>().IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
+            if (!aSpell.myIsCastableWhileMoving && GetComponent<PlayerMovementComponent>().IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
             {
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);

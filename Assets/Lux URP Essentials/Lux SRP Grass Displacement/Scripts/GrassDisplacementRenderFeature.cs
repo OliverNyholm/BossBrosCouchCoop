@@ -116,7 +116,7 @@ namespace Lux_SRP_GrassDisplacement
         {
             CommandBuffer cmd = CommandBufferPool.Get(k_RenderGrassDisplacementFXTag);
 
-            using (new ProfilingSample(cmd, k_RenderGrassDisplacementFXTag))
+            using (new ProfilingScope(cmd, new ProfilingSampler(k_RenderGrassDisplacementFXTag)))
             {
                 context.ExecuteCommandBuffer(cmd);
                 cmd.Clear();

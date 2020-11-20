@@ -35,6 +35,10 @@ public class CharacterSelectMovementComponent : PlayerMovementComponent
             transform.position += myVelocity * Time.deltaTime;
             return;
         }
+        else
+        {
+            myVelocity *= 0.0f;
+        }
 
         if(myStartPosition != transform.position && !myNavmeshAgent.enabled)
         {
@@ -58,5 +62,13 @@ public class CharacterSelectMovementComponent : PlayerMovementComponent
                 myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, false);
             }
         }
+    }
+
+    public override bool IsMoving()
+    {
+        if (myNavmeshAgent.enabled)
+            return true;
+
+        return base.IsMoving();
     }
 }

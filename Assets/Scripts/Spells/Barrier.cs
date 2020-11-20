@@ -73,7 +73,7 @@ public class Barrier : Spell
 
     private void StartCoroutine(GameObject aChannelSpell)
     {
-        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, aChannelSpell);
+        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, aChannelSpell, 0.0f);
     }
 
     public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)

@@ -49,11 +49,12 @@ MonoBehaviour:
   myTutorialInfo: A hymn that is channeled over a few seconds. All allies that are
     within range of your song will be healed.
   myName: Hymn of Healing
+  myPoolSize: 3
   mySpellType: 2
-  myAttackType: 4
   mySpellTarget: 2
   myAnimationType: 0
   myDamage: 400
+  myHealValue: 500
   myResourceCost: 300
   myThreatModifier: 1
   mySpeed: 0
@@ -63,15 +64,17 @@ MonoBehaviour:
   myStunDuration: 0
   myCastbarColor: {r: 0.4376203, g: 1, b: 0.4009434, a: 1}
   mySpellIcon: {fileID: 21300000, guid: 915c7c7a2ea9c4a4fb282a6c31bdd5b6, type: 3}
-  myIsCastableWhileMoving: 0
+  myIsCastableWhileMoving: 1
+  mySpeedWhileCastingReducement: 0.6
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 1
   myShouldRotate: 0
-  myBuff: {fileID: 0}
+  mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 8300000, guid: 4bc8cba964596384ab146a0dff5dd495, type: 3}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 0}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 5093301705617495361, guid: b933f8f728a83d6448e4c25790051d0d,
     type: 3}
   myChannelTime: 7

@@ -241,7 +241,7 @@ public class Spell : PoolableObject
         return mySpellTarget;
     }
 
-    public bool IsCastableWhileMoving()
+    public virtual bool IsCastableWhileMoving()
     {
         return myIsCastableWhileMoving || myCastTime <= 0.0f;
     }

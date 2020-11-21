@@ -151,6 +151,9 @@ public class PlayerTargetingComponent : TargetingComponent
             if (index == (myPlayer.PlayerIndex - 1))
                 continue;
 
+            if (players[index].GetComponent<Health>().IsDead())
+                continue;
+
             Vector3 toFriend = (players[index].transform.position - transform.position).normalized;
             float dotAngle = Vector3.Dot(transform.forward, toFriend);
             if (dotAngle > closestDotAngle)

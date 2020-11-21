@@ -14,10 +14,21 @@ public class PlayerTargetingComponent : TargetingComponent
     [Header("The duration of holding down a spell button before enabling targeting system")]
     [SerializeField]
     private float mySmartTargetHoldDownMaxDuration = 0.35f;
-    private bool myIsHealTargetingEnabled;
+
+    [SerializeField]
+    private bool myUseLookAtHealTargeting = false;
 
     private List<GameObject> myPreviouslyTargetedEnemies = new List<GameObject>(8);
     private float myLatestSelectedTargetTime;
+
+    public enum ManualHealTargetingMode
+    {
+        NotActive,
+        LookAt,
+        Joystick
+    };
+
+    private ManualHealTargetingMode myManualHealTargetingMode = ManualHealTargetingMode.NotActive;
 
     void Awake()
     {
@@ -43,13 +54,18 @@ public class PlayerTargetingComponent : TargetingComponent
         if (myStats.IsStunned())
             return;
 
-        if(myIsHealTargetingEnabled)
+        if(myManualHealTargetingMode != ManualHealTargetingMode.NotActive)
             DetectFriendlyTargetInput(myPlayerControls.Movement != Vector2.zero);
     }
 
-    public bool IsHealTargeting()
+    public ManualHealTargetingMode GetHealTargetingMode()
     {
-        return myIsHealTargetingEnabled;
+        return myManualHealTargetingMode;
+    }
+
+    public bool IsManualHealTargeting()
+    {
+        return myManualHealTargetingMode != ManualHealTargetingMode.NotActive;
     }
 
     public void SetPlayerController(PlayerControls aPlayerControls)
@@ -86,11 +102,42 @@ public class PlayerTargetingComponent : TargetingComponent
         if (Time.timeScale <= 0.0f)
             return;
 
-        if (myPlayerControls.TargetEnemy.WasPressed && !myIsHealTargetingEnabled)
+        if (myPlayerControls.TargetEnemy.WasPressed && myManualHealTargetingMode == ManualHealTargetingMode.NotActive)
             DetermineNewEnemyTarget();
     }
 
     private void DetectFriendlyTargetInput(bool hasJoystickMoved)
+    {
+        if (myUseLookAtHealTargeting)
+            GetFriendlyTargetByLooking(hasJoystickMoved);
+        else
+            GetFriendlyTargetByStickLocation();
+    }
+
+    private void GetFriendlyTargetByStickLocation()
+    {
+        const float axisRequired = 0.7f;
+
+        int playerIndex = -1;
+        Vector2 leftStickAxis = myPlayerControls.Movement;
+        if (leftStickAxis.x <= -axisRequired)
+            playerIndex = 0;
+        else if (leftStickAxis.y >= axisRequired)
+            playerIndex = 1;
+        else if (leftStickAxis.y <= -axisRequired)
+            playerIndex = 2;
+        else if (leftStickAxis.x >= axisRequired)
+            playerIndex = 3;
+
+        GameObject target = myTargetHandler.GetPlayer(playerIndex);
+        if (target && Target != target)
+            SetTarget(target);
+
+        if (Target && Target != gameObject)
+            transform.LookAt(Target.transform, Vector3.up);
+    }
+
+    private void GetFriendlyTargetByLooking(bool hasJoystickMoved)
     {
         if (!hasJoystickMoved)
             return;
@@ -120,8 +167,11 @@ public class PlayerTargetingComponent : TargetingComponent
 
     public void EnableManualHealTargeting(int aSpellIndex)
     {
-        myIsHealTargetingEnabled = true;
-        SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
+        myManualHealTargetingMode = myUseLookAtHealTargeting ? ManualHealTargetingMode.LookAt : ManualHealTargetingMode.Joystick;
+
+        if(myManualHealTargetingMode == ManualHealTargetingMode.LookAt)
+            SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
+
         myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, false);
 
         GetComponent<PlayerUIComponent>().HightlightHealTargeting(aSpellIndex, true);
@@ -130,7 +180,7 @@ public class PlayerTargetingComponent : TargetingComponent
 
     public void DisableManualHealTargeting(int aSpellIndex)
     {
-        myIsHealTargetingEnabled = false;
+        myManualHealTargetingMode = ManualHealTargetingMode.NotActive;
         GetComponent<PlayerUIComponent>().HightlightHealTargeting(aSpellIndex, false);
         GetComponentInChildren<HealTargetArrow>().DisableHealTarget();
     }
@@ -303,7 +353,7 @@ public class PlayerTargetingComponent : TargetingComponent
     private void OnDeath()
     {
         SetTarget(null);
-        myIsHealTargetingEnabled = false;
+        myManualHealTargetingMode = ManualHealTargetingMode.NotActive;
     }
 
     private void OnTargetDied()

@@ -21,6 +21,7 @@ public class PlayerCastingComponent : CastingComponent
     private float myCastingWhileMovingBufferTimestamp;
 
     private bool myShouldAutoAttack;
+    private bool myKeepLookingAtTargetWhileCasting = false;
 
     public delegate void EventOnSpellSpawned(GameObject aPlayer, GameObject aSpell, int aSpellIndex);
     public event EventOnSpellSpawned myEventOnSpellSpawned;
@@ -47,7 +48,7 @@ public class PlayerCastingComponent : CastingComponent
         if (!myHasChangedMovementDirectionAfterCastingManualHeal)
             CheckHasChangedLookDirectionAfterManualHeal();
 
-        if (ShouldHealTargetBeEnabled())
+        if (ShouldHealTargetBeEnabled() && !myTargetingComponent.IsManualHealTargeting())
             myTargetingComponent.EnableManualHealTargeting(myFriendlySpellKeyHeldDownIndex);
 
         if (myShouldAutoAttack)
@@ -143,7 +144,7 @@ public class PlayerCastingComponent : CastingComponent
         return myIsFriendlySpellKeyHeldDown && Time.time - myStartTimeOfHoldingKeyDown > myTargetingComponent.GetSmartTargetHoldDownMaxDuration();
     }
 
-    public bool StillHasSameLookDirectionAfterReleasingManualHeal()
+    public bool HasSameLookDirectionAfterReleasingManualHeal()
     {
         return !myHasChangedMovementDirectionAfterCastingManualHeal;
     }
@@ -153,7 +154,7 @@ public class PlayerCastingComponent : CastingComponent
         if (myPlayerControls.Movement == Vector3.zero)
             myHasChangedMovementDirectionAfterCastingManualHeal = true;
 
-        if (Vector3.Dot(transform.forward, myHealTargetingReleaseDirection) < 0.7f)
+        if (Vector3.Dot(myPlayerControls.Movement, myHealTargetingReleaseDirection) < 0.7f)
             myHasChangedMovementDirectionAfterCastingManualHeal = true;
     }
 
@@ -170,10 +171,13 @@ public class PlayerCastingComponent : CastingComponent
         }
         else
         {
+            if (myTargetingComponent.Target != gameObject)
+                myKeepLookingAtTargetWhileCasting = true;
+
             CastSpell(aKeyIndex, false);
         }
 
-        myHealTargetingReleaseDirection = transform.forward;
+        myHealTargetingReleaseDirection = myPlayerControls.Movement;
         myIsFriendlySpellKeyHeldDown = false;
         myTargetingComponent.DisableManualHealTargeting(myFriendlySpellKeyHeldDownIndex);
     }
@@ -258,6 +262,9 @@ public class PlayerCastingComponent : CastingComponent
                 StopCasting(true);
                 yield break;
             }
+
+            if (myKeepLookingAtTargetWhileCasting && myTargetingComponent.SpellTarget)
+                transform.LookAt(myTargetingComponent.SpellTarget.transform, Vector3.up);
 
             yield return null;
         }
@@ -360,6 +367,7 @@ public class PlayerCastingComponent : CastingComponent
     {
         base.StopCasting(aWasInterruped);
         myHasChangedMovementDirectionAfterCastingManualHeal = true;
+        myKeepLookingAtTargetWhileCasting = false;
     }
 
     protected override bool IsAbleToCastSpell(Spell aSpellScript)

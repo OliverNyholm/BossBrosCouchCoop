@@ -86,8 +86,10 @@ public class PlayerMovementComponent : MovementComponent
         myVelocity = (leftStickAxis.x * myCameraXZTransform.myRight + leftStickAxis.y * myCameraXZTransform.myForwards).normalized;
         myVelocity *= myBaseSpeed * GetComponent<Stats>().mySpeedMultiplier;
 
+        PlayerTargetingComponent.ManualHealTargetingMode manualHealTargetingMode = myTargetingComponent.GetHealTargetingMode();
+
         bool isMoving = IsMoving();
-        if (isMoving)
+        if (isMoving && manualHealTargetingMode != PlayerTargetingComponent.ManualHealTargetingMode.Joystick)
             RotatePlayer();
 
         if (!myIsGrounded)
@@ -96,7 +98,7 @@ public class PlayerMovementComponent : MovementComponent
         }
         else
         {
-            if (myTargetingComponent.IsHealTargeting() || myCastingComponent.StillHasSameLookDirectionAfterReleasingManualHeal())
+            if (manualHealTargetingMode != PlayerTargetingComponent.ManualHealTargetingMode.NotActive || myCastingComponent.HasSameLookDirectionAfterReleasingManualHeal())
             {
                 myVelocity = Vector2.zero;
                 return;

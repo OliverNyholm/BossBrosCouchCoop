@@ -164,7 +164,7 @@ public class PlayerCastingComponent : CastingComponent
             if (myClass.GetSpell(aKeyIndex).GetComponent<Spell>().myIsOnlySelfCast)
                 myTargetingComponent.SpellTarget = gameObject;
             else
-                myTargetingComponent.SetTargetWithSmartTargeting(aKeyIndex);
+                myTargetingComponent.SetTargetWithLowestHealthAndWithoutBuff(aKeyIndex);
 
             CastSpell(aKeyIndex, true);
         }

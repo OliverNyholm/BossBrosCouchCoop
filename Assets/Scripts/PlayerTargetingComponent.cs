@@ -135,6 +135,53 @@ public class PlayerTargetingComponent : TargetingComponent
         GetComponentInChildren<HealTargetArrow>().DisableHealTarget();
     }
 
+    public void SetTargetWithLowestHealthAndWithoutBuff(int aKeyIndex)
+    {
+        float lowestHealthPercentage = 1.0f;
+        int bestPlayerTarget = -1;
+        int playerTargetedByBossIndex = -1;
+        List<GameObject> players = myTargetHandler.GetAllPlayers();
+        List<GameObject> enemies = myTargetHandler.GetAllEnemies();
+
+        Spell spellToCast = GetComponent<Class>().GetSpell(aKeyIndex).GetComponent<Spell>();
+
+        for (int index = 0; index < players.Count; index++)
+        {
+            GameObject player = players[index];
+            float healthPercentage = player.GetComponent<Health>().GetHealthPercentage();
+            if(healthPercentage < lowestHealthPercentage || lowestHealthPercentage >= 1.0f)
+            {
+                if(spellToCast is SpellOverTime)
+                {
+                    if(player.GetComponent<Stats>().HasSpellOverTime(spellToCast as SpellOverTime))
+                        continue;
+                }
+
+                lowestHealthPercentage = healthPercentage;
+                bestPlayerTarget = index;
+            }
+
+            foreach (GameObject enemyGO in enemies)
+            {
+                TargetingComponent npcTargetingComponent = enemyGO.GetComponent<TargetingComponent>();
+                if (npcTargetingComponent && npcTargetingComponent.Target == player)
+                    playerTargetedByBossIndex = index;
+            }
+        }
+
+        if (bestPlayerTarget == -1)
+        {
+            if(playerTargetedByBossIndex != -1)
+                bestPlayerTarget = playerTargetedByBossIndex;
+            else
+                bestPlayerTarget = myPlayer.PlayerIndex - 1; //Self
+        }
+
+        GameObject bestTarget = myTargetHandler.GetPlayer(bestPlayerTarget);
+        if (Target != bestTarget)
+            SetTarget(bestTarget);
+    }
+
     public void SetTargetWithSmartTargeting(int aKeyIndex)
     {
         float bestScore = 0.0f;

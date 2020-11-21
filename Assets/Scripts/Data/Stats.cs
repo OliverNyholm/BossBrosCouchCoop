@@ -76,6 +76,9 @@ public class Stats : MonoBehaviour
     public void RemoveSpellOverTime(SpellOverTime aSpell)
     {
         int index = FindIndexOfSpellOverTime(aSpell);
+        if (index == -1)
+            return;
+
         mySpellOverTimeGOs.RemoveAt(index);
         UIComponent uiComponent = GetComponent<UIComponent>();
         if (uiComponent)

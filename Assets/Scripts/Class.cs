@@ -70,6 +70,19 @@ public class Class : MonoBehaviour
         return mySpells[anIndex];
     }
 
+    public int GetSpellIndex(Spell aSpell)
+    {
+        uint searchIndex = aSpell.GetComponent<UniqueID>().GetID();
+
+        for (int index = 0; index < mySpells.Length; index++)
+        {
+            if (mySpells[index].GetComponent<UniqueID>().GetID() == searchIndex)
+                return index;
+        }
+
+        return -1;
+    }
+
     public void SetSpellOnCooldown(int anIndex)
     {
         myCooldownTimers[anIndex] = mySpells[anIndex].GetComponent<Spell>().myCooldown;

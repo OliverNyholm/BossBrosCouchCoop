@@ -280,6 +280,8 @@ public class PlayerCastingComponent : CastingComponent
         float rate = 1.0f / castSpeed;
         float progress = 0.0f;
 
+        int spellIndex = myClass.GetSpellIndex(aSpell);
+
         myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
 
         while (progress <= 1.0f)
@@ -288,7 +290,7 @@ public class PlayerCastingComponent : CastingComponent
 
             progress += rate * Time.deltaTime;
 
-            if (InterruptDueToMovement(aSpell) || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
+            if (InterruptDueToMovement(aSpell) || WasSpellChannelButtonReleased(spellIndex) || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
             {
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
@@ -500,5 +502,22 @@ public class PlayerCastingComponent : CastingComponent
             return false;
 
         return myMovementComponent && myMovementComponent.IsMoving();
+    }
+
+    private bool WasSpellChannelButtonReleased(int aSpellIndex)
+    {
+        switch (aSpellIndex)
+        {
+            case 0:
+                return myPlayerControls.Action1.WasReleased;
+            case 1:
+                return myPlayerControls.Action2.WasReleased;
+            case 2:
+                return myPlayerControls.Action3.WasReleased;
+            case 3:
+                return myPlayerControls.Action4.WasReleased;
+        }
+
+        return false;
     }
 }

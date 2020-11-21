@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Barrier : Spell
+public class Barrier : ChannelSpell
 {
-    [SerializeField]
-    private float myChannelTime = 0.0f;
-
     private float myRadius;
     private TargetHandler myTargetHandler;
     private List<SpellOverTime> myActiveBuffs = new List<SpellOverTime>(4);

@@ -61,7 +61,12 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
         }
 
         if(myHeldDownTimeStamp == Time.time)
+        {
             myUIComponent.SpellHeldDown(myHeldDownSpellIndex);
+
+            if (IsChannelSpell(myHeldDownSpellIndex))
+                CastSpell(myHeldDownSpellIndex);
+        }
 
         if (myPlayerControls.Action1.WasReleased)
             ButtonReleased(0);
@@ -80,7 +85,10 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
             myCharacterSelector.HideSpellInfo();
         }
         else
-            CastSpell(aSpellIndex);
+        {
+            if(!IsChannelSpell(aSpellIndex))
+                CastSpell(aSpellIndex);
+        }
 
         myUIComponent.SpellReleased(aSpellIndex);
         myIsShowingInfo = false;
@@ -125,5 +133,14 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
             return false;
 
         return true;
+    }
+
+    private bool IsChannelSpell(int aSpellIndex)
+    {
+        if (!myClass.HasSpell(aSpellIndex))
+            return false;
+
+        GameObject spell = myClass.GetSpell(aSpellIndex);
+        return spell.GetComponent<ChannelSpell>() != null;
     }
 }

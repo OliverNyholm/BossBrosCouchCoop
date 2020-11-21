@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AoeHeal : Spell
+public class AoeHeal : ChannelSpell
 {
-    [SerializeField]
-    private float myChannelTime;
-
     private float myIntervalTimer;
     private float myCurrentIntervalTimer;
     private int myHealthPerTick;

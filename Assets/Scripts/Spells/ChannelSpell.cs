@@ -1,0 +1,9 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ChannelSpell : Spell
+{
+    [SerializeField]
+    protected float myChannelTime = 5.0f;
+}

@@ -6,17 +6,19 @@ using InControl;
 public class Player : Character
 {
     private PlayerControls myPlayerControls;
-    private TargetHandler myTargetHandler;
-
-    private SpellErrorHandler mySpellErrorHandler;
-
+    private GameManager myGameManager;
 
     public int PlayerIndex { get; set; }
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        myGameManager = FindObjectOfType<GameManager>();
+    }
+
     protected virtual void Start()
     {
-        myTargetHandler = GameObject.Find("GameManager").GetComponent<TargetHandler>();
-
         Transform uiHud = GameObject.Find("PlayerHud" + PlayerIndex).transform;
         GetComponent<PlayerUIComponent>().SetupHud(uiHud);
     }
@@ -41,7 +43,10 @@ public class Player : Character
             GetComponent<UIComponent>().ToggleUIText(gameObject.GetInstanceID());
 
         if (myPlayerControls.Restart.WasPressed)
-            FindObjectOfType<GameManager>().RestartLevel();
+            myGameManager.RestartLevel();
+
+        if (myPlayerControls.Pause.WasPressed)
+            myGameManager.OpenPauseMenu(myPlayerControls);
     }
 
     public void SetPosition(Vector3 aPosition)

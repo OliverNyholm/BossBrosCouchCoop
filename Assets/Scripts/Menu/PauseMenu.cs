@@ -7,130 +7,66 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     public static bool ourIsGamePaused = false;
-
-    [Header("The parent gameobject to pause menu")]
-    [SerializeField]
-    private GameObject myPauseObject = null;
-
-    [Header("The parent gameobject to pause menu")]
-    [SerializeField]
-    private List<GameObject> myButtonIcons = new List<GameObject>();
-
-    [Header("The Play Button")]
-    [SerializeField]
-    private Button myResumeButton = null;
-
-    [Header("The Controls Button")]
-    [SerializeField]
-    private Button myControlsButton = null;
-
-    [Header("The Quit Button")]
-    [SerializeField]
-    private Button myCharacterSelectButton = null;
-
-    [Header("The Controls Image")]
-    [SerializeField]
-    private Image myControlsImage = null;
-
-    private List<Button> myButtons;
-    private int myCurrentButtonIndex;
-
-    private PlayerControls myKeyboardListener;
-    private PlayerControls myJoystickListener;
     private bool myIsInTutorial = false;
+
+    private PlayerControls myPlayerControls = null;
+    private GameManager myGameManager = null;
+
+    [Header("Screen to show when pause is opened")]
+    [SerializeField]
+    private List<PauseMenuSubMenu> myPauseSubMenues = new List<PauseMenuSubMenu>(4);
+    private PauseMenuSubMenu myCurrentOpenSubMenu = null;
 
     private void Awake()
     {
-        myButtons = new List<Button>
-        {
-            myCharacterSelectButton,
-            myResumeButton,
-            myControlsButton
-        };
-
         if (FindObjectOfType<TutorialEndLevel>())
-        {
-            myCharacterSelectButton.GetComponentInChildren<Text>().text = "Return to Level Select";
             myIsInTutorial = true;
-        }
     }
 
-    private void Start()
+    private void Update()
     {
-        myKeyboardListener = PlayerControls.CreateWithKeyboardBindings();
-        myJoystickListener = PlayerControls.CreateWithJoystickBindings();
-
-        myCurrentButtonIndex = 0;
-        NextButton(1);
-    }
-
-    void Update()
-    {
-        if (WasPausePressed())
-        {
-            ourIsGamePaused = !ourIsGamePaused;
-            if (ourIsGamePaused)
-                Pause();
-            else
-                Resume();
-        }
-
-        if (!ourIsGamePaused)
+        if (!ourIsGamePaused || myPlayerControls == null)
             return;
 
-        if (WasRightPressed())
-            NextButton(1);
-        if (WasLeftPressed())
-            NextButton(-1);
-
-        if (WasAction1Released())
-            myButtons[myCurrentButtonIndex].onClick.Invoke();
+        if (myPlayerControls.Pause.WasPressed)
+            Resume();
     }
 
     private void OnDestroy()
     {
-        myJoystickListener.Destroy();
-        myKeyboardListener.Destroy();
         Resume();
     }
 
-    private void Pause()
+    public void Pause(GameManager aGameManager, PlayerControls aPlayerControls)
     {
         Time.timeScale = 0.0f;
-
-        foreach (GameObject button in myButtonIcons)
-        {
-            button.SetActive(true);
-        }
-        //myPauseObject.SetActive(true);
         ourIsGamePaused = true;
 
-        List<GameObject> players = FindObjectOfType<TargetHandler>().GetAllPlayers();
+        myGameManager = aGameManager;
 
-        const int playerMax = 4;
-        for (int index = 0; index < playerMax; index++)
-        {
-            if (players.Count <= index)
-            {
-                myPauseObject.transform.GetChild(index).gameObject.SetActive(false);
-            }
-            else
-            {
-                myPauseObject.transform.GetChild(index).gameObject.SetActive(true);
-                myPauseObject.transform.GetChild(index).GetComponent<PausePlayerUI>().SetClassDetails(players[index].GetComponent<Class>());
-            }
-        }
+        myPlayerControls = aPlayerControls;
+        foreach (PauseMenuSubMenu subMenu in myPauseSubMenues)
+            subMenu.OnPauseMenuOpened(this, aPlayerControls);
+
+        OpenSubmenu(0);
     }
 
     public void Resume()
     {
+        if (myCurrentOpenSubMenu)
+            myCurrentOpenSubMenu.Close();
+
+        myPlayerControls = null;
+
         Time.timeScale = 1.0f;
         ourIsGamePaused = false;
-        for (int index = 0; index < transform.childCount; index++)
-        {
-            myPauseObject.transform.GetChild(index).gameObject.SetActive(false);
-        }
-        //myPauseObject.SetActive(false);
+
+        gameObject.SetActive(false);
+    }
+
+    public void RestartLevel()
+    {
+        myGameManager.RestartLevel();
     }
 
     public void LoadCharacterSelect()
@@ -142,54 +78,23 @@ public class PauseMenu : MonoBehaviour
             SceneManager.LoadScene("CharacterSelect");
     }
 
-    public void ToggleControls()
+    public void LoadLevelSelect()
     {
-        myControlsImage.enabled = !myControlsImage.enabled;
+        SceneManager.LoadScene("LevelSelect");
     }
 
-    private void NextButton(int aModifier)
+    public void OpenSubmenu(int aSubmenuIndex)
     {
-        myControlsImage.enabled = false;
+        if (myCurrentOpenSubMenu && myCurrentOpenSubMenu.IsOpen())
+            myCurrentOpenSubMenu.Close();
 
-        myButtons[myCurrentButtonIndex].image.color = myButtons[myCurrentButtonIndex].colors.normalColor;
-        myCurrentButtonIndex += aModifier;
-        if (myCurrentButtonIndex < 0)
-            myCurrentButtonIndex = myButtons.Count - 1;
-        if (myCurrentButtonIndex >= myButtons.Count)
-            myCurrentButtonIndex = 0;
-
-        myButtons[myCurrentButtonIndex].image.color = myButtons[myCurrentButtonIndex].colors.selectedColor;
+        myCurrentOpenSubMenu = myPauseSubMenues[aSubmenuIndex];
+        myCurrentOpenSubMenu.Open();
     }
 
-    private bool WasAction1Released()
+    public void CloseSubmenu()
     {
-        if (myKeyboardListener.Action1.WasReleased || myJoystickListener.Action1.WasReleased)
-            return true;
-
-        return false;
-    }
-
-    private bool WasRightPressed()
-    {
-        if (myKeyboardListener.Right.WasPressed || myJoystickListener.Right.WasPressed)
-            return true;
-
-        return false;
-    }
-
-    private bool WasLeftPressed()
-    {
-        if (myKeyboardListener.Left.WasPressed || myJoystickListener.Left.WasPressed)
-            return true;
-
-        return false;
-    }
-
-    private bool WasPausePressed()
-    {
-        if (myKeyboardListener.Pause.WasPressed || myJoystickListener.Pause.WasPressed || myJoystickListener.Start.WasPressed)
-            return true;
-
-        return false;
+        myCurrentOpenSubMenu.Close();
+        OpenSubmenu(0);
     }
 }

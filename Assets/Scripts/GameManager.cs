@@ -6,6 +6,9 @@ using InControl;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
+    private PauseMenu myPauseMenu = null;
+
     [Header("The spawn points for player. Loops around when last reached")]
     [SerializeField]
     private List<Transform> mySpawnPoints = new List<Transform>();
@@ -27,6 +30,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         PostMaster.Create();
+
+        myPauseMenu = FindObjectOfType<PauseMenu>();
+        myPauseMenu.gameObject.SetActive(false);
 
         TargetHandler targetHandler = GetComponent<TargetHandler>();
         GameObject characterGameDataGO = GameObject.Find("GameData");
@@ -77,6 +83,12 @@ public class GameManager : MonoBehaviour
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void OpenPauseMenu(PlayerControls aPlayerControls)
+    {
+        myPauseMenu.Pause(this, aPlayerControls);
+        myPauseMenu.gameObject.SetActive(true);
     }
 
     private void SpawnPlayer(TargetHandler aTargetHandler, PlayerSelectData aCharacter, int aIndex)

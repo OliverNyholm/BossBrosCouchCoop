@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public static class ExtensionMethods
 {
@@ -94,5 +95,12 @@ public static class UtilityFunctions
         outHitLocation = Vector3.zero;
         outMovablePlatform = null;
         return false;
+    }
+
+    public static void InvertTextZRotation(TextMeshProUGUI aText)
+    {
+        Vector3 invertRotation = aText.transform.eulerAngles;
+        invertRotation.z *= -1.0f;
+        aText.transform.eulerAngles = invertRotation;
     }
 }

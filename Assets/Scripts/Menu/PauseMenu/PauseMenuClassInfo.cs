@@ -14,7 +14,7 @@ public class PauseMenuClassInfo : PauseMenuSubMenu
         if (myPlayerControls == null|| !IsOpen())
             return;
 
-        if (myPlayerControls.Action2.WasPressed || myPlayerControls.Action3.WasPressed || myPlayerControls.TargetEnemy.WasPressed)
+        if (BackPressed())
             myBaseMenu.CloseSubmenu();
     }
 

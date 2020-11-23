@@ -37,6 +37,11 @@ public abstract class PauseMenuSubMenu : MonoBehaviour
         myPlayerControlsMovement = new PlayerControlsJoystickMovedHelper(aPlayerControls, 0.7f, 0.2f);
     }
 
+    protected bool BackPressed()
+    {
+        return myPlayerControls.Action2.WasPressed || myPlayerControls.Action3.WasPressed || myPlayerControls.TargetEnemy.WasPressed;
+    }
+
     public virtual void Open()
     {
         myCanvas.enabled = true;

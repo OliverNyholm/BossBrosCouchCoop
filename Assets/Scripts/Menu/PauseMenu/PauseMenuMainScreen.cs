@@ -37,15 +37,17 @@ public class PauseMenuMainScreen : PauseMenuSubMenu
     {
         base.Open();
 
-        mySubmenuesTexts[myCurrentSubmenuIndex].color = Color.yellow;
-        mySubmenuesTexts[myCurrentSubmenuIndex].fontSize += myFontSizeIncreaseOnSelected;
-        InvertTextRotation();
+        TextMeshProUGUI currentSubmenuText = mySubmenuesTexts[myCurrentSubmenuIndex];
+        currentSubmenuText.color = Color.yellow;
+        currentSubmenuText.fontSize += myFontSizeIncreaseOnSelected;
+        UtilityFunctions.InvertTextZRotation(currentSubmenuText);
     }
 
     public override void Close()
     {
-        mySubmenuesTexts[myCurrentSubmenuIndex].fontSize -= myFontSizeIncreaseOnSelected;
-        InvertTextRotation();
+        TextMeshProUGUI currentSubmenuText = mySubmenuesTexts[myCurrentSubmenuIndex];
+        currentSubmenuText.fontSize -= myFontSizeIncreaseOnSelected;
+        UtilityFunctions.InvertTextZRotation(currentSubmenuText);
         base.Close();
     }
 
@@ -54,7 +56,7 @@ public class PauseMenuMainScreen : PauseMenuSubMenu
         TextMeshProUGUI previousSubmenuText = mySubmenuesTexts[myCurrentSubmenuIndex];
         previousSubmenuText.color = Color.white;
         previousSubmenuText.fontSize -= myFontSizeIncreaseOnSelected;
-        InvertTextRotation();
+        UtilityFunctions.InvertTextZRotation(previousSubmenuText);
 
         myCurrentSubmenuIndex += aDirection;
 
@@ -66,15 +68,6 @@ public class PauseMenuMainScreen : PauseMenuSubMenu
         TextMeshProUGUI newSubmenuText = mySubmenuesTexts[myCurrentSubmenuIndex];
         newSubmenuText.color = Color.yellow;
         newSubmenuText.fontSize += myFontSizeIncreaseOnSelected;
-        InvertTextRotation();
-    }
-
-    private void InvertTextRotation()
-    {
-        TextMeshProUGUI currentSelectedSubMenuText = mySubmenuesTexts[myCurrentSubmenuIndex];
-
-        Vector3 invertRotation = currentSelectedSubMenuText.transform.eulerAngles;
-        invertRotation.z *= -1.0f;
-        currentSelectedSubMenuText.transform.eulerAngles = invertRotation;
+        UtilityFunctions.InvertTextZRotation(newSubmenuText);
     }
 }

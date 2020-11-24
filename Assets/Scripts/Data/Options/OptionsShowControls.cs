@@ -25,7 +25,7 @@ public class OptionsShowControls : OptionsBase
     {
     }
 
-    public override void GetData()
+    public override void InitData()
     {
     }
 

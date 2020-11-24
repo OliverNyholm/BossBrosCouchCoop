@@ -7,7 +7,10 @@ using System.IO;
 public class OptionsConfig : MonoBehaviour
 {
     private static OptionsConfig myInstance;
-    private static bool myIsApplicatioQuitting = false;
+    private static bool myIsApplicationQuitting = false;
+
+    public delegate void OptionsConfigChanged(OptionsConfig aOptionsConfig);
+    public event OptionsConfigChanged EventOnOptionsChanged;
 
     [Serializable]
     public class OptionsData
@@ -21,7 +24,7 @@ public class OptionsConfig : MonoBehaviour
     {
         get
         {
-            if (myIsApplicatioQuitting)
+            if (myIsApplicationQuitting)
             {
                 return null;
             }
@@ -46,6 +49,12 @@ public class OptionsConfig : MonoBehaviour
             Debug.LogWarning("Second instance of MonoSingleton created. Automatic self-destruct triggered.");
             Destroy(gameObject);
         }
+        else
+        {
+            myInstance = GetComponent<OptionsConfig>();
+            myInstance.ParseOptions();
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     private void OnDestroy()
@@ -54,7 +63,7 @@ public class OptionsConfig : MonoBehaviour
         {
             myInstance = null;
         }
-        myIsApplicatioQuitting = true;
+        myIsApplicationQuitting = true;
     }
 
     public void ParseOptions()
@@ -85,6 +94,11 @@ public class OptionsConfig : MonoBehaviour
         file.WriteLine(returnString);
 
         file.Close();
+    }
+    
+    public void InvokeOptionsChanged()
+    {
+        EventOnOptionsChanged?.Invoke(this);
     }
 }
 

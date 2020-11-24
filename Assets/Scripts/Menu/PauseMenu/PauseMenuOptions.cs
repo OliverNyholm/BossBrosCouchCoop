@@ -37,10 +37,7 @@ public class PauseMenuOptions : PauseMenuSubMenu
         base.Open();
 
         foreach (OptionsBase options in myOptions)
-        {
-            options.GetData();
-            options.SetData();
-        }
+            options.InitData();
 
         myCurrentOptionsIndex = 0;
 

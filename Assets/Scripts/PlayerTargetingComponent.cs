@@ -14,9 +14,10 @@ public class PlayerTargetingComponent : TargetingComponent
     [Header("The duration of holding down a spell button before enabling targeting system")]
     [SerializeField]
     private float mySmartTargetHoldDownMaxDuration = 0.35f;
+    private float mySmartTargetHoldDownMaxDurationDefault;
 
     [SerializeField]
-    private bool myUseLookAtHealTargeting = false;
+    private HealTargetingOption myHealTargetingOption = HealTargetingOption.SelectWithStickOnly;
 
     private List<GameObject> myPreviouslyTargetedEnemies = new List<GameObject>(8);
     private float myLatestSelectedTargetTime;
@@ -38,6 +39,22 @@ public class PlayerTargetingComponent : TargetingComponent
         myStats = GetComponent<Stats>();
 
         myHealth.EventOnHealthZero += OnDeath;
+
+        mySmartTargetHoldDownMaxDurationDefault = mySmartTargetHoldDownMaxDuration;
+
+        OptionsConfig optionsConfig = OptionsConfig.Instance;
+        if (optionsConfig)
+        {
+            SetHealTargetOption(optionsConfig.myOptionsData.myHealTargetingMode);
+            optionsConfig.EventOnOptionsChanged += OnOptionsChanged;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        OptionsConfig optionsConfig = OptionsConfig.Instance;
+        if (optionsConfig)
+            optionsConfig.EventOnOptionsChanged -= OnOptionsChanged;
     }
 
     public float GetSmartTargetHoldDownMaxDuration()
@@ -108,7 +125,7 @@ public class PlayerTargetingComponent : TargetingComponent
 
     private void DetectFriendlyTargetInput(bool hasJoystickMoved)
     {
-        if (myUseLookAtHealTargeting)
+        if (myHealTargetingOption == HealTargetingOption.SelectWithLookDirection)
             GetFriendlyTargetByLooking(hasJoystickMoved);
         else
             GetFriendlyTargetByStickLocation();
@@ -170,10 +187,15 @@ public class PlayerTargetingComponent : TargetingComponent
 
     public void EnableManualHealTargeting(int aSpellIndex)
     {
-        myManualHealTargetingMode = myUseLookAtHealTargeting ? ManualHealTargetingMode.LookAt : ManualHealTargetingMode.Joystick;
+        myManualHealTargetingMode = myHealTargetingOption == HealTargetingOption.SelectWithLookDirection ? ManualHealTargetingMode.LookAt : ManualHealTargetingMode.Joystick;
 
         if(myManualHealTargetingMode == ManualHealTargetingMode.LookAt)
             SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
+        else
+        {
+            if(!Target || Target.tag == "Enemy")
+                SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
+        }
 
         myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, false);
 
@@ -362,5 +384,19 @@ public class PlayerTargetingComponent : TargetingComponent
     private void OnTargetDied()
     {
         SetTarget(null);
+    }
+
+    private void OnOptionsChanged(OptionsConfig aOptionsConfig)
+    {
+        SetHealTargetOption(aOptionsConfig.myOptionsData.myHealTargetingMode);
+    }
+
+    void SetHealTargetOption(HealTargetingOption aHealTargetOption)
+    {
+        myHealTargetingOption = aHealTargetOption;
+        if (myHealTargetingOption == HealTargetingOption.SelectWithStickOnly)
+            mySmartTargetHoldDownMaxDuration = 0.0f;
+        else
+            mySmartTargetHoldDownMaxDuration = mySmartTargetHoldDownMaxDurationDefault;
     }
 }

@@ -41,15 +41,17 @@ public class OptionsHealTargeting : OptionsBase
             myHealTargetingOption = 0;
 
         SetOptionsText();
+        SetData();
     }
 
-    public override void GetData()
+    public override void InitData()
     {
         OptionsConfig options = OptionsConfig.Instance;
         if (!options)
             return;
 
         myHealTargetingOption = options.myOptionsData.myHealTargetingMode;
+        SetOptionsText();
     }
 
     public override void SetData()
@@ -59,7 +61,7 @@ public class OptionsHealTargeting : OptionsBase
             return;
 
         options.myOptionsData.myHealTargetingMode = myHealTargetingOption;
-        SetOptionsText();
+        options.InvokeOptionsChanged();
     }
 
     void SetOptionsText()

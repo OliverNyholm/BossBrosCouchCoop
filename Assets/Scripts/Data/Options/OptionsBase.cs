@@ -8,7 +8,7 @@ public abstract class OptionsBase : MonoBehaviour
 
     public abstract void OnDeselected();
 
-    public abstract void GetData();
+    public abstract void InitData();
 
     public abstract void SetData();
 

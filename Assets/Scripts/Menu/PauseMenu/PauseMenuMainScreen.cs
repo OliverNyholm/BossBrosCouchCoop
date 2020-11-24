@@ -13,7 +13,14 @@ public class PauseMenuMainScreen : PauseMenuSubMenu
     private List<TextMeshProUGUI> mySubmenuesTexts = new List<TextMeshProUGUI>(6);
     private int myCurrentSubmenuIndex = 0;
 
+    private PauseMenu myPauseMenu;
+
     private int myFontSizeIncreaseOnSelected = 6;
+
+    private void Awake()
+    {
+        myPauseMenu = GetComponentInParent<PauseMenu>();
+    }
 
     protected override void Update()
     {
@@ -26,8 +33,12 @@ public class PauseMenuMainScreen : PauseMenuSubMenu
         {
             mySubMenuOnSelectedEvents[myCurrentSubmenuIndex].Invoke();
         }
+        if (myPlayerControls.Action2.WasReleased || myPlayerControls.Action3.WasReleased)
+        {
+            myPauseMenu.Resume();
+        }
 
-        if(myPlayerControlsMovement.WasPressed(1))
+        if (myPlayerControlsMovement.WasPressed(1))
             NextMenu(-1);
         if (myPlayerControlsMovement.WasPressed(2))
             NextMenu(1);

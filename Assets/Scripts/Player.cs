@@ -47,6 +47,11 @@ public class Player : Character
 
         if (myPlayerControls.Pause.WasPressed)
             myGameManager.OpenPauseMenu(myPlayerControls);
+
+        if(myPlayerControls.SpawnDebugPlayer.WasPressed)
+        {
+            myGameManager.AddExtraDebugPlayer();
+        }
     }
 
     public void SetPosition(Vector3 aPosition)

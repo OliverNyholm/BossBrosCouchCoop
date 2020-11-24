@@ -53,6 +53,7 @@ public class PauseMenuOptions : PauseMenuSubMenu
         if (optionsConfig)
             optionsConfig.SaveOptions();
 
+        myOptions[myCurrentOptionsIndex].OnDeselected();
         TextMeshProUGUI myCurrentOptionsText = myOptionsTexts[myCurrentOptionsIndex];
         myCurrentOptionsText.color = Color.white;
         UtilityFunctions.InvertTextZRotation(myCurrentOptionsText);

@@ -15,7 +15,7 @@ public class OptionsConfig : MonoBehaviour
     [Serializable]
     public class OptionsData
     {
-        public HealTargetingOption myHealTargetingMode = HealTargetingOption.SelectWithStickOnly;
+        public HealTargetingOption myHealTargetingMode = HealTargetingOption.SelectWithLeftStickOnly;
     }
 
     public OptionsData myOptionsData;
@@ -104,8 +104,9 @@ public class OptionsConfig : MonoBehaviour
 
 public enum HealTargetingOption : short
 {
-    SelectWithStickOnly,
-    SelectWithStickAndAutoHeal,
+    SelectWithLeftStickOnly,
+    SelectWithLeftStickAndAutoHeal,
     SelectWithLookDirection,
+    SelectWithRightStickOrKeyboard,
     Count
 }

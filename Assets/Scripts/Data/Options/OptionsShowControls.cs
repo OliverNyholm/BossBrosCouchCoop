@@ -14,6 +14,7 @@ public class OptionsShowControls : OptionsBase
     public override void OnSelected()
     {
         myImageToSetSpriteOn.sprite = myControllerSprite;
+        myImageToSetSpriteOn.material = null;
     }
 
     public override void OnDeselected()

@@ -10,22 +10,39 @@ public class OptionsHealTargeting : OptionsBase
     private Image myImageToSetSpriteOn = null;
 
     [SerializeField]
-    private Sprite myControllerSprite = null;
+    private Sprite mySelectWithJoystickSprite = null;
+    [SerializeField]
+    private Sprite mySelectWithStickAndAutoHealSprite = null;
+    [SerializeField]
+    private Material myLookAtTutorialGif = null;
+    [SerializeField]
+    private Sprite mySelectWithRightStickOrKeyboardSprite = null;
 
     [SerializeField]
     private TextMeshProUGUI myOptionText = null;
-    private string mySelectWithStickOnlyText = "Select Player With Joystick";
-    private string mySelectWithStickAndAutoHealText = "Select Player With Joystick And Auto Heal";
-    private string mySelectWithLookDirectionText = "Chose Player On Look Direction";
+    private string mySelectWithJoystickOnlyText = "Select Player With Joystick";
+    private string mySelectWithJoystickAndAutoHealText = "Select Player With Joystick And Auto Heal";
+    private string mySelectWithLookDirectionText = "Chose Player On Look Direction And Auto Heal";
+    private string mySelectWithRightStickOrKeyboardText = "Chose Player With Right Joystick Or Keyboard";
 
     private HealTargetingOption myHealTargetingOption;
+
+    private void Awake()
+    {
+        myLookAtTutorialGif = new Material(myLookAtTutorialGif);
+    }
+
+    private void Update()
+    {
+        if (myImageToSetSpriteOn.material)
+            myImageToSetSpriteOn.material.SetFloat("_unscaledTime", Time.unscaledTime);
+    }
 
     public override void OnSelected()
     {
         myOptionText.color = Color.yellow;
         UtilityFunctions.InvertTextZRotation(myOptionText);
-
-        myImageToSetSpriteOn.sprite = myControllerSprite;
+        SetOptionsText(true);
     }
 
     public override void OnDeselected()
@@ -40,7 +57,7 @@ public class OptionsHealTargeting : OptionsBase
         if (myHealTargetingOption == HealTargetingOption.Count)
             myHealTargetingOption = 0;
 
-        SetOptionsText();
+        SetOptionsText(true);
         SetData();
     }
 
@@ -51,7 +68,7 @@ public class OptionsHealTargeting : OptionsBase
             return;
 
         myHealTargetingOption = options.myOptionsData.myHealTargetingMode;
-        SetOptionsText();
+        SetOptionsText(false);
     }
 
     public override void SetData()
@@ -64,18 +81,42 @@ public class OptionsHealTargeting : OptionsBase
         options.InvokeOptionsChanged();
     }
 
-    void SetOptionsText()
+    void SetOptionsText(bool aShouldSetSprite)
     {
         switch (myHealTargetingOption)
         {
-            case HealTargetingOption.SelectWithStickOnly:
-                myOptionText.text = mySelectWithStickOnlyText;
+            case HealTargetingOption.SelectWithLeftStickOnly:
+                myOptionText.text = mySelectWithJoystickOnlyText;
+                if (aShouldSetSprite)
+                { 
+                    myImageToSetSpriteOn.sprite = mySelectWithJoystickSprite;
+                    myImageToSetSpriteOn.material = null;
+                }
                 break;
-            case HealTargetingOption.SelectWithStickAndAutoHeal:
-                myOptionText.text = mySelectWithStickAndAutoHealText;
+            case HealTargetingOption.SelectWithLeftStickAndAutoHeal:
+                myOptionText.text = mySelectWithJoystickAndAutoHealText;
+                if (aShouldSetSprite)
+                {
+                    myImageToSetSpriteOn.sprite = mySelectWithStickAndAutoHealSprite;
+                    myImageToSetSpriteOn.material = null;
+                }
                 break;
             case HealTargetingOption.SelectWithLookDirection:
                 myOptionText.text = mySelectWithLookDirectionText;
+                if (aShouldSetSprite)
+                {
+                    myImageToSetSpriteOn.sprite = null;
+                    myImageToSetSpriteOn.material = myLookAtTutorialGif;
+                    myImageToSetSpriteOn.material.SetFloat("_EnableTime", Time.time);
+                }
+                break;
+            case HealTargetingOption.SelectWithRightStickOrKeyboard:
+                myOptionText.text = mySelectWithRightStickOrKeyboardText;
+                if (aShouldSetSprite)
+                { 
+                    myImageToSetSpriteOn.sprite = mySelectWithRightStickOrKeyboardSprite;
+                    myImageToSetSpriteOn.material = null;
+                }
                 break;
             default:
                 break;

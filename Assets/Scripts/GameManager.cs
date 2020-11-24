@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
     public PlayerSelectData myDebugPlayerData;
     private Player myDebugPlayer = null;
 
+    [SerializeField]
+    private List<ColorScheme> myDebugColorSchemes = new List<ColorScheme>(4);
+
     private PlayerControls myControllerListener = null;
 
     private List<PlayerSelectData> myPlayerSelectData = new List<PlayerSelectData>(4);
@@ -40,7 +43,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("No CharacterGameData to find, default player created.");
             myPlayerSelectData.Add(myDebugPlayerData);
-            SpawnPlayer(targetHandler, 1);
+            SpawnPlayer(targetHandler, 0);
 
             myControllerListener = PlayerControls.CreateWithJoystickBindings();
             return;
@@ -77,7 +80,6 @@ public class GameManager : MonoBehaviour
                 myControllerListener = null;
             }
         }
-
     }
 
     public void RestartLevel()
@@ -127,7 +129,7 @@ public class GameManager : MonoBehaviour
     {
         Vector3 spawnPoint = new Vector3(-1.5f + 0 * 1.0f, 0.0f, -3.0f);
         if (mySpawnPoints.Count > 0)
-            spawnPoint = mySpawnPoints[0 % mySpawnPoints.Count].position;
+            spawnPoint = mySpawnPoints[aPlayerIndex % mySpawnPoints.Count].position;
 
         if (UtilityFunctions.FindGroundFromLocation(spawnPoint, out Vector3 hitLocation, out MovablePlatform movablePlatform))
             spawnPoint = hitLocation;
@@ -142,14 +144,14 @@ public class GameManager : MonoBehaviour
         myDebugPlayer = playerGO.GetComponent<Player>();
         myDebugPlayer.SetClassData(myDebugPlayerData.myClassData);
         myDebugPlayer.SetPlayerControls(keyboardListener);
-        myDebugPlayer.PlayerIndex = aPlayerIndex;
+        myDebugPlayer.PlayerIndex = aPlayerIndex + 1;
 
         PlayerUIComponent uiComponent = playerGO.GetComponent<PlayerUIComponent>();
         uiComponent.myName = myDebugPlayerData.myName;
-        uiComponent.myCharacterColor = myDebugPlayerData.myColorScheme.myColor;
-        uiComponent.myAvatarSprite = myDebugPlayerData.myColorScheme.myAvatar;
+        uiComponent.myCharacterColor = myDebugColorSchemes[aPlayerIndex].myColor;
+        uiComponent.myAvatarSprite = myDebugColorSchemes[aPlayerIndex].myAvatar;
 
-        playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material = myDebugPlayerData.myColorScheme.myMaterial;
+        playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material = myDebugColorSchemes[aPlayerIndex].myMaterial;
 
         myPlayerSelectData[myPlayerSelectData.Count - 1].myPlayerControls = keyboardListener;
 
@@ -229,7 +231,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Adding another debug player.");
         myPlayerSelectData.Add(myDebugPlayerData);
-        SpawnPlayer(targetHandler, targetHandler.GetAllPlayers().Count + 1);
+        SpawnPlayer(targetHandler, targetHandler.GetAllPlayers().Count);
 
         GameObject newPlayer = targetHandler.GetPlayer(targetHandler.GetAllPlayers().Count - 1);
         foreach (GameObject npc in targetHandler.GetAllEnemies())

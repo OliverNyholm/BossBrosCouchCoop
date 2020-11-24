@@ -160,22 +160,30 @@ public class PlayerCastingComponent : CastingComponent
 
     public void CastFriendlySpell(int aKeyIndex)
     {
-        if (Time.time - myStartTimeOfHoldingKeyDown < myTargetingComponent.GetSmartTargetHoldDownMaxDuration())
+        if(myClass.GetSpell(aKeyIndex).GetComponent<Spell>().myIsOnlySelfCast)
         {
-            if (myClass.GetSpell(aKeyIndex).GetComponent<Spell>().myIsOnlySelfCast)
-                myTargetingComponent.SpellTarget = gameObject;
-            else
+            myTargetingComponent.SpellTarget = gameObject;
+        }
+        else if(myTargetingComponent.IsSmartHealingAvailable())
+        {
+            if (Time.time - myStartTimeOfHoldingKeyDown < myTargetingComponent.GetSmartTargetHoldDownMaxDuration())
+            {
                 myTargetingComponent.SetTargetWithLowestHealthAndWithoutBuff(aKeyIndex);
+                CastSpell(aKeyIndex, true);
+            }
+            else
+            {
+                if (myTargetingComponent.Target != gameObject)
+                    myKeepLookingAtTargetWhileCasting = true;
 
-            CastSpell(aKeyIndex, true);
+                CastSpell(aKeyIndex, false);
+            }
         }
         else
         {
-            if (myTargetingComponent.Target != gameObject)
-                myKeepLookingAtTargetWhileCasting = true;
-
             CastSpell(aKeyIndex, false);
         }
+
 
         myHealTargetingReleaseDirection = myPlayerControls.Movement;
         myIsFriendlySpellKeyHeldDown = false;
@@ -433,8 +441,15 @@ public class PlayerCastingComponent : CastingComponent
 
         if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && target.tag == "Enemy")
         {
-            ShowError(SpellErrorHandler.SpellError.WrongTargetEnemy);
-            return false;
+            if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) != 0)
+            {
+                myTargetingComponent.SetTarget(gameObject);
+            }
+            else
+            {
+                ShowError(SpellErrorHandler.SpellError.WrongTargetEnemy);
+                return false;
+            }
         }
 
         if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && target.tag == "Player")

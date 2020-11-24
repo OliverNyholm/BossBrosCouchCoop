@@ -89,7 +89,7 @@ public class PlayerMovementComponent : MovementComponent
         PlayerTargetingComponent.ManualHealTargetingMode manualHealTargetingMode = myTargetingComponent.GetHealTargetingMode();
 
         bool isMoving = IsMoving();
-        if (isMoving && manualHealTargetingMode != PlayerTargetingComponent.ManualHealTargetingMode.Joystick)
+        if (isMoving && manualHealTargetingMode != PlayerTargetingComponent.ManualHealTargetingMode.LeftJoystick)
             RotatePlayer();
 
         if (!myIsGrounded)

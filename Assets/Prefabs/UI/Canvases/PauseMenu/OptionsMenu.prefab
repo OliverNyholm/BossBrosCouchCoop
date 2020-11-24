@@ -135,8 +135,8 @@ RectTransform:
   m_Father: {fileID: 3602182548103776488}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.6860001}
-  m_AnchorMin: {x: 0.12, y: 0.75}
-  m_AnchorMax: {x: 0.55, y: 0.9}
+  m_AnchorMin: {x: 0.24, y: 0.75}
+  m_AnchorMax: {x: 0.67, y: 0.9}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -334,7 +334,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1917157108423736206}
   - component: {fileID: 447877148796269088}
-  - component: {fileID: 1674378636581217629}
   - component: {fileID: 1372020267138400346}
   m_Layer: 5
   m_Name: HealTargetingOptions
@@ -370,21 +369,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5285179385574266877}
   m_CullTransparentMesh: 0
---- !u!114 &1674378636581217629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5285179385574266877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e0f5013cdeb7f74f8171621abc5a91b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myImageToSetSpriteOn: {fileID: 6701468751654818112}
-  myControllerSprite: {fileID: 0}
-  myOptionText: {fileID: 0}
 --- !u!114 &1372020267138400346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,8 +489,8 @@ RectTransform:
   m_Father: {fileID: 4160826318559865300}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.3, y: 0.05}
-  m_AnchorMax: {x: 0.7, y: 0.4}
+  m_AnchorMin: {x: 0.3, y: 0.07}
+  m_AnchorMax: {x: 0.69, y: 0.4}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -698,7 +682,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myImageToSetSpriteOn: {fileID: 6037308641432290144}
-  myControllerSprite: {fileID: 21300000, guid: e5e2c2dd2e8e6d24cb910f8e1e8439f4, type: 3}
+  mySelectWithJoystickSprite: {fileID: 21300000, guid: e5e2c2dd2e8e6d24cb910f8e1e8439f4,
+    type: 3}
+  mySelectWithStickAndAutoHealSprite: {fileID: 21300000, guid: 51863573df9de3b46a3b9b42691326e7,
+    type: 3}
+  myLookAtTutorialGif: {fileID: 2100000, guid: 8f23a9b830ff71c4797ac167dcbd7b6e, type: 2}
+  mySelectWithRightStickOrKeyboardSprite: {fileID: 21300000, guid: 1d63820628b02ae4995b5f94683a44f9,
+    type: 3}
   myOptionText: {fileID: 1372020267138400346}
 --- !u!114 &4842682636958340510
 MonoBehaviour:

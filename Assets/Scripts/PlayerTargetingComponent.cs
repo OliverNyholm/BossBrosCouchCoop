@@ -17,7 +17,7 @@ public class PlayerTargetingComponent : TargetingComponent
     private float mySmartTargetHoldDownMaxDurationDefault;
 
     [SerializeField]
-    private HealTargetingOption myHealTargetingOption = HealTargetingOption.SelectWithStickOnly;
+    private HealTargetingOption myHealTargetingOption = HealTargetingOption.SelectWithLeftStickOnly;
 
     private List<GameObject> myPreviouslyTargetedEnemies = new List<GameObject>(8);
     private float myLatestSelectedTargetTime;
@@ -26,7 +26,7 @@ public class PlayerTargetingComponent : TargetingComponent
     {
         NotActive,
         LookAt,
-        Joystick
+        LeftJoystick
     };
 
     private ManualHealTargetingMode myManualHealTargetingMode = ManualHealTargetingMode.NotActive;
@@ -73,11 +73,19 @@ public class PlayerTargetingComponent : TargetingComponent
 
         if(myManualHealTargetingMode != ManualHealTargetingMode.NotActive)
             DetectFriendlyTargetInput(myPlayerControls.Movement != Vector2.zero);
+
+        if(myHealTargetingOption == HealTargetingOption.SelectWithRightStickOrKeyboard)
+            GetFriendlyTargetByRightStickOrKeyboard();
     }
 
     public ManualHealTargetingMode GetHealTargetingMode()
     {
         return myManualHealTargetingMode;
+    }
+
+    public bool IsSmartHealingAvailable()
+    {
+        return myHealTargetingOption != HealTargetingOption.SelectWithRightStickOrKeyboard;
     }
 
     public bool IsManualHealTargeting()
@@ -125,10 +133,16 @@ public class PlayerTargetingComponent : TargetingComponent
 
     private void DetectFriendlyTargetInput(bool hasJoystickMoved)
     {
-        if (myHealTargetingOption == HealTargetingOption.SelectWithLookDirection)
-            GetFriendlyTargetByLooking(hasJoystickMoved);
-        else
-            GetFriendlyTargetByStickLocation();
+        switch (myHealTargetingOption)
+        {
+            case HealTargetingOption.SelectWithLeftStickOnly:
+            case HealTargetingOption.SelectWithLeftStickAndAutoHeal:
+                GetFriendlyTargetByStickLocation();
+                break;
+            case HealTargetingOption.SelectWithLookDirection:
+                GetFriendlyTargetByLooking(hasJoystickMoved);
+                break;
+        }
     }
 
     private void GetFriendlyTargetByStickLocation()
@@ -185,16 +199,38 @@ public class PlayerTargetingComponent : TargetingComponent
             SetTarget(bestTarget);
     }
 
+    private void GetFriendlyTargetByRightStickOrKeyboard()
+    {
+        int playerIndex = -1;
+        const float triggerValue = 0.8f;
+        if (myPlayerControls.TargetPlayerOne.RawValue > triggerValue)
+            playerIndex = 0;
+        if (myPlayerControls.TargetPlayerTwo.RawValue > triggerValue)
+            playerIndex = 1;
+        if (myPlayerControls.TargetPlayerThree.RawValue > triggerValue)
+            playerIndex = 2;
+        if (myPlayerControls.TargetPlayerFour.RawValue > triggerValue)
+            playerIndex = 3;
+
+        GameObject target = myTargetHandler.GetPlayer(playerIndex);
+        if (target && Target != target)
+            SetTarget(target);
+    }
+
     public void EnableManualHealTargeting(int aSpellIndex)
     {
-        myManualHealTargetingMode = myHealTargetingOption == HealTargetingOption.SelectWithLookDirection ? ManualHealTargetingMode.LookAt : ManualHealTargetingMode.Joystick;
-
-        if(myManualHealTargetingMode == ManualHealTargetingMode.LookAt)
-            SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
-        else
+        switch (myHealTargetingOption)
         {
-            if(!Target || Target.tag == "Enemy")
+            case HealTargetingOption.SelectWithLeftStickOnly:
+            case HealTargetingOption.SelectWithLeftStickAndAutoHeal:
+                myManualHealTargetingMode = ManualHealTargetingMode.LeftJoystick;
+                if (!Target || Target.tag == "Enemy")
+                    SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
+                break;
+            case HealTargetingOption.SelectWithLookDirection:
+                myManualHealTargetingMode = ManualHealTargetingMode.LookAt;
                 SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
+                break;
         }
 
         myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, false);
@@ -394,8 +430,10 @@ public class PlayerTargetingComponent : TargetingComponent
     void SetHealTargetOption(HealTargetingOption aHealTargetOption)
     {
         myHealTargetingOption = aHealTargetOption;
-        if (myHealTargetingOption == HealTargetingOption.SelectWithStickOnly)
+        if (myHealTargetingOption == HealTargetingOption.SelectWithLeftStickOnly)
             mySmartTargetHoldDownMaxDuration = 0.0f;
+        else if (myHealTargetingOption == HealTargetingOption.SelectWithRightStickOrKeyboard)
+            mySmartTargetHoldDownMaxDuration = float.MaxValue;
         else
             mySmartTargetHoldDownMaxDuration = mySmartTargetHoldDownMaxDurationDefault;
     }

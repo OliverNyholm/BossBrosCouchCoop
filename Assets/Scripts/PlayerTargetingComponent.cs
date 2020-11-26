@@ -430,9 +430,7 @@ public class PlayerTargetingComponent : TargetingComponent
     void SetHealTargetOption(HealTargetingOption aHealTargetOption)
     {
         myHealTargetingOption = aHealTargetOption;
-        if (myHealTargetingOption == HealTargetingOption.SelectWithLeftStickOnly)
-            mySmartTargetHoldDownMaxDuration = 0.0f;
-        else if (myHealTargetingOption == HealTargetingOption.SelectWithRightStickOrKeyboard)
+        if (myHealTargetingOption == HealTargetingOption.SelectWithRightStickOrKeyboard)
             mySmartTargetHoldDownMaxDuration = float.MaxValue;
         else
             mySmartTargetHoldDownMaxDuration = mySmartTargetHoldDownMaxDurationDefault;

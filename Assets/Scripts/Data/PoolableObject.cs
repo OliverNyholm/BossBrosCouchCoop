@@ -26,7 +26,7 @@ public abstract class PoolableObject : MonoBehaviour
             myObjectPool.ReturnObject(gameObject);
         else
         {
-            Debug.LogError(gameObject.name + "is going to be deleted!");
+            Debug.LogError(gameObject.name + " is going to be deleted!");
             Destroy(gameObject);
         }
     }

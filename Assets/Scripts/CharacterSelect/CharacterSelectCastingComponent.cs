@@ -115,7 +115,7 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
 
         if (spellScript.myCastTime <= 0.0f)
         {
-            SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
+            SpawnSpell(spellScript, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
             myAnimatorWrapper.SetTrigger(spellScript.myAnimationType);
             return;

@@ -24,7 +24,6 @@ public class PlayerCastingComponent : CastingComponent
     private bool myKeepLookingAtTargetWhileCasting = false;
 
     public delegate void EventOnSpellSpawned(GameObject aPlayer, GameObject aSpell, int aSpellIndex);
-    public event EventOnSpellSpawned myEventOnSpellSpawned;
 
     protected override void Awake()
     {
@@ -83,7 +82,7 @@ public class PlayerCastingComponent : CastingComponent
         myAutoAttackCooldown = myAutoAttackCooldownReset;
 
         myTargetingComponent.SpellTarget = myTargetingComponent.Target;
-        SpawnSpell(-1, myTargetingComponent.SpellTarget.transform.position);
+        SpawnSpell(null, myTargetingComponent.SpellTarget.transform.position, true);
     }
 
     private void DetectSpellInput()
@@ -219,7 +218,7 @@ public class PlayerCastingComponent : CastingComponent
 
         if (spellScript.myCastTime <= 0.0f)
         {
-            SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
+            SpawnSpell(spellScript, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
             //GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
             myAnimatorWrapper.SetTrigger(spellScript.myAnimationType);
@@ -281,7 +280,7 @@ public class PlayerCastingComponent : CastingComponent
 
         if (IsAbleToCastSpell(spellScript))
         {
-            SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
+            SpawnSpell(spellScript, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
             //GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
         }
@@ -301,18 +300,24 @@ public class PlayerCastingComponent : CastingComponent
 
         while (progress <= 1.0f)
         {
-            myUIComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
-
-            progress += rate * Time.deltaTime;
+            if(castSpeed > 0.0f)
+            {
+                myUIComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
+                progress += rate * Time.deltaTime;
+            }
 
             if (InterruptDueToMovement(aSpell) || WasSpellChannelButtonReleased(spellIndex) || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
             {
-                //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
                 myStats.SetStunned(0.0f);
                 StopCasting(true);
+
+                if (aSpell is ChannelSpell)
+                    (aSpell as ChannelSpell).OnStoppedChannel();
+
                 PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());
                 myChannelGameObject = null;
+
                 yield break;
             }
 
@@ -327,16 +332,21 @@ public class PlayerCastingComponent : CastingComponent
         }
     }
 
-    protected void SpawnSpell(int aKeyIndex, Vector3 aSpawnPosition)
+    public void SpawnSpellExternal(Spell aSpell, Vector3 aSpawnPosition)
+    {
+        SpawnSpell(aSpell, aSpawnPosition);
+    }
+
+    protected void SpawnSpell(Spell aSpell, Vector3 aSpawnPosition, bool aIsAutoAttack = false)
     {
         GameObject instance = null;
-        if (aKeyIndex == -1)
+        if (aIsAutoAttack)
         {
             instance = PoolManager.Instance.GetPooledAutoAttack();
         }
         else
         {
-            instance = PoolManager.Instance.GetPooledObject(myClass.GetSpell(aKeyIndex).GetComponent<UniqueID>().GetID());
+            instance = PoolManager.Instance.GetPooledObject(aSpell.GetComponent<UniqueID>().GetID());
         }
 
         if (!instance)
@@ -367,8 +377,6 @@ public class PlayerCastingComponent : CastingComponent
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
 
         myCastingWhileMovingBufferTimestamp = Time.time;
-
-        myEventOnSpellSpawned?.Invoke(gameObject, instance, aKeyIndex);
     }
 
     protected override void StopCasting(bool aWasInterruped)

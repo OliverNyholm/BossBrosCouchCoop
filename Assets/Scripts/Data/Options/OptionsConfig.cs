@@ -104,6 +104,7 @@ public class OptionsConfig : MonoBehaviour
 
 public enum HealTargetingOption : short
 {
+    NoHealTargeting,
     SelectWithLeftStickOnly,
     SelectWithLeftStickAndAutoHeal,
     SelectWithLookDirection,

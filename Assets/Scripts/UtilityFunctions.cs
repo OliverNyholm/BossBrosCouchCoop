@@ -24,6 +24,28 @@ public static class ExtensionMethods
         Transform child = transform.FindInChildren(name);
         return child != null ? child.gameObject : null;
     }
+
+    public static float Magnitude2D(this Vector3 self)
+    {
+        return Mathf.Sqrt(self.x * self.x + self.z * self.z);
+    }
+
+    public static float SqrMagnitude2D(this Vector3 self)
+    {
+        return self.x * self.x + self.z * self.z;
+    }
+
+    public static Vector3 Normalized2D(this Vector3 self)
+    {
+        self.y = 0.0f;
+        return self.normalized;
+    }
+
+    public static void Normalize2D(this Vector3 self)
+    {
+        self.y = 0.0f;
+        self.Normalize();
+    }
 }
 
 /// <summary>

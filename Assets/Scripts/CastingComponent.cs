@@ -47,7 +47,8 @@ public abstract class CastingComponent : MonoBehaviour
 
     public void StartChannel(float aDuration, Spell aSpellScript, GameObject aChannelGO, float aStunDuration = 1.0f)
     {
-        GetComponent<UIComponent>().SetCastbarChannelingStartValues(aSpellScript, aDuration);
+        if(aDuration > 0.0f) //No castbar for endless channel
+            GetComponent<UIComponent>().SetCastbarChannelingStartValues(aSpellScript, aDuration);
 
         AudioSource audioSource = GetComponent<AudioSource>();
         audioSource.clip = aSpellScript.GetSpellSFX().myCastSound;

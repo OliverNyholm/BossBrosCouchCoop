@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AoeHeal : ChannelSpell
 {
+    private float myChannelCountdown = 0.0f;
     private float myIntervalTimer;
     private float myCurrentIntervalTimer;
     private int myHealthPerTick;
@@ -22,7 +23,7 @@ public class AoeHeal : ChannelSpell
 
         myHealthPerTick = myHealValue / NrOfTicks;
 
-        myChannelTime += 0.02f;
+        myChannelCountdown = myChannelTime;
 
         StartCoroutine();
         myVFX = SpawnVFX(myChannelTime + 1.5f);
@@ -52,8 +53,8 @@ public class AoeHeal : ChannelSpell
             HealNearby();
         }
 
-        myChannelTime -= Time.deltaTime;
-        if (myChannelTime <= 0.0f)
+        myChannelCountdown -= Time.deltaTime;
+        if (myChannelCountdown <= 0.0f)
             ReturnToPool();
     }
 

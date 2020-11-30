@@ -17,7 +17,7 @@ public class PlayerTargetingComponent : TargetingComponent
     private float mySmartTargetHoldDownMaxDurationDefault;
 
     [SerializeField]
-    private HealTargetingOption myHealTargetingOption = HealTargetingOption.SelectWithLeftStickOnly;
+    private HealTargetingOption myHealTargetingOption = HealTargetingOption.NoHealTargeting;
 
     private List<GameObject> myPreviouslyTargetedEnemies = new List<GameObject>(8);
     private float myLatestSelectedTargetTime;
@@ -430,7 +430,7 @@ public class PlayerTargetingComponent : TargetingComponent
     void SetHealTargetOption(HealTargetingOption aHealTargetOption)
     {
         myHealTargetingOption = aHealTargetOption;
-        if (myHealTargetingOption == HealTargetingOption.SelectWithRightStickOrKeyboard)
+        if (myHealTargetingOption == HealTargetingOption.SelectWithRightStickOrKeyboard || myHealTargetingOption == HealTargetingOption.NoHealTargeting)
             mySmartTargetHoldDownMaxDuration = float.MaxValue;
         else
             mySmartTargetHoldDownMaxDuration = mySmartTargetHoldDownMaxDurationDefault;

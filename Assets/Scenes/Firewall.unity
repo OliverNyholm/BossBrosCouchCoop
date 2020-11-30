@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1737,7 +1737,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 1724683108}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -4203,6 +4204,12 @@ Transform:
   m_Father: {fileID: 697021488}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &1724683108 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 6722705364977980187, guid: 28948b89e410567469f4a4faf824c3a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 195515775}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1736282249
 GameObject:
   m_ObjectHideFlags: 0
@@ -5067,6 +5074,12 @@ PrefabInstance:
       propertyPath: mySpawnPoints.Array.data[3]
       value: 
       objectReference: {fileID: 1865234965}
+    - target: {fileID: 3448170462930489257, guid: 503cc89a2de43d243aca431dd077b45f,
+        type: 3}
+      propertyPath: myDebugPlayerData.myClassData
+      value: 
+      objectReference: {fileID: 11400000, guid: e2c23a2e166829b45bde0d2fdb5c5480,
+        type: 2}
     - target: {fileID: 3448170462930489301, guid: 503cc89a2de43d243aca431dd077b45f,
         type: 3}
       propertyPath: m_Name

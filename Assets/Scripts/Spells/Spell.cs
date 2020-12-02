@@ -315,8 +315,16 @@ public class Spell : PoolableObject
         vfxGO.transform.rotation = Quaternion.Euler(-90f, 0.0f, 0.0f);
 
 
-        vfxGO.GetComponent<AudioSource>().clip = mySpellSFX.myHitSound;
-        vfxGO.GetComponent<AudioSource>().Play();
+        AudioSource vfxAudio = vfxGO.GetComponent<AudioSource>();
+        if(vfxAudio)
+        {
+            vfxAudio.clip = mySpellSFX.myHitSound;
+            vfxAudio.Play();
+        }
+        else
+        {
+            Debug.LogWarning(vfxGO.name + " can't play VFX audio. Missing AudioSource component");
+        }
 
         poolManager.AddTemporaryObject(vfxGO, aDuration);
 

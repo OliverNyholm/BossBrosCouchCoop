@@ -15,15 +15,16 @@ public class PreviewSpellChannel : ChannelSpell
     public override void Restart()
     {
         StartCoroutine();
-        PlayerUIComponent uiComponent = myParent.GetComponent<PlayerUIComponent>();
-        HealTargetArrow healTargetArrow = myParent.GetComponentInChildren<HealTargetArrow>();
-        if (uiComponent && healTargetArrow)
-            healTargetArrow.EnableHealTarget(uiComponent.myCharacterColor);
+        //PlayerUIComponent uiComponent = myParent.GetComponent<PlayerUIComponent>();
+        //HealTargetArrow healTargetArrow = myParent.GetComponentInChildren<HealTargetArrow>();
+        //if (uiComponent && healTargetArrow)
+        //    healTargetArrow.EnableHealTarget(uiComponent.myCharacterColor);
     }
 
     protected override void Update()
     {
-
+        transform.position = myParent.transform.position;
+        transform.rotation = myParent.transform.rotation;
     }
 
     private void StartCoroutine()
@@ -35,9 +36,9 @@ public class PreviewSpellChannel : ChannelSpell
     {
         base.OnStoppedChannel();
 
-        HealTargetArrow healTargetArrow = myParent.GetComponentInChildren<HealTargetArrow>();
-        if (healTargetArrow)
-            healTargetArrow.DisableHealTarget();
+        //HealTargetArrow healTargetArrow = myParent.GetComponentInChildren<HealTargetArrow>();
+        //if (healTargetArrow)
+        //    healTargetArrow.DisableHealTarget();
 
         PlayerCastingComponent playerCastingComponent = myParent.GetComponent<PlayerCastingComponent>();
         if (playerCastingComponent)
@@ -53,6 +54,8 @@ public class PreviewSpellChannel : ChannelSpell
     {
         base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
 
-        aPoolManager.AddPoolableObjects(mySpellToSpawn, mySpellToSpawn.GetComponent<UniqueID>().GetID(), mySpellToSpawn.GetComponent<Spell>().myPoolSize);
+        Spell mySpellToSpawnSpellComponent = mySpellToSpawn.GetComponent<Spell>();
+        if (mySpellToSpawnSpellComponent)
+            mySpellToSpawnSpellComponent.CreatePooledObjects(aPoolManager, mySpellToSpawnSpellComponent.myPoolSize);
     }
 }

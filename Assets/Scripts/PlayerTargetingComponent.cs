@@ -246,7 +246,7 @@ public class PlayerTargetingComponent : TargetingComponent
         GetComponentInChildren<HealTargetArrow>().DisableHealTarget();
     }
 
-    public void SetTargetWithLowestHealthAndWithoutBuff(int aKeyIndex)
+    public void SetTargetWithLowestHealthAndWithoutBuff(Spell aSpellToCast)
     {
         float lowestHealthPercentage = 1.0f;
         int bestPlayerTarget = -1;
@@ -254,17 +254,15 @@ public class PlayerTargetingComponent : TargetingComponent
         List<GameObject> players = myTargetHandler.GetAllPlayers();
         List<GameObject> enemies = myTargetHandler.GetAllEnemies();
 
-        Spell spellToCast = GetComponent<Class>().GetSpell(aKeyIndex).GetComponent<Spell>();
-
         for (int index = 0; index < players.Count; index++)
         {
             GameObject player = players[index];
             float healthPercentage = player.GetComponent<Health>().GetHealthPercentage();
             if(healthPercentage < lowestHealthPercentage || lowestHealthPercentage >= 1.0f)
             {
-                if(spellToCast is SpellOverTime)
+                if(aSpellToCast is SpellOverTime)
                 {
-                    if(player.GetComponent<Stats>().HasSpellOverTime(spellToCast as SpellOverTime))
+                    if(player.GetComponent<Stats>().HasSpellOverTime(aSpellToCast as SpellOverTime))
                         continue;
                 }
 
@@ -364,6 +362,26 @@ public class PlayerTargetingComponent : TargetingComponent
         GameObject bestTarget = myTargetHandler.GetPlayer(bestPlayerTarget);
         if (Target != bestTarget)
             SetTarget(bestTarget);
+    }
+
+    public void FindSpellTarget(Spell aSpell)
+    {
+        switch (aSpell.mySpellTarget)
+        {
+            case SpellTargetType.NPC:
+                if (!Target || Target.GetComponent<Player>())
+                    DetermineNewEnemyTarget();
+                break;
+            case SpellTargetType.LowestHealthPlayer:
+                SetTargetWithLowestHealthAndWithoutBuff(aSpell);
+                break;
+            case SpellTargetType.PlayerDefault:
+            case SpellTargetType.Player:
+            case SpellTargetType.Anyone:
+                break;
+            default:
+                break;
+        }
     }
 
     public void DetermineNewEnemyTarget()

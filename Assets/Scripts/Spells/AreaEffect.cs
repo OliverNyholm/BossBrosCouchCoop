@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AreaEffect : MonoBehaviour
 {
-    public SpellTarget mySpellTarget = SpellTarget.Friend;
+    public SpellTargetType mySpellTarget = SpellTargetType.Player;
     public SpellType mySpellType;
 
     [Header("Damage per tick")]
@@ -76,8 +76,8 @@ public class AreaEffect : MonoBehaviour
 
     private void OnTriggerEnter(Collider aOther)
     {
-        if (!(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTarget.Friend) && aOther.GetComponent<Player>()) && 
-            !(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTarget.Enemy) && aOther.GetComponent<NPCComponent>()))
+        if (!(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTargetType.Player) && aOther.GetComponent<Player>()) && 
+            !(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTargetType.NPC) && aOther.GetComponent<NPCComponent>()))
             return;
 
         if (aOther.gameObject.GetComponent<Health>().IsDead())
@@ -105,8 +105,8 @@ public class AreaEffect : MonoBehaviour
 
     private void OnTriggerExit(Collider aOther)
     {
-        if (!(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTarget.Friend) && aOther.GetComponent<Player>()) &&
-            !(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTarget.Enemy) && aOther.GetComponent<NPCComponent>()))
+        if (!(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTargetType.Player) && aOther.GetComponent<Player>()) &&
+            !(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTargetType.NPC) && aOther.GetComponent<NPCComponent>()))
             return;
 
         myObjectsInTrigger.Remove(aOther.gameObject);

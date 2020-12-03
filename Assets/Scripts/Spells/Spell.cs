@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
 [System.Flags]
-public enum SpellTarget
+public enum SpellTargetType
 {
-    Friend = 1 << 1,
-    Enemy = 1 << 2,
-    Anyone = Friend | Enemy
+    PlayerDefault = 1 << 1,
+    NPC = 1 << 2,
+    LowestHealthPlayer = 1 << 3,
+
+    Player = PlayerDefault | LowestHealthPlayer,
+    Anyone = Player | NPC
 }
 
 public class Spell : PoolableObject
@@ -19,7 +22,7 @@ public class Spell : PoolableObject
     [HideInInspector] public int myPoolSize = 3;
 
     [HideInInspector] public SpellType mySpellType;
-    [HideInInspector] public SpellTarget mySpellTarget;
+    [HideInInspector] public SpellTargetType mySpellTarget;
     [HideInInspector] public SpellAnimationType myAnimationType;
 
     [HideInInspector] public int myDamage;
@@ -236,7 +239,7 @@ public class Spell : PoolableObject
         return myTarget;
     }
 
-    public SpellTarget GetSpellTarget()
+    public SpellTargetType GetSpellTarget()
     {
         return mySpellTarget;
     }

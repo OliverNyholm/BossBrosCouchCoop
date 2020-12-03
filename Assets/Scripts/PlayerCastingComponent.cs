@@ -13,10 +13,10 @@ public class PlayerCastingComponent : CastingComponent
     protected Class myClass;
 
     private Vector3 myHealTargetingReleaseDirection;
-    private float myStartTimeOfHoldingKeyDown;
+    private float myStartTimeOfHoldingKeyDown = 0;
     private bool myIsFriendlySpellKeyHeldDown;
     private bool myHasChangedMovementDirectionAfterCastingManualHeal;
-    private int myFriendlySpellKeyHeldDownIndex;
+    private int myFriendlySpellKeyHeldDownIndex = 0;
 
     private float myCastingWhileMovingBufferTimestamp;
 
@@ -99,17 +99,17 @@ public class PlayerCastingComponent : CastingComponent
         else if (myPlayerControls.Action4.WasPressed)
             CheckSpellToCast(3);
 
-        if (!myIsFriendlySpellKeyHeldDown)
-            return;
-
-        if (myPlayerControls.Action1.WasReleased)
-            CastFriendlySpell(0);
-        else if (myPlayerControls.Action2.WasReleased)
-            CastFriendlySpell(1);
-        else if (myPlayerControls.Action3.WasReleased)
-            CastFriendlySpell(2);
-        else if (myPlayerControls.Action4.WasReleased)
-            CastFriendlySpell(3);
+        //if (!myIsFriendlySpellKeyHeldDown)
+        //    return;
+        //
+        //if (myPlayerControls.Action1.WasReleased)
+        //    CastFriendlySpell(0);
+        //else if (myPlayerControls.Action2.WasReleased)
+        //    CastFriendlySpell(1);
+        //else if (myPlayerControls.Action3.WasReleased)
+        //    CastFriendlySpell(2);
+        //else if (myPlayerControls.Action4.WasReleased)
+        //    CastFriendlySpell(3);
     }
 
     public void CheckSpellToCast(int aKeyIndex)
@@ -117,25 +117,39 @@ public class PlayerCastingComponent : CastingComponent
         if (!myClass.HasSpell(aKeyIndex))
             return;
 
-        if (!myClass.IsSpellCastOnFriends(aKeyIndex))
-        {
-            if (myTargetingComponent.Target == null)
-                myTargetingComponent.DetermineNewEnemyTarget();
-
-            CastSpell(aKeyIndex, true);
-            return;
-        }
-        else if (myClass.GetSpell(aKeyIndex).GetComponent<Spell>().myIsOnlySelfCast)
+        Spell spell = myClass.GetSpell(aKeyIndex).GetComponent<Spell>();
+        if (spell.myIsOnlySelfCast)
         {
             CastSpell(aKeyIndex, true);
             return;
         }
+        else
+        {
+            myTargetingComponent.FindSpellTarget(spell);
+            CastSpell(aKeyIndex, true);
+            return;
+        }
 
 
-        myUIComponent.SpellHeldDown(aKeyIndex);
-        myStartTimeOfHoldingKeyDown = Time.time;
-        myIsFriendlySpellKeyHeldDown = true;
-        myFriendlySpellKeyHeldDownIndex = aKeyIndex;
+        //if (!myClass.IsSpellCastOnFriends(aKeyIndex))
+        //{
+        //    if (myTargetingComponent.Target == null)
+        //        myTargetingComponent.DetermineNewEnemyTarget();
+        //
+        //    CastSpell(aKeyIndex, true);
+        //    return;
+        //}
+        //else if (myClass.GetSpell(aKeyIndex).GetComponent<Spell>().myIsOnlySelfCast)
+        //{
+        //    CastSpell(aKeyIndex, true);
+        //    return;
+        //}
+
+        //Debug.Log("we can remove this now :)");
+        //myUIComponent.SpellHeldDown(aKeyIndex);
+        //myStartTimeOfHoldingKeyDown = Time.time;
+        //myIsFriendlySpellKeyHeldDown = true;
+        //myFriendlySpellKeyHeldDownIndex = aKeyIndex;
     }
 
     private bool ShouldHealTargetBeEnabled()
@@ -167,7 +181,7 @@ public class PlayerCastingComponent : CastingComponent
         {
             if (Time.time - myStartTimeOfHoldingKeyDown < myTargetingComponent.GetSmartTargetHoldDownMaxDuration())
             {
-                myTargetingComponent.SetTargetWithLowestHealthAndWithoutBuff(aKeyIndex);
+                myTargetingComponent.SetTargetWithLowestHealthAndWithoutBuff(myClass.GetSpell(aKeyIndex).GetComponent<Spell>());
                 CastSpell(aKeyIndex, true);
             }
             else
@@ -412,7 +426,7 @@ public class PlayerCastingComponent : CastingComponent
         GameObject target = myTargetingComponent.SpellTarget;
         if (!target)
         {
-            if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) != 0)
+            if ((aSpellScript.GetSpellTarget() & SpellTargetType.Player) != 0)
             {
                 target = gameObject;
             }
@@ -447,9 +461,9 @@ public class PlayerCastingComponent : CastingComponent
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && target.tag == "Enemy")
+        if ((aSpellScript.GetSpellTarget() & SpellTargetType.NPC) == 0 && target.tag == "Enemy")
         {
-            if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) != 0)
+            if ((aSpellScript.GetSpellTarget() & SpellTargetType.Player) != 0)
             {
                 myTargetingComponent.SetTarget(gameObject);
             }
@@ -460,7 +474,7 @@ public class PlayerCastingComponent : CastingComponent
             }
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && target.tag == "Player")
+        if ((aSpellScript.GetSpellTarget() & SpellTargetType.Player) == 0 && target.tag == "Player")
         {
             ShowError(SpellErrorHandler.SpellError.WrongTargetPlayer);
             return false;

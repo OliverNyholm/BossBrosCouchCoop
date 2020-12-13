@@ -377,7 +377,7 @@ public class PlayerCastingComponent : CastingComponent
         instance.transform.position = aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f);
 
         GameObject target = myTargetingComponent.SpellTarget;
-        if (target)
+        if (target && target != gameObject)
             instance.transform.LookAt(target.transform);
         else
             instance.transform.rotation = transform.rotation;

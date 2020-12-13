@@ -235,14 +235,14 @@ public class PlayerTargetingComponent : TargetingComponent
 
         myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, false);
 
-        GetComponent<PlayerUIComponent>().HightlightHealTargeting(aSpellIndex, true);
+        GetComponent<PlayerUIComponent>().SetSpellPulsating(aSpellIndex, true);
         GetComponentInChildren<HealTargetArrow>().EnableHealTarget(GetComponent<UIComponent>().myCharacterColor);
     }
 
     public void DisableManualHealTargeting(int aSpellIndex)
     {
         myManualHealTargetingMode = ManualHealTargetingMode.NotActive;
-        GetComponent<PlayerUIComponent>().HightlightHealTargeting(aSpellIndex, false);
+        GetComponent<PlayerUIComponent>().SetSpellPulsating(aSpellIndex, false);
         GetComponentInChildren<HealTargetArrow>().DisableHealTarget();
     }
 

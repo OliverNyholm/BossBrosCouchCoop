@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class FloatingHealth : PoolableObject
 {
-    private TextMesh myTextMesh;
+    private TextMeshPro myTextMesh;
     public float myDuration;
     public float mySpeed;
 
@@ -21,7 +22,7 @@ public class FloatingHealth : PoolableObject
 
     private void Awake()
     {
-        myTextMesh = transform.GetComponent<TextMesh>();
+        myTextMesh = transform.GetComponentInChildren<TextMeshPro>();
 
         myInitialScale = transform.localScale;
         myMainCamera = Camera.main;

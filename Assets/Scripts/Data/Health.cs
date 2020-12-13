@@ -173,7 +173,10 @@ public class Health : MonoBehaviour
     private void SpawnFloatingText(string aText, Color aColor, Vector3 aSpawnLocation)
     {
         GameObject floatingHealthGO = PoolManager.Instance.GetFloatingHealth();
-        floatingHealthGO.transform.parent = transform;
+        if (!floatingHealthGO)
+            return;
+
+        floatingHealthGO.transform.SetParent(transform);
 
         FloatingHealth floatingHealth = floatingHealthGO.GetComponent<FloatingHealth>();
         floatingHealth.SetText(aText, aColor, aSpawnLocation);

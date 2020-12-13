@@ -346,25 +346,33 @@ public class PlayerCastingComponent : CastingComponent
         }
     }
 
-    public void SpawnSpellExternal(Spell aSpell, Vector3 aSpawnPosition)
+    public Spell SpawnSpellExternal(Spell aSpell, Vector3 aSpawnPosition)
     {
-        SpawnSpell(aSpell, aSpawnPosition);
+        return SpawnSpell(aSpell, aSpawnPosition);
     }
 
-    protected void SpawnSpell(Spell aSpell, Vector3 aSpawnPosition, bool aIsAutoAttack = false)
+    protected Spell SpawnSpell(Spell aSpell, Vector3 aSpawnPosition, bool aIsAutoAttack = false)
     {
-        GameObject instance = null;
+        GameObject instance;
+        ToggleSpell toggleSpell = aSpell as ToggleSpell;
+
         if (aIsAutoAttack)
         {
             instance = PoolManager.Instance.GetPooledAutoAttack();
         }
         else
         {
+            if(toggleSpell && myClass.IsSpellToggled(toggleSpell))
+            {
+                myClass.ToggleSpell(toggleSpell);
+                return null;
+            }
+
             instance = PoolManager.Instance.GetPooledObject(aSpell.GetComponent<UniqueID>().GetID());
         }
 
         if (!instance)
-            return;
+            return null;
 
         instance.transform.position = aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f);
 
@@ -385,12 +393,17 @@ public class PlayerCastingComponent : CastingComponent
         else
             spellScript.SetTarget(transform.gameObject);
 
+        if (toggleSpell)
+            myClass.ToggleSpell(spellScript as ToggleSpell);
+
         spellScript.Restart();
 
         if (aSpawnPosition == transform.position && spellScript.GetSpellSFX().mySpawnSound)
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
 
         myCastingWhileMovingBufferTimestamp = Time.time;
+
+        return spellScript;
     }
 
     protected override void StopCasting(bool aWasInterruped)

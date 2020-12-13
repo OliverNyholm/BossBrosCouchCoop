@@ -90,7 +90,7 @@ public class PlayerMovementComponent : MovementComponent
             RotatePlayer();
 
         //Allow rotationg of player despite speedMultiplier being 0
-        myVelocity *= myBaseSpeed * GetComponent<Stats>().mySpeedMultiplier;
+        myVelocity *= myBaseSpeed * Mathf.Max(0.0f, GetComponent<Stats>().mySpeedMultiplier); //If speedMultiplier is < 0 we go backwards
         bool isMoving = IsMoving();
 
         if (!myIsGrounded)

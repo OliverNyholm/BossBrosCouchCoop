@@ -23,6 +23,11 @@ public class BeamOfLight : ChannelSpell
 
     private Vector3 myImpactLocation = new Vector3();
 
+    private void Awake()
+    {
+        myPlayers = FindObjectOfType<TargetHandler>().GetAllPlayers();
+    }
+
     public override void Reset()
     {
         base.Reset();
@@ -32,8 +37,6 @@ public class BeamOfLight : ChannelSpell
 
     public override void Restart()
     {
-        myPlayers = FindObjectOfType<TargetHandler>().GetAllPlayers();
-
         myCurrentIntervalTimer = 0.0f;
         myChannelTime += 0.02f;
 

@@ -63,7 +63,7 @@ public class PlayerUIComponent : UIComponent
         myActionButtons[anIndex].GetComponent<ActionKey>().SpellReleased();
     }
 
-    public void HightlightHealTargeting(int anIndex, bool aShouldPulsate)
+    public void SetSpellPulsating(int anIndex, bool aShouldPulsate)
     {
         myActionButtons[anIndex].GetComponent<ActionKey>().SetPulsation(aShouldPulsate);
     }

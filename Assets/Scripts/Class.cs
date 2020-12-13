@@ -10,6 +10,7 @@ public class Class : MonoBehaviour
 
     public GameObject[] mySpells;
     public float[] myCooldownTimers;
+    private ToggleSpell[] myToggledSpells;
 
     [HideInInspector]
     public int mySpellSize = 4;
@@ -19,6 +20,9 @@ public class Class : MonoBehaviour
     public void Awake()
     {
         myUIComponent = GetComponent<PlayerUIComponent>();
+        myToggledSpells = new ToggleSpell[mySpells.Length];
+        for (int index = 0; index < myToggledSpells.Length; index++)
+            myToggledSpells[index] = null;
     }
 
     protected virtual void Start()
@@ -81,6 +85,36 @@ public class Class : MonoBehaviour
         }
 
         return -1;
+    }
+
+    public void ToggleSpell(ToggleSpell aSpell)
+    {
+        int index = GetSpellIndex(aSpell);
+        if (index == -1)
+            return;
+
+        ToggleSpell toggledSpell = myToggledSpells[index];
+        if (toggledSpell)
+        {
+            toggledSpell.ToggleOff();
+            myToggledSpells[index] = null;
+        }
+        else
+        {
+            myToggledSpells[index] = aSpell;
+            aSpell.ToggledOn();
+        }
+
+        myUIComponent.SetSpellPulsating(index, myToggledSpells[index] != null);
+    }
+
+    public bool IsSpellToggled(ToggleSpell aSpell)
+    {
+        int index = GetSpellIndex(aSpell);
+        if (index == -1)
+            return false;
+
+        return myToggledSpells[index] != null;
     }
 
     public void SetSpellOnCooldown(int anIndex)

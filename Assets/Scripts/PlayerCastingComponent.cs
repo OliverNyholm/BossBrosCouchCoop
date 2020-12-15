@@ -562,7 +562,7 @@ public class PlayerCastingComponent : CastingComponent
         return myMovementComponent && myMovementComponent.IsMoving();
     }
 
-    private bool WasSpellChannelButtonReleased(int aSpellIndex)
+    protected virtual bool WasSpellChannelButtonReleased(int aSpellIndex)
     {
         switch (aSpellIndex)
         {

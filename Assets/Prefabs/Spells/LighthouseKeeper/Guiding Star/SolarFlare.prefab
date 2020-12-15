@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3241582166566182918}
   - component: {fileID: 1436671845399994386}
   m_Layer: 0
-  m_Name: GuidingStarPulse
+  m_Name: SolarFlare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myQuickInfo: 
   myTutorialInfo: 
-  myName: 
+  myName: Solar Flare
   myPoolSize: 3
   mySpellType: 2
   mySpellTarget: 2
@@ -177,46 +177,28 @@ MonoBehaviour:
   myPulseLifeTime: 2
   myTargetRadius: 15
   myEdgeRadius: 1.5
-  myHealCurveMultiplier: 250
+  myHealCurveMultiplier: 200
   myHealCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.0008506775
-      value: 0.25
-      inSlope: 0.095810995
-      outSlope: 0.095810995
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.14960639
-    - serializedVersion: 3
-      time: 0.3699799
-      value: 0.3756966
-      inSlope: 1.2321414
-      outSlope: 1.2321414
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.10262188
-      outWeight: 0.1506629
-    - serializedVersion: 3
-      time: 0.6
-      value: 1
+      time: -0.0008471139
+      value: 0.99900794
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 136
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1
-      value: 1
+      time: 0.9991511
+      value: 0.99900794
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 136
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4

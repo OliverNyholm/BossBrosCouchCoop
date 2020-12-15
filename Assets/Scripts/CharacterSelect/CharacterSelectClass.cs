@@ -5,6 +5,13 @@ using UnityEngine;
 public class CharacterSelectClass : Class
 {
     private CharacterSelector myCharacterSelector;
+    private CharacterSelectCastingComponent myCastingComponent;
+
+    public override void Awake()
+    {
+        base.Awake();
+        myCastingComponent = GetComponent<CharacterSelectCastingComponent>();
+    }
 
     protected override void Start() { }
 
@@ -26,6 +33,7 @@ public class CharacterSelectClass : Class
     {
         PoolManager poolManager = PoolManager.Instance;
 
+        myCastingComponent.OnClassChanged();
         mySpells = aClassData.mySpells.ToArray();
 
         CharacterSelectUIComponent csUIComponent = myUIComponent as CharacterSelectUIComponent;

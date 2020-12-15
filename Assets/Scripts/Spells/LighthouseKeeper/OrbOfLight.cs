@@ -5,6 +5,10 @@ using UnityEngine;
 public class OrbOfLight : Spell
 {
     [SerializeField]
+    private float myLifetime = 20.0f;
+    private float myDurationLeft = 0.0f;
+
+    [SerializeField]
     private AnimationCurve myBounceCurve = null;
     private float myBounceCurveDuration = 0.0f;
     private float myBounceTimer = 0.0f;
@@ -27,8 +31,6 @@ public class OrbOfLight : Spell
 
     private Vector3 myMoveToTargetDirection = Vector3.zero;
 
-
-
     [SerializeField]
     private float myTravelDistance = 15.0f;
 
@@ -50,17 +52,18 @@ public class OrbOfLight : Spell
         myIgnoreParentInitialDuration = 1.0f;
         myMoveInterpolationValue = 0.0f;
         myStartPosition = transform.position;
-        myStartPosition.y = 0.0f;
         myMoveToTarget = null;
+        myDurationLeft = myLifetime;
 
         myPreviousPosition = myStartPosition;
 
         Ray ray = new Ray(myStartPosition + Vector3.up * myOffsetFromGround, myParent.transform.forward);
         LayerMask layerMask = LayerMask.GetMask("Terrain");
 
+        const float offsetFromWall = 0.4f;
         float distanceToMove = myTravelDistance;
         if (Physics.Raycast(ray, out RaycastHit hitInfo, myTravelDistance, layerMask))
-            distanceToMove = hitInfo.distance;
+            distanceToMove = hitInfo.distance - offsetFromWall;
 
         myTargetPosition = myStartPosition + myParent.transform.forward * distanceToMove;
 
@@ -85,6 +88,15 @@ public class OrbOfLight : Spell
         {
             MoveToLaunchPosition();
         }
+        else
+        {
+            myDurationLeft -= Time.deltaTime;
+            if (myDurationLeft <= 0.0f)
+            {
+                ReturnToPool();
+                return;
+            }
+        }
 
         myBounceTimer += Time.deltaTime;
         if (myBounceTimer >= myBounceCurveDuration)
@@ -93,7 +105,7 @@ public class OrbOfLight : Spell
         myBounceOffset = myBounceCurve.Evaluate(myBounceTimer);
 
         Vector3 position = transform.position;
-        position.y = myOffsetFromGround + myBounceOffset;
+        position.y = myStartPosition.y + myOffsetFromGround + myBounceOffset;
         transform.position = position;
     }
 
@@ -158,5 +170,15 @@ public class OrbOfLight : Spell
                 smallestDistance = distanceToPlayerSqr;
             }
         }
+    }
+    
+    public float GetOffsetFromGround()
+    {
+        return myOffsetFromGround;
+    }
+
+    public float GetTravelDistance()
+    {
+        return myTravelDistance;
     }
 }

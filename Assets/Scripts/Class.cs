@@ -17,7 +17,7 @@ public class Class : MonoBehaviour
 
     protected PlayerUIComponent myUIComponent;
 
-    public void Awake()
+    public virtual void Awake()
     {
         myUIComponent = GetComponent<PlayerUIComponent>();
         myToggledSpells = new ToggleSpell[mySpells.Length];

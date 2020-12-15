@@ -5,7 +5,7 @@ using UnityEngine;
 public class PreviewSpellChannel : ChannelSpell
 {
     [SerializeField]
-    private GameObject mySpellToSpawn = null;
+    protected GameObject mySpellToSpawn = null;
 
     public override void Reset()
     {
@@ -15,10 +15,6 @@ public class PreviewSpellChannel : ChannelSpell
     public override void Restart()
     {
         StartCoroutine();
-        //PlayerUIComponent uiComponent = myParent.GetComponent<PlayerUIComponent>();
-        //HealTargetArrow healTargetArrow = myParent.GetComponentInChildren<HealTargetArrow>();
-        //if (uiComponent && healTargetArrow)
-        //    healTargetArrow.EnableHealTarget(uiComponent.myCharacterColor);
     }
 
     protected override void Update()
@@ -35,10 +31,6 @@ public class PreviewSpellChannel : ChannelSpell
     public override void OnStoppedChannel()
     {
         base.OnStoppedChannel();
-
-        //HealTargetArrow healTargetArrow = myParent.GetComponentInChildren<HealTargetArrow>();
-        //if (healTargetArrow)
-        //    healTargetArrow.DisableHealTarget();
 
         PlayerCastingComponent playerCastingComponent = myParent.GetComponent<PlayerCastingComponent>();
         if (playerCastingComponent)

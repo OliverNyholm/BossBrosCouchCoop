@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4822057767249848}
   - component: {fileID: 5087510029794061131}
   - component: {fileID: 2774761842450179608}
-  - component: {fileID: 7059861004352149061}
+  - component: {fileID: 2149756620926050161}
   m_Layer: 0
   m_Name: Pre Channel OrbOfLight
   m_TagString: Untagged
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myID: 97
---- !u!114 &7059861004352149061
+--- !u!114 &2149756620926050161
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,12 +155,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1385395385526390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33c05c890f15a9d4fa2df1911dead2d0, type: 3}
+  m_Script: {fileID: 11500000, guid: ef68b1b282698e44fac92dda684f7a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: 
-  myTutorialInfo: 
-  myName: Orb Of Light
+  myTutorialInfo: Spawns an Orb of Light that will travel forward a few meters and
+    then stop. Any player close to the orb will attract it to themselves, healing
+    upon touch.
+  myName: Orb of Light
   myPoolSize: 3
   mySpellType: 0
   mySpellTarget: 0
@@ -168,14 +170,14 @@ MonoBehaviour:
   myDamage: 0
   myHealValue: 0
   myResourceCost: 0
-  myThreatModifier: 0
+  myThreatModifier: 1
   mySpeed: 0
   myCastTime: 0
   myCooldown: 4
   myRange: 0
   myStunDuration: 0
   myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
-  mySpellIcon: {fileID: 21300000, guid: 915c7c7a2ea9c4a4fb282a6c31bdd5b6, type: 3}
+  mySpellIcon: {fileID: 21300000, guid: 3bf1b6c2b1634ef4da726e57c4bdaf9d, type: 3}
   myIsCastableWhileMoving: 1
   mySpeedWhileCastingReducement: 1
   myCanCastOnSelf: 1
@@ -191,6 +193,8 @@ MonoBehaviour:
   myChannelTime: -1
   mySpellToSpawn: {fileID: 4061406882526779757, guid: 082a9caa5425f564bb0035465e261812,
     type: 3}
+  myOrbHighlightTransform: {fileID: 6575853977842210881}
+  myHighlightPathParticleSystem: {fileID: 6672489159392357138}
 --- !u!1 &3372442282624584868
 GameObject:
   m_ObjectHideFlags: 0

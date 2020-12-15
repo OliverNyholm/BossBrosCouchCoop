@@ -11,6 +11,10 @@ public class GuidingStar : ToggleSpell
     private float myTickInterval = 2.0f;
     private float myIntervalTimer;
 
+    [SerializeField]
+    private int mySolarFlareInterval = 3;
+    private int myTickCount = 0;
+
     private List<GameObject> myPlayers;
 
     private void Awake()
@@ -34,13 +38,17 @@ public class GuidingStar : ToggleSpell
         {
             myIntervalTimer += myTickInterval;
 
-            PlayerCastingComponent playerCastingComponent = myParent.GetComponent<PlayerCastingComponent>();
-            if (playerCastingComponent)
+            DealSpellEffect(); //Heal Self
+            myTickCount++;
+            if (myTickCount % mySolarFlareInterval == 0)
             {
-                DealSpellEffect(); //Heal Self
-                GuidingStarPulse guidingStarPulse = playerCastingComponent.SpawnSpellExternal(myPulseSpell.GetComponent<Spell>(), transform.position) as GuidingStarPulse;
-                if (guidingStarPulse)
-                    guidingStarPulse.SetPlayers(myPlayers);
+                PlayerCastingComponent playerCastingComponent = myParent.GetComponent<PlayerCastingComponent>();
+                if (playerCastingComponent)
+                {
+                    GuidingStarPulse guidingStarPulse = playerCastingComponent.SpawnSpellExternal(myPulseSpell.GetComponent<Spell>(), transform.position) as GuidingStarPulse;
+                    if (guidingStarPulse)
+                        guidingStarPulse.SetPlayers(myPlayers);
+                }
             }
         }
     }

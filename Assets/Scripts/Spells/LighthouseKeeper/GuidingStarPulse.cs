@@ -70,8 +70,8 @@ public class GuidingStarPulse : Spell
         ParticleSystem.ShapeModule shapeModule = myParticleSystem.shape;
         shapeModule.radius = radius;
 
-        float healCurveValue = myHealCurve.Evaluate(lifePercentage);
-        myHealValue = (int)(healCurveValue * myHealCurveMultiplier);
+        //float healCurveValue = myHealCurve.Evaluate(lifePercentage);
+        //myHealValue = (int)(healCurveValue * myHealCurveMultiplier);
         HealNearby(radius);
 
         if (myDuration >= myPulseLifeTime)

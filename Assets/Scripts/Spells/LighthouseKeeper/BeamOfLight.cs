@@ -5,6 +5,9 @@ using UnityEngine;
 public class BeamOfLight : ChannelSpell
 {
     [SerializeField]
+    private LayerMask myIgnoreLayer;
+
+    [SerializeField]
     private Vector3 myOriginOffset = Vector3.zero;
 
     [SerializeField]
@@ -22,10 +25,13 @@ public class BeamOfLight : ChannelSpell
     private ParticleSystem myHitParticle = null;
 
     private Vector3 myImpactLocation = new Vector3();
+    private bool myBeamHitSomething = false;
+
+    TargetHandler myTargetHandler = null;
 
     private void Awake()
     {
-        myPlayers = FindObjectOfType<TargetHandler>().GetAllPlayers();
+        myTargetHandler = FindObjectOfType<TargetHandler>();
     }
 
     public override void Reset()
@@ -39,6 +45,9 @@ public class BeamOfLight : ChannelSpell
     {
         myCurrentIntervalTimer = 0.0f;
         myChannelTime += 0.02f;
+
+        myPlayers = myTargetHandler.GetAllPlayers();
+        myHitParticle.Play();
 
         StartCoroutine();
     }
@@ -54,6 +63,7 @@ public class BeamOfLight : ChannelSpell
         {
             myCurrentIntervalTimer -= myIntervalTimer;
             HealNearby();
+            DamageNearby();
         }
     }
 
@@ -64,42 +74,55 @@ public class BeamOfLight : ChannelSpell
 
     private void HealNearby()
     {
-        if (myImpactLocation == Vector3.zero)
+        if (!myBeamHitSomething)
             return;
 
-        for (int index = 0; index < myPlayers.Count; index++)
+
+        foreach (GameObject player in myPlayers)
         {
-            Vector3 playerPositionWithOffset = myPlayers[index].transform.position + myOriginOffset;
+            if (player)
+                continue;
+
+            Health health = player.GetComponent<Health>();
+            if (health || health.IsDead())
+                continue;
+
+            Vector3 playerPositionWithOffset = player.transform.position + myOriginOffset;
             if ((playerPositionWithOffset - myImpactLocation).sqrMagnitude <= myRange * myRange)
-            {
-                myPlayers[index].GetComponent<Health>().GainHealth(myHealValue);
-            }
+                health.GainHealth(myHealValue);
         }
     }
-    
+
+    private void DamageNearby()
+    {
+        if (!myBeamHitSomething)
+            return;
+
+        foreach (GameObject enemy in myTargetHandler.GetAllEnemies())
+        {
+            Vector3 playerPositionWithOffset = enemy.transform.position + myOriginOffset;
+            if ((playerPositionWithOffset - myImpactLocation).sqrMagnitude <= myRange * myRange)
+                DealDamage(myDamage, myImpactLocation, enemy);
+        }
+    }
+
     private void FindImpactPoint()
     {
         float distance = 100.0f;
         Ray ray = new Ray(transform.position, transform.forward);
 
         RaycastHit hitInfo;
-        if (Physics.Raycast(ray, out hitInfo, distance))
-        {
+        myBeamHitSomething = Physics.Raycast(ray, out hitInfo, distance, ~myIgnoreLayer);
+
+        if (myBeamHitSomething)
             myImpactLocation = hitInfo.point;
-
-            float distanceToObject = (myImpactLocation - transform.position).magnitude;
-            myBeam.transform.localScale = new Vector3(myBeam.transform.localScale.x, myBeam.transform.localScale.y, distanceToObject);
-
-            myHitParticle.transform.position = myImpactLocation + myParent.transform.rotation * myHitParticleOffset;
-            if(!myHitParticle.isPlaying)
-                myHitParticle.Play();
-        }
         else
-        {
-            myImpactLocation = Vector3.zero;
-            myHitParticle.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-        }
+            myImpactLocation = ray.origin + ray.direction * distance;
 
+        distance = (myImpactLocation - transform.position).magnitude;
+
+        myBeam.transform.localScale = new Vector3(myBeam.transform.localScale.x, myBeam.transform.localScale.y, distance);
+        myHitParticle.transform.position = myImpactLocation + myParent.transform.rotation * myHitParticleOffset;
     }
 
     public override bool IsCastableWhileMoving()

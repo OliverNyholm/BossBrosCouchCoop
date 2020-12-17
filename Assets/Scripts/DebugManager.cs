@@ -9,14 +9,36 @@ public class DebugManager : MonoBehaviour
     [Range(0, 3)]
     private float myGameSpeed = 1.0f;
 
+    PlayerControls myPlayerControls;
+
+    private void Awake()
+    {
+        myPlayerControls = PlayerControls.CreateWithKeyboardBindings();
+    }
+
+    public void Update()
+    {
+        if (myPlayerControls.NumpadOne.WasPressed)
+            SetGameSpeed(1.0f);
+        if (myPlayerControls.NumpadTwo.WasPressed)
+            SetGameSpeed(0.0f);
+        if (myPlayerControls.NumpadThree.WasPressed)
+            SetGameSpeed(5.0f);
+    }
+
+    public void SetGameSpeed(float aGameSpeed)
+    {
+        myGameSpeed = aGameSpeed;
+        Time.timeScale = myGameSpeed;
+    }
+
     private void OnValidate()
     {
         Time.timeScale = myGameSpeed;
     }
-
     public void KillAll()
     {
-        TargetHandler targetHandler = GameManager.FindObjectOfType<TargetHandler>();
+        TargetHandler targetHandler = FindObjectOfType<TargetHandler>();
         foreach (GameObject player in targetHandler.GetAllPlayers())
         {
             player.GetComponent<Health>().TakeDamage(100000, Color.black, player.transform.position);

@@ -5,6 +5,9 @@ using UnityEngine;
 public class PreviewOrbOfLight : PreviewSpellChannel
 {
     [SerializeField]
+    private LayerMask myBlockMovmentLayerMask;
+
+    [SerializeField]
     private Transform myOrbHighlightTransform = null;
 
     [SerializeField]
@@ -28,12 +31,11 @@ public class PreviewOrbOfLight : PreviewSpellChannel
 
         float offsetFromGround = myOrbOfLight.GetOffsetFromGround(); ;
         Ray ray = new Ray(transform.position + Vector3.up * offsetFromGround, myParent.transform.forward);
-        LayerMask layerMask = LayerMask.GetMask("Terrain");
 
         const float offsetFromWall = 0.4f;
         float desiredDistance = Mathf.Max(0.01f, myOrbOfLight.GetTravelDistance());
         float distanceToMove = desiredDistance;
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, distanceToMove, layerMask))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, distanceToMove, myBlockMovmentLayerMask))
             distanceToMove = hitInfo.distance - offsetFromWall;
 
         myOrbHighlightTransform.position = ray.origin + ray.direction * distanceToMove;

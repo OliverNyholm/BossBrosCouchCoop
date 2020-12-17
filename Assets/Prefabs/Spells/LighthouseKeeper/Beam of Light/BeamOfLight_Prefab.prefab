@@ -148,10 +148,10 @@ MonoBehaviour:
   myTutorialInfo: 
   myName: Beam of Light
   myPoolSize: 3
-  mySpellType: 2
+  mySpellType: 3
   mySpellTarget: -1
   myAnimationType: 0
-  myDamage: 0
+  myDamage: 60
   myHealValue: 100
   myResourceCost: 0
   myThreatModifier: 1
@@ -175,6 +175,9 @@ MonoBehaviour:
   mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 0}
   myChannelTime: -1
+  myIgnoreLayer:
+    serializedVersion: 2
+    m_Bits: 393216
   myOriginOffset: {x: 0, y: 1.3, z: 0.5}
   myHitParticleOffset: {x: 0, y: 0, z: -0.3}
   myIntervalTimer: 1

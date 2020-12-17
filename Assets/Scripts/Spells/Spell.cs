@@ -138,7 +138,7 @@ public class Spell : PoolableObject
     {
         if(UtilityFunctions.HasSpellType(mySpellType, SpellType.Damage))
         {
-            DealDamage(myDamage);
+            DealDamage(myDamage, transform.position);
         }
         if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal))
         {
@@ -188,7 +188,7 @@ public class Spell : PoolableObject
         myDamage = aDamage;
     }
 
-    protected void DealDamage(int aDamage, GameObject aTarget = null)
+    protected void DealDamage(int aDamage, Vector3 aDamageLocation, GameObject aTarget = null)
     {
         GameObject target = myTarget;
         if (aTarget)
@@ -196,12 +196,12 @@ public class Spell : PoolableObject
 
         bool isPlayer = myParent.GetComponent<Player>() != null;
 
-        Vector3 damageFloatSpawnPosition = transform.position;
+        Vector3 damageFloatSpawnPosition = aDamageLocation;
         if(mySpeed <= 0.0f)
         {
             if(isPlayer)
             {
-                Vector3 toParent = (myParent.transform.position - transform.position);
+                Vector3 toParent = (myParent.transform.position - aDamageLocation);
                 float distance = toParent.magnitude;
                 if(distance > 0.0f)
                     toParent /= distance;

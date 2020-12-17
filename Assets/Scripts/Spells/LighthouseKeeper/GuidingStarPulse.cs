@@ -14,6 +14,8 @@ public class GuidingStarPulse : Spell
     private float myEdgeRadius = 1.5f;
 
 
+    [SerializeField]
+    private bool myShouldUseHealCurve = false;
     [Tooltip("The curves 0-1 value will be multiplied with this.")]
     [SerializeField]
     private int myHealCurveMultiplier = 1000;
@@ -70,8 +72,12 @@ public class GuidingStarPulse : Spell
         ParticleSystem.ShapeModule shapeModule = myParticleSystem.shape;
         shapeModule.radius = radius;
 
-        //float healCurveValue = myHealCurve.Evaluate(lifePercentage);
-        //myHealValue = (int)(healCurveValue * myHealCurveMultiplier);
+        if (myShouldUseHealCurve)
+        {
+            float healCurveValue = myHealCurve.Evaluate(lifePercentage);
+            myHealValue = (int)(healCurveValue * myHealCurveMultiplier);
+        }
+
         HealNearby(radius);
 
         if (myDuration >= myPulseLifeTime)

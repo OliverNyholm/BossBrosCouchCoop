@@ -5,6 +5,9 @@ using UnityEngine;
 public class OrbOfLight : Spell
 {
     [SerializeField]
+    private LayerMask myBlockMovmentLayerMask;
+
+    [SerializeField]
     private float myLifetime = 20.0f;
     private float myDurationLeft = 0.0f;
 
@@ -58,11 +61,10 @@ public class OrbOfLight : Spell
         myPreviousPosition = myStartPosition;
 
         Ray ray = new Ray(myStartPosition + Vector3.up * myOffsetFromGround, myParent.transform.forward);
-        LayerMask layerMask = LayerMask.GetMask("Terrain");
 
         const float offsetFromWall = 0.4f;
         float distanceToMove = myTravelDistance;
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, myTravelDistance, layerMask))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, myTravelDistance, myBlockMovmentLayerMask))
             distanceToMove = hitInfo.distance - offsetFromWall;
 
         myTargetPosition = myStartPosition + myParent.transform.forward * distanceToMove;

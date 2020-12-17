@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1427594741525847167}
   - component: {fileID: 5859220451634567687}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 5684514215888146920}
   - component: {fileID: 4428230123010351583}
   - component: {fileID: 8028502075317223343}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Fireball
   m_TagString: Spell
   m_Icon: {fileID: 0}
@@ -145,14 +145,15 @@ MonoBehaviour:
   myQuickInfo: A Fireball spawned from one end moving forwards
   myTutorialInfo: 
   myName: Fireball
+  myPoolSize: 3
   mySpellType: 1
-  mySpellTarget: 4
+  mySpellTarget: 2
   myAnimationType: 0
   myDamage: 250
   myHealValue: 0
   myResourceCost: 0
   myThreatModifier: 1
-  mySpeed: 4
+  mySpeed: 6
   myCastTime: 0
   myCooldown: 0
   myRange: 10000
@@ -160,6 +161,7 @@ MonoBehaviour:
   myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
   mySpellIcon: {fileID: 0}
   myIsCastableWhileMoving: 1
+  mySpeedWhileCastingReducement: 0
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
@@ -534,8 +536,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 5.56
-      minScalar: 8.89
+      scalar: 6
+      minScalar: 10
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -851,7 +853,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     maxNumParticles: 1000
-    size3D: 1
+    size3D: 0
     rotation3D: 0
     gravityModifier:
       serializedVersion: 2
@@ -1115,7 +1117,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 12
+      scalar: 28.26
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1440,7 +1442,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.6003933
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1493,7 +1495,7 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.119729586
       minScalar: 0.7853982
       maxCurve:
         serializedVersion: 2
@@ -4949,7 +4951,7 @@ ParticleSystemRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3681220077701603216}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -4959,7 +4961,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4bae358dfd228274db0ad2a022413b45, type: 2}
+  - {fileID: 2100000, guid: 1b5c59bb20da1894ebaaa53d7db72a86, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -4994,7 +4996,7 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 1
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
@@ -5032,12 +5034,32 @@ PrefabInstance:
     - target: {fileID: 17950608816841216, guid: 7b922470fac4fba4abdc6a4f87091058,
         type: 3}
       propertyPath: InitialModule.startSize.minScalar
-      value: 5
+      value: 2.17
       objectReference: {fileID: 0}
     - target: {fileID: 17950608816841216, guid: 7b922470fac4fba4abdc6a4f87091058,
         type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 6
+      value: 2.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 17950608816841216, guid: 7b922470fac4fba4abdc6a4f87091058,
+        type: 3}
+      propertyPath: UVModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 17950608816841216, guid: 7b922470fac4fba4abdc6a4f87091058,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.84
+      objectReference: {fileID: 0}
+    - target: {fileID: 17950608816841217, guid: 7b922470fac4fba4abdc6a4f87091058,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b5c59bb20da1894ebaaa53d7db72a86, type: 2}
+    - target: {fileID: 17950608816841217, guid: 7b922470fac4fba4abdc6a4f87091058,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 17950608816841219, guid: 7b922470fac4fba4abdc6a4f87091058,
         type: 3}
@@ -5098,6 +5120,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PS_FireBall_V3
+      objectReference: {fileID: 0}
+    - target: {fileID: 17950608816841230, guid: 7b922470fac4fba4abdc6a4f87091058,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 17950608816841230, guid: 7b922470fac4fba4abdc6a4f87091058,
+        type: 3}
+      propertyPath: m_Layer
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b922470fac4fba4abdc6a4f87091058, type: 3}

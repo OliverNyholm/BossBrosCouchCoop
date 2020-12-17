@@ -21,7 +21,10 @@ public class PlayerControls : PlayerActionSet
     public PlayerAction Restart;
     public PlayerAction ToggleInfo;
     public PlayerAction ToggleUIText;
-    public PlayerAction SpawnDebugPlayer;
+    public PlayerAction NumpadOne;
+    public PlayerAction NumpadTwo;
+    public PlayerAction NumpadThree;
+    public PlayerAction NumpadFour;
     public PlayerTwoAxisAction Movement;
 
     public bool myIsController = false;
@@ -48,7 +51,10 @@ public class PlayerControls : PlayerActionSet
         Restart = CreatePlayerAction("Restart");
         ToggleInfo = CreatePlayerAction("ToggleSpellInfo");
         ToggleUIText = CreatePlayerAction("ToggleUIText");
-        SpawnDebugPlayer = CreatePlayerAction("SpawnDebugPlayer");
+        NumpadOne = CreatePlayerAction("NumpadOne");
+        NumpadTwo = CreatePlayerAction("NumpadTwo");
+        NumpadThree = CreatePlayerAction("NumpadThree");
+        NumpadFour = CreatePlayerAction("NumpadFour");
         Movement = CreateTwoAxisPlayerAction(Left, Right, Down, Up);
     }
 
@@ -85,7 +91,10 @@ public class PlayerControls : PlayerActionSet
         actions.ToggleInfo.AddDefaultBinding(Key.I);
         actions.ToggleUIText.AddDefaultBinding(Key.U);
 
-        actions.SpawnDebugPlayer.AddDefaultBinding(Key.Pad1);
+        actions.NumpadOne.AddDefaultBinding(Key.Pad1);
+        actions.NumpadTwo.AddDefaultBinding(Key.Pad2);
+        actions.NumpadThree.AddDefaultBinding(Key.Pad3);
+        actions.NumpadFour.AddDefaultBinding(Key.Pad4);
 
         actions.myIsController = false;
 
@@ -125,7 +134,7 @@ public class PlayerControls : PlayerActionSet
         actions.ToggleInfo.AddDefaultBinding(InputControlType.DPadUp);
         actions.ToggleUIText.AddDefaultBinding(InputControlType.DPadRight);
 
-        actions.SpawnDebugPlayer.AddDefaultBinding(InputControlType.DPadLeft);
+        actions.NumpadFour.AddDefaultBinding(InputControlType.DPadLeft);
 
         actions.myIsController = true;
 

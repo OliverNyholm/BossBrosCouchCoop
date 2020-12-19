@@ -5,7 +5,7 @@ using UnityEngine;
 public class PreviewOrbOfLight : PreviewSpellChannel
 {
     [SerializeField]
-    private LayerMask myBlockMovmentLayerMask;
+    private LayerMask myBlockMovmentLayerMask = 0;
 
     [SerializeField]
     private Transform myOrbHighlightTransform = null;

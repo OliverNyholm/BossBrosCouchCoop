@@ -6,10 +6,17 @@ using BehaviorDesigner.Runtime;
 
 public class NPCComponent : Character
 {
+    [SerializeField]
+    private bool myShouldHandleHudsOnActivations = false;
+
+    [SerializeField]
+    private bool myShouldStopBehaviorOnDeath = true;
+
     protected Subscriber mySubscriber;
 
     private BehaviorTree myBehaviorTree;
     private TargetHandler myTargetHandler;
+    private UIComponent myUIComponent;
 
     private Vector3 mySpawnPosition;
     private Quaternion mySpawnRotation;
@@ -25,9 +32,10 @@ public class NPCComponent : Character
 
     public CombatState State { get; set; }
 
-    // Use this for initialization
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
+
         myBehaviorTree = GetComponent<BehaviorTree>();
 
         mySpawnPosition = transform.position;
@@ -37,8 +45,32 @@ public class NPCComponent : Character
         PhaseIndex = 1;
 
         myTargetHandler = FindObjectOfType<TargetHandler>();
+        myUIComponent = GetComponent<UIComponent>();
 
         Subscribe();
+    }
+
+    private void Start()
+    {
+        if (myUIComponent)
+        {
+            if (myUIComponent.UseMinionHud())
+            {
+                myUIComponent.SetupHud(GetComponentInChildren<CharacterHUD>().transform);
+            }
+        }
+    }
+
+    public void OnEnable()
+    {
+        if(myShouldHandleHudsOnActivations)
+            myTargetHandler.AddEnemy(gameObject, !myUIComponent.UseMinionHud());
+    }
+
+    public void OnDisable()
+    {
+        if (myShouldHandleHudsOnActivations)
+            myTargetHandler.RemoveEnemy(gameObject);
     }
 
     protected virtual void OnDestroy()
@@ -71,7 +103,11 @@ public class NPCComponent : Character
                 break;
             case MessageCategory.EnemyDied:
                 if (myBehaviorTree)
-                    myBehaviorTree.SendEvent(myTargetHandler.GetEnemyName(anAiMessage.Data.myInt) + "Died");
+                {
+                    GameObject enemy = myTargetHandler.GetEnemy(anAiMessage.Data.myInt);
+                    if(enemy)
+                        myBehaviorTree.SendEvent(enemy.GetComponent<Character>().name + "Died");
+                }
                 break;
             default:
                 break;
@@ -106,5 +142,20 @@ public class NPCComponent : Character
                 }
                 break;
         }
+    }
+
+    public bool CreateHudFromTargetHandler()
+    {
+        return !myShouldHandleHudsOnActivations;
+    }
+
+    protected override void OnDeath()
+    {
+        base.OnDeath();
+
+        myBehaviorTree.SendEvent("Death");
+        PostMaster.Instance.PostMessage(new Message(MessageCategory.EnemyDied, gameObject.GetInstanceID()));
+        if (myShouldStopBehaviorOnDeath)
+            myBehaviorTree.enabled = false;
     }
 }

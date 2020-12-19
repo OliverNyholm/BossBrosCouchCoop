@@ -19,7 +19,8 @@ public class TargetHandler : MonoBehaviour
         {
             for (int index = 0, count = myNPCs.Count; index < count; index++)
             {
-                myBossHudHandler.AddBossHud(myNPCs[index]);
+                if (myNPCs[index].GetComponent<NPCComponent>().CreateHudFromTargetHandler())
+                    myBossHudHandler.AddBossHud(myNPCs[index]);
             }
         }
 
@@ -59,6 +60,9 @@ public class TargetHandler : MonoBehaviour
 
     public void AddEnemy(GameObject aGameObject, bool aShouldAddUI)
     {
+        if (myNPCs.Contains(aGameObject))
+            return;
+
         myNPCs.Add(aGameObject);
         for (int playerIndex = 0; playerIndex < myPlayers.Count; playerIndex++)
         {
@@ -82,15 +86,15 @@ public class TargetHandler : MonoBehaviour
         myNPCs.Clear();
     }
 
-    public string GetEnemyName(int aInstanceID)
+    public GameObject GetEnemy(int aInstanceID)
     {
         for (int index = 0; index < myNPCs.Count; index++)
         {
             if (myNPCs[index].GetInstanceID() == aInstanceID)
-                return myNPCs[index].GetComponent<Character>().name;
+                return myNPCs[index];
         }
 
-        return "Null";
+        return null;
     }
 
     public List<GameObject> GetAllEnemies()

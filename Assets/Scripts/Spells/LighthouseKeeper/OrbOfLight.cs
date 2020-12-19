@@ -5,7 +5,7 @@ using UnityEngine;
 public class OrbOfLight : Spell
 {
     [SerializeField]
-    private LayerMask myBlockMovmentLayerMask;
+    private LayerMask myBlockMovmentLayerMask = 0;
 
     [SerializeField]
     private float myLifetime = 20.0f;

@@ -74,12 +74,7 @@ public class NPCMovementComponent : MovementComponent
 
     protected override void OnDeath()
     {
-        if (myBehaviorTree)
-            myBehaviorTree.enabled = false;
-
         myNavmeshAgent.isStopped = true;
-
-        PostMaster.Instance.PostMessage(new Message(MessageCategory.EnemyDied, gameObject.GetInstanceID()));
     }
 
     public override bool IsMoving()

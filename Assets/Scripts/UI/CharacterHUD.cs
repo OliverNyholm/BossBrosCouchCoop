@@ -15,6 +15,8 @@ public class CharacterHUD : MonoBehaviour
     [SerializeField]
     private Image myResourceBarImage = null;
     [SerializeField]
+    private Image myTargetBar = null;
+    [SerializeField]
     private Text myHealthText = null;
     [SerializeField]
     private Text myResourceText = null;
@@ -68,56 +70,64 @@ public class CharacterHUD : MonoBehaviour
 
     public void SetResourceBarFillAmount(float aValue)
     {
-        myResourceBarImage.fillAmount = aValue;
+        if (myResourceBarImage)
+            myResourceBarImage.fillAmount = aValue;
     }
 
     public void SetResourceBarColor(Color aColor)
     {
-        myResourceBarImage.color = aColor;
+        if (myResourceBarImage)
+            myResourceBarImage.color = aColor;
     }
 
     public void SetHealthbarColor(Color aColor)
     {
-        myHealthbarImage.color = aColor;
+        if (myHealthbarImage)
+            myHealthbarImage.color = aColor;
     }
 
     public void SetAvatarSprite(Sprite aSprite)
     {
-        myAvatarImage.sprite = aSprite;
+        if (myAvatarImage)
+            myAvatarImage.sprite = aSprite;
     }
 
     public void SetClassSprite(Sprite aSprite)
     {
-        myClassImage.sprite = aSprite;
+        if (myClassImage)
+            myClassImage.sprite = aSprite;
     }
 
     public void SetName(string aName)
     {
-        if(myNameText)
+        if (myNameText)
             myNameText.text = aName;
     }
 
     public void SetNameColor(Color aColor)
     {
-        if(myNameText)
+        if (myNameText)
             myNameText.color = aColor;
     }
 
     public void SetHudColor(Color aColor)
     {
-        if(myNameText)
+        if (myNameText)
              myNameText.color = aColor;
-        myHealthbarImage.color = aColor;
+        if (myHealthbarImage)
+            myHealthbarImage.color = aColor;
     }
 
     public void SetHealthText(string aString)
     {
-        myHealthText.text = aString;
+        if (myHealthText)
+            myHealthText.text = aString;
     }
 
     public void SetResourceText(string aString)
     {
-        myResourceText.text = aString;
+        if (myResourceText)
+            myResourceText.text = aString;
     }
 
     public void AddBuff(Sprite aSprite)
@@ -132,6 +142,13 @@ public class CharacterHUD : MonoBehaviour
         myBuffs.Add(buff);
     }
 
+    public void SetMinionTargetHudColor(Color aColor)
+    {
+        if (myTargetBar)
+            myTargetBar.color = aColor;
+    }
+
+
     public void RemoveBuff(int anIndex)
     {
         myPoolManager.ReturnObject(myBuffs[anIndex], myBuffPrefab.GetComponent<UniqueID>().GetID());
@@ -140,6 +157,9 @@ public class CharacterHUD : MonoBehaviour
 
     public void ToggleUIText(int aPlayerID)
     {
+        if (myHealthText || myResourceText)
+            return;
+
         myHealthText.enabled = !myHealthText.enabled;
         myResourceText.enabled = !myResourceText.enabled;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class BeamOfLight : ChannelSpell
 {
     [SerializeField]
-    private LayerMask myIgnoreLayer;
+    private LayerMask myIgnoreLayer = 0;
 
     [SerializeField]
     private Vector3 myOriginOffset = Vector3.zero;

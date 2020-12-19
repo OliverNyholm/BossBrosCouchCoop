@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Character : MonoBehaviour
+public abstract class Character : PoolableObject
 {
     protected AnimatorWrapper myAnimator;
 
@@ -17,7 +17,6 @@ public abstract class Character : MonoBehaviour
     {
         if (!myAnimator)
             SetComponents();
-
     }
 
     private void SetComponents()
@@ -58,5 +57,9 @@ public abstract class Character : MonoBehaviour
         AnimatorWrapper animatorWrapper = GetComponent<AnimatorWrapper>();
         if (animatorWrapper)
             animatorWrapper.SetTrigger(AnimationVariable.Death);
+    }
+
+    public override void Reset()
+    {
     }
 }

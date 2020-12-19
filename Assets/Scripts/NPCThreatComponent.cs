@@ -56,6 +56,9 @@ public class NPCThreatComponent : MonoBehaviour
 
     void Unsubscribe()
     {
+        if(mySubscriber == null)
+            return;
+
         mySubscriber.EventOnReceivedMessage -= ReceiveMessage;
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.SpellSpawned);
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.PlayerDied);

@@ -80,11 +80,11 @@ public class BeamOfLight : ChannelSpell
 
         foreach (GameObject player in myPlayers)
         {
-            if (player)
+            if (!player)
                 continue;
 
             Health health = player.GetComponent<Health>();
-            if (health || health.IsDead())
+            if (!health || health.IsDead())
                 continue;
 
             Vector3 playerPositionWithOffset = player.transform.position + myOriginOffset;
@@ -100,6 +100,10 @@ public class BeamOfLight : ChannelSpell
 
         foreach (GameObject enemy in myTargetHandler.GetAllEnemies())
         {
+            Health health = enemy.GetComponent<Health>();
+            if (!health || health.IsDead())
+                continue;
+
             Vector3 playerPositionWithOffset = enemy.transform.position + myOriginOffset;
             if ((playerPositionWithOffset - myImpactLocation).sqrMagnitude <= myRange * myRange)
                 DealDamage(myDamage, myImpactLocation, enemy);

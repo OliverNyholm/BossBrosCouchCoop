@@ -19,7 +19,11 @@ public class TargetHandler : MonoBehaviour
         {
             for (int index = 0, count = myNPCs.Count; index < count; index++)
             {
-                if (myNPCs[index].GetComponent<NPCComponent>().CreateHudFromTargetHandler())
+                NPCComponent npcComponent = myNPCs[index].GetComponent<NPCComponent>();
+                if (!npcComponent)
+                    return;
+
+                if (npcComponent.CreateHudFromTargetHandler())
                     myBossHudHandler.AddBossHud(myNPCs[index]);
             }
         }

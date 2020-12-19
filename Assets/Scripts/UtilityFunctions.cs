@@ -100,6 +100,11 @@ public static class UtilityFunctions
         return (aSpellTarget & aTargetType) != 0;
     }
 
+    public static bool Collides(LayerMask aLayerMask, LayerMask aOtherLayerMask)
+    {
+        return aOtherLayerMask == (aOtherLayerMask | (1 << aLayerMask));
+    }
+
     public static bool FindGroundFromLocation(Vector3 aStartLocation, out Vector3 outHitLocation, out MovablePlatform outMovablePlatform)
     {
         float distance = 5.0f;

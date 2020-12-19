@@ -10,11 +10,13 @@ public class WhirlpoolHandler : MonoBehaviour
 
     [SerializeField]
     private GameObject myWhirlPoolPrefab = null;
-    private List<GameObject> myWhirlPools = new List<GameObject>(24);
+    private List<Whirlpool> myWhirlPools = new List<Whirlpool>(24);
     private uint myWhirlPoolUniqueID;
 
     private TargetHandler myTargetHandler;
     private Subscriber mySubscriber;
+
+    private List<int> myAvailablePoolIndexes = new List<int>(24);
 
     private void Awake()
     {
@@ -50,8 +52,39 @@ public class WhirlpoolHandler : MonoBehaviour
             if (spawnedPool)
             {
                 spawnedPool.transform.position = npc.transform.position;
-                myWhirlPools.Add(spawnedPool);
+                Whirlpool whirlPool = spawnedPool.GetComponent<Whirlpool>();
+                whirlPool.SetHandler(this);
+                myWhirlPools.Add(whirlPool);
             }
         }
+    }
+
+    public Whirlpool OnPlayerEnterWhirlpool(Whirlpool aWhirlPool)
+    {
+        if(myWhirlPools.Count < 2)
+            return null;
+
+        myAvailablePoolIndexes.Clear();
+        for (int index = 0; index < myWhirlPools.Count; index++)
+        {
+            Whirlpool whirlPool = myWhirlPools[index];
+            if (whirlPool == aWhirlPool)
+                continue;
+
+            if (whirlPool.IsAvailable())
+                myAvailablePoolIndexes.Add(index);
+        }
+
+        if (myAvailablePoolIndexes.Count == 0)
+            return null;
+
+        int randomIndex = myAvailablePoolIndexes[Random.Range(0, myAvailablePoolIndexes.Count)];
+        return myWhirlPools[randomIndex];
+    }
+
+    public void RemovePool(Whirlpool aWhirlPool)
+    {
+        myWhirlPools.Remove(aWhirlPool);
+        aWhirlPool.ReturnToPool();
     }
 }

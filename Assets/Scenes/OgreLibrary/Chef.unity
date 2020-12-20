@@ -1186,6 +1186,8 @@ MonoBehaviour:
   myCharacterColor: {r: 0.46226418, g: 0.010902455, b: 0.043458194, a: 1}
   myName: Chef Gri
   myUseCastbarAboveCharacter: 1
+  myUseMinionHud: 0
+  myCharacterHUD: {fileID: 0}
 --- !u!195 &151854595
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1220,6 +1222,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6139c0ebc1eb51409642c730b18e116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myShouldHandleHudsOnActivations: 0
+  myShouldStopBehaviorOnDeath: 1
 --- !u!114 &151854597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1267,8 +1271,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d2c069978184cd4788cd4ddd56cf980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myMaxHealth: 30000
-  myCurrentHealth: 30000
+  myMaxHealth: 40000
+  myCurrentHealth: 40000
   myHealthPerTick: 0
   myHealthTickInterval: 1
   myTimeBeforeHealthRegenerationAfterDamage: 5

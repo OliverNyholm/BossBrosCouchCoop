@@ -24,7 +24,7 @@ public class OrbOfLight : Spell
     private float myMoveToLaunchPositionDuration = 3.5f;
     private float myMoveInterpolationValue = 0.0f;
 
-    private float myIgnoreParentInitialDuration = 1.0f;
+    private float myIgnoreTargetInitialDuration = 0.75f;
 
     [SerializeField]
     private float myPlayerAttractionRadius = 4.0f;
@@ -52,7 +52,7 @@ public class OrbOfLight : Spell
 
     public override void Restart()
     {
-        myIgnoreParentInitialDuration = 1.0f;
+        myIgnoreTargetInitialDuration = 1.0f;
         myMoveInterpolationValue = 0.0f;
         myStartPosition = transform.position;
         myMoveToTarget = null;
@@ -140,14 +140,17 @@ public class OrbOfLight : Spell
 
     private void DetectClosePlayer()
     {
-        if (myIgnoreParentInitialDuration > 0.0f)
-            myIgnoreParentInitialDuration -= Time.deltaTime;
+        if (myIgnoreTargetInitialDuration > 0.0f)
+        {
+            myIgnoreTargetInitialDuration -= Time.deltaTime;
+            return;
+        }
 
         float attractionRadiusSqr = myPlayerAttractionRadius * myPlayerAttractionRadius;
         float smallestDistance = float.MaxValue;
         foreach (GameObject player in myPlayers)
         {
-            if (!player || player == myParent && myIgnoreParentInitialDuration > 0.0f)
+            if (!player)
                 continue;
 
             Health playerHealth = player.GetComponent<Health>();

@@ -114,16 +114,13 @@ public class BeamOfLight : ChannelSpell
     {
         float distance = 100.0f;
         Ray ray = new Ray(transform.position, transform.forward);
-
+        
         RaycastHit hitInfo;
-        myBeamHitSomething = Physics.Raycast(ray, out hitInfo, distance, ~myIgnoreLayer);
-
+        myBeamHitSomething = Physics.SphereCast(ray, 0.5f, out hitInfo, distance, ~myIgnoreLayer);
         if (myBeamHitSomething)
-            myImpactLocation = hitInfo.point;
-        else
-            myImpactLocation = ray.origin + ray.direction * distance;
+            distance = hitInfo.distance;
 
-        distance = (myImpactLocation - transform.position).magnitude;
+        myImpactLocation = ray.origin + ray.direction * distance;
 
         myBeam.transform.localScale = new Vector3(myBeam.transform.localScale.x, myBeam.transform.localScale.y, distance);
         myHitParticle.transform.position = myImpactLocation + myParent.transform.rotation * myHitParticleOffset;

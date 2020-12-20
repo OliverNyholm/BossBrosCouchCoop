@@ -257,7 +257,11 @@ public class PlayerTargetingComponent : TargetingComponent
         for (int index = 0; index < players.Count; index++)
         {
             GameObject player = players[index];
-            float healthPercentage = player.GetComponent<Health>().GetHealthPercentage();
+            Health health = player.GetComponent<Health>();
+            if (health.IsDead())
+                continue;
+
+            float healthPercentage = health.GetHealthPercentage();
             if(healthPercentage < lowestHealthPercentage || lowestHealthPercentage >= 1.0f)
             {
                 if(aSpellToCast is SpellOverTime)

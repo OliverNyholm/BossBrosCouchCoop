@@ -40,6 +40,9 @@ public class CharacterSelectMovementComponent : PlayerMovementComponent
             myVelocity *= 0.0f;
         }
 
+        if (myStats.IsStunned())
+            return;
+
         if(myStartPosition != transform.position && !myNavmeshAgent.enabled)
         {
             myNavmeshAgent.enabled = true;

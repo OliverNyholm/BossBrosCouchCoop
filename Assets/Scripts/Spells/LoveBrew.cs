@@ -69,6 +69,6 @@ public class LoveBrew : Spell
 
     private void TugPlayer(Vector3 aVelocity)
     {
-        myTarget.GetComponent<PlayerMovementComponent>().GiveImpulse(aVelocity);
+        myTarget.GetComponent<PlayerMovementComponent>().GiveImpulse(aVelocity, 1.0f);
     }
 }

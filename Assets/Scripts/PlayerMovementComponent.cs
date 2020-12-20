@@ -293,15 +293,15 @@ public class PlayerMovementComponent : MovementComponent
         return false;
     }
 
-    public void GiveImpulse(Vector3 aVelocity)
+    public void GiveImpulse(Vector3 aVelocity, float aStunDuration = 0.2f)
     {
-        myStats.SetStunned(0.2f);
+        myStats.SetStunned(aStunDuration);
         myVelocity = aVelocity;
     }
 
-    public void GiveImpulse(Vector3 aVelocity, Vector3 aLookAtPosition)
+    public void GiveImpulse(Vector3 aVelocity, Vector3 aLookAtPosition, float aStunDuration = 0.2f)
     {
-        GiveImpulse(aVelocity);
+        GiveImpulse(aVelocity, aStunDuration);
         transform.LookAt(aLookAtPosition);
     }
 

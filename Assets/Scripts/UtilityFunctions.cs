@@ -130,4 +130,14 @@ public static class UtilityFunctions
         invertRotation.z *= -1.0f;
         aText.transform.eulerAngles = invertRotation;
     }
+
+    public static bool IsCharacterInRangeAndAlive(GameObject aCharacter, Vector3 anOrigin, float aRadius)
+    {
+        Health health = aCharacter.GetComponent<Health>();
+        if (!health || health.IsDead())
+            return false;
+
+        Vector3 playerPositionWithOffset = aCharacter.transform.position;
+        return ((playerPositionWithOffset - anOrigin).sqrMagnitude <= aRadius * aRadius);
+    }
 }

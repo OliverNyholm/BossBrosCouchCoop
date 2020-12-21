@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(SpellOverTime)), CanEditMultipleObjects]
+[CustomEditor(typeof(SpellOverTime), true), CanEditMultipleObjects]
 public class SpellOverTimeInspectorEditor : SpellInspectorEditor
 {
     public SerializedProperty

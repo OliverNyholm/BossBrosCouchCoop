@@ -87,4 +87,9 @@ public class NPCMovementComponent : MovementComponent
 
         return false;
     }
+
+    public void ModifySpeed(float aMultiplier)
+    {
+        myNavmeshAgent.speed = myBaseSpeed * aMultiplier;
+    }
 }

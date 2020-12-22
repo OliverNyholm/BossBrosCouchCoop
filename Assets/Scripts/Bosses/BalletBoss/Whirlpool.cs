@@ -51,12 +51,21 @@ public class Whirlpool : PoolableObject
         DisablePool();
         aWhirlPool.DisablePool();
 
-        aPlayer.transform.position = aWhirlPool.transform.position;
-
-        float fadeDuration = 1.0f;
-        while (fadeDuration > 0)
+        float launchDuration = 1.0f;
+        aPlayer.GetComponent<PlayerMovementComponent>().GiveImpulse(Vector3.up * 100.0f, launchDuration);
+        while (launchDuration > 0)
         {
-            fadeDuration -= Time.deltaTime;
+            launchDuration -= Time.deltaTime;
+            yield return null;
+        }
+
+        aPlayer.transform.position = aWhirlPool.transform.position + Vector3.up * 30.0f;
+
+        float fallDuration = 0.8f;
+        aPlayer.GetComponent<PlayerMovementComponent>().GiveImpulse(Vector3.down * 30.0f, fallDuration);
+        while (fallDuration > 0)
+        {
+            fallDuration -= Time.deltaTime;
             yield return null;
         }
 

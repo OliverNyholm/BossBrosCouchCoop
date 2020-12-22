@@ -1411,8 +1411,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d2c069978184cd4788cd4ddd56cf980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myMaxHealth: 800
-  myCurrentHealth: 800
+  myMaxHealth: 500
+  myCurrentHealth: 500
   myHealthPerTick: 0
   myHealthTickInterval: 1
   myTimeBeforeHealthRegenerationAfterDamage: 5
@@ -1463,7 +1463,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4438236221191840209}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.68
+  m_Radius: 0.2
   m_Speed: 3.5
   m_Acceleration: 20
   avoidancePriority: 50
@@ -1507,7 +1507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bccff9924c6bbc4e843e9e5e5a73bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myBaseSpeed: 8
+  myBaseSpeed: 4
   myCanBeAffectedByMovingPlatform: 0
 --- !u!114 &1082257427486059370
 MonoBehaviour:

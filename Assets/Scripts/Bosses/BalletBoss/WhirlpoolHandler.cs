@@ -51,7 +51,7 @@ public class WhirlpoolHandler : MonoBehaviour
             GameObject spawnedPool = PoolManager.Instance.GetPooledObject(myWhirlPoolUniqueID);
             if (spawnedPool)
             {
-                spawnedPool.transform.position = npc.transform.position + Vector3.up * 2.5f;
+                spawnedPool.transform.position = npc.transform.position + Vector3.up * 3.0f;
                 Whirlpool whirlPool = spawnedPool.GetComponent<Whirlpool>();
                 whirlPool.SetHandler(this);
                 myWhirlPools.Add(whirlPool);

@@ -147,8 +147,7 @@ public class SpellInspectorEditor : Editor
     {
         EditorGUILayout.HelpBox("UI", MessageType.None);
         EditorGUILayout.PropertyField(myName, new GUIContent("Spell Name"));
-        if (myCastTime.floatValue > 0.0f)
-            EditorGUILayout.PropertyField(myCastbarColor, new GUIContent("Castbar Color"));
+        EditorGUILayout.PropertyField(myCastbarColor, new GUIContent("Castbar Color"));
 
         EditorGUILayout.PropertyField(mySpellIcon, new GUIContent("Castbar Spell Icon"));
         EditorGUILayout.PropertyField(myQuickInfo, new GUIContent("One-Liner Spell Info"));

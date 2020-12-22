@@ -7,6 +7,12 @@ public class AoeAttack : Spell
     [SerializeField]
     private float myRadius = 10.0f;
 
+    [SerializeField]
+    private bool myIsCylinder = false;
+
+    [SerializeField]
+    private float myCylinderHeight = 4.0f;
+
     TargetHandler myTargetHandler;
 
     GameObject myInitialTarget = null;
@@ -48,7 +54,10 @@ public class AoeAttack : Spell
             if (health && health.IsDead())
                 continue;
 
-            if((target.transform.position - transform.position).sqrMagnitude <= radiusSqr)
+            Vector3 toTarget = target.transform.position - transform.position;
+            bool isInsideCylinder = myIsCylinder? Mathf.Abs(toTarget.y) < myCylinderHeight : true;
+
+            if (isInsideCylinder && toTarget.sqrMagnitude <= radiusSqr)
             {
                 myTarget = target;
                 DealSpellEffect();

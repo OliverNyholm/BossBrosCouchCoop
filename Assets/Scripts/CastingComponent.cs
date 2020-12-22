@@ -17,7 +17,7 @@ public abstract class CastingComponent : MonoBehaviour
     protected float myAutoAttackCooldown;
     public float myAutoAttackCooldownReset = 1.0f;
 
-    protected float mySpellCastingMovementSpeedReducement = 1.0f;
+    protected float mySpellCastingMovementSpeedReducement = 0.0f;
 
     protected virtual void Awake()
     {

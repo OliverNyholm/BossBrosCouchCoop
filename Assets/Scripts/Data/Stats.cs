@@ -8,6 +8,7 @@ public class Stats : MonoBehaviour
     public float myDamageIncrease = 1.0f;
     public float myDamageMitigator = 1.0f;
     public float myAutoAttackRange = 5;
+    public float myNextSpellModifier = 1.0f;
     public int myAutoAttackDamage = 20;
 
     [System.Serializable]
@@ -42,6 +43,7 @@ public class Stats : MonoBehaviour
     }
 
     public float AttackRange { get { return myAutoAttackRange; } }
+    public float NextSpellModifier { get { return myNextSpellModifier; } set { myNextSpellModifier = value; } }
     public bool IsStunned() { return myIsStunned; }
     public void SetStunned(float aDuration)
     {
@@ -133,6 +135,14 @@ public class Stats : MonoBehaviour
         }
 
         return score + damageBuffCount;
+    }
+
+    public float GetAndResetSpellModifier()
+    {
+        float spellModifier = myNextSpellModifier;
+        myNextSpellModifier = 1.0f;
+
+        return spellModifier;
     }
 
     protected virtual void OnDeath()

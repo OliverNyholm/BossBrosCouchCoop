@@ -17,8 +17,10 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity.Math
 
         public override void OnReset()
         {
-            floatValue.Value = 0;
-            storeResult.Value = 0;
+            if (floatValue != null)
+                floatValue.Value = 0;
+            if (storeResult != null)
+                storeResult.Value = 0;
         }
     }
 }

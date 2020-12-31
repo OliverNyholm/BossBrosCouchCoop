@@ -105,14 +105,13 @@ public static class UtilityFunctions
         return aOtherLayerMask == (aOtherLayerMask | (1 << aLayerMask));
     }
 
-    public static bool FindGroundFromLocation(Vector3 aStartLocation, out Vector3 outHitLocation, out MovablePlatform outMovablePlatform)
+    public static bool FindGroundFromLocation(Vector3 aStartLocation, out Vector3 outHitLocation, out MovablePlatform outMovablePlatform, float aDistance = 5.0f)
     {
-        float distance = 5.0f;
         Ray ray = new Ray(aStartLocation + Vector3.up, Vector3.down);
         LayerMask layerMask = LayerMask.GetMask("Terrain");
 
         RaycastHit hitInfo;
-        if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
+        if (Physics.Raycast(ray, out hitInfo, aDistance, layerMask))
         {
             outHitLocation = hitInfo.point;
             outMovablePlatform = hitInfo.collider.gameObject.GetComponent<MovablePlatform>();
@@ -139,5 +138,15 @@ public static class UtilityFunctions
 
         Vector3 playerPositionWithOffset = aCharacter.transform.position;
         return ((playerPositionWithOffset - anOrigin).sqrMagnitude <= aRadius * aRadius);
+    }
+
+    public static void GetAllCharactersInRadius(List<GameObject> someCharacters, Vector3 anOrigin, float aRadius, out List<GameObject> someCharactersInRange)
+    {
+        someCharactersInRange = new List<GameObject>(someCharacters.Count);
+        for (int index = 0; index < someCharacters.Count; index++)
+        {
+            if (IsCharacterInRangeAndAlive(someCharacters[index], anOrigin, aRadius))
+                someCharactersInRange.Add(someCharacters[index]);
+        }
     }
 }

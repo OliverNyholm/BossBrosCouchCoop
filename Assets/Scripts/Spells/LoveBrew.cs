@@ -8,13 +8,6 @@ public class LoveBrew : Spell
     [SerializeField]
     float myInitialAngle = 40.0f;
 
-    TargetHandler myTargetHandler = null;
-
-    private void Awake()
-    {
-        myTargetHandler = FindObjectOfType<TargetHandler>();
-    }
-
     protected override void DealSpellEffect()
     {
         Player player = myParent.GetComponent<Player>();

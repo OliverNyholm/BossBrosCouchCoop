@@ -6,8 +6,9 @@ public enum SpellTargetType
     PlayerDefault = 1 << 1,
     NPC = 1 << 2,
     LowestHealthPlayer = 1 << 3,
+    SplitAmongAllPlayers = 1 << 4,
 
-    Player = PlayerDefault | LowestHealthPlayer,
+    Player = PlayerDefault | LowestHealthPlayer | SplitAmongAllPlayers,
     Anyone = Player | NPC
 }
 
@@ -74,6 +75,8 @@ public class Spell : PoolableObject
 
     protected GameObject myParent;
     protected GameObject myTarget;
+
+    protected TargetHandler myTargetHandler;
 
     public virtual void Restart()
     {
@@ -345,5 +348,10 @@ public class Spell : PoolableObject
         {
             aPoolManager.AddPoolableObjects(mySpellVFX, mySpellVFX.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
         }
+    }
+
+    public void SetTargetHandler(TargetHandler aTargetHandler)
+    {
+        myTargetHandler = aTargetHandler;
     }
 }

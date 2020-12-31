@@ -27,13 +27,6 @@ public class BeamOfLight : ChannelSpell
     private Vector3 myImpactLocation = new Vector3();
     private bool myBeamHitSomething = false;
 
-    TargetHandler myTargetHandler = null;
-
-    private void Awake()
-    {
-        myTargetHandler = FindObjectOfType<TargetHandler>();
-    }
-
     public override void Reset()
     {
         base.Reset();

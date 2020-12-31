@@ -18,6 +18,8 @@ public class ObjectPool : MonoBehaviour
 
     private void Start()
     {
+        TargetHandler targetHandler = FindObjectOfType<TargetHandler>();
+
         myPool = new Queue<GameObject>(myPoolSize);
         for (int index = 0; index < myPoolSize; index++)
         {
@@ -26,6 +28,10 @@ public class ObjectPool : MonoBehaviour
             PoolableObject poolableObject = instance.GetComponent<PoolableObject>();
             if(poolableObject)
                 poolableObject.SetParentPool(this);
+
+            Spell spell = instance.GetComponent<Spell>();
+            if (spell)
+                spell.SetTargetHandler(targetHandler);
 
             instance.SetActive(false);
 

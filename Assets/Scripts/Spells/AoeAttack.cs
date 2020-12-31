@@ -13,14 +13,7 @@ public class AoeAttack : Spell
     [SerializeField]
     private float myCylinderHeight = 4.0f;
 
-    TargetHandler myTargetHandler;
-
     GameObject myInitialTarget = null;
-
-    private void Awake()
-    {
-        myTargetHandler = FindObjectOfType<TargetHandler>();
-    }
 
     protected override void OnReachTarget()
     {

@@ -5,13 +5,11 @@ using UnityEngine;
 public class Barrier : ChannelSpell
 {
     private float myRadius;
-    private TargetHandler myTargetHandler;
     private List<SpellOverTime> myActiveBuffs = new List<SpellOverTime>(4);
 
     private void Awake()
     {
         myRadius = transform.localScale.x / 2.0f;
-        myTargetHandler = FindObjectOfType<TargetHandler>();
     }
 
     public override void Restart()

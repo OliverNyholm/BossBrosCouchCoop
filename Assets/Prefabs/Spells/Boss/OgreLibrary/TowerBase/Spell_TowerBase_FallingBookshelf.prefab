@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408294202}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.5607214, y: 4.5607214, z: 4.5607214}
+  m_LocalRotation: {x: 0.60485965, y: -0.03371263, z: -0.052388225, w: 0.7938916}
+  m_LocalPosition: {x: 0, y: 0.05, z: -3.71}
+  m_LocalScale: {x: 0.89861, y: 0.66661364, z: 0.42987}
   m_Children: []
   m_Father: {fileID: 7972479889462565182}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 73.108, y: -23.724, z: -25.253}
 --- !u!33 &1408294205
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -39,7 +39,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408294202}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 5151046583281427234, guid: d2424316e3916ff4a8fe16a0e5646f31, type: 3}
 --- !u!23 &1408294204
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -48,7 +48,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408294202}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2a4acfae4fa29ad4cba8f2f43c621d4c, type: 2}
+  - {fileID: -1853771145995529044, guid: 0117310e2b7dc584fa2c46266ff3f708, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -88,12 +88,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7972479889462565182}
-  - component: {fileID: 9127421191752493710}
+  - component: {fileID: 950451970664913272}
   - component: {fileID: 5798900349582130513}
   - component: {fileID: -5352264575650860225}
   - component: {fileID: 892689184311208435}
   m_Layer: 0
-  m_Name: FallingBoulder
+  m_Name: Spell_TowerBase_FallingBookshelf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -115,7 +115,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9127421191752493710
+--- !u!114 &950451970664913272
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,28 +124,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 5798900349582130512}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5001ea7146ed0a24f9af71001d69cf03, type: 3}
+  m_Script: {fileID: 11500000, guid: 30a306a7b28474e4094918d0fca12246, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myQuickInfo: Spawn a boulder that will fall down and damage 250 on collision
-  myTutorialInfo: 
-  myName: Falling Boulder
+  myQuickInfo: 
+  myTutorialInfo: A hard impact to the wall triggers a poorly stacked bookshelf to
+    fall from above. If not caugth, the boss will get angry if a library object is
+    destroyed. The damage is split by all players who catch it.
+  myName: Falling Bookshelf
   myPoolSize: 3
   mySpellType: 1
-  mySpellTarget: 2
+  mySpellTarget: 16
   myAnimationType: 0
-  myDamage: 250
+  myDamage: 1000
   myHealValue: 0
-  myResourceCost: 10
+  myResourceCost: 0
   myThreatModifier: 1
-  mySpeed: 25
+  mySpeed: 30
   myCastTime: 0
-  myCooldown: 8
-  myRange: 0
+  myCooldown: 0
+  myRange: 8
   myStunDuration: 0
   myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
   mySpellIcon: {fileID: 0}
-  myIsCastableWhileMoving: 1
+  myIsCastableWhileMoving: 0
   mySpeedWhileCastingReducement: 0
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
@@ -281,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myID: 6
+  myID: 109
 --- !u!1001 &7289325585034537855
 PrefabInstance:
   m_ObjectHideFlags: 0

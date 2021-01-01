@@ -1887,7 +1887,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 7398
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 1e-45}
+  m_BoundingSphereOverride: {x: 1, y: 1, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -2840,7 +2840,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 7398
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 1e-45}
+  m_BoundingSphereOverride: {x: 0, y: 1e-44, z: 1.2905e-41, w: 1.01e-43}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -3858,7 +3858,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 7398
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 4.775516e-39, y: 4.591904e-39, z: 9.275458e-39, w: -9.898169e-25}
+  m_BoundingSphereOverride: {x: 0, y: 2.4e-44, z: 3.7269e-41, w: 1.01e-43}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -8213,7 +8213,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 7398
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 5.8821e-41, z: 0, w: NaN}
+  m_BoundingSphereOverride: {x: Infinity, y: Infinity, z: -Infinity, w: -Infinity}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -14731,7 +14731,7 @@ MonoBehaviour:
         Knockback Increment","Instant":true,"SharedFloatfloatValue":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatstoreResult":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"KnockbackIncrement","IsShared":true,"SinglemValue":1}},{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(355.8385,129.744308)"},"ID":30,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-252.146454,160.295364)"},"ID":31,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.HasReceivedEvent","NodeData":{"Offset":"(-88.42136,135.790039)"},"ID":32,"Name":"Knocked
         into wall","Instant":true,"SharedStringeventName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"PlayerHitWall"}},{"Type":"SetPhase","NodeData":{"Offset":"(78.1913452,142.720581)"},"ID":33,"Name":"Set
         Phase 2","Instant":true,"Int32myPhaseIndex":2}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Parallel","NodeData":{"Offset":"(219.756042,154.390228)"},"ID":34,"Name":"Parallel","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"MeleeAttack","NodeData":{"Offset":"(-100.231415,164.580383)"},"ID":35,"Name":"Melee
-        Attack","Instant":true,"SharedGameObjectmyTarget":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"PropertyMapping":"TargetingComponent/Target","PropertyMappingOwner":13},"SharedFloatmyAutoAttackRange":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"AutoAttackRange","IsShared":true,"PropertyMapping":"Stats/AttackRange","PropertyMappingOwner":14,"SinglemValue":0},"SharedFloatmyAutoAttackCooldown":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"AutoAttackCooldown","IsShared":true,"PropertyMapping":"NPCCastingComponent/AutoAttackTimer","PropertyMappingOwner":15,"SinglemValue":0}},{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(88.3746,158.191528)"},"ID":36,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":"","Int32mValue":1},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":false},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(110,0)"},"ID":37,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-276.4851,148.513184)"},"ID":38,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"","SinglemValue":10},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"","SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"","SinglemValue":1},"BooleanmyShouldNotifyTimer":true,"StringmyNotifyText":"Knockback","SpritemyNotifySprite":16,"ColormyNofityColor":"RGBA(0.604,
+        Attack","Instant":true,"SharedGameObjectmyTarget":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"PropertyMapping":"TargetingComponent/Target","PropertyMappingOwner":13},"SharedFloatmyAutoAttackRange":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"AutoAttackRange","IsShared":true,"PropertyMapping":"Stats/AttackRange","PropertyMappingOwner":14,"SinglemValue":0},"SharedFloatmyAutoAttackCooldown":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"AutoAttackCooldown","IsShared":true,"PropertyMapping":"NPCCastingComponent/AutoAttackTimer","PropertyMappingOwner":15,"SinglemValue":0}},{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(88.3746,158.191528)"},"ID":36,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":"","Int32mValue":1},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":false},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(110,0)"},"ID":37,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-276.4851,148.513184)"},"ID":38,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"","SinglemValue":7},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"","SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"","SinglemValue":1},"BooleanmyShouldNotifyTimer":true,"StringmyNotifyText":"Knockback","SpritemyNotifySprite":16,"ColormyNofityColor":"RGBA(0.604,
         0.346, 0.157, 1.000)"},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.Math.FloatOperator","NodeData":{"Offset":"(-138.412445,154.991272)"},"ID":39,"Name":"Float
         Operator","Instant":true,"Operationoperation":"Multiply","SharedFloatfloat1":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"KnockbackIncrement","IsShared":true,"SinglemValue":1},"SharedFloatfloat2":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"KnockbackModifier","IsShared":true,"PropertyMapping":"Stats/NextSpellModifier","PropertyMappingOwner":17,"SinglemValue":0},"SharedFloatstoreResult":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"KnockbackModifier","IsShared":true,"PropertyMapping":"Stats/NextSpellModifier","PropertyMappingOwner":18,"SinglemValue":0}},{"Type":"SpawnSpell","NodeData":{"Offset":"(-4.945654,150.270142)"},"ID":40,"Name":"Spawn
         Spell","Instant":true,"SharedGameObjectmyTarget":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"PropertyMapping":"TargetingComponent/Target","PropertyMappingOwner":19},"GameObjectmySpell":20,"Int32mySpellMaxCount":4,"SharedTransformmySpawnTransform":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":null,"TransformmValue":21},"SharedVector3mySpawnPosition":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":"","Vector3mValue":"(0,0,0)"},"BooleanmyShouldIgnoreCastability":true,"BooleanmyIsInterruptable":true},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.Math.FloatOperator","NodeData":{"Offset":"(186.349365,146.815186)"},"ID":41,"Name":"Increment

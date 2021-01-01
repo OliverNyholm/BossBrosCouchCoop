@@ -12,6 +12,9 @@ public class NPCComponent : Character
     [SerializeField]
     private bool myShouldStopBehaviorOnDeath = true;
 
+    [SerializeField]
+    private AudioClip myDeathAudio = null;
+
     protected Subscriber mySubscriber;
 
     private BehaviorTree myBehaviorTree;
@@ -20,6 +23,7 @@ public class NPCComponent : Character
 
     private Vector3 mySpawnPosition;
     private Quaternion mySpawnRotation;
+
 
     public int PhaseIndex { get; set; }
 
@@ -157,5 +161,8 @@ public class NPCComponent : Character
         PostMaster.Instance.PostMessage(new Message(MessageCategory.EnemyDied, gameObject.GetInstanceID()));
         if (myShouldStopBehaviorOnDeath)
             myBehaviorTree.enabled = false;
+
+        if (myDeathAudio)
+            GetComponent<AudioSource>().PlayOneShot(myDeathAudio);
     }
 }

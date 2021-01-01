@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BehaviorDesigner.Runtime;
 
 public class FallingObject : Spell
 {
@@ -9,22 +10,30 @@ public class FallingObject : Spell
     private Transform myMeshTransform = null;
 
     [SerializeField]
+    private float myMinRotationSpeed = 0;
+    [SerializeField]
+    private float myMaxRotationSpeed = 0;
+
+    [SerializeField]
     private Transform myDecalTransform = null;
     private Vector3 myLandPosition;
 
-    bool myHitTargets = false;
+    [SerializeField]
+    private bool myShouldNotifyBossOnHitGround = false;
+    [SerializeField]
+    private string myNotifyBossEvent = "SpellHitGround";
 
     protected override void OnFirstUpdate()
     {
         base.OnFirstUpdate();
 
         const float maxDistance = 100.0f;
-        if (UtilityFunctions.FindGroundFromLocation(transform.position, out Vector3 hitLocation, out MovablePlatform movablePlatform, maxDistance))
+        if (UtilityFunctions.FindGroundFromLocation(transform.position, out Vector3 hitLocation, out _, maxDistance))
             myLandPosition = hitLocation;
 
         if (myShouldRotate)
         {
-            myRotationSpeed = Random.Range(0.3f, 1.5f);
+            myRotationSpeed = Random.Range(myMinRotationSpeed, myMaxRotationSpeed);
             myRandomRotation = Random.rotation.eulerAngles;
         }
 
@@ -54,13 +63,20 @@ public class FallingObject : Spell
         List<GameObject> targets = UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTargetType.Player) ? myTargetHandler.GetAllPlayers() : myTargetHandler.GetAllEnemies();
 
         UtilityFunctions.GetAllCharactersInRadius(targets, transform.position, myRange, out List<GameObject> charactersInRange);
-        if (charactersInRange.Count == 0)
-            return;
 
-        int damage = myDamage / charactersInRange.Count;
-        foreach (GameObject character in charactersInRange)
-            DealDamage(damage, transform.position, character);
+        bool hitPlayers = charactersInRange.Count > 0;
+        if (hitPlayers)
+        {
+            int damage = myDamage / charactersInRange.Count;
+            foreach (GameObject character in charactersInRange)
+                DealDamage(damage, transform.position, character);
+        }
 
-        myHitTargets = true;
+        if (myShouldNotifyBossOnHitGround)
+        {
+            BehaviorTree behaviorTree = myParent.GetComponent<BehaviorTree>();
+            if (behaviorTree)
+                behaviorTree.SendEvent<object>(myNotifyBossEvent, hitPlayers ? 1 : 0);
+        }
     }
 }

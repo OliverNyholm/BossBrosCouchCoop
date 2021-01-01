@@ -26,11 +26,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408294202}
   m_LocalRotation: {x: 0.60485965, y: -0.03371263, z: -0.052388225, w: 0.7938916}
-  m_LocalPosition: {x: 0, y: -0.9, z: -3.93}
-  m_LocalScale: {x: 0.89861, y: 0.6666136, z: 0.42987004}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
-  m_Father: {fileID: 1887250730944792923}
-  m_RootOrder: 0
+  m_Father: {fileID: 7972479889462565182}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 73.108, y: -23.724, z: -25.253}
 --- !u!33 &1408294205
 MeshFilter:
@@ -39,7 +39,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408294202}
-  m_Mesh: {fileID: 5151046583281427234, guid: d2424316e3916ff4a8fe16a0e5646f31, type: 3}
+  m_Mesh: {fileID: -8204771306163173296, guid: fd992700dd7c389458b48308c831d60c, type: 3}
 --- !u!23 &1408294204
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1853771145995529044, guid: 0117310e2b7dc584fa2c46266ff3f708, type: 3}
+  - {fileID: 2100000, guid: f422daac75b75ce40bad5d08ace9243b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,37 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1 &1225682522404805999
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1887250730944792923}
-  m_Layer: 0
-  m_Name: MeshPivot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1887250730944792923
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1225682522404805999}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1408294203}
-  m_Father: {fileID: 7972479889462565182}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5798900349582130512
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,7 +93,7 @@ GameObject:
   - component: {fileID: -5352264575650860225}
   - component: {fileID: 892689184311208435}
   m_Layer: 0
-  m_Name: Spell_TowerBase_FallingBookshelf
+  m_Name: Spell_TowerBase_FallingSmallObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,7 +111,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9032925066645785084}
-  - {fileID: 1887250730944792923}
+  - {fileID: 1408294203}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -167,7 +136,7 @@ MonoBehaviour:
   mySpellType: 1
   mySpellTarget: 16
   myAnimationType: 0
-  myDamage: 600
+  myDamage: 50
   myHealValue: 0
   myResourceCost: 0
   myThreatModifier: 1
@@ -191,7 +160,7 @@ MonoBehaviour:
   mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
-  myMeshTransform: {fileID: 1887250730944792923}
+  myMeshTransform: {fileID: 1408294203}
   myMinRotationSpeed: 0.2
   myMaxRotationSpeed: 0.4
   myDecalTransform: {fileID: 9032925066645785084}
@@ -318,7 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myID: 109
+  myID: 112
 --- !u!1001 &7289325585034537855
 PrefabInstance:
   m_ObjectHideFlags: 0

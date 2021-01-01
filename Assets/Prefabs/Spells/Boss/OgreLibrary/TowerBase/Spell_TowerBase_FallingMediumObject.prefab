@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408294202}
   m_LocalRotation: {x: 0.60485965, y: -0.03371263, z: -0.052388225, w: 0.7938916}
-  m_LocalPosition: {x: 0, y: -0.9, z: -3.93}
-  m_LocalScale: {x: 0.89861, y: 0.6666136, z: 0.42987004}
+  m_LocalPosition: {x: 0, y: -0.9, z: -3.58}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1887250730944792923}
   m_RootOrder: 0
@@ -39,7 +39,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408294202}
-  m_Mesh: {fileID: 5151046583281427234, guid: d2424316e3916ff4a8fe16a0e5646f31, type: 3}
+  m_Mesh: {fileID: -793278076699682801, guid: 9ba68ad1dbce6354194b5ad9817e2bdf, type: 3}
 --- !u!23 &1408294204
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: -5352264575650860225}
   - component: {fileID: 892689184311208435}
   m_Layer: 0
-  m_Name: Spell_TowerBase_FallingBookshelf
+  m_Name: Spell_TowerBase_FallingMediumObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -167,14 +167,14 @@ MonoBehaviour:
   mySpellType: 1
   mySpellTarget: 16
   myAnimationType: 0
-  myDamage: 600
+  myDamage: 100
   myHealValue: 0
   myResourceCost: 0
   myThreatModifier: 1
   mySpeed: 30
   myCastTime: 0
   myCooldown: 0
-  myRange: 8
+  myRange: 6
   myStunDuration: 0
   myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
   mySpellIcon: {fileID: 0}
@@ -318,7 +318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myID: 109
+  myID: 111
 --- !u!1001 &7289325585034537855
 PrefabInstance:
   m_ObjectHideFlags: 0

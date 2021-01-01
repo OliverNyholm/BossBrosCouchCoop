@@ -1,5 +1,6 @@
 ﻿using BehaviorDesigner.Runtime;
 using UnityEngine;
+using EZCameraShake;
 
 public class SpellKnockbackTowerBase : SpellKnockback
 {
@@ -41,11 +42,9 @@ public class SpellKnockbackTowerBase : SpellKnockback
         {
             BehaviorTree behaviorTree = myParent.GetComponent<BehaviorTree>();
             behaviorTree.SendEvent(myEventName);
-
-            Debug.Log("Hit wall");
+            CameraShaker.Instance.ShakeOnce(2.0f, 2.0f, 0.1f, 1.0f);
+            
             ReturnToPool();
         }
-
-        Debug.DrawRay(ray.origin, ray.direction, Color.white);
     }
 }

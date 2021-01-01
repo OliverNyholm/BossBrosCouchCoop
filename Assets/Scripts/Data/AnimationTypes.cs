@@ -16,6 +16,7 @@ public enum SpellAnimationType
     ShieldBlock,
     Meditate,
     AutoAttack,
+    None,
     Count
 }
 

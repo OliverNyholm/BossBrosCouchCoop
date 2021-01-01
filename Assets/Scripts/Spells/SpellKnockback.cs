@@ -8,6 +8,8 @@ public class SpellKnockback : Spell
     [SerializeField]
     private Vector3 myKnockbackVelocity = Vector3.zero;
 
+    protected Vector3 myKnockbackHorizontalDirection;
+
     protected override void DealSpellEffect()
     {
         base.DealSpellEffect();
@@ -17,5 +19,7 @@ public class SpellKnockback : Spell
 
         float knockbackModifier = myParent.GetComponent<Stats>().GetAndResetSpellModifier();
         myTarget.GetComponent<PlayerMovementComponent>().GiveImpulse(finalKnockbackVelocity * knockbackModifier, myStunDuration * knockbackModifier);
+
+        myKnockbackHorizontalDirection = finalKnockbackVelocity.Normalized2D();
     }
 }

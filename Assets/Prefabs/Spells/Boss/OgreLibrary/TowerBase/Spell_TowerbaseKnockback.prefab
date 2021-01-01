@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 8592436494219314044}
   - component: {fileID: 3181064119578749309}
   - component: {fileID: -1873430408874210693}
-  - component: {fileID: -4511031364773977872}
+  - component: {fileID: 7165816252756189241}
+  - component: {fileID: 7118201977451546617}
   m_Layer: 0
   m_Name: Spell_TowerbaseKnockback
   m_TagString: Spell
@@ -142,7 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myID: 108
---- !u!114 &-4511031364773977872
+--- !u!114 &7165816252756189241
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,7 +152,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5324471280314623762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05a9ce17f23f69c46ba983b4cb3e26b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 4cdfe34a88926984ea14d152d8ed200b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   myQuickInfo: 
@@ -161,7 +162,7 @@ MonoBehaviour:
   myPoolSize: 3
   mySpellType: 33
   mySpellTarget: 2
-  myAnimationType: 0
+  myAnimationType: 6
   myDamage: 200
   myHealValue: 0
   myResourceCost: 0
@@ -186,3 +187,20 @@ MonoBehaviour:
   mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 0}
   myKnockbackVelocity: {x: 0, y: 10, z: 30}
+  myEventName: PlayerHitWall
+  myCollisionLayerMask:
+    serializedVersion: 2
+    m_Bits: 262144
+--- !u!135 &7118201977451546617
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5324471280314623762}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}

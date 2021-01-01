@@ -120,7 +120,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7972479889462565182}
   - component: {fileID: 950451970664913272}
-  - component: {fileID: 5798900349582130513}
   - component: {fileID: -5352264575650860225}
   - component: {fileID: 892689184311208435}
   m_Layer: 0
@@ -197,19 +196,6 @@ MonoBehaviour:
   myDecalTransform: {fileID: 85213530130826539}
   myShouldNotifyBossOnHitGround: 1
   myNotifyBossEvent: SpellHitGround
---- !u!135 &5798900349582130513
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5798900349582130512}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2.86
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &-5352264575650860225
 AudioSource:
   m_ObjectHideFlags: 0

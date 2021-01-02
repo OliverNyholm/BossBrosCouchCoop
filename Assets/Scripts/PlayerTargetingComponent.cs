@@ -417,7 +417,7 @@ public class PlayerTargetingComponent : TargetingComponent
             Vector3 toTarget = enemies[index].transform.position - transform.position;
             float distance = toTarget.magnitude;
             toTarget.y = 0.0f;
-            toTarget /= distance;
+            toTarget /= distance > 0 ? distance : 1;
 
             float dotAngle = Vector3.Dot(transform.forward, toTarget);
 

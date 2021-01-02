@@ -61,5 +61,6 @@ public abstract class Character : PoolableObject
 
     public override void Reset()
     {
+        myHealth.SetHealthPercentage(1.0f);
     }
 }

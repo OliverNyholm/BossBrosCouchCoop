@@ -25,6 +25,8 @@ public class PlayerMovementComponent : MovementComponent
     private Vector3 myPreviousGroundPosition;
     private float myStartFallingTimestamp;
 
+    private bool myIsDisabled = false;
+
     protected virtual void Awake()
     {
         myController = GetComponent<CharacterController>();
@@ -60,6 +62,9 @@ public class PlayerMovementComponent : MovementComponent
 
     protected virtual void Update()
     {
+        if (myIsDisabled)
+            return;
+
         myVelocity.y -= myGravity * Time.deltaTime;
         myController.Move(myVelocity * Time.deltaTime);
 
@@ -284,6 +289,9 @@ public class PlayerMovementComponent : MovementComponent
 
     public override bool IsMoving()
     {
+        if (myIsDisabled)
+            return false;
+
         if (myVelocity.x != 0 || myVelocity.z != 0)
             return true;
 
@@ -311,12 +319,12 @@ public class PlayerMovementComponent : MovementComponent
         myVelocity.z = 0.0f;
     }
 
-    private void OnStun()
+    public void SetEnabledMovement(bool anIsEnabled)
     {
-        if (!myIsGrounded)
-            return;
+        myIsDisabled = !anIsEnabled;
+        GetComponent<CharacterController>().enabled = anIsEnabled;
 
-        myVelocity.x = 0.0f;
-        myVelocity.z = 0.0f;
+        if (anIsEnabled)
+            myStartFallingTimestamp = Time.time;
     }
 }

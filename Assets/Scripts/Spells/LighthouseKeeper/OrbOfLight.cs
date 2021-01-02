@@ -135,6 +135,7 @@ public class OrbOfLight : Spell
         const float closeEnoughRange = 0.7f * 0.7f;
         if((myMoveToTarget.transform.position - transform.position).SqrMagnitude2D() < closeEnoughRange)
         {
+            myTarget = myMoveToTarget;
             OnReachTarget();
         }
     }

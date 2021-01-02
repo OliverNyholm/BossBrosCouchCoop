@@ -28,8 +28,9 @@ public class GuidingStarPulse : Spell
 
     private List<GameObject> myPlayers = new List<GameObject>(4);
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         myParticleSystem = GetComponent<ParticleSystem>();
         myParticleSystem.Stop();
         ParticleSystem.MainModule mainModule = myParticleSystem.main;

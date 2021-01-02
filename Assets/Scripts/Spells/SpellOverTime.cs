@@ -26,8 +26,9 @@ public class SpellOverTime : Spell
     private float myLifeTimeLeft;
     private bool myHasReachedTarget;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         myReturnToPoolWhenReachedTarget = false;
     }
 

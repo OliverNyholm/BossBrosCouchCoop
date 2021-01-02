@@ -44,6 +44,8 @@ public class Stats : MonoBehaviour
 
     public float AttackRange { get { return myAutoAttackRange; } }
     public float NextSpellModifier { get { return myNextSpellModifier; } set { myNextSpellModifier = value; } }
+    public float DamageIncrease { get { return myDamageIncrease; } set { myDamageIncrease = value; } }
+
     public bool IsStunned() { return myIsStunned; }
     public void SetStunned(float aDuration)
     {

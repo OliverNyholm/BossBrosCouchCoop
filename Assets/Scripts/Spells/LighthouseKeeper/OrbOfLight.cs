@@ -44,8 +44,9 @@ public class OrbOfLight : Spell
     private List<GameObject> myPlayers;
     private GameObject myMoveToTarget = null;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         myBounceCurveDuration = myBounceCurve.keys[myBounceCurve.length - 1].time;
         SetPlayers(FindObjectOfType<TargetHandler>().GetAllPlayers());
     }

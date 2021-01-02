@@ -139,7 +139,9 @@ public class GameManager : MonoBehaviour
 
         PlayerControls keyboardListener = PlayerControls.CreateWithKeyboardBindings();
 
-        playerGO.GetComponent<Stats>().myDamageMitigator = 0.0f;
+        //playerGO.GetComponent<Stats>().myDamageMitigator = 0.0f;
+        playerGO.GetComponent<Health>().MaxHealth = 50000;
+        playerGO.GetComponent<Health>().SetHealthPercentage(1.0f);
 
         myDebugPlayer = playerGO.GetComponent<Player>();
         myDebugPlayer.SetClassData(myDebugPlayerData.myClassData);

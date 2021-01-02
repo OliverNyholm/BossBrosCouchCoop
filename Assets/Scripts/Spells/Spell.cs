@@ -55,6 +55,8 @@ public class Spell : PoolableObject
     protected bool myIsFirstUpdate = true;
     protected bool myReturnToPoolWhenReachedTarget = true;
 
+    protected int myOriginalDamage;
+
     [System.Serializable]
     [HideInInspector]
     public struct SpellSFX
@@ -77,6 +79,11 @@ public class Spell : PoolableObject
     protected GameObject myTarget;
 
     protected TargetHandler myTargetHandler;
+
+    protected virtual void Awake()
+    {
+        myOriginalDamage = myDamage;
+    }
 
     public virtual void Restart()
     {
@@ -183,12 +190,7 @@ public class Spell : PoolableObject
 
     public virtual void AddDamageIncrease(float aDamageIncrease)
     {
-        myDamage = (int)(myDamage * aDamageIncrease);
-    }
-
-    public void SetDamage(int aDamage)
-    {
-        myDamage = aDamage;
+        myDamage = (int)(myOriginalDamage * aDamageIncrease);
     }
 
     protected void DealDamage(int aDamage, Vector3 aDamageLocation, GameObject aTarget = null)

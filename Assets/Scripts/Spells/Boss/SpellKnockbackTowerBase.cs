@@ -11,8 +11,9 @@ public class SpellKnockbackTowerBase : SpellKnockback
 
     private Stats myTargetStats = null;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         myReturnToPoolWhenReachedTarget = false;
     }
 

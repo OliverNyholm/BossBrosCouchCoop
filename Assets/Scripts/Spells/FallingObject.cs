@@ -76,7 +76,7 @@ public class FallingObject : Spell
         {
             BehaviorTree behaviorTree = myParent.GetComponent<BehaviorTree>();
             if (behaviorTree)
-                behaviorTree.SendEvent<object>(myNotifyBossEvent, hitPlayers ? 1 : 0);
+                behaviorTree.SendEvent<object, object>(myNotifyBossEvent, hitPlayers ? 1 : 0, (float)myDamage);
         }
     }
 }

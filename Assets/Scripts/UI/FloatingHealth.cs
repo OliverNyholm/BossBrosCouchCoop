@@ -41,7 +41,8 @@ public class FloatingHealth : PoolableObject
 
     public void SetText(string aText, Color aColor, Vector3 aSpawnLocation)
     {
-        Vector3 randomOffset = new Vector2(Random.Range(myRandomXRange.x, myRandomXRange.y), Random.Range(myRandomYRange.x, myRandomYRange.y));
+        float cameraDistanceMultiplier = (aSpawnLocation - myMainCamera.transform.position).magnitude * 0.1f;
+        Vector3 randomOffset = new Vector2(Random.Range(myRandomXRange.x, myRandomXRange.y) * cameraDistanceMultiplier, Random.Range(myRandomYRange.x, myRandomYRange.y));
         transform.position = aSpawnLocation + randomOffset;
 
         myTextMesh.text = aText;

@@ -17,8 +17,9 @@ public class GuidingStar : ToggleSpell
 
     private List<GameObject> myPlayers;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         myPlayers = FindObjectOfType<TargetHandler>().GetAllPlayers();
     }
 

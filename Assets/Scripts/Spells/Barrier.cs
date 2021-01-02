@@ -7,8 +7,9 @@ public class Barrier : ChannelSpell
     private float myRadius;
     private List<SpellOverTime> myActiveBuffs = new List<SpellOverTime>(4);
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         myRadius = transform.localScale.x / 2.0f;
     }
 

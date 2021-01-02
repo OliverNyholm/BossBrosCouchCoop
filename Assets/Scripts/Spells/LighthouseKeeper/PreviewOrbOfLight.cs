@@ -17,8 +17,9 @@ public class PreviewOrbOfLight : PreviewSpellChannel
     private OrbOfLight myOrbOfLight;
     private float myOriginalParticleLifetime = 0.0f;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         myOrbOfLight = mySpellToSpawn.GetComponent<OrbOfLight>();
         myOriginalParticleLifetime = myHighlightPathParticleSystem.main.startLifetime.constant;
 

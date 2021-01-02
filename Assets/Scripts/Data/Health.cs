@@ -87,6 +87,9 @@ public class Health : MonoBehaviour
 
     public void GainHealth(int aValue, bool aShouldSpawnFloatingText = true)
     {
+        if (myCurrentHealth <= 0)
+            return;
+
         myCurrentHealth += aValue;
         if (myCurrentHealth > myMaxHealth)
         {

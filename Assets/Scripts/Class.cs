@@ -23,6 +23,8 @@ public class Class : MonoBehaviour
         myToggledSpells = new ToggleSpell[mySpells.Length];
         for (int index = 0; index < myToggledSpells.Length; index++)
             myToggledSpells[index] = null;
+
+        GetComponent<Health>().EventOnHealthZero += OnDeath;
     }
 
     protected virtual void Start()
@@ -147,5 +149,16 @@ public class Class : MonoBehaviour
             mySpells[index] = aClassData.mySpells[index];
 
         myClassRole = aClassData.myClassRole;
+    }
+
+    private void OnDeath()
+    {
+        for (int index = 0; index < myToggledSpells.Length; index++)
+        {
+            if (myToggledSpells[index] == null)
+                continue;
+
+            ToggleSpell(myToggledSpells[index]);
+        }
     }
 }

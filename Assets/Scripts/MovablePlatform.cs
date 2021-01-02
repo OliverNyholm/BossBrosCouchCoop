@@ -57,7 +57,7 @@ public class MovablePlatform : MonoBehaviour
             if (!character.myCharacter)
                 continue;
 
-            if (!character.myIsOnPlatform || character.myMovementComponent.IsMoving())
+            if (!character.myIsOnPlatform || (character.myMovementComponent && character.myMovementComponent.IsMoving()))
                 continue;
 
             MoveObject(character.myCharacter.transform, movementDifference, rotationDifference);

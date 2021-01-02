@@ -5,7 +5,7 @@ using UnityEngine;
 public class BeamOfLight : ChannelSpell
 {
     [SerializeField]
-    private LayerMask myIgnoreLayer = 0;
+    private LayerMask myHitLayers = 0;
 
     [SerializeField]
     private Vector3 myOriginOffset = Vector3.zero;
@@ -109,7 +109,7 @@ public class BeamOfLight : ChannelSpell
         Ray ray = new Ray(transform.position, transform.forward);
         
         RaycastHit hitInfo;
-        myBeamHitSomething = Physics.SphereCast(ray, 0.5f, out hitInfo, distance, ~myIgnoreLayer);
+        myBeamHitSomething = Physics.SphereCast(ray, 0.5f, out hitInfo, distance, myHitLayers);
         if (myBeamHitSomething)
             distance = hitInfo.distance;
 

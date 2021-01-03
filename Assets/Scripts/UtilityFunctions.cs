@@ -46,6 +46,22 @@ public static class ExtensionMethods
         self.y = 0.0f;
         self.Normalize();
     }
+
+    public static void MultiplySelf(this Vector3 self, Vector3 aOther)
+    {
+        self.x *= aOther.x;
+        self.y *= aOther.y;
+        self.z *= aOther.z;
+    }
+
+    public static Vector3 Multiply(this Vector3 self, Vector3 aOther)
+    {
+        self.x *= aOther.x;
+        self.y *= aOther.y;
+        self.z *= aOther.z;
+
+        return self;
+    }
 }
 
 /// <summary>

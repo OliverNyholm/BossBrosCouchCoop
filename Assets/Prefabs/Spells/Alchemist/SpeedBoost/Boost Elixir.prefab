@@ -64,6 +64,7 @@ MonoBehaviour:
   myCastbarColor: {r: 1, g: 0.8377491, b: 0, a: 1}
   mySpellIcon: {fileID: 21300000, guid: e17cd266fdccfb641bb4961fbb4dfd47, type: 3}
   myIsCastableWhileMoving: 1
+  mySpeedWhileCastingReducement: 0
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 1
   myShouldRotate: 0
@@ -71,12 +72,15 @@ MonoBehaviour:
     type: 3}
   mySpellSFX:
     myCastSound: {fileID: 0}
+    myChannelSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 0}
   mySpawnOnHitVFXOnSelf: 0
-  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
+  mySpellVFX: {fileID: 724740779098352624, guid: c5f81f04dfd490343b2d4b6b15456a3d,
     type: 3}
-  myRadius: 4
+  myRadius: 5
+  myIsCylinder: 0
+  myCylinderHeight: 4
 --- !u!82 &-6455141422337824190
 AudioSource:
   m_ObjectHideFlags: 0

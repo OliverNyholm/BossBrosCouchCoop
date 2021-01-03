@@ -49,6 +49,7 @@ MonoBehaviour:
   myTutorialInfo: Share a sip of the potion of youth to all around, healing them
     for a moderate amount.
   myName: Youth Potion
+  myPoolSize: 3
   mySpellType: 2
   mySpellTarget: 2
   myAnimationType: 0
@@ -64,18 +65,22 @@ MonoBehaviour:
   myCastbarColor: {r: 0, g: 0.9811321, b: 0.9713257, a: 1}
   mySpellIcon: {fileID: 21300000, guid: 25e1a2e274258b745af0f2a632078b9d, type: 3}
   myIsCastableWhileMoving: 1
+  mySpeedWhileCastingReducement: 0
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 1
   myShouldRotate: 0
   mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
+    myChannelSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 8300000, guid: 69aa176190ac71e409f7e0a8f425254f, type: 3}
   mySpawnOnHitVFXOnSelf: 0
-  mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
+  mySpellVFX: {fileID: 724740779098352624, guid: b356fd4f076e5ff4c852ff95ab36b5b3,
     type: 3}
   myRadius: 4
+  myIsCylinder: 0
+  myCylinderHeight: 4
 --- !u!82 &-6455141422337824190
 AudioSource:
   m_ObjectHideFlags: 0

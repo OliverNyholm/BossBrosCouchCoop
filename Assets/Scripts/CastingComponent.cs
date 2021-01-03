@@ -51,7 +51,7 @@ public abstract class CastingComponent : MonoBehaviour
             GetComponent<UIComponent>().SetCastbarChannelingStartValues(aSpellScript, aDuration);
 
         AudioSource audioSource = GetComponent<AudioSource>();
-        audioSource.clip = aSpellScript.GetSpellSFX().myCastSound;
+        audioSource.clip = aSpellScript.GetSpellSFX().myChannelSound;
         audioSource.Play();
 
         if (aSpellScript.myIsCastableWhileMoving)

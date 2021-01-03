@@ -7,6 +7,8 @@ using UnityEditor;
 [CustomEditor(typeof(Spell), true), CanEditMultipleObjects]
 public class SpellInspectorEditor : Editor
 {
+    Spell mySpell;
+
     public SerializedProperty
         myCastTime,
         myCooldown,
@@ -39,6 +41,11 @@ public class SpellInspectorEditor : Editor
         myQuickInfo,
         myTutorialInfo,
         myPoolSize;
+
+    void Awake()
+    {
+        mySpell = target as Spell;
+    }
 
     public virtual void OnEnable()
     {
@@ -158,6 +165,8 @@ public class SpellInspectorEditor : Editor
     {
         if (myCastTime.floatValue > 0.0f)
             EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myCastSound"), new GUIContent("Sound While Casting"));
+        if (mySpell is ChannelSpell)
+            EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myChannelSound"), new GUIContent("Sound While Channeling"));
         if (mySpeed.floatValue > 0.0f)
             EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("mySpawnSound"), new GUIContent("Sound When Spell Spawns"));
         EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myHitSound"), new GUIContent("Sound When Spell Hits Target"));

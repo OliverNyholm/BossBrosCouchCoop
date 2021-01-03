@@ -27,6 +27,9 @@ public class OrbOfLight : Spell
     private float myIgnoreTargetInitialDuration = 0.75f;
 
     [SerializeField]
+    private float myHitTargetRadius = 0.7f;
+
+    [SerializeField]
     private float myPlayerAttractionRadius = 4.0f;
     private float myAttractionAcceleration = 12f;
     private float myAttractionMaxSpeed = 17.0f;
@@ -53,7 +56,7 @@ public class OrbOfLight : Spell
 
     public override void Restart()
     {
-        myIgnoreTargetInitialDuration = 1.0f;
+        myIgnoreTargetInitialDuration = 0.3f;
         myMoveInterpolationValue = 0.0f;
         myStartPosition = transform.position;
         myMoveToTarget = null;
@@ -132,7 +135,7 @@ public class OrbOfLight : Spell
 
         transform.position += myMoveToTargetDirection * myAttractionSpeed * Time.deltaTime;
 
-        const float closeEnoughRange = 0.7f * 0.7f;
+        float closeEnoughRange = myHitTargetRadius * myHitTargetRadius;
         if((myMoveToTarget.transform.position - transform.position).SqrMagnitude2D() < closeEnoughRange)
         {
             myTarget = myMoveToTarget;
@@ -143,12 +146,13 @@ public class OrbOfLight : Spell
     private void DetectClosePlayer()
     {
         if (myIgnoreTargetInitialDuration > 0.0f)
-        {
             myIgnoreTargetInitialDuration -= Time.deltaTime;
-            return;
-        }
+
+        bool ignoreMoveTo = myIgnoreTargetInitialDuration > 0.0f;
 
         float attractionRadiusSqr = myPlayerAttractionRadius * myPlayerAttractionRadius;
+        float closeEnoughRange = myHitTargetRadius * myHitTargetRadius;
+
         float smallestDistance = float.MaxValue;
         foreach (GameObject player in myPlayers)
         {
@@ -160,6 +164,16 @@ public class OrbOfLight : Spell
                 continue;
 
             float distanceToPlayerSqr = (player.transform.position - transform.position).SqrMagnitude2D();
+            bool ignoreParent = ignoreMoveTo && player == myParent;
+            if (distanceToPlayerSqr < closeEnoughRange && !ignoreParent)
+            {
+                myMoveToTarget = player;
+                return;
+            }
+
+            if (ignoreMoveTo)
+                continue;
+
             if(distanceToPlayerSqr < attractionRadiusSqr && distanceToPlayerSqr < smallestDistance)
             {
                 if (myMoveToTarget == null)

@@ -750,6 +750,8 @@ MonoBehaviour:
   myCharacterColor: {r: 1, g: 0.8389567, b: 0, a: 1}
   myName: Friendly Dummy
   myUseCastbarAboveCharacter: 1
+  myUseMinionHud: 0
+  myCharacterHUD: {fileID: 0}
 --- !u!114 &261754181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -767,6 +769,7 @@ MonoBehaviour:
   myDamageIncrease: 1
   myDamageMitigator: 1
   myAutoAttackRange: 5
+  myNextSpellModifier: 1
   myAutoAttackDamage: 150
   myRangeCylinder:
     myRadius: 1.5
@@ -4009,6 +4012,7 @@ MonoBehaviour:
   myDamageIncrease: 1
   myDamageMitigator: 1
   myAutoAttackRange: 5
+  myNextSpellModifier: 1
   myAutoAttackDamage: 150
   myRangeCylinder:
     myRadius: 1.5
@@ -5463,6 +5467,8 @@ MonoBehaviour:
   myCharacterColor: {r: 1, g: 0, b: 0.0780077, a: 1}
   myName: Enemy Dummy
   myUseCastbarAboveCharacter: 1
+  myUseMinionHud: 0
+  myCharacterHUD: {fileID: 0}
 --- !u!114 &1106713476812670441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5487,6 +5493,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6139c0ebc1eb51409642c730b18e116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myShouldHandleHudsOnActivations: 0
+  myShouldStopBehaviorOnDeath: 1
+  myDeathAudio: {fileID: 0}
 --- !u!114 &1106713476812670443
 MonoBehaviour:
   m_ObjectHideFlags: 0

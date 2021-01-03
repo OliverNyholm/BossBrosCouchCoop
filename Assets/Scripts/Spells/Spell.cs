@@ -62,6 +62,7 @@ public class Spell : PoolableObject
     public struct SpellSFX
     {
         public AudioClip myCastSound;
+        public AudioClip myChannelSound;
         public AudioClip mySpawnSound;
         public AudioClip myHitSound;
     }

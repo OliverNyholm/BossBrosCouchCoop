@@ -168,25 +168,27 @@ MonoBehaviour:
   myThreatModifier: 1
   mySpeed: 0
   myCastTime: 0
-  myCooldown: 45
+  myCooldown: 20
   myRange: 0
   myStunDuration: 0
   myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
   mySpellIcon: {fileID: 21300000, guid: 125b788722a8a4a46b8a744f63090de8, type: 3}
   myIsCastableWhileMoving: 1
+  mySpeedWhileCastingReducement: 0
   myCanCastOnSelf: 1
   myIsOnlySelfCast: 1
   myShouldRotate: 0
   mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
+    myChannelSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 0}
   mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
   myIsCastManually: 1
-  myDuration: 10
+  myDuration: 8
   mySpellOverTimeType: 8
   mySpeedMultiplier: 0
   myAttackSpeed: 1.4

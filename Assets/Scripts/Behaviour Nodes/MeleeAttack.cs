@@ -14,7 +14,7 @@ public class MeleeAttack : Action
     private NPCMovementComponent myMovementComponent;
     private NPCCastingComponent myCastingComponent;
 
-    public override void OnStart()
+    public override void OnAwake()
     {
         myMovementComponent = GetComponent<NPCMovementComponent>();
         myCastingComponent = GetComponent<NPCCastingComponent>();

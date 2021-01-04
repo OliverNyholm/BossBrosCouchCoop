@@ -25,7 +25,7 @@ public class PlayerMovementComponent : MovementComponent
     private Vector3 myPreviousGroundPosition;
     private float myStartFallingTimestamp;
 
-    private bool myIsDisabled = false;
+    private bool myIsMovementDisabled = false;
 
     protected virtual void Awake()
     {
@@ -62,7 +62,7 @@ public class PlayerMovementComponent : MovementComponent
 
     protected virtual void Update()
     {
-        if (myIsDisabled)
+        if (myIsMovementDisabled)
             return;
 
         myVelocity.y -= myGravity * Time.deltaTime;
@@ -289,7 +289,7 @@ public class PlayerMovementComponent : MovementComponent
 
     public override bool IsMoving()
     {
-        if (myIsDisabled)
+        if (myIsMovementDisabled)
             return false;
 
         if (myVelocity.x != 0 || myVelocity.z != 0)
@@ -321,10 +321,15 @@ public class PlayerMovementComponent : MovementComponent
 
     public void SetEnabledMovement(bool anIsEnabled)
     {
-        myIsDisabled = !anIsEnabled;
+        myIsMovementDisabled = !anIsEnabled;
         GetComponent<CharacterController>().enabled = anIsEnabled;
 
         if (anIsEnabled)
             myStartFallingTimestamp = Time.time;
+    }
+
+    public bool IsMovementDisabled()
+    {
+        return myIsMovementDisabled;
     }
 }

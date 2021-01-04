@@ -102,13 +102,17 @@ public class NPCThreatComponent : MonoBehaviour
 
         int highestThreatIndex = 0;        
         if (myThreatValues.Count == 1)
-            return highestThreatIndex;
+            return ShouldIgnoreTarget(Players[highestThreatIndex]) ? -1 : highestThreatIndex;
 
         float timeNow = Time.time;
         float highestThreatValue = float.MinValue;
         if (myTargetIndex != -1) //Do this so if everyone is on 0 threat for some reason, the boss will chose the latest target.
         {
-            if (!Players[myTargetIndex].GetComponent<Health>().IsDead())
+            if (ShouldIgnoreTarget(Players[myTargetIndex]))
+            {
+                myTargetIndex = -1;
+            }
+            else
             {
                 highestThreatValue = myThreatValues[myTargetIndex].CalculateAndTrimThreatAmount(timeNow);
                 highestThreatIndex = myTargetIndex;
@@ -117,7 +121,10 @@ public class NPCThreatComponent : MonoBehaviour
 
         for (int index = 0; index < myThreatValues.Count; index++)
         {
-            if (myTargetIndex == index || Players[index].GetComponent<Health>().IsDead())
+            if (myTargetIndex == index)
+                continue;
+
+            if (ShouldIgnoreTarget(Players[index]))
                 continue;
                 
             float threatAmount = myThreatValues[index].CalculateAndTrimThreatAmount(timeNow);
@@ -135,6 +142,7 @@ public class NPCThreatComponent : MonoBehaviour
     {
         GetComponent<NPCComponent>().SetState(NPCComponent.CombatState.Combat);
         AddThreat(10, aGameObject.GetInstanceID(), true);
+
         SetTarget(GetHighestAggro());
     }
 
@@ -147,11 +155,15 @@ public class NPCThreatComponent : MonoBehaviour
             if (Players[index].GetInstanceID() == aTaunterID)
             {
                 ClearAllPlayersThreat();
-
-                myTargetIndex = index;
-                SetTarget(myTargetIndex);
-                EventOnTaunted?.Invoke();
                 AddThreat(1000, aTaunterID, true);
+                EventOnTaunted?.Invoke();
+
+                if (!ShouldIgnoreTarget(Players[myTargetIndex]))
+                {
+                    myTargetIndex = index;
+                    SetTarget(myTargetIndex);
+                }
+
                 break;
             }
         }
@@ -159,7 +171,7 @@ public class NPCThreatComponent : MonoBehaviour
 
     private void SetTarget(int aTargetIndex)
     {
-        myTargetingComponent.SetTarget(Players[aTargetIndex]);
+        myTargetingComponent.SetTarget(aTargetIndex == -1 ? null : Players[aTargetIndex]);
         myTargetIndex = aTargetIndex;
     }
 
@@ -259,5 +271,13 @@ public class NPCThreatComponent : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public virtual bool ShouldIgnoreTarget(GameObject aTarget)
+    {
+        if (aTarget.GetComponent<Health>().IsDead())
+            return true;
+
+        return false;
     }
 }

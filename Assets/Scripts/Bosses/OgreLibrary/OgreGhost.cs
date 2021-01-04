@@ -28,8 +28,12 @@ public class OgreGhost : NPCComponent
         if (!aOther.GetComponent<Player>())
             return;
 
+        PlayerMovementComponent movementComponent = aOther.GetComponent<PlayerMovementComponent>();
+        if (movementComponent.IsMovementDisabled())
+            return;
+
         myPlayer = aOther.gameObject;
-        myPlayer.GetComponent<PlayerMovementComponent>().SetEnabledMovement(false);
+        movementComponent.SetEnabledMovement(false);
     }
 
     protected override void OnDeath()

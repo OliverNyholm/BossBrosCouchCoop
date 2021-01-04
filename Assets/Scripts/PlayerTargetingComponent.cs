@@ -108,6 +108,10 @@ public class PlayerTargetingComponent : TargetingComponent
         if (Target)
         {
             Target.GetComponentInChildren<TargetProjector>().DropTargetProjection(myPlayer.PlayerIndex);
+            TargetedByHud targetedByHud = Target.GetComponentInChildren<TargetedByHud>();
+            if (targetedByHud)
+                targetedByHud.RemoveTargetedBy(myPlayer.PlayerIndex);
+
             Target.GetComponent<Health>().EventOnHealthZero -= OnTargetDied;
         }
 
@@ -116,6 +120,10 @@ public class PlayerTargetingComponent : TargetingComponent
         if (Target)
         {
             Target.GetComponentInChildren<TargetProjector>().AddTargetProjection(GetComponent<UIComponent>().myCharacterColor, myPlayer.PlayerIndex);
+            TargetedByHud targetedByHud = Target.GetComponentInChildren<TargetedByHud>();
+            if (targetedByHud)
+                targetedByHud.SetTargetedBy(GetComponent<UIComponent>().myCharacterColor, myPlayer.PlayerIndex);
+
             Target.GetComponent<Health>().EventOnHealthZero += OnTargetDied;
         }
 
@@ -430,7 +438,10 @@ public class PlayerTargetingComponent : TargetingComponent
         }
 
         if (bestIndex != -1)
+        {
+            myPreviouslyTargetedEnemies.Add(enemies[bestIndex]);
             SetTarget(enemies[bestIndex]);
+        }
     }
 
     private void OnDeath()

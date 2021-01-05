@@ -76,10 +76,8 @@ public class NPCComponent : Character
 
     public void OnDisable()
     {
-
         if (myShouldHandleHudsOnActivations)
             myTargetHandler.RemoveEnemy(gameObject);
-
     }
 
     protected virtual void OnDestroy()

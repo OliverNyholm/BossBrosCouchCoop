@@ -7,13 +7,32 @@ public class TargetProjector : MonoBehaviour
     private Material myMaterial;
     private MeshRenderer myDecalProjector;
 
+    [SerializeField]
+    private bool myRaycastPosition = false;
+
+    private Vector3 myOffsetFromParent = Vector3.zero;
+
     private void Awake()
     {
         myDecalProjector = GetComponent<MeshRenderer>();
         myMaterial = new Material(myDecalProjector.material);
 
         myDecalProjector.material = myMaterial;
+
+        myOffsetFromParent = transform.localPosition;
     }
+
+    private void Update()
+    {
+        if (!myRaycastPosition)
+            return;
+
+        if (UtilityFunctions.FindGroundFromLocation(transform.parent.position, out Vector3 hitLocation, out _, 5.0f))
+            transform.position = hitLocation + Vector3.up * 0.01f;
+        else
+            transform.localPosition = myOffsetFromParent;
+    }
+
     public void AddTargetProjection(Color aColor, int aPlayerIndex)
     {
         switch (aPlayerIndex)

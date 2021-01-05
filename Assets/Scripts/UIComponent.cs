@@ -16,6 +16,7 @@ public class UIComponent : MonoBehaviour
 
     [SerializeField]
     private bool myUseMinionHud = false;
+    private Canvas myMinionCanvas = null;
 
     [SerializeField]
     private CharacterHUD myCharacterHUD = null;
@@ -32,6 +33,9 @@ public class UIComponent : MonoBehaviour
     {
         myHealth = GetComponent<Health>();
         myResource = GetComponent<Resource>();
+
+        if (myUseMinionHud)
+            myMinionCanvas = myCharacterHUD.GetComponent<Canvas>();
     }
 
     public virtual void SetupHud(Transform aUIParent)
@@ -44,7 +48,7 @@ public class UIComponent : MonoBehaviour
         }
         else
         {
-            myCharacterHUD.GetComponent<Canvas>().worldCamera = Camera.main;
+            myMinionCanvas.worldCamera = Camera.main;
         }
 
         if (myUseCastbarAboveCharacter)
@@ -215,5 +219,10 @@ public class UIComponent : MonoBehaviour
     public bool UseMinionHud()
     {
         return myUseMinionHud;
+    }
+
+    public void SetMinionHudEnable(bool anSetEnabled)
+    {
+        myMinionCanvas.enabled = anSetEnabled;
     }
 }

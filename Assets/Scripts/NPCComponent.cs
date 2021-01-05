@@ -69,12 +69,17 @@ public class NPCComponent : Character
     {
         if(myShouldHandleHudsOnActivations)
             myTargetHandler.AddEnemy(gameObject, !myUIComponent.UseMinionHud());
+
+        if (myUIComponent && myUIComponent.UseMinionHud())
+            myUIComponent.SetMinionHudEnable(true);
     }
 
     public void OnDisable()
     {
+
         if (myShouldHandleHudsOnActivations)
             myTargetHandler.RemoveEnemy(gameObject);
+
     }
 
     protected virtual void OnDestroy()
@@ -164,5 +169,11 @@ public class NPCComponent : Character
 
         if (myDeathAudio)
             GetComponent<AudioSource>().PlayOneShot(myDeathAudio);
+
+        if (myShouldHandleHudsOnActivations)
+            myTargetHandler.RemoveEnemy(gameObject);
+
+        if (myUIComponent && myUIComponent.UseMinionHud())
+            myUIComponent.SetMinionHudEnable(false);
     }
 }

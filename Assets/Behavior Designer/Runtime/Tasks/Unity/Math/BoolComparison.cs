@@ -16,8 +16,10 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity.Math
 
         public override void OnReset()
         {
-            bool1.Value = false;
-            bool2.Value = false;
+            if (bool1 != null)
+                bool1.Value = false;
+            if (bool2 != null)
+                bool2.Value = false;
         }
     }
 }

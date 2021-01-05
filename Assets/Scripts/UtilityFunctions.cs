@@ -5,6 +5,21 @@ using TMPro;
 
 public static class ExtensionMethods
 {
+    private static System.Random ourRandom = new System.Random();
+
+    public static void Shuffle<T>(this IList<T> list)
+    {
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = ourRandom.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+    }
+
     public static Transform FindInChildren(this Transform self, string name)
     {
         int count = self.childCount;

@@ -398,7 +398,7 @@ public class PlayerTargetingComponent : TargetingComponent
 
     public void DetermineNewEnemyTarget()
     {
-        const float resetTargetTimer = 2.0f;
+        const float resetTargetTimer = 1.0f;
         if (Time.time - myLatestSelectedTargetTime > resetTargetTimer)
             myPreviouslyTargetedEnemies.Clear();
 
@@ -428,6 +428,8 @@ public class PlayerTargetingComponent : TargetingComponent
             toTarget /= distance > 0 ? distance : 1;
 
             float dotAngle = Vector3.Dot(transform.forward, toTarget);
+            if (distance <= 0.05f)
+                dotAngle = 1.0f; //give high dot if really close.
 
             float score = (1 + dotAngle) * (100.0f - distance) + deathScore;
             if(score > bestScore)

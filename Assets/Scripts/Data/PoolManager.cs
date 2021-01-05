@@ -137,4 +137,10 @@ public class PoolManager : MonoBehaviour
 
         myTemporaryObject.Add(data);
     }
+
+    public ObjectPool FindObjectPool(uint aUniqueId)
+    {
+        myObjectPoolDictionary.TryGetValue(aUniqueId, out ObjectPool pool);
+        return pool;
+    }
 }

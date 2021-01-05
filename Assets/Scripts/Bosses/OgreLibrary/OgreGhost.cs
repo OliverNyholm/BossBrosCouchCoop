@@ -7,6 +7,8 @@ public class OgreGhost : NPCComponent
     private GameObject myPlayer = null;
 
     private List<GameObject> myCheckpoints = new List<GameObject>(5);
+
+    [SerializeField]
     private List<GameObject> myAvailableCheckpoints = new List<GameObject>(5);
 
     public bool HasReachedTop { get; set; }
@@ -15,14 +17,20 @@ public class OgreGhost : NPCComponent
     {
         base.Awake();
 
+        bool hasCheckpointsManuallySet = myAvailableCheckpoints.Count > 0;
+
         OgreGhostCheckpoint[] checkpoints = FindObjectsOfType<OgreGhostCheckpoint>();
         foreach (OgreGhostCheckpoint checkpoint in checkpoints)
         {
             myCheckpoints.Add(checkpoint.gameObject);
-            myAvailableCheckpoints.Add(checkpoint.gameObject);
+            if (!hasCheckpointsManuallySet)
+                myAvailableCheckpoints.Add(checkpoint.gameObject);
         }
 
-        myAvailableCheckpoints.Shuffle();
+        if (!hasCheckpointsManuallySet)
+            myAvailableCheckpoints.Shuffle();
+
+        HasReachedTop = hasCheckpointsManuallySet;
     }
 
     public override void Reset()

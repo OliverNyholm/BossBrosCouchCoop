@@ -197,7 +197,7 @@ public class PlayerMovementComponent : MovementComponent
 
     private void HandleEndlessFalling()
     {
-        if (myIsGrounded)
+        if (myIsGrounded || myHealth.IsDead())
             return;
 
         const float endlessFallingDuration = 5.0f;

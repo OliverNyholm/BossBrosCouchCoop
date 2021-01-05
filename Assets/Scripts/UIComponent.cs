@@ -223,6 +223,9 @@ public class UIComponent : MonoBehaviour
 
     public void SetMinionHudEnable(bool anSetEnabled)
     {
+        if (!myMinionCanvas)
+            myMinionCanvas = myCharacterHUD.GetComponent<Canvas>();
+
         myMinionCanvas.enabled = anSetEnabled;
     }
 }

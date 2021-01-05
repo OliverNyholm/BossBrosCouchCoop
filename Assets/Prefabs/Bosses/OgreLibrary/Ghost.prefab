@@ -643,7 +643,6 @@ GameObject:
   - component: {fileID: 6917330074543701668}
   - component: {fileID: 5442246169218270880}
   - component: {fileID: 2701828281572061204}
-  - component: {fileID: 2971340232266828019}
   - component: {fileID: 984122946468170659}
   m_Layer: 9
   m_Name: PlaneTargetDecal
@@ -713,20 +712,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &2971340232266828019
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4592955078757920798}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &984122946468170659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -912,6 +897,7 @@ MonoBehaviour:
   myAttackSpeed: 1
   myDamageIncrease: 1
   myDamageMitigator: 1
+  myAutoAttackDamageMitigator: 1
   myAutoAttackRange: 5
   myNextSpellModifier: 1
   myAutoAttackDamage: 4
@@ -1030,6 +1016,7 @@ MonoBehaviour:
   myShouldHandleHudsOnActivations: 1
   myShouldStopBehaviorOnDeath: 0
   myDeathAudio: {fileID: 0}
+  myAvailableCheckpoints: []
 --- !u!136 &7550700189986221247
 CapsuleCollider:
   m_ObjectHideFlags: 0

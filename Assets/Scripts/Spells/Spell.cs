@@ -222,8 +222,10 @@ public class Spell : PoolableObject
             }
         }
 
+        bool isAutoAttack = this is AutoAttack;
+
         int parentID = myParent.GetInstanceID();
-        int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<UIComponent>().myCharacterColor, damageFloatSpawnPosition);
+        int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<UIComponent>().myCharacterColor, damageFloatSpawnPosition, isAutoAttack);
         target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID, true);
 
         if (isPlayer)

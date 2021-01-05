@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_TargetPlane
-  m_Shader: {fileID: -6465566751694194690, guid: 9b6c5fd9fc16b3e4da6b4bd1c352b3da,
+  m_Name: Mat_TargetPlaneUnlit
+  m_Shader: {fileID: -6465566751694194690, guid: 588f26c3c3d1ea44c9fb2bb963d70052,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -21,6 +21,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_AF0DDCDE:
+        m_Texture: {fileID: 2800000, guid: 300646ef8afd69449b0d849af71ca9a3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_F2CA0205:
         m_Texture: {fileID: 2800000, guid: 300646ef8afd69449b0d849af71ca9a3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}

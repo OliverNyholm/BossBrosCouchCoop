@@ -100,7 +100,7 @@ public class NPCThreatComponent : MonoBehaviour
         if (myIsTaunted)
             return myTargetIndex;
 
-        int highestThreatIndex = 0;        
+        int highestThreatIndex = -1;        
         if (myThreatValues.Count == 1)
             return ShouldIgnoreTarget(Players[highestThreatIndex]) ? -1 : highestThreatIndex;
 

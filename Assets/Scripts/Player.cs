@@ -94,6 +94,7 @@ public class Player : Character
         gnomeAppearance.EquipItemInHand(aClassData.myRightItem, false);
 
         GetComponent<Stats>().myAutoAttackDamage = aClassData.myAutoAttackDamage;
+        GetComponent<Stats>().myAutoAttackDamageMitigator = aClassData.myAutoAttackDamageMitigator;
         GetComponent<CastingComponent>().myAutoAttackCooldownReset = aClassData.myTimeBetweenAutoAttacks;
     }
 }

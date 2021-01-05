@@ -30,4 +30,5 @@ public class ClassData : ScriptableObject
     [Space(2)]
     public int myAutoAttackDamage = 20;
     public float myTimeBetweenAutoAttacks = 1.2f;
+    public float myAutoAttackDamageMitigator = 1.0f;
 }

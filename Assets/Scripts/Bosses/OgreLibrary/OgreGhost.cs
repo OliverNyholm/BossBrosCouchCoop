@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OgreGhost : NPCComponent
 {
-    private GameObject myPlayer = null;
+    private PlayerMovementComponent myPlayerMovementComponent = null;
 
     private List<GameObject> myCheckpoints = new List<GameObject>(5);
 
@@ -39,7 +39,7 @@ public class OgreGhost : NPCComponent
 
     public override void Reset()
     {
-        myPlayer = null;
+        myPlayerMovementComponent = null;
         GetComponent<Collider>().enabled = true;
         HasReachedTop = false;
     }
@@ -48,13 +48,21 @@ public class OgreGhost : NPCComponent
     {
         base.Update();
 
-        if (myPlayer)
-            myPlayer.transform.position = transform.position;
+        if (!myPlayerMovementComponent)
+            return;
+
+        if (!myPlayerMovementComponent.IsMovementDisabled())
+        {
+            myPlayerMovementComponent = null;
+            return;
+        }
+
+        myPlayerMovementComponent.transform.position = transform.position;
     }
 
     public void OnTriggerEnter(Collider aOther)
     {
-        if (myPlayer)
+        if (myPlayerMovementComponent)
             return;
 
         if (!aOther.GetComponent<Player>())
@@ -64,8 +72,8 @@ public class OgreGhost : NPCComponent
         if (movementComponent.IsMovementDisabled())
             return;
 
-        myPlayer = aOther.gameObject;
-        movementComponent.SetEnabledMovement(false);
+        myPlayerMovementComponent = movementComponent;
+        myPlayerMovementComponent.SetEnabledMovement(false);
     }
 
     protected override void OnDeath()
@@ -73,10 +81,10 @@ public class OgreGhost : NPCComponent
         base.OnDeath();
         GetComponent<Collider>().enabled = false;
 
-        if (myPlayer)
+        if (myPlayerMovementComponent)
         {
-            myPlayer.GetComponent<PlayerMovementComponent>().SetEnabledMovement(true);
-            myPlayer = null;
+            myPlayerMovementComponent.SetEnabledMovement(true);
+            myPlayerMovementComponent = null;
         }
     }
 

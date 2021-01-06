@@ -63,7 +63,10 @@ public class PlayerMovementComponent : MovementComponent
     protected virtual void Update()
     {
         if (myIsMovementDisabled)
+        {
+            RotatePlayerWithoutVelocity();
             return;
+        }
 
         myVelocity.y -= myGravity * Time.deltaTime;
         myController.Move(myVelocity * Time.deltaTime);
@@ -277,6 +280,17 @@ public class PlayerMovementComponent : MovementComponent
         {
             myAnimatorWrapper.SetTrigger(AnimationVariable.Land);
         }
+    }
+
+    private void RotatePlayerWithoutVelocity()
+    {
+        Vector2 leftStickAxis = myPlayerControls.Movement;
+        Vector3 direction = (leftStickAxis.x * myCameraXZTransform.myRight + leftStickAxis.y * myCameraXZTransform.myForwards).normalized;
+
+        if (direction == Vector3.zero)
+            return;
+
+        transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
     }
 
     private void RotatePlayer()

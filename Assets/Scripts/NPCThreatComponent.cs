@@ -102,7 +102,7 @@ public class NPCThreatComponent : MonoBehaviour
 
         int highestThreatIndex = -1;        
         if (myThreatValues.Count == 1)
-            return ShouldIgnoreTarget(Players[highestThreatIndex]) ? -1 : highestThreatIndex;
+            return ShouldIgnoreTarget(Players[0]) ? -1 : highestThreatIndex;
 
         float timeNow = Time.time;
         float highestThreatValue = float.MinValue;

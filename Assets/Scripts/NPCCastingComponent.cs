@@ -40,7 +40,9 @@ public class NPCCastingComponent : CastingComponent
             return true;
         }
 
-        myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
+        if (myAnimatorWrapper)
+            myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
+
         myUIComponent.SetCastbarStartValues(spellScript);
 
         myCastingRoutine = StartCoroutine(CastbarProgress(aSpell, aTarget, aSpawnTransform, aShouldIgnoreCastability));
@@ -78,7 +80,9 @@ public class NPCCastingComponent : CastingComponent
             SpawnSpell(aSpell, myTargetingComponent.SpellTarget, aSpawnTransform);
             if (myResource)
                 GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
-            myAnimatorWrapper.SetTrigger(AnimationVariable.CastingDone);
+            if (myAnimatorWrapper)
+                myAnimatorWrapper.SetTrigger(AnimationVariable.CastingDone);
+
             myTargetingComponent.SetTarget(myTargetingComponent.Target);
         }
     }
@@ -92,7 +96,8 @@ public class NPCCastingComponent : CastingComponent
         float rate = 1.0f / castSpeed;
         float progress = 0.0f;
 
-        myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
+        if (myAnimatorWrapper)
+            myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
 
         while (progress <= 1.0f)
         {
@@ -103,7 +108,8 @@ public class NPCCastingComponent : CastingComponent
             if (!aSpell.myIsCastableWhileMoving && GetComponent<PlayerMovementComponent>().IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
             {
                 //myCastbar.SetCastTimeText("Cancelled");
-                myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
+                if (myAnimatorWrapper)
+                    myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
                 stats.SetStunned(0.0f);
                 StopCasting(true);
                 PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());
@@ -172,7 +178,8 @@ public class NPCCastingComponent : CastingComponent
             return;
         }
 
-        myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
+        if (myAnimatorWrapper)
+            myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
         myAutoAttackCooldown = myAutoAttackCooldownReset;
 
         GameObject target = myTargetingComponent.Target;

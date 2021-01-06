@@ -261,6 +261,7 @@ public class PlayerCastingComponent : CastingComponent
     {
         GameObject spell = myClass.GetSpell(aKeyIndex);
         Spell spellScript = spell.GetComponent<Spell>();
+        bool isChannel = spellScript as ChannelSpell;
 
         GetComponent<AudioSource>().clip = spellScript.GetSpellSFX().myCastSound;
         GetComponent<AudioSource>().Play();
@@ -276,7 +277,8 @@ public class PlayerCastingComponent : CastingComponent
 
             progress += rate * Time.deltaTime;
 
-            if (InterruptDueToMovement(spellScript) || Input.GetKeyDown(KeyCode.Escape))
+            bool releasedChannel = isChannel && WasSpellChannelButtonReleased(aKeyIndex);
+            if (InterruptDueToMovement(spellScript) || releasedChannel || Input.GetKeyDown(KeyCode.Escape))
             {
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);

@@ -11,6 +11,8 @@ public class OgreGhost : NPCComponent
     [SerializeField]
     private List<GameObject> myAvailableCheckpoints = new List<GameObject>(5);
 
+    public List<GameObject> Players { get; set; }
+
     public bool HasReachedTop { get; set; }
 
     protected override void Awake()
@@ -29,6 +31,8 @@ public class OgreGhost : NPCComponent
 
         if (!hasCheckpointsManuallySet)
             myAvailableCheckpoints.Shuffle();
+
+        Players = FindObjectOfType<TargetHandler>().GetAllPlayers();
 
         HasReachedTop = hasCheckpointsManuallySet;
     }

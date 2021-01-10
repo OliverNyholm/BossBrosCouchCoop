@@ -24,6 +24,12 @@ public class LevelCompletion : MonoBehaviour
     private List<bool> myCompletedGoals;
 
     private Subscriber mySubscriber;
+    private LevelProgression myLevelProgression;
+
+    private void Awake()
+    {
+        myLevelProgression = FindObjectOfType<LevelProgression>();
+    }
 
     void Start()
     {
@@ -73,7 +79,8 @@ public class LevelCompletion : MonoBehaviour
         if (goalCompleted && AreAllGoalsCompleted())
         {
             Debug.Log("Next Level Unlocked!");
-            FindObjectOfType<LevelProgression>().UnlockLevels();
+            if (myLevelProgression)
+                myLevelProgression.UnlockLevels();
         }
     }
 

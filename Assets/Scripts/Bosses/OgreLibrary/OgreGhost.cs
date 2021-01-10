@@ -13,6 +13,9 @@ public class OgreGhost : NPCComponent
 
     public List<GameObject> Players { get; set; }
 
+    private float myDroppedPlayerTimestamp = 0;
+
+    public bool HasPlayer { get { return myPlayerMovementComponent != null; } }
     public bool HasReachedTop { get; set; }
 
     protected override void Awake()
@@ -65,6 +68,9 @@ public class OgreGhost : NPCComponent
         if (myPlayerMovementComponent)
             return;
 
+        if (Time.time - myDroppedPlayerTimestamp < 1.0f)
+            return;
+
         if (!aOther.GetComponent<Player>())
             return;
 
@@ -72,6 +78,7 @@ public class OgreGhost : NPCComponent
         if (movementComponent.IsMovementDisabled())
             return;
 
+        Debug.Log("Catch Player");
         myPlayerMovementComponent = movementComponent;
         myPlayerMovementComponent.SetEnabledMovement(false);
     }
@@ -105,5 +112,13 @@ public class OgreGhost : NPCComponent
 
             myAvailableCheckpoints.Shuffle();
         }
+    }
+
+    public void DropPlayer()
+    {
+        myPlayerMovementComponent.SetEnabledMovement(true);
+        myPlayerMovementComponent = null;
+
+        myDroppedPlayerTimestamp = Time.time;
     }
 }

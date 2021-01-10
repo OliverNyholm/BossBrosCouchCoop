@@ -467,7 +467,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 141060127}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.79, y: -13.82, z: 1.88}
+  m_LocalPosition: {x: -1.5, y: -13.82, z: 6.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1558917867}
@@ -485,6 +485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f365965198ef3a458e8501901c568f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myOrder: 0
 --- !u!1001 &159709222
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -844,12 +845,12 @@ PrefabInstance:
     - target: {fileID: 1881610309103855588, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.47
+      value: -0.92
       objectReference: {fileID: 0}
     - target: {fileID: 1881610309103855588, guid: d8b565127c3119344929382d8a3031f9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 18.12
+      value: 0.26
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8b565127c3119344929382d8a3031f9, type: 3}
@@ -1304,7 +1305,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 608784577}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.12, y: -13.82, z: 17.7}
+  m_LocalPosition: {x: 10.53, y: -13.82, z: 20.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1558917867}
@@ -1322,6 +1323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f365965198ef3a458e8501901c568f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myOrder: 2
 --- !u!1001 &634445673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1596,31 +1598,11 @@ PrefabInstance:
     - target: {fileID: 4652011594544444758, guid: 6ff42d003d48fe940b9bec4a40b4f018,
         type: 3}
       propertyPath: myAvailableCheckpoints.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4652011594544444758, guid: 6ff42d003d48fe940b9bec4a40b4f018,
         type: 3}
       propertyPath: myAvailableCheckpoints.Array.data[0]
-      value: 
-      objectReference: {fileID: 608784577}
-    - target: {fileID: 4652011594544444758, guid: 6ff42d003d48fe940b9bec4a40b4f018,
-        type: 3}
-      propertyPath: myAvailableCheckpoints.Array.data[1]
-      value: 
-      objectReference: {fileID: 141060127}
-    - target: {fileID: 4652011594544444758, guid: 6ff42d003d48fe940b9bec4a40b4f018,
-        type: 3}
-      propertyPath: myAvailableCheckpoints.Array.data[2]
-      value: 
-      objectReference: {fileID: 942055674}
-    - target: {fileID: 4652011594544444758, guid: 6ff42d003d48fe940b9bec4a40b4f018,
-        type: 3}
-      propertyPath: myAvailableCheckpoints.Array.data[3]
-      value: 
-      objectReference: {fileID: 141060127}
-    - target: {fileID: 4652011594544444758, guid: 6ff42d003d48fe940b9bec4a40b4f018,
-        type: 3}
-      propertyPath: myAvailableCheckpoints.Array.data[4]
       value: 
       objectReference: {fileID: 942055674}
     - target: {fileID: 6224901738290977315, guid: 6ff42d003d48fe940b9bec4a40b4f018,
@@ -2130,7 +2112,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 942055674}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.95, y: -15.25, z: 17.47}
+  m_LocalPosition: {x: -13.82, y: -15.25, z: 17.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1558917867}
@@ -2148,6 +2130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f365965198ef3a458e8501901c568f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myOrder: 3
 --- !u!4 &955437225 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9ba68ad1dbce6354194b5ad9817e2bdf,
@@ -3704,6 +3687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f365965198ef3a458e8501901c568f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myOrder: 4
 --- !u!1001 &1523855287
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3876,6 +3860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f365965198ef3a458e8501901c568f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myOrder: 1
 --- !u!1 &1625215063
 GameObject:
   m_ObjectHideFlags: 0
@@ -10769,7 +10754,7 @@ PrefabInstance:
         Ghost","SpritemyNotifySprite":25,"ColormyNofityColor":"RGBA(0.660, 0.000,
         0.896, 1.000)"}]}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(81.1087952,114.964844)"},"ID":45,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"BooleanmyShouldNotifyTimer":false,"ColormyNofityColor":"RGBA(0.000,
         0.000, 0.000, 0.000)"}]}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(759.3199,128.954834)"},"ID":46,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":0},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-0.625,104.495972)"},"ID":47,"Name":"Ghost
-        Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-213.17569,166.052246)"},"ID":48,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":6},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"BooleanmyShouldNotifyTimer":false,"StringmyNotifyText":"Incoming
+        Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-213.17569,166.052246)"},"ID":48,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":10},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"BooleanmyShouldNotifyTimer":false,"StringmyNotifyText":"Incoming
         Ghost","SpritemyNotifySprite":26,"ColormyNofityColor":"RGBA(0.660, 0.000,
         0.896, 1.000)"},{"Type":"GetRandomGameObject","NodeData":{"Offset":"(-57.69911,174.95845)"},"ID":49,"Name":"Get
         Random Game Object","Instant":true,"List`1myListOfGameObjects":[27,28,29,30,31,32,33,34,35],"SharedGameObjectmyReturnObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"NewGhostLocation","IsShared":true,"IsDynamic":true}},{"Type":"SetTransform","NodeData":{"Offset":"(103.060547,165.519623)"},"ID":50,"Name":"Set

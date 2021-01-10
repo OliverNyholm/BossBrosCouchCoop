@@ -169,7 +169,7 @@ public class NPCThreatComponent : MonoBehaviour
         }
     }
 
-    private void SetTarget(int aTargetIndex)
+    public void SetTarget(int aTargetIndex)
     {
         myTargetingComponent.SetTarget(aTargetIndex == -1 ? null : Players[aTargetIndex]);
         myTargetIndex = aTargetIndex;

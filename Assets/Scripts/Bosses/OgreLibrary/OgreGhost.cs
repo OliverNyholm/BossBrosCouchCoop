@@ -78,7 +78,6 @@ public class OgreGhost : NPCComponent
         if (movementComponent.IsMovementDisabled())
             return;
 
-        Debug.Log("Catch Player");
         myPlayerMovementComponent = movementComponent;
         myPlayerMovementComponent.SetEnabledMovement(false);
     }

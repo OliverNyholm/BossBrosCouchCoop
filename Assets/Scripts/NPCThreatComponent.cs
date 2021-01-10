@@ -23,7 +23,7 @@ public class NPCThreatComponent : MonoBehaviour
     public delegate void OnTaunted();
     public event OnTaunted EventOnTaunted;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         myTargetingComponent = GetComponent<TargetingComponent>();
         myCastingComponent = GetComponent<NPCCastingComponent>();
@@ -64,7 +64,7 @@ public class NPCThreatComponent : MonoBehaviour
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.PlayerDied);
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (myHealth.IsDead())
             return;

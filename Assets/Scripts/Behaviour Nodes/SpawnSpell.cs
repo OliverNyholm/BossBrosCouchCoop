@@ -88,7 +88,7 @@ public class SpawnSpell : Action
 
     public override void OnEnd()
     {
-        if (myHasSpawnedSpell)
+        if (myHasRegisteredForEvent)
         {
             Owner.UnregisterEvent(myEventName, ReceivedEvent);
             Owner.UnregisterEvent(myEventInterruptedName, ReceivedEventInterrupted);
@@ -96,15 +96,23 @@ public class SpawnSpell : Action
 
             myEmptyTransformHolder.transform.parent = PoolManager.Instance.GetEmptyTransformHolder();
         }
+
+        NPCCastingComponent castingComponent = GetComponent<NPCCastingComponent>();
+        if (!myHasSpawnedSpell && castingComponent.IsCasting())
+        {
+            castingComponent.IsInterruptable = true;
+            castingComponent.InterruptSpellCast();
+        }
+
         myHasSpawnedSpell = false;
     }
 
     public override void OnBehaviorComplete()
     {
         // Stop receiving the event when the behavior tree is complete
-        Owner.RegisterEvent(myEventName, ReceivedEvent);
-        Owner.RegisterEvent(myEventInterruptedName, ReceivedEventInterrupted);
-        myHasRegisteredForEvent = true;
+        Owner.UnregisterEvent(myEventName, ReceivedEvent);
+        Owner.UnregisterEvent(myEventInterruptedName, ReceivedEventInterrupted);
+        myHasRegisteredForEvent = false;
 
         myHasSpawnedSpell = false;
     }

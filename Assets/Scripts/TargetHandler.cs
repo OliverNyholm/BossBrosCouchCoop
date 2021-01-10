@@ -14,11 +14,18 @@ public class TargetHandler : MonoBehaviour
 
     private void Start()
     {
-        myBossHudHandler = FindObjectsOfType<BossHudHandler>()[0];
-
-        for (int index = 0, count = myNPCs.Count; index < count; index++)
+        myBossHudHandler = FindObjectOfType<BossHudHandler>();
+        if(myBossHudHandler)
         {
-            myBossHudHandler.AddBossHud(myNPCs[index]);
+            for (int index = 0, count = myNPCs.Count; index < count; index++)
+            {
+                NPCComponent npcComponent = myNPCs[index].GetComponent<NPCComponent>();
+                if (!npcComponent)
+                    return;
+
+                if (npcComponent.CreateHudFromTargetHandler())
+                    myBossHudHandler.AddBossHud(myNPCs[index]);
+            }
         }
 
         for (int index = 0; index < myNPCs.Count; index++)
@@ -57,6 +64,9 @@ public class TargetHandler : MonoBehaviour
 
     public void AddEnemy(GameObject aGameObject, bool aShouldAddUI)
     {
+        if (myNPCs.Contains(aGameObject))
+            return;
+
         myNPCs.Add(aGameObject);
         for (int playerIndex = 0; playerIndex < myPlayers.Count; playerIndex++)
         {
@@ -80,15 +90,15 @@ public class TargetHandler : MonoBehaviour
         myNPCs.Clear();
     }
 
-    public string GetEnemyName(int aInstanceID)
+    public GameObject GetEnemy(int aInstanceID)
     {
         for (int index = 0; index < myNPCs.Count; index++)
         {
             if (myNPCs[index].GetInstanceID() == aInstanceID)
-                return myNPCs[index].GetComponent<Character>().name;
+                return myNPCs[index];
         }
 
-        return "Null";
+        return null;
     }
 
     public List<GameObject> GetAllEnemies()

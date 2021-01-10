@@ -95,14 +95,21 @@ public class DamageMeter : MonoBehaviour
     private void SortDamageMeter()
     {
         int index = 0;
+        int highestDamageDone = -1;
         foreach (KeyValuePair<int, DamagerData> damager in myDamagers.OrderByDescending(key => key.Value.myDamage))
         {
-            float percentage = (float)damager.Value.myDamage / myTotalDamage;
+            if (highestDamageDone < 0.0f)
+                highestDamageDone = damager.Value.myDamage;
+
+            if (highestDamageDone <= 0.0f) //Don't want to divide by zero if damage somehow is 0
+                break;
+
+            float percentage = (float)damager.Value.myDamage / highestDamageDone;
             Image damageBar = transform.GetChild(index).GetComponent<Image>();
             damageBar.fillAmount = percentage;
             damageBar.color = damager.Value.myColor;
 
-            transform.GetChild(index).GetComponentInChildren<TextMeshProUGUI>().text = ((float)damager.Value.myDamage / 1000).ToString("0.0");
+            transform.GetChild(index).GetComponentInChildren<TextMeshProUGUI>().text = ((float)damager.Value.myDamage).ToString("0");
             index++;
         }
     }

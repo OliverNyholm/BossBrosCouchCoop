@@ -26,8 +26,16 @@ public abstract class PoolableObject : MonoBehaviour
             myObjectPool.ReturnObject(gameObject);
         else
         {
-            Debug.LogError(gameObject.name + "is going to be deleted!");
-            Destroy(gameObject);
+            ObjectPool objectPool = PoolManager.Instance.FindObjectPool(GetComponent<UniqueID>().GetID());
+            if(objectPool)
+            {
+                objectPool.ReturnObject(gameObject);
+            }
+            else
+            {
+                Debug.LogError(gameObject.name + " is going to be deleted! There existed not pool for it.");
+                Destroy(gameObject);
+            }
         }
     }
 }

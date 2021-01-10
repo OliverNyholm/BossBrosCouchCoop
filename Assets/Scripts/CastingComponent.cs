@@ -17,6 +17,8 @@ public abstract class CastingComponent : MonoBehaviour
     protected float myAutoAttackCooldown;
     public float myAutoAttackCooldownReset = 1.0f;
 
+    protected float mySpellCastingMovementSpeedReducement = 0.0f;
+
     protected virtual void Awake()
     {
         myAnimatorWrapper = GetComponent<AnimatorWrapper>();
@@ -41,16 +43,29 @@ public abstract class CastingComponent : MonoBehaviour
         }
     }
 
-    public abstract IEnumerator SpellChannelRoutine(float aDuration, float aStunDuration);
+    public abstract IEnumerator SpellChannelRoutine(Spell aSpell, float aDuration, float aStunDuration);
 
     public void StartChannel(float aDuration, Spell aSpellScript, GameObject aChannelGO, float aStunDuration = 1.0f)
     {
-        GetComponent<UIComponent>().SetCastbarChannelingStartValues(aSpellScript, aDuration);
-        GetComponent<AudioSource>().clip = aSpellScript.GetSpellSFX().myCastSound;
-        GetComponent<AudioSource>().Play();
+        if(aDuration > 0.0f) //No castbar for endless channel
+            GetComponent<UIComponent>().SetCastbarChannelingStartValues(aSpellScript, aDuration);
+
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.clip = aSpellScript.GetSpellSFX().myChannelSound;
+        audioSource.Play();
+
+        if (aSpellScript.myIsCastableWhileMoving)
+        {
+            mySpellCastingMovementSpeedReducement = aSpellScript.mySpeedWhileCastingReducement;
+            myStats.mySpeedMultiplier -= mySpellCastingMovementSpeedReducement;
+        }
+        else
+        {
+            mySpellCastingMovementSpeedReducement = 0.0f;
+        }
 
         myChannelGameObject = aChannelGO;
-        myCastingRoutine = StartCoroutine(SpellChannelRoutine(aDuration, aStunDuration));
+        myCastingRoutine = StartCoroutine(SpellChannelRoutine(aSpellScript, aDuration, aStunDuration));
     }
 
     protected abstract bool IsAbleToCastSpell(Spell aSpellScript);
@@ -74,6 +89,8 @@ public abstract class CastingComponent : MonoBehaviour
         GetComponent<AudioSource>().Stop();
 
         GetComponent<UIComponent>().FadeCastbar(aWasInterruped);
+
+        myStats.mySpeedMultiplier += mySpellCastingMovementSpeedReducement;
 
         if (myAnimatorWrapper)
         {

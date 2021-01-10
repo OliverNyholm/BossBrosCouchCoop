@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AoeHeal : Spell
+public class AoeHeal : ChannelSpell
 {
-    [SerializeField]
-    private float myChannelTime;
-
+    private float myChannelCountdown = 0.0f;
     private float myIntervalTimer;
     private float myCurrentIntervalTimer;
     private int myHealthPerTick;
@@ -23,15 +21,13 @@ public class AoeHeal : Spell
         myIntervalTimer = myChannelTime / NrOfTicks;
         myCurrentIntervalTimer = 0.0f;
 
-        myHealthPerTick = myDamage / NrOfTicks;
+        myHealthPerTick = myHealValue / NrOfTicks;
 
-        myChannelTime += 0.02f;
+        myChannelCountdown = myChannelTime;
 
         StartCoroutine();
         myVFX = SpawnVFX(myChannelTime + 1.5f);
         ParticleSystem particleSystem = myVFX.GetComponent<ParticleSystem>();
-        ParticleSystem.MainModule main = particleSystem.main;
-        main.duration = myChannelTime;
 
         ParticleSystem.ShapeModule shape = particleSystem.shape;
         shape.radius = myRange;
@@ -57,14 +53,14 @@ public class AoeHeal : Spell
             HealNearby();
         }
 
-        myChannelTime -= Time.deltaTime;
-        if (myChannelTime <= 0.0f)
+        myChannelCountdown -= Time.deltaTime;
+        if (myChannelCountdown <= 0.0f)
             ReturnToPool();
     }
 
     private void StartCoroutine()
     {
-        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, gameObject);
+        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, gameObject, 0.0f);
     }
 
     private void HealNearby()
@@ -82,10 +78,8 @@ public class AoeHeal : Spell
         }
     }
 
-    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
+    public override bool IsCastableWhileMoving()
     {
-        base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
-
-        aPoolManager.AddPoolableObjects(myVFX, myVFX.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
+        return myIsCastableWhileMoving;
     }
 }

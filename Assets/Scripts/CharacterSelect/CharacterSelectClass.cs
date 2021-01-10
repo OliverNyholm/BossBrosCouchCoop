@@ -5,6 +5,13 @@ using UnityEngine;
 public class CharacterSelectClass : Class
 {
     private CharacterSelector myCharacterSelector;
+    private CharacterSelectCastingComponent myCastingComponent;
+
+    public override void Awake()
+    {
+        base.Awake();
+        myCastingComponent = GetComponent<CharacterSelectCastingComponent>();
+    }
 
     protected override void Start() { }
 
@@ -26,6 +33,7 @@ public class CharacterSelectClass : Class
     {
         PoolManager poolManager = PoolManager.Instance;
 
+        myCastingComponent.OnClassChanged();
         mySpells = aClassData.mySpells.ToArray();
 
         CharacterSelectUIComponent csUIComponent = myUIComponent as CharacterSelectUIComponent;
@@ -35,15 +43,15 @@ public class CharacterSelectClass : Class
             if (mySpells[index] == null)
             {
                 csUIComponent.SetSpellHud(null, aClassData.myClassColor,  index);
-                myCooldownTimers[index] = 0.01f;
                 continue;
             }
 
             Spell spell = mySpells[index].GetComponent<Spell>();
-            spell.CreatePooledObjects(poolManager, 3);
+            spell.CreatePooledObjects(poolManager, spell.myPoolSize * 2);
 
             csUIComponent.SetSpellHud(spell, aClassData.myClassColor, index);
-            myCooldownTimers[index] = 0.01f;
+            myCooldownTimers[index] = 0.0f;
+            myUIComponent.SetSpellCooldownText(index, myCooldownTimers[index]);
         }
     }
 }

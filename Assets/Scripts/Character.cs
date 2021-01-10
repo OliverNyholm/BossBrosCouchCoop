@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Character : MonoBehaviour
+public abstract class Character : PoolableObject
 {
     protected AnimatorWrapper myAnimator;
 
@@ -17,7 +17,6 @@ public abstract class Character : MonoBehaviour
     {
         if (!myAnimator)
             SetComponents();
-
     }
 
     private void SetComponents()
@@ -37,7 +36,7 @@ public abstract class Character : MonoBehaviour
 
     public bool CanRaycastToObject(GameObject anObject)
     {
-        Vector3 hardcodedEyePosition = new Vector3(0.0f, 0.7f, 0.0f);
+        Vector3 hardcodedEyePosition = new Vector3(0.0f, 1.4f, 0.0f);
         Vector3 infrontOfPlayer = (transform.position + hardcodedEyePosition) + transform.forward;
         Vector3 direction = (anObject.transform.position + hardcodedEyePosition) - infrontOfPlayer;
 
@@ -58,5 +57,10 @@ public abstract class Character : MonoBehaviour
         AnimatorWrapper animatorWrapper = GetComponent<AnimatorWrapper>();
         if (animatorWrapper)
             animatorWrapper.SetTrigger(AnimationVariable.Death);
+    }
+
+    public override void Reset()
+    {
+        myHealth.SetHealthPercentage(1.0f);
     }
 }

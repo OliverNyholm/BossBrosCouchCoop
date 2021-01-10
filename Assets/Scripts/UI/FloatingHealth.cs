@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class FloatingHealth : PoolableObject
 {
-    private TextMesh myTextMesh;
+    private TextMeshPro myTextMesh;
     public float myDuration;
     public float mySpeed;
 
@@ -21,7 +22,7 @@ public class FloatingHealth : PoolableObject
 
     private void Awake()
     {
-        myTextMesh = transform.GetComponent<TextMesh>();
+        myTextMesh = transform.GetComponentInChildren<TextMeshPro>();
 
         myInitialScale = transform.localScale;
         myMainCamera = Camera.main;
@@ -40,7 +41,8 @@ public class FloatingHealth : PoolableObject
 
     public void SetText(string aText, Color aColor, Vector3 aSpawnLocation)
     {
-        Vector3 randomOffset = new Vector2(Random.Range(myRandomXRange.x, myRandomXRange.y), Random.Range(myRandomYRange.x, myRandomYRange.y));
+        float cameraDistanceMultiplier = (aSpawnLocation - myMainCamera.transform.position).magnitude * 0.1f;
+        Vector3 randomOffset = new Vector2(Random.Range(myRandomXRange.x, myRandomXRange.y) * cameraDistanceMultiplier, Random.Range(myRandomYRange.x, myRandomYRange.y));
         transform.position = aSpawnLocation + randomOffset;
 
         myTextMesh.text = aText;

@@ -52,10 +52,11 @@ MonoBehaviour:
   myTutorialInfo: Ice Spear is the Wizards default spell. Casting it will spawn a
     spear of ice, that flies towards your enemy and damaging it.
   myName: Ice Spear
+  myPoolSize: 3
   mySpellType: 1
   mySpellTarget: 4
   myAnimationType: 0
-  myDamage: 200
+  myDamage: 250
   myHealValue: 0
   myResourceCost: 50
   myThreatModifier: 1
@@ -66,15 +67,17 @@ MonoBehaviour:
   myStunDuration: 0
   myCastbarColor: {r: 0, g: 0.77544075, b: 0.8962264, a: 1}
   mySpellIcon: {fileID: 21300000, guid: 9764fa63aed91ae46a9ec2374d186842, type: 3}
-  myIsCastableWhileMoving: 1
+  myIsCastableWhileMoving: 0
+  mySpeedWhileCastingReducement: 0
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
   mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
-    myCastSound: {fileID: 8300000, guid: f7d0358a315d03f45bd160939d323130, type: 3}
-    mySpawnSound: {fileID: 0}
+    myCastSound: {fileID: 0}
+    mySpawnSound: {fileID: 8300000, guid: 1a3b2407ad019844daa17f229a3c7d69, type: 3}
     myHitSound: {fileID: 8300000, guid: ceba3e5527cb1c74e9cc7357db5caf32, type: 3}
+  mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
 --- !u!82 &-5337661205673092358
@@ -9658,8 +9661,8 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4bae358dfd228274db0ad2a022413b45, type: 2}
-  - {fileID: 2100000, guid: 4bae358dfd228274db0ad2a022413b45, type: 2}
+  - {fileID: 2100000, guid: 1b5c59bb20da1894ebaaa53d7db72a86, type: 2}
+  - {fileID: 2100000, guid: 1b5c59bb20da1894ebaaa53d7db72a86, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9693,11 +9696,11 @@ ParticleSystemRenderer:
   m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 0
+  m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
-  m_VertexStreams: 00010304
+  m_VertexStreams: 000304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -14421,8 +14424,8 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4bae358dfd228274db0ad2a022413b45, type: 2}
-  - {fileID: 2100000, guid: 4bae358dfd228274db0ad2a022413b45, type: 2}
+  - {fileID: 2100000, guid: 1b5c59bb20da1894ebaaa53d7db72a86, type: 2}
+  - {fileID: 2100000, guid: 1b5c59bb20da1894ebaaa53d7db72a86, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14456,11 +14459,11 @@ ParticleSystemRenderer:
   m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 0
+  m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
-  m_VertexStreams: 00010304
+  m_VertexStreams: 000304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}

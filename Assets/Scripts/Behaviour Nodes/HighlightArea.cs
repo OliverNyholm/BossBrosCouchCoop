@@ -10,6 +10,8 @@ public class HighlightArea : Action
     private GameObject myHightlightObject = null;
     private uint myUniqueID = uint.MaxValue;
 
+    public float myHighlightRadius = 1.0f;
+
     public SharedVector3 mySpawnPosition = null;
 
     public float myHighlightDuration;
@@ -28,11 +30,17 @@ public class HighlightArea : Action
         myTimer = myHighlightDuration;
 
         myHightlightObject = PoolManager.Instance.GetPooledObject(myUniqueID);
+        if (myHightlightObject)
+        {
+            myTimer = 0.0f;
+            return;
+        }
+
         myHightlightObject.transform.position = mySpawnPosition.Value;
 
         HighlightAreaLogic logic = myHightlightObject.GetComponent<HighlightAreaLogic>();
         if (logic)
-            logic.SetData(myHighlightDuration);
+            logic.SetData(myHighlightDuration, myHighlightRadius);
     }
 
     public override TaskStatus OnUpdate()

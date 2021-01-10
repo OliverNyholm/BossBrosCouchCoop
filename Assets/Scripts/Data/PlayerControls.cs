@@ -12,11 +12,19 @@ public class PlayerControls : PlayerActionSet
     public PlayerAction Down;
     public PlayerAction Jump;
     public PlayerAction TargetEnemy;
+    public PlayerAction TargetPlayerOne;
+    public PlayerAction TargetPlayerTwo;
+    public PlayerAction TargetPlayerThree;
+    public PlayerAction TargetPlayerFour;
     public PlayerAction Start;
     public PlayerAction Pause;
     public PlayerAction Restart;
     public PlayerAction ToggleInfo;
     public PlayerAction ToggleUIText;
+    public PlayerAction NumpadOne;
+    public PlayerAction NumpadTwo;
+    public PlayerAction NumpadThree;
+    public PlayerAction NumpadFour;
     public PlayerTwoAxisAction Movement;
 
     public bool myIsController = false;
@@ -34,11 +42,19 @@ public class PlayerControls : PlayerActionSet
         Down = CreatePlayerAction("Down");
         Jump = CreatePlayerAction("Jump");
         TargetEnemy = CreatePlayerAction("TargetEnemy");
+        TargetPlayerOne = CreatePlayerAction("TargetPlayerOne");
+        TargetPlayerTwo = CreatePlayerAction("TargetPlayerTwo");
+        TargetPlayerThree = CreatePlayerAction("TargetPlayerThree");
+        TargetPlayerFour = CreatePlayerAction("TargetPlayerFour");
         Start = CreatePlayerAction("Start");
         Pause = CreatePlayerAction("Pause");
         Restart = CreatePlayerAction("Restart");
         ToggleInfo = CreatePlayerAction("ToggleSpellInfo");
         ToggleUIText = CreatePlayerAction("ToggleUIText");
+        NumpadOne = CreatePlayerAction("NumpadOne");
+        NumpadTwo = CreatePlayerAction("NumpadTwo");
+        NumpadThree = CreatePlayerAction("NumpadThree");
+        NumpadFour = CreatePlayerAction("NumpadFour");
         Movement = CreateTwoAxisPlayerAction(Left, Right, Down, Up);
     }
 
@@ -47,11 +63,11 @@ public class PlayerControls : PlayerActionSet
     {
         var actions = new PlayerControls();
 
-        actions.Action1.AddDefaultBinding(Key.Key1);
-        actions.Action2.AddDefaultBinding(Key.Key3);
+        actions.Action1.AddDefaultBinding(Key.DownArrow);
+        actions.Action2.AddDefaultBinding(Key.RightArrow);
         actions.Action2.AddDefaultBinding(Key.Backspace);
-        actions.Action3.AddDefaultBinding(Key.Key2);
-        actions.Action4.AddDefaultBinding(Key.Key4);
+        actions.Action3.AddDefaultBinding(Key.LeftArrow);
+        actions.Action4.AddDefaultBinding(Key.UpArrow);
 
         actions.Action3.AddDefaultBinding(Key.Backspace);
 
@@ -63,6 +79,10 @@ public class PlayerControls : PlayerActionSet
         actions.Jump.AddDefaultBinding(Key.Space);
 
         actions.TargetEnemy.AddDefaultBinding(Key.Tab);
+        actions.TargetPlayerOne.AddDefaultBinding(Key.Key1);
+        actions.TargetPlayerTwo.AddDefaultBinding(Key.Key2);
+        actions.TargetPlayerThree.AddDefaultBinding(Key.Key3);
+        actions.TargetPlayerFour.AddDefaultBinding(Key.Key4);
 
         actions.Start.AddDefaultBinding(Key.Return);
         actions.Pause.AddDefaultBinding(Key.Escape);
@@ -70,6 +90,11 @@ public class PlayerControls : PlayerActionSet
 
         actions.ToggleInfo.AddDefaultBinding(Key.I);
         actions.ToggleUIText.AddDefaultBinding(Key.U);
+
+        actions.NumpadOne.AddDefaultBinding(Key.Pad1);
+        actions.NumpadTwo.AddDefaultBinding(Key.Pad2);
+        actions.NumpadThree.AddDefaultBinding(Key.Pad3);
+        actions.NumpadFour.AddDefaultBinding(Key.Pad4);
 
         actions.myIsController = false;
 
@@ -93,6 +118,10 @@ public class PlayerControls : PlayerActionSet
 
         actions.TargetEnemy.AddDefaultBinding(InputControlType.LeftTrigger);
         actions.TargetEnemy.AddDefaultBinding(InputControlType.LeftBumper);
+        actions.TargetPlayerOne.AddDefaultBinding(InputControlType.RightStickLeft);
+        actions.TargetPlayerTwo.AddDefaultBinding(InputControlType.RightStickUp);
+        actions.TargetPlayerThree.AddDefaultBinding(InputControlType.RightStickDown);
+        actions.TargetPlayerFour.AddDefaultBinding(InputControlType.RightStickRight);
 
         actions.Jump.AddDefaultBinding(InputControlType.RightTrigger);
         actions.Jump.AddDefaultBinding(InputControlType.RightBumper);
@@ -104,6 +133,8 @@ public class PlayerControls : PlayerActionSet
 
         actions.ToggleInfo.AddDefaultBinding(InputControlType.DPadUp);
         actions.ToggleUIText.AddDefaultBinding(InputControlType.DPadRight);
+
+        actions.NumpadFour.AddDefaultBinding(InputControlType.DPadLeft);
 
         actions.myIsController = true;
 

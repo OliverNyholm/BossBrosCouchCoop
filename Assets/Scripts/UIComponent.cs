@@ -14,7 +14,13 @@ public class UIComponent : MonoBehaviour
     [SerializeField]
     private bool myUseCastbarAboveCharacter = true;
 
-    private CharacterHUD myCharacterHUD;
+    [SerializeField]
+    private bool myUseMinionHud = false;
+    private Canvas myMinionCanvas = null;
+
+    [SerializeField]
+    private CharacterHUD myCharacterHUD = null;
+
     private CharacterHUD myTargetHUD;
     protected Castbar myCastbar;
 
@@ -27,14 +33,23 @@ public class UIComponent : MonoBehaviour
     {
         myHealth = GetComponent<Health>();
         myResource = GetComponent<Resource>();
+
+        if (myUseMinionHud)
+            myMinionCanvas = myCharacterHUD.GetComponent<Canvas>();
     }
 
     public virtual void SetupHud(Transform aUIParent)
     {
-        aUIParent.GetComponent<CanvasGroup>().alpha = 1.0f;
-
-        myCharacterHUD = aUIParent.Find("CharacterHud").GetComponent<CharacterHUD>();
-        myTargetHUD = aUIParent.Find("TargetHud").GetComponent<CharacterHUD>();
+        if (!myUseMinionHud)
+        {
+            myCharacterHUD = aUIParent.Find("CharacterHud").GetComponent<CharacterHUD>();
+            myTargetHUD = aUIParent.Find("TargetHud").GetComponent<CharacterHUD>();
+            aUIParent.GetComponent<CanvasGroup>().alpha = 1.0f;
+        }
+        else
+        {
+            myMinionCanvas.worldCamera = Camera.main;
+        }
 
         if (myUseCastbarAboveCharacter)
         {
@@ -54,8 +69,7 @@ public class UIComponent : MonoBehaviour
         myCharacterHUD.SetAvatarSprite(myAvatarSprite);
         myCharacterHUD.SetHudColor(myCharacterColor);
 
-        Health health = GetComponent<Health>();
-        health.EventOnHealthChange += ChangeMyHudHealth;
+        myHealth.EventOnHealthChange += ChangeMyHudHealth;
 
         ChangeMyHudHealth(myHealth.GetHealthPercentage(), myHealth.myCurrentHealth.ToString() + "/" + myHealth.myMaxHealth.ToString(), GetComponent<Health>().GetTotalShieldValue(), false);
 
@@ -132,18 +146,33 @@ public class UIComponent : MonoBehaviour
 
         if (myTargetGO == null)
         {
-            myTargetHUD.Hide();
+            if (myTargetHUD)
+                myTargetHUD.Hide();
+            else
+                myCharacterHUD.SetMinionTargetHudColor(Color.black);
+
             return;
         }
 
-        myTargetHUD.Show();
-        aTarget.GetComponent<Health>().EventOnHealthChange += ChangeTargetHudHealth;
-        ChangeTargetHudHealth(aTarget.GetComponent<Health>().GetHealthPercentage(),
-            aTarget.GetComponent<Health>().myCurrentHealth.ToString() + "/" + aTarget.GetComponent<Health>().MaxHealth,
-            aTarget.GetComponent<Health>().GetTotalShieldValue(), false);
 
-        myTargetHUD.SetAvatarSprite(aTarget.GetComponent<UIComponent>().myAvatarSprite);
-        myTargetHUD.SetHudColor(aTarget.GetComponent<UIComponent>().myCharacterColor);
+        UIComponent targetUIComponent = aTarget.GetComponent<UIComponent>();
+        Health targetHealthComponent = aTarget.GetComponent<Health>();
+
+        if (myTargetHUD)
+        {
+            myTargetHUD.Show();
+            targetHealthComponent.EventOnHealthChange += ChangeTargetHudHealth;
+            ChangeTargetHudHealth(targetHealthComponent.GetHealthPercentage(),
+                targetHealthComponent.myCurrentHealth.ToString() + "/" + targetHealthComponent.MaxHealth,
+                targetHealthComponent.GetTotalShieldValue(), false);
+
+            myTargetHUD.SetAvatarSprite(targetUIComponent.myAvatarSprite);
+            myTargetHUD.SetHudColor(targetUIComponent.myCharacterColor);
+        }
+        else
+        {
+            myCharacterHUD.SetMinionTargetHudColor(targetUIComponent.myCharacterColor);
+        }
     }
 
     public void UnsubscribePreviousTargetHUD()
@@ -185,5 +214,18 @@ public class UIComponent : MonoBehaviour
     public void ToggleUIText(int anInstanceID)
     {
         myCharacterHUD.ToggleUIText(anInstanceID);
+    }
+
+    public bool UseMinionHud()
+    {
+        return myUseMinionHud;
+    }
+
+    public void SetMinionHudEnable(bool anSetEnabled)
+    {
+        if (!myMinionCanvas)
+            myMinionCanvas = myCharacterHUD.GetComponent<Canvas>();
+
+        myMinionCanvas.enabled = anSetEnabled;
     }
 }

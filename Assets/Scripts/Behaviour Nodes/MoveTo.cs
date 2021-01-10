@@ -16,8 +16,8 @@ public class MoveTo : Action
     [BehaviorDesigner.Runtime.Tasks.Tooltip("When reaching target, rotates same directon as gameobject")]
     public bool myShouldApplyGameObjectRotation = false;
 
+    private NPCMovementComponent myMovementComponent;
     private NavMeshAgent myNavmeshAgent;
-    private Animator myAnimator;
 
     private enum TargetType
     {
@@ -29,8 +29,8 @@ public class MoveTo : Action
 
     public override void OnAwake()
     {
+        myMovementComponent = GetComponent<NPCMovementComponent>();
         myNavmeshAgent = GetComponent<NavMeshAgent>();
-        myAnimator = GetComponent<Animator>();
     }
 
     public override void OnStart()
@@ -41,8 +41,6 @@ public class MoveTo : Action
             myTargetType = TargetType.GameObject;
         else
             myTargetType = TargetType.WorldPosition;
-
-        myNavmeshAgent.isStopped = false;
     }
 
     public override TaskStatus OnUpdate()
@@ -62,11 +60,11 @@ public class MoveTo : Action
 
 
 
-        myNavmeshAgent.destination = targetPosition;
+        myMovementComponent.MoveTo(targetPosition);
         float distanceSqr = (new VectorXZ(targetPosition) - new VectorXZ(transform.position)).sqrMagnitude;
         if (distanceSqr <= myStopDistance * myStopDistance && myNavmeshAgent.remainingDistance <= myStopDistance)
         {
-            myNavmeshAgent.destination = transform.position;
+            myMovementComponent.Stop();
 
             if (myShouldApplyGameObjectRotation)
                 transform.rotation = targetRotation;

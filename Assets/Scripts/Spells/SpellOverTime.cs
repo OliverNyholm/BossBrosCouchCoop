@@ -19,7 +19,6 @@ public class SpellOverTime : Spell
     private int myCurrentShieldValue;
     //HoT and DoT
     [HideInInspector] public int myNumberOfTicks = 3;
-    private int myNumberOfTicksDealt;
     private int myTickDamage;
     private float myInterval;
     private float myIntervalTimer;
@@ -27,8 +26,9 @@ public class SpellOverTime : Spell
     private float myLifeTimeLeft;
     private bool myHasReachedTarget;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         myReturnToPoolWhenReachedTarget = false;
     }
 
@@ -41,7 +41,6 @@ public class SpellOverTime : Spell
 
         if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.DOT | SpellOverTimeType.HOT))
         {
-            myNumberOfTicksDealt = 0;
             myTickDamage = myDamage / myNumberOfTicks;
             myInterval = myDuration / myNumberOfTicks;
             myIntervalTimer = 0.0f;
@@ -121,7 +120,7 @@ public class SpellOverTime : Spell
 
         if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.DOT | SpellOverTimeType.HOT))
         {
-            if (!myTarget.GetComponent<Health>().IsDead() && myNumberOfTicksDealt < myNumberOfTicks)
+            if (!myTarget.GetComponent<Health>().IsDead())
                 DealTickEffect();
         }
     }
@@ -158,6 +157,10 @@ public class SpellOverTime : Spell
             if (animatorWrapper)
                 animatorWrapper.SetFloat(AnimationVariable.RunSpeed, aStats.mySpeedMultiplier);
         }
+
+        NPCMovementComponent npcMovementComponent = aStats.GetComponent<NPCMovementComponent>();
+        if (npcMovementComponent)
+            npcMovementComponent.ModifySpeed(aStats.mySpeedMultiplier);
     }
 
     public int SoakDamage(int aDamage)
@@ -181,9 +184,8 @@ public class SpellOverTime : Spell
         return ticksLeft * myTickDamage;
     }
 
-    private void DealTickEffect()
+    protected virtual void DealTickEffect()
     {
-        myNumberOfTicksDealt++;
         if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.DOT))
         {
             myTarget.GetComponent<Health>().TakeDamage(myTickDamage, myParent.GetComponent<UIComponent>().myCharacterColor, myTarget.transform.position);

@@ -43,7 +43,9 @@ public class PlayerUIComponent : UIComponent
         if (myActionButtons[anIndex] == null)
             return;
 
-        myActionButtons[anIndex].GetComponent<ActionKey>().SetCooldown(aDuration);
+        ActionKey actionKey = myActionButtons[anIndex].GetComponent<ActionKey>();
+        if(actionKey)
+            actionKey.SetCooldown(aDuration);
     }
 
     public void SpellPressed(int anIndex)
@@ -61,7 +63,7 @@ public class PlayerUIComponent : UIComponent
         myActionButtons[anIndex].GetComponent<ActionKey>().SpellReleased();
     }
 
-    public void HightlightHealTargeting(int anIndex, bool aShouldPulsate)
+    public void SetSpellPulsating(int anIndex, bool aShouldPulsate)
     {
         myActionButtons[anIndex].GetComponent<ActionKey>().SetPulsation(aShouldPulsate);
     }

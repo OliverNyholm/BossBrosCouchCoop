@@ -27,7 +27,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap:
     MotionVector: User
   disabledShaderPasses:
@@ -49,6 +49,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - Texture2D_E73B7B52:
         m_Texture: {fileID: 2800000, guid: c0d8aec5bc05ae24a94f2b71e97b5cdd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_FC45D68F:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_FCECD482:
@@ -145,11 +149,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Boolean_19AF0E14: 0
+    - Boolean_222C21EC: 0
     - Boolean_25039AB6: 1
     - Boolean_318435FB: 1
+    - Boolean_5FAF97EA: 0
+    - Vector1_225F7129: 1
+    - Vector1_41CF1FDD: 0
     - Vector1_47F1FA8D: 0
     - Vector1_5FEA362D: 2.84
     - Vector1_AA7D73E8: 2.43
+    - Vector1_BD80E60: 0
     - Vector1_C8D48152: 3.72
     - Vector1_CCFC6136: 3.35
     - Vector1_DB45B43B: 0

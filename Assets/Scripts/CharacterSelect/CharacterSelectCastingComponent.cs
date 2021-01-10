@@ -12,6 +12,8 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
     private int myHeldDownSpellIndex = -1;
     private bool myIsShowingInfo = false;
 
+    private int myHasChangedClassTickCounter = -1;
+
     public void SetCharacterSelector(CharacterSelector aCharacterSelector)
     {
         myCharacterSelector = aCharacterSelector;
@@ -26,6 +28,13 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
     void Update()
     {
         DetectSpellInput();
+
+        if (myHasChangedClassTickCounter > -1)
+        {
+            myHasChangedClassTickCounter++; //Dirty hacking here to make channel spells be interrupted in the channel
+            if (myHasChangedClassTickCounter == 2)
+                myHasChangedClassTickCounter = -1;
+        }
 
         if (myHeldDownSpellIndex == -1)
             return;
@@ -61,7 +70,12 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
         }
 
         if(myHeldDownTimeStamp == Time.time)
+        {
             myUIComponent.SpellHeldDown(myHeldDownSpellIndex);
+
+            if (IsChannelSpell(myHeldDownSpellIndex))
+                CastSpell(myHeldDownSpellIndex);
+        }
 
         if (myPlayerControls.Action1.WasReleased)
             ButtonReleased(0);
@@ -73,18 +87,42 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
             ButtonReleased(3);
     }
 
-    private void ButtonReleased(int aSpellIndex)
+    private void ButtonReleased(int aSpellIndex, bool anIsSwappingClass = false)
     {
         if (myIsShowingInfo)
         {
             myCharacterSelector.HideSpellInfo();
         }
         else
-            CastSpell(aSpellIndex);
+        {
+            if(!IsChannelSpell(aSpellIndex) && !anIsSwappingClass)
+                CastSpell(aSpellIndex);
+        }
 
         myUIComponent.SpellReleased(aSpellIndex);
         myIsShowingInfo = false;
         myHeldDownSpellIndex = -1;
+    }
+
+    public void OnClassChanged()
+    {
+        for (int index = 0; index < 4; index++)
+        {
+            GameObject spellGO = myClass.GetSpell(index);
+            if (!spellGO)
+                continue;
+
+            ToggleSpell toggleSpell = spellGO.GetComponent<ToggleSpell>();
+            if (!toggleSpell)
+                continue;
+
+            if (myClass.IsSpellToggled(toggleSpell))
+                myClass.ToggleSpell(toggleSpell);
+
+            ButtonReleased(index, true);
+        }
+
+        myHasChangedClassTickCounter = 0;
     }
 
     private void CastSpell(int aKeyIndex)
@@ -107,7 +145,7 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
 
         if (spellScript.myCastTime <= 0.0f)
         {
-            SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
+            SpawnSpell(spellScript, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
             myAnimatorWrapper.SetTrigger(spellScript.myAnimationType);
             return;
@@ -125,5 +163,22 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
             return false;
 
         return true;
+    }
+
+    private bool IsChannelSpell(int aSpellIndex)
+    {
+        if (!myClass.HasSpell(aSpellIndex))
+            return false;
+
+        GameObject spell = myClass.GetSpell(aSpellIndex);
+        return spell.GetComponent<ChannelSpell>() != null;
+    }
+
+    protected override bool WasSpellChannelButtonReleased(int aSpellIndex)
+    {
+        if (myHasChangedClassTickCounter > -1)
+            return true;
+
+        return base.WasSpellChannelButtonReleased(aSpellIndex);
     }
 }

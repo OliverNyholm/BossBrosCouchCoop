@@ -35,5 +35,6 @@ public class Teleport : Spell
     private void TeleportPlayer(Vector3 aPosition)
     {
         myParent.GetComponent<Player>().SetPosition(aPosition);
+        myParent.GetComponent<PlayerMovementComponent>().SetEnabledMovement(true);
     }
 }

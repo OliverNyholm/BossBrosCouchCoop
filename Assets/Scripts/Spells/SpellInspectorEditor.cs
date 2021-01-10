@@ -7,6 +7,8 @@ using UnityEditor;
 [CustomEditor(typeof(Spell), true), CanEditMultipleObjects]
 public class SpellInspectorEditor : Editor
 {
+    Spell mySpell;
+
     public SerializedProperty
         myCastTime,
         myCooldown,
@@ -14,6 +16,7 @@ public class SpellInspectorEditor : Editor
         mySpeed,
         myRange,
 
+        mySpeedWhileCastingReducement,
         myIsCastableWhileMoving,
         myCanCastOnSelf,
         myIsOnlySelfCast,
@@ -36,7 +39,13 @@ public class SpellInspectorEditor : Editor
         mySpellIcon,
         myName,
         myQuickInfo,
-        myTutorialInfo;
+        myTutorialInfo,
+        myPoolSize;
+
+    void Awake()
+    {
+        mySpell = target as Spell;
+    }
 
     public virtual void OnEnable()
     {
@@ -47,6 +56,7 @@ public class SpellInspectorEditor : Editor
         mySpeed = serializedObject.FindProperty("mySpeed");
         myRange = serializedObject.FindProperty("myRange");
 
+        mySpeedWhileCastingReducement = serializedObject.FindProperty("mySpeedWhileCastingReducement");
         myIsCastableWhileMoving = serializedObject.FindProperty("myIsCastableWhileMoving");
         myCanCastOnSelf = serializedObject.FindProperty("myCanCastOnSelf");
         myIsOnlySelfCast = serializedObject.FindProperty("myIsOnlySelfCast");
@@ -70,6 +80,7 @@ public class SpellInspectorEditor : Editor
         myName = serializedObject.FindProperty("myName");
         myQuickInfo = serializedObject.FindProperty("myQuickInfo");
         myTutorialInfo = serializedObject.FindProperty("myTutorialInfo");
+        myPoolSize = serializedObject.FindProperty("myPoolSize");
     }
 
     public override void OnInspectorGUI()
@@ -80,6 +91,7 @@ public class SpellInspectorEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.HelpBox("Spell Base", MessageType.None);
 
+        EditorGUILayout.PropertyField(myPoolSize);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("mySpawnedOnHit"));
         EditorGUILayout.PropertyField(mySpellTarget);
         EditorGUILayout.PropertyField(mySpellType);
@@ -111,8 +123,10 @@ public class SpellInspectorEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(myCanCastOnSelf, new GUIContent("Can Cast On Self"));
         EditorGUILayout.PropertyField(myIsOnlySelfCast, new GUIContent("Is Only Self Cast"));
-        if (myCastTime.floatValue > 0.0f)
-            EditorGUILayout.PropertyField(myIsCastableWhileMoving, new GUIContent("Can Move While Casting"));
+
+        EditorGUILayout.PropertyField(myIsCastableWhileMoving, new GUIContent("Can Move While Casting"));
+        if(myIsCastableWhileMoving.boolValue == true)
+            EditorGUILayout.PropertyField(mySpeedWhileCastingReducement, new GUIContent("Movement Speed While Casting Reducement"));
 
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(myThreatModifier, new GUIContent("Threat Modifier"));
@@ -140,8 +154,7 @@ public class SpellInspectorEditor : Editor
     {
         EditorGUILayout.HelpBox("UI", MessageType.None);
         EditorGUILayout.PropertyField(myName, new GUIContent("Spell Name"));
-        if (myCastTime.floatValue > 0.0f)
-            EditorGUILayout.PropertyField(myCastbarColor, new GUIContent("Castbar Color"));
+        EditorGUILayout.PropertyField(myCastbarColor, new GUIContent("Castbar Color"));
 
         EditorGUILayout.PropertyField(mySpellIcon, new GUIContent("Castbar Spell Icon"));
         EditorGUILayout.PropertyField(myQuickInfo, new GUIContent("One-Liner Spell Info"));
@@ -152,6 +165,8 @@ public class SpellInspectorEditor : Editor
     {
         if (myCastTime.floatValue > 0.0f)
             EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myCastSound"), new GUIContent("Sound While Casting"));
+        if (mySpell is ChannelSpell)
+            EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myChannelSound"), new GUIContent("Sound While Channeling"));
         if (mySpeed.floatValue > 0.0f)
             EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("mySpawnSound"), new GUIContent("Sound When Spell Spawns"));
         EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myHitSound"), new GUIContent("Sound When Spell Hits Target"));

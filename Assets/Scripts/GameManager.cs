@@ -6,6 +6,9 @@ using InControl;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
+    private PauseMenu myPauseMenu = null;
+
     [Header("The spawn points for player. Loops around when last reached")]
     [SerializeField]
     private List<Transform> mySpawnPoints = new List<Transform>();
@@ -13,6 +16,9 @@ public class GameManager : MonoBehaviour
     [Header("The player to be spawned if level started without character select")]
     public PlayerSelectData myDebugPlayerData;
     private Player myDebugPlayer = null;
+
+    [SerializeField]
+    private List<ColorScheme> myDebugColorSchemes = new List<ColorScheme>(4);
 
     private PlayerControls myControllerListener = null;
 
@@ -28,13 +34,16 @@ public class GameManager : MonoBehaviour
     {
         PostMaster.Create();
 
+        myPauseMenu = FindObjectOfType<PauseMenu>();
+        myPauseMenu.gameObject.SetActive(false);
+
         TargetHandler targetHandler = GetComponent<TargetHandler>();
         GameObject characterGameDataGO = GameObject.Find("GameData");
         if (characterGameDataGO == null)
         {
             Debug.Log("No CharacterGameData to find, default player created.");
             myPlayerSelectData.Add(myDebugPlayerData);
-            SpawnPlayer(targetHandler, 1);
+            SpawnPlayer(targetHandler, 0);
 
             myControllerListener = PlayerControls.CreateWithJoystickBindings();
             return;
@@ -71,7 +80,6 @@ public class GameManager : MonoBehaviour
                 myControllerListener = null;
             }
         }
-
     }
 
     public void RestartLevel()
@@ -79,11 +87,20 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void OpenPauseMenu(PlayerControls aPlayerControls)
+    {
+        myPauseMenu.Pause(this, aPlayerControls);
+        myPauseMenu.gameObject.SetActive(true);
+    }
+
     private void SpawnPlayer(TargetHandler aTargetHandler, PlayerSelectData aCharacter, int aIndex)
     {
         Vector3 spawnPoint = new Vector3(-1.5f + aIndex * 1.0f, 0.0f, -3.0f);
         if (mySpawnPoints.Count > 0)
             spawnPoint = mySpawnPoints[aIndex % mySpawnPoints.Count].position;
+
+        if (UtilityFunctions.FindGroundFromLocation(spawnPoint, out Vector3 hitLocation, out MovablePlatform movablePlatform))
+            spawnPoint = hitLocation;
 
         GameObject playerGO = Instantiate(aCharacter.myClassData.myGnome, spawnPoint, Quaternion.identity);
         playerGO.name = aCharacter.myName;
@@ -112,26 +129,31 @@ public class GameManager : MonoBehaviour
     {
         Vector3 spawnPoint = new Vector3(-1.5f + 0 * 1.0f, 0.0f, -3.0f);
         if (mySpawnPoints.Count > 0)
-            spawnPoint = mySpawnPoints[0 % mySpawnPoints.Count].position;
+            spawnPoint = mySpawnPoints[aPlayerIndex % mySpawnPoints.Count].position;
+
+        if (UtilityFunctions.FindGroundFromLocation(spawnPoint, out Vector3 hitLocation, out MovablePlatform movablePlatform))
+            spawnPoint = hitLocation;
 
         GameObject playerGO = Instantiate(myDebugPlayerData.myClassData.myGnome, spawnPoint, Quaternion.identity);
         playerGO.name = myDebugPlayerData.myName;
 
         PlayerControls keyboardListener = PlayerControls.CreateWithKeyboardBindings();
 
-        playerGO.GetComponent<Stats>().myDamageMitigator = 0.0f;
+        //playerGO.GetComponent<Stats>().myDamageMitigator = 0.0f;
+        playerGO.GetComponent<Health>().MaxHealth = 50000;
+        playerGO.GetComponent<Health>().SetHealthPercentage(1.0f);
 
         myDebugPlayer = playerGO.GetComponent<Player>();
         myDebugPlayer.SetClassData(myDebugPlayerData.myClassData);
         myDebugPlayer.SetPlayerControls(keyboardListener);
-        myDebugPlayer.PlayerIndex = aPlayerIndex;
+        myDebugPlayer.PlayerIndex = aPlayerIndex + 1;
 
         PlayerUIComponent uiComponent = playerGO.GetComponent<PlayerUIComponent>();
         uiComponent.myName = myDebugPlayerData.myName;
-        uiComponent.myCharacterColor = myDebugPlayerData.myColorScheme.myColor;
-        uiComponent.myAvatarSprite = myDebugPlayerData.myColorScheme.myAvatar;
+        uiComponent.myCharacterColor = myDebugColorSchemes[aPlayerIndex].myColor;
+        uiComponent.myAvatarSprite = myDebugColorSchemes[aPlayerIndex].myAvatar;
 
-        playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material = myDebugPlayerData.myColorScheme.myMaterial;
+        playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material = myDebugColorSchemes[aPlayerIndex].myMaterial;
 
         myPlayerSelectData[myPlayerSelectData.Count - 1].myPlayerControls = keyboardListener;
 
@@ -211,7 +233,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Adding another debug player.");
         myPlayerSelectData.Add(myDebugPlayerData);
-        SpawnPlayer(targetHandler, targetHandler.GetAllPlayers().Count + 1);
+        SpawnPlayer(targetHandler, targetHandler.GetAllPlayers().Count);
 
         GameObject newPlayer = targetHandler.GetPlayer(targetHandler.GetAllPlayers().Count - 1);
         foreach (GameObject npc in targetHandler.GetAllEnemies())
@@ -220,6 +242,10 @@ public class GameManager : MonoBehaviour
                 continue;
             npc.GetComponent<NPCThreatComponent>().AddPlayer(newPlayer);
         }
+
+        DynamicCamera dynamicCamera = FindObjectOfType<DynamicCamera>();
+        if (dynamicCamera)
+            dynamicCamera.myPlayerTransforms.Add(newPlayer.transform);
     }
 
     private Vector3 ColorToRGBVector(Color aColor)

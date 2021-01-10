@@ -15,8 +15,9 @@ public class DirectionalSpell : Spell
 
     private Vector3 myDirection;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         myLifeTimeReset = myLifeTime;
     }
 

@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PlayerTargetDecal_Mat
+  m_Shader: {fileID: 4800000, guid: c8697bfce4da55d4d963d4baa4636989, type: 3}
+  m_ShaderKeywords: USE_PLAYER_CIRCLE
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2060
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 300646ef8afd69449b0d849af71ca9a3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _InnerCircleTexture:
+        m_Texture: {fileID: 2800000, guid: ab1ba0269fe7e3542afe036442bed494, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OuterEdgeTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _ApplyFog: 0
+    - _OrthoSpport: 0
+    - _ReadMask: 1
+    - _StencilCompare: 3
+    - _StencilRef: 0
+    - _UsePlayerInnerCircle: 1
+    - _WriteMask: 0
+    m_Colors:
+    - _BottomLeftColor: {r: 0, g: 0.8122964, b: 1, a: 0}
+    - _BottomRightColor: {r: 0.7924528, g: 0, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DistanceFade: {r: 5000, g: 0.001, b: 0, a: 0}
+    - _PlayerColor: {r: 0.7830189, g: 0, b: 0.16888647, a: 0}
+    - _TopLeftColor: {r: 0.070174575, g: 1, b: 0, a: 0}
+    - _TopRightColor: {r: 1, g: 0.67668825, b: 0, a: 0}

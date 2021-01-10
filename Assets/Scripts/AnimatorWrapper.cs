@@ -18,7 +18,8 @@ public class AnimatorWrapper : MonoBehaviour
 
     public void SetTrigger(SpellAnimationType aSpellAnimationType)
     {
-        myAnimator.SetTrigger(GetAnimationHash(aSpellAnimationType));
+        if (aSpellAnimationType != SpellAnimationType.None)
+            myAnimator.SetTrigger(GetAnimationHash(aSpellAnimationType));
     }
 
     public void SetTrigger(AnimationVariable anAnimationVariable)
@@ -48,7 +49,8 @@ public class AnimatorWrapper : MonoBehaviour
 
     public void ResetTrigger(SpellAnimationType aSpellAnimationType)
     {
-        myAnimator.ResetTrigger(GetAnimationHash(aSpellAnimationType));
+        if (aSpellAnimationType != SpellAnimationType.None)
+            myAnimator.ResetTrigger(GetAnimationHash(aSpellAnimationType));
     }
 
     public void ResetTrigger(AnimationVariable anAnimationVariable)

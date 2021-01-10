@@ -40,7 +40,9 @@ public class NPCCastingComponent : CastingComponent
             return true;
         }
 
-        myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
+        if (myAnimatorWrapper)
+            myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
+
         myUIComponent.SetCastbarStartValues(spellScript);
 
         myCastingRoutine = StartCoroutine(CastbarProgress(aSpell, aTarget, aSpawnTransform, aShouldIgnoreCastability));
@@ -78,12 +80,14 @@ public class NPCCastingComponent : CastingComponent
             SpawnSpell(aSpell, myTargetingComponent.SpellTarget, aSpawnTransform);
             if (myResource)
                 GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
-            myAnimatorWrapper.SetTrigger(AnimationVariable.CastingDone);
+            if (myAnimatorWrapper)
+                myAnimatorWrapper.SetTrigger(AnimationVariable.CastingDone);
+
             myTargetingComponent.SetTarget(myTargetingComponent.Target);
         }
     }
 
-    public override IEnumerator SpellChannelRoutine(float aDuration, float aStunDuration)
+    public override IEnumerator SpellChannelRoutine(Spell aSpell, float aDuration, float aStunDuration)
     {
         Stats stats = GetComponent<Stats>();
         stats.SetStunned(aStunDuration);
@@ -92,19 +96,20 @@ public class NPCCastingComponent : CastingComponent
         float rate = 1.0f / castSpeed;
         float progress = 0.0f;
 
-        myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
-        UIComponent uiComponent = GetComponent<UIComponent>();
+        if (myAnimatorWrapper)
+            myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
 
         while (progress <= 1.0f)
         {
-            uiComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
+            myUIComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
 
             progress += rate * Time.deltaTime;
 
-            if (GetComponent<PlayerMovementComponent>().IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
+            if (!aSpell.myIsCastableWhileMoving && GetComponent<PlayerMovementComponent>().IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
             {
                 //myCastbar.SetCastTimeText("Cancelled");
-                myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
+                if (myAnimatorWrapper)
+                    myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
                 stats.SetStunned(0.0f);
                 StopCasting(true);
                 PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());
@@ -126,6 +131,8 @@ public class NPCCastingComponent : CastingComponent
     public void SpawnSpell(GameObject aSpell, GameObject aTarget, Transform aSpawnTransform)
     {
         GameObject spellGO = PoolManager.Instance.GetPooledObject(aSpell.GetComponent<UniqueID>().GetID());
+        if (!spellGO)
+            return;
 
         Spell spellScript = spellGO.GetComponent<Spell>();
         spellScript.SetParent(transform.gameObject);
@@ -141,7 +148,11 @@ public class NPCCastingComponent : CastingComponent
         spellScript.Restart();
 
         if (aTarget && aSpawnTransform.position != aTarget.transform.position)
-            GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
+        {
+            AudioClip spawnSound = spellScript.GetSpellSFX().mySpawnSound;
+            if(spawnSound)
+                GetComponent<AudioSource>().PlayOneShot(spawnSound);
+        }
 
         GetComponent<BehaviorTree>().SendEvent("SpellSpawned");
     }
@@ -167,7 +178,8 @@ public class NPCCastingComponent : CastingComponent
             return;
         }
 
-        myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
+        if (myAnimatorWrapper)
+            myAnimatorWrapper.SetTrigger(SpellAnimationType.AutoAttack);
         myAutoAttackCooldown = myAutoAttackCooldownReset;
 
         GameObject target = myTargetingComponent.Target;
@@ -201,7 +213,7 @@ public class NPCCastingComponent : CastingComponent
         GameObject spellTarget = myTargetingComponent.SpellTarget;
         if (!spellTarget)
         {
-            if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) != 0)
+            if ((aSpellScript.GetSpellTarget() & SpellTargetType.Player) != 0)
             {
                 spellTarget = gameObject;
             }
@@ -230,13 +242,13 @@ public class NPCCastingComponent : CastingComponent
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && spellTarget.tag == "Player")
+        if ((aSpellScript.GetSpellTarget() & SpellTargetType.NPC) == 0 && spellTarget.tag == "Player")
         {
             Debug.Log(gameObject.name + " can't cast friendly spells on players");
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && spellTarget.tag == "Enemy")
+        if ((aSpellScript.GetSpellTarget() & SpellTargetType.Player) == 0 && spellTarget.tag == "Enemy")
         {
             Debug.Log(gameObject.name + " can't cast hostile spells on friends");
             return false;

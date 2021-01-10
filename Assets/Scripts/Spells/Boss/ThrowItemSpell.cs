@@ -15,8 +15,9 @@ public class ThrowItemSpell : Spell
 
     private Rigidbody myRigidBody;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();   
         myLifeTimeReset = myLifeTime;
         myRigidBody = GetComponent<Rigidbody>();
     }
@@ -68,7 +69,5 @@ public class ThrowItemSpell : Spell
         myRigidBody.useGravity = true;
 
         myHasDealtDamage = true;
-
-        Debug.Log("Food hit: " + aCollision.gameObject.name);
     }
 }

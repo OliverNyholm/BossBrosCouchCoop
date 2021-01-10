@@ -2,36 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Barrier : Spell
+public class Barrier : ChannelSpell
 {
-
-    [SerializeField]
-    private GameObject myBarrierPrefab = null;
-
-    [SerializeField]
-    private float myChannelTime = 0.0f;
-
     private float myRadius;
-    private TargetHandler myTargetHandler;
     private List<SpellOverTime> myActiveBuffs = new List<SpellOverTime>(4);
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         myRadius = transform.localScale.x / 2.0f;
-        myTargetHandler = FindObjectOfType<TargetHandler>();
     }
 
     public override void Restart()
     {
         AddBuff(myParent);
         StartCoroutine(gameObject);
+
+        transform.parent = myParent.transform;
     }
 
     private void OnDisable()
     {
         for (int index = 0; index < myActiveBuffs.Count; index++)
         {
-            myActiveBuffs[index].RemoveSpellOverTime();
+            if(myActiveBuffs[index])
+                myActiveBuffs[index].RemoveSpellOverTime();
         }
 
         myActiveBuffs.Clear();
@@ -45,8 +40,16 @@ public class Barrier : Spell
        List<GameObject> players = myTargetHandler.GetAllPlayers();
         for (int index = 0; index < players.Count; index++)
         {
-            float sqrDistance = Vector3.SqrMagnitude(gameObject.transform.position - players[index].transform.position);
-            if (DoesPlayerHaveBuff(players[index], out int buffIndex))
+            GameObject player = players[index];
+            if (!player)
+                continue;
+
+            Health health = player.GetComponent<Health>();
+            if (health && health.IsDead())
+                continue;
+
+            float sqrDistance = Vector3.SqrMagnitude(gameObject.transform.position - player.transform.position);
+            if (DoesPlayerHaveBuff(player, out int buffIndex))
             {
                 if (sqrDistance > myRadius * myRadius)
                 {
@@ -58,7 +61,7 @@ public class Barrier : Spell
             {
                 if(sqrDistance <= myRadius * myRadius)
                 {
-                    AddBuff(players[index]);
+                    AddBuff(player);
                 }
             }
         }
@@ -66,20 +69,20 @@ public class Barrier : Spell
 
     private void StartCoroutine(GameObject aChannelSpell)
     {
-        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, aChannelSpell);
+        myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, aChannelSpell, 0.0f);
     }
 
     public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
     {
         base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
-
-        if(myBarrierPrefab)
-        aPoolManager.AddPoolableObjects(myBarrierPrefab, myBarrierPrefab.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
     }
 
     private void AddBuff(GameObject aPlayer)
     {
         GameObject barrierBuff = PoolManager.Instance.GetPooledObject(mySpawnedOnHit.GetComponent<UniqueID>().GetID());
+        if (!barrierBuff)
+            return;
+
         SpellOverTime spellOverTime = barrierBuff.GetComponent<SpellOverTime>();
         spellOverTime.SetParent(myParent);
         spellOverTime.SetTarget(aPlayer);

@@ -67,6 +67,6 @@ public class FallingBoulder : Spell
 
         myTargetsHit.Add(instanceID);
         
-        DealDamage(myDamage, other.gameObject);
+        DealDamage(myDamage, transform.position, other.gameObject);
     }
 }

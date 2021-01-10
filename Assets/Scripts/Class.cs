@@ -10,15 +10,21 @@ public class Class : MonoBehaviour
 
     public GameObject[] mySpells;
     public float[] myCooldownTimers;
+    private ToggleSpell[] myToggledSpells;
 
     [HideInInspector]
     public int mySpellSize = 4;
 
     protected PlayerUIComponent myUIComponent;
 
-    public void Awake()
+    public virtual void Awake()
     {
         myUIComponent = GetComponent<PlayerUIComponent>();
+        myToggledSpells = new ToggleSpell[mySpells.Length];
+        for (int index = 0; index < myToggledSpells.Length; index++)
+            myToggledSpells[index] = null;
+
+        GetComponent<Health>().EventOnHealthZero += OnDeath;
     }
 
     protected virtual void Start()
@@ -34,7 +40,7 @@ public class Class : MonoBehaviour
             }
 
             Spell spell = mySpells[index].GetComponent<Spell>();
-            spell.CreatePooledObjects(poolManager, 3);
+            spell.CreatePooledObjects(poolManager, spell.myPoolSize);
 
             myUIComponent.SetSpellHud(spell, index);
         }
@@ -70,6 +76,49 @@ public class Class : MonoBehaviour
         return mySpells[anIndex];
     }
 
+    public int GetSpellIndex(Spell aSpell)
+    {
+        uint searchIndex = aSpell.GetComponent<UniqueID>().GetID();
+
+        for (int index = 0; index < mySpells.Length; index++)
+        {
+            if (mySpells[index].GetComponent<UniqueID>().GetID() == searchIndex)
+                return index;
+        }
+
+        return -1;
+    }
+
+    public void ToggleSpell(ToggleSpell aSpell)
+    {
+        int index = GetSpellIndex(aSpell);
+        if (index == -1)
+            return;
+
+        ToggleSpell toggledSpell = myToggledSpells[index];
+        if (toggledSpell)
+        {
+            toggledSpell.ToggleOff();
+            myToggledSpells[index] = null;
+        }
+        else
+        {
+            myToggledSpells[index] = aSpell;
+            aSpell.ToggledOn();
+        }
+
+        myUIComponent.SetSpellPulsating(index, myToggledSpells[index] != null);
+    }
+
+    public bool IsSpellToggled(ToggleSpell aSpell)
+    {
+        int index = GetSpellIndex(aSpell);
+        if (index == -1)
+            return false;
+
+        return myToggledSpells[index] != null;
+    }
+
     public void SetSpellOnCooldown(int anIndex)
     {
         myCooldownTimers[anIndex] = mySpells[anIndex].GetComponent<Spell>().myCooldown;
@@ -100,5 +149,16 @@ public class Class : MonoBehaviour
             mySpells[index] = aClassData.mySpells[index];
 
         myClassRole = aClassData.myClassRole;
+    }
+
+    private void OnDeath()
+    {
+        for (int index = 0; index < myToggledSpells.Length; index++)
+        {
+            if (myToggledSpells[index] == null)
+                continue;
+
+            ToggleSpell(myToggledSpells[index]);
+        }
     }
 }

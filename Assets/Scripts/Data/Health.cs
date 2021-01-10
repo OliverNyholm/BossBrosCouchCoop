@@ -45,12 +45,12 @@ public class Health : MonoBehaviour
         }
     }
 
-    public int TakeDamage(int aValue, Color aDamagerColor, Vector3 aDamagePosition)
+    public int TakeDamage(int aValue, Color aDamagerColor, Vector3 aDamagePosition, bool anIsAutoAttack = false)
     {
         if (IsDead())
             return aValue;
 
-        int damage = CalculateMitigations(aValue);
+        int damage = CalculateMitigations(aValue, anIsAutoAttack);
         string damageText = damage.ToString();
         if (aValue != damage)
         {
@@ -87,6 +87,9 @@ public class Health : MonoBehaviour
 
     public void GainHealth(int aValue, bool aShouldSpawnFloatingText = true)
     {
+        if (myCurrentHealth <= 0)
+            return;
+
         myCurrentHealth += aValue;
         if (myCurrentHealth > myMaxHealth)
         {
@@ -173,7 +176,10 @@ public class Health : MonoBehaviour
     private void SpawnFloatingText(string aText, Color aColor, Vector3 aSpawnLocation)
     {
         GameObject floatingHealthGO = PoolManager.Instance.GetFloatingHealth();
-        floatingHealthGO.transform.parent = transform;
+        if (!floatingHealthGO)
+            return;
+
+        floatingHealthGO.transform.SetParent(transform);
 
         FloatingHealth floatingHealth = floatingHealthGO.GetComponent<FloatingHealth>();
         floatingHealth.SetText(aText, aColor, aSpawnLocation);
@@ -189,11 +195,13 @@ public class Health : MonoBehaviour
         return 1.0f;
     }
 
-    public int CalculateMitigations(int anIncomingDamageValue)
+    public int CalculateMitigations(int anIncomingDamageValue, bool anIsAutoAttack)
     {
         Stats parentStats = GetComponent<Stats>();
 
         int damage = (int)(anIncomingDamageValue * parentStats.myDamageMitigator);
+        if (anIsAutoAttack)
+            damage = (int)(damage * parentStats.myAutoAttackDamageMitigator);
 
         for (int index = 0; index < myShields.Count; index++)
         {

@@ -13,15 +13,17 @@ public class PlayerCastingComponent : CastingComponent
     protected Class myClass;
 
     private Vector3 myHealTargetingReleaseDirection;
-    private float myStartTimeOfHoldingKeyDown;
+    private float myStartTimeOfHoldingKeyDown = 0;
     private bool myIsFriendlySpellKeyHeldDown;
     private bool myHasChangedMovementDirectionAfterCastingManualHeal;
-    private int myFriendlySpellKeyHeldDownIndex;
+    private int myFriendlySpellKeyHeldDownIndex = 0;
+
+    private float myCastingWhileMovingBufferTimestamp;
 
     private bool myShouldAutoAttack;
+    private bool myKeepLookingAtTargetWhileCasting = false;
 
     public delegate void EventOnSpellSpawned(GameObject aPlayer, GameObject aSpell, int aSpellIndex);
-    public event EventOnSpellSpawned myEventOnSpellSpawned;
 
     protected override void Awake()
     {
@@ -45,7 +47,7 @@ public class PlayerCastingComponent : CastingComponent
         if (!myHasChangedMovementDirectionAfterCastingManualHeal)
             CheckHasChangedLookDirectionAfterManualHeal();
 
-        if (ShouldHealTargetBeEnabled())
+        if (ShouldHealTargetBeEnabled() && !myTargetingComponent.IsManualHealTargeting())
             myTargetingComponent.EnableManualHealTargeting(myFriendlySpellKeyHeldDownIndex);
 
         if (myShouldAutoAttack)
@@ -80,7 +82,7 @@ public class PlayerCastingComponent : CastingComponent
         myAutoAttackCooldown = myAutoAttackCooldownReset;
 
         myTargetingComponent.SpellTarget = myTargetingComponent.Target;
-        SpawnSpell(-1, myTargetingComponent.SpellTarget.transform.position);
+        SpawnSpell(null, myTargetingComponent.SpellTarget.transform.position, true);
     }
 
     private void DetectSpellInput()
@@ -97,17 +99,17 @@ public class PlayerCastingComponent : CastingComponent
         else if (myPlayerControls.Action4.WasPressed)
             CheckSpellToCast(3);
 
-        if (!myIsFriendlySpellKeyHeldDown)
-            return;
-
-        if (myPlayerControls.Action1.WasReleased)
-            CastFriendlySpell(0);
-        else if (myPlayerControls.Action2.WasReleased)
-            CastFriendlySpell(1);
-        else if (myPlayerControls.Action3.WasReleased)
-            CastFriendlySpell(2);
-        else if (myPlayerControls.Action4.WasReleased)
-            CastFriendlySpell(3);
+        //if (!myIsFriendlySpellKeyHeldDown)
+        //    return;
+        //
+        //if (myPlayerControls.Action1.WasReleased)
+        //    CastFriendlySpell(0);
+        //else if (myPlayerControls.Action2.WasReleased)
+        //    CastFriendlySpell(1);
+        //else if (myPlayerControls.Action3.WasReleased)
+        //    CastFriendlySpell(2);
+        //else if (myPlayerControls.Action4.WasReleased)
+        //    CastFriendlySpell(3);
     }
 
     public void CheckSpellToCast(int aKeyIndex)
@@ -115,19 +117,39 @@ public class PlayerCastingComponent : CastingComponent
         if (!myClass.HasSpell(aKeyIndex))
             return;
 
-        if (!myClass.IsSpellCastOnFriends(aKeyIndex))
+        Spell spell = myClass.GetSpell(aKeyIndex).GetComponent<Spell>();
+        if (spell.myIsOnlySelfCast)
         {
-            if (myTargetingComponent.Target == null)
-                myTargetingComponent.DetermineNewEnemyTarget();
-
+            CastSpell(aKeyIndex, true);
+            return;
+        }
+        else
+        {
+            myTargetingComponent.FindSpellTarget(spell);
             CastSpell(aKeyIndex, true);
             return;
         }
 
-        myUIComponent.SpellHeldDown(aKeyIndex);
-        myStartTimeOfHoldingKeyDown = Time.time;
-        myIsFriendlySpellKeyHeldDown = true;
-        myFriendlySpellKeyHeldDownIndex = aKeyIndex;
+
+        //if (!myClass.IsSpellCastOnFriends(aKeyIndex))
+        //{
+        //    if (myTargetingComponent.Target == null)
+        //        myTargetingComponent.DetermineNewEnemyTarget();
+        //
+        //    CastSpell(aKeyIndex, true);
+        //    return;
+        //}
+        //else if (myClass.GetSpell(aKeyIndex).GetComponent<Spell>().myIsOnlySelfCast)
+        //{
+        //    CastSpell(aKeyIndex, true);
+        //    return;
+        //}
+
+        //Debug.Log("we can remove this now :)");
+        //myUIComponent.SpellHeldDown(aKeyIndex);
+        //myStartTimeOfHoldingKeyDown = Time.time;
+        //myIsFriendlySpellKeyHeldDown = true;
+        //myFriendlySpellKeyHeldDownIndex = aKeyIndex;
     }
 
     private bool ShouldHealTargetBeEnabled()
@@ -135,7 +157,7 @@ public class PlayerCastingComponent : CastingComponent
         return myIsFriendlySpellKeyHeldDown && Time.time - myStartTimeOfHoldingKeyDown > myTargetingComponent.GetSmartTargetHoldDownMaxDuration();
     }
 
-    public bool StillHasSameLookDirectionAfterReleasingManualHeal()
+    public bool HasSameLookDirectionAfterReleasingManualHeal()
     {
         return !myHasChangedMovementDirectionAfterCastingManualHeal;
     }
@@ -145,27 +167,38 @@ public class PlayerCastingComponent : CastingComponent
         if (myPlayerControls.Movement == Vector3.zero)
             myHasChangedMovementDirectionAfterCastingManualHeal = true;
 
-        if (Vector3.Dot(transform.forward, myHealTargetingReleaseDirection) < 0.7f)
+        if (Vector3.Dot(myPlayerControls.Movement, myHealTargetingReleaseDirection) < 0.7f)
             myHasChangedMovementDirectionAfterCastingManualHeal = true;
     }
 
     public void CastFriendlySpell(int aKeyIndex)
     {
-        if (Time.time - myStartTimeOfHoldingKeyDown < myTargetingComponent.GetSmartTargetHoldDownMaxDuration())
+        if(myClass.GetSpell(aKeyIndex).GetComponent<Spell>().myIsOnlySelfCast)
         {
-            if (myClass.GetSpell(aKeyIndex).GetComponent<Spell>().myIsOnlySelfCast)
-                myTargetingComponent.SpellTarget = gameObject;
+            myTargetingComponent.SpellTarget = gameObject;
+        }
+        else if(myTargetingComponent.IsSmartHealingAvailable())
+        {
+            if (Time.time - myStartTimeOfHoldingKeyDown < myTargetingComponent.GetSmartTargetHoldDownMaxDuration())
+            {
+                myTargetingComponent.SetTargetWithLowestHealthAndWithoutBuff(myClass.GetSpell(aKeyIndex).GetComponent<Spell>());
+                CastSpell(aKeyIndex, true);
+            }
             else
-                myTargetingComponent.SetTargetWithSmartTargeting(aKeyIndex);
+            {
+                if (myTargetingComponent.Target != gameObject)
+                    myKeepLookingAtTargetWhileCasting = true;
 
-            CastSpell(aKeyIndex, true);
+                CastSpell(aKeyIndex, false);
+            }
         }
         else
         {
             CastSpell(aKeyIndex, false);
         }
 
-        myHealTargetingReleaseDirection = transform.forward;
+
+        myHealTargetingReleaseDirection = myPlayerControls.Movement;
         myIsFriendlySpellKeyHeldDown = false;
         myTargetingComponent.DisableManualHealTargeting(myFriendlySpellKeyHeldDownIndex);
     }
@@ -199,15 +232,25 @@ public class PlayerCastingComponent : CastingComponent
 
         if (spellScript.myCastTime <= 0.0f)
         {
-            SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
+            SpawnSpell(spellScript, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
-            GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
+            //GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
             myAnimatorWrapper.SetTrigger(spellScript.myAnimationType);
             return;
         }
 
         myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
         myHasChangedMovementDirectionAfterCastingManualHeal = false;
+
+        if (spellScript.myIsCastableWhileMoving)
+        {
+            mySpellCastingMovementSpeedReducement = spellScript.mySpeedWhileCastingReducement;
+            myStats.mySpeedMultiplier -= mySpellCastingMovementSpeedReducement;
+        }
+        else
+        {
+            mySpellCastingMovementSpeedReducement = 0.0f;
+        }
 
         myUIComponent.SetCastbarStartValues(spellScript);
         myTargetingComponent.SetSpellTarget(myTargetingComponent.Target);
@@ -218,10 +261,10 @@ public class PlayerCastingComponent : CastingComponent
     {
         GameObject spell = myClass.GetSpell(aKeyIndex);
         Spell spellScript = spell.GetComponent<Spell>();
+        bool isChannel = spellScript as ChannelSpell;
 
         GetComponent<AudioSource>().clip = spellScript.GetSpellSFX().myCastSound;
         GetComponent<AudioSource>().Play();
-
 
         myIsCasting = true;
         float castSpeed = spellScript.myCastTime / myStats.myAttackSpeed;
@@ -234,13 +277,17 @@ public class PlayerCastingComponent : CastingComponent
 
             progress += rate * Time.deltaTime;
 
-            if (!spellScript.IsCastableWhileMoving() && myMovementComponent && myMovementComponent.IsMoving() || Input.GetKeyDown(KeyCode.Escape))
+            bool releasedChannel = isChannel && WasSpellChannelButtonReleased(aKeyIndex);
+            if (InterruptDueToMovement(spellScript) || releasedChannel || Input.GetKeyDown(KeyCode.Escape))
             {
                 //myCastbar.SetCastTimeText("Cancelled");
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
                 StopCasting(true);
                 yield break;
             }
+
+            if (myKeepLookingAtTargetWhileCasting && myTargetingComponent.SpellTarget)
+                transform.LookAt(myTargetingComponent.SpellTarget.transform, Vector3.up);
 
             yield return null;
         }
@@ -249,13 +296,13 @@ public class PlayerCastingComponent : CastingComponent
 
         if (IsAbleToCastSpell(spellScript))
         {
-            SpawnSpell(aKeyIndex, GetSpellSpawnPosition(spellScript));
+            SpawnSpell(spellScript, GetSpellSpawnPosition(spellScript));
             myClass.SetSpellOnCooldown(aKeyIndex);
-            GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
+            //GetComponent<Resource>().LoseResource(spellScript.myResourceCost);
         }
     }
 
-    public override IEnumerator SpellChannelRoutine(float aDuration, float aStunDuration)
+    public override IEnumerator SpellChannelRoutine(Spell aSpell, float aDuration, float aStunDuration)
     {
         myStats.SetStunned(aStunDuration);
         myIsCasting = true;
@@ -263,23 +310,30 @@ public class PlayerCastingComponent : CastingComponent
         float rate = 1.0f / castSpeed;
         float progress = 0.0f;
 
+        int spellIndex = myClass.GetSpellIndex(aSpell);
+
         myAnimatorWrapper.SetBool(AnimationVariable.IsCasting, true);
-        UIComponent uiComponent = GetComponent<UIComponent>();
 
         while (progress <= 1.0f)
         {
-            uiComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
-
-            progress += rate * Time.deltaTime;
-
-            if (myMovementComponent && myMovementComponent.IsMoving() || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
+            if(castSpeed > 0.0f)
             {
-                //myCastbar.SetCastTimeText("Cancelled");
+                myUIComponent.SetCastbarValues(Mathf.Lerp(1, 0, progress), (castSpeed - (progress * castSpeed)).ToString("0.0"));
+                progress += rate * Time.deltaTime;
+            }
+
+            if (InterruptDueToMovement(aSpell) || WasSpellChannelButtonReleased(spellIndex) || (Input.GetKeyDown(KeyCode.Escape) && myChannelGameObject != null))
+            {
                 myAnimatorWrapper.SetTrigger(AnimationVariable.CastingCancelled);
                 myStats.SetStunned(0.0f);
                 StopCasting(true);
+
+                if (aSpell is ChannelSpell)
+                    (aSpell as ChannelSpell).OnStoppedChannel();
+
                 PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());
                 myChannelGameObject = null;
+
                 yield break;
             }
 
@@ -294,25 +348,38 @@ public class PlayerCastingComponent : CastingComponent
         }
     }
 
-    protected void SpawnSpell(int aKeyIndex, Vector3 aSpawnPosition)
+    public Spell SpawnSpellExternal(Spell aSpell, Vector3 aSpawnPosition)
     {
-        GameObject instance = null;
-        if (aKeyIndex == -1)
+        return SpawnSpell(aSpell, aSpawnPosition);
+    }
+
+    protected Spell SpawnSpell(Spell aSpell, Vector3 aSpawnPosition, bool aIsAutoAttack = false)
+    {
+        GameObject instance;
+        ToggleSpell toggleSpell = aSpell as ToggleSpell;
+
+        if (aIsAutoAttack)
         {
             instance = PoolManager.Instance.GetPooledAutoAttack();
         }
         else
         {
-            instance = PoolManager.Instance.GetPooledObject(myClass.GetSpell(aKeyIndex).GetComponent<UniqueID>().GetID());
+            if(toggleSpell && myClass.IsSpellToggled(toggleSpell))
+            {
+                myClass.ToggleSpell(toggleSpell);
+                return null;
+            }
+
+            instance = PoolManager.Instance.GetPooledObject(aSpell.GetComponent<UniqueID>().GetID());
         }
 
         if (!instance)
-            return;
+            return null;
 
         instance.transform.position = aSpawnPosition + new Vector3(0.0f, 0.5f, 0.0f);
 
         GameObject target = myTargetingComponent.SpellTarget;
-        if (target)
+        if (target && target != gameObject)
             instance.transform.LookAt(target.transform);
         else
             instance.transform.rotation = transform.rotation;
@@ -328,18 +395,24 @@ public class PlayerCastingComponent : CastingComponent
         else
             spellScript.SetTarget(transform.gameObject);
 
+        if (toggleSpell)
+            myClass.ToggleSpell(spellScript as ToggleSpell);
+
         spellScript.Restart();
 
         if (aSpawnPosition == transform.position && spellScript.GetSpellSFX().mySpawnSound)
             GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
 
-        myEventOnSpellSpawned?.Invoke(gameObject, instance, aKeyIndex);
+        myCastingWhileMovingBufferTimestamp = Time.time;
+
+        return spellScript;
     }
 
     protected override void StopCasting(bool aWasInterruped)
     {
         base.StopCasting(aWasInterruped);
         myHasChangedMovementDirectionAfterCastingManualHeal = true;
+        myKeepLookingAtTargetWhileCasting = false;
     }
 
     protected override bool IsAbleToCastSpell(Spell aSpellScript)
@@ -350,11 +423,11 @@ public class PlayerCastingComponent : CastingComponent
             return false;
         }
 
-        if (GetComponent<Resource>().myCurrentResource < aSpellScript.myResourceCost)
-        {
-            ShowError(SpellErrorHandler.SpellError.OutOfResources);
-            return false;
-        }
+        //if (GetComponent<Resource>().myCurrentResource < aSpellScript.myResourceCost)
+        //{
+        //    ShowError(SpellErrorHandler.SpellError.OutOfResources);
+        //    return false;
+        //}
 
         if (!aSpellScript.IsCastableWhileMoving() && myMovementComponent && myMovementComponent.IsMoving())
         {
@@ -368,7 +441,7 @@ public class PlayerCastingComponent : CastingComponent
         GameObject target = myTargetingComponent.SpellTarget;
         if (!target)
         {
-            if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) != 0)
+            if ((aSpellScript.GetSpellTarget() & SpellTargetType.Player) != 0)
             {
                 target = gameObject;
             }
@@ -403,13 +476,20 @@ public class PlayerCastingComponent : CastingComponent
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Enemy) == 0 && target.tag == "Enemy")
+        if ((aSpellScript.GetSpellTarget() & SpellTargetType.NPC) == 0 && target.tag == "Enemy")
         {
-            ShowError(SpellErrorHandler.SpellError.WrongTargetEnemy);
-            return false;
+            if ((aSpellScript.GetSpellTarget() & SpellTargetType.Player) != 0)
+            {
+                myTargetingComponent.SetTarget(gameObject);
+            }
+            else
+            {
+                ShowError(SpellErrorHandler.SpellError.WrongTargetEnemy);
+                return false;
+            }
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTarget.Friend) == 0 && target.tag == "Player")
+        if ((aSpellScript.GetSpellTarget() & SpellTargetType.Player) == 0 && target.tag == "Player")
         {
             ShowError(SpellErrorHandler.SpellError.WrongTargetPlayer);
             return false;
@@ -471,5 +551,33 @@ public class PlayerCastingComponent : CastingComponent
     {
         myUIComponent.HighlightSpellError(aSpellError);
         myPlayerControlsVibrationsManager.VibratePlayerCastingError(aSpellError);
+    }
+
+    private bool InterruptDueToMovement(Spell aSpell)
+    {
+        if (aSpell.IsCastableWhileMoving())
+            return false;
+
+        if (Time.time - myCastingWhileMovingBufferTimestamp < 0.2f)
+            return false;
+
+        return myMovementComponent && myMovementComponent.IsMoving();
+    }
+
+    protected virtual bool WasSpellChannelButtonReleased(int aSpellIndex)
+    {
+        switch (aSpellIndex)
+        {
+            case 0:
+                return myPlayerControls.Action1.WasReleased;
+            case 1:
+                return myPlayerControls.Action2.WasReleased;
+            case 2:
+                return myPlayerControls.Action3.WasReleased;
+            case 3:
+                return myPlayerControls.Action4.WasReleased;
+        }
+
+        return false;
     }
 }

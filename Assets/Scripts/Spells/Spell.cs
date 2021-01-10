@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 
 [System.Flags]
-public enum SpellTarget
+public enum SpellTargetType
 {
-    Friend = 1 << 1,
-    Enemy = 1 << 2,
-    Anyone = Friend | Enemy
+    PlayerDefault = 1 << 1,
+    NPC = 1 << 2,
+    LowestHealthPlayer = 1 << 3,
+    SplitAmongAllPlayers = 1 << 4,
+
+    Player = PlayerDefault | LowestHealthPlayer | SplitAmongAllPlayers,
+    Anyone = Player | NPC
 }
 
 public class Spell : PoolableObject
@@ -16,8 +20,10 @@ public class Spell : PoolableObject
 
     [HideInInspector] public string myName;
 
+    [HideInInspector] public int myPoolSize = 3;
+
     [HideInInspector] public SpellType mySpellType;
-    [HideInInspector] public SpellTarget mySpellTarget;
+    [HideInInspector] public SpellTargetType mySpellTarget;
     [HideInInspector] public SpellAnimationType myAnimationType;
 
     [HideInInspector] public int myDamage;
@@ -35,6 +41,7 @@ public class Spell : PoolableObject
     [HideInInspector] public Sprite mySpellIcon;
 
     [HideInInspector] public bool myIsCastableWhileMoving;
+    [HideInInspector] public float mySpeedWhileCastingReducement = 0.0f;
     [HideInInspector] public bool myCanCastOnSelf;
     [HideInInspector] public bool myIsOnlySelfCast;
 
@@ -48,11 +55,14 @@ public class Spell : PoolableObject
     protected bool myIsFirstUpdate = true;
     protected bool myReturnToPoolWhenReachedTarget = true;
 
+    protected int myOriginalDamage;
+
     [System.Serializable]
     [HideInInspector]
     public struct SpellSFX
     {
         public AudioClip myCastSound;
+        public AudioClip myChannelSound;
         public AudioClip mySpawnSound;
         public AudioClip myHitSound;
     }
@@ -68,6 +78,13 @@ public class Spell : PoolableObject
 
     protected GameObject myParent;
     protected GameObject myTarget;
+
+    protected TargetHandler myTargetHandler;
+
+    protected virtual void Awake()
+    {
+        myOriginalDamage = myDamage;
+    }
 
     public virtual void Restart()
     {
@@ -132,12 +149,15 @@ public class Spell : PoolableObject
     {
         if(UtilityFunctions.HasSpellType(mySpellType, SpellType.Damage))
         {
-            DealDamage(myDamage);
+            DealDamage(myDamage, transform.position);
         }
         if (UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal))
         {
-            myTarget.GetComponent<Health>().GainHealth(myHealValue);
-            PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myHealValue)));
+            if(myHealValue > 0.0f)
+            {
+                myTarget.GetComponent<Health>().GainHealth(myHealValue);
+                PostMaster.Instance.PostMessage(new Message(MessageCategory.SpellSpawned, new MessageData(myParent.GetInstanceID(), myHealValue)));
+            }
         }
 
         if (myStunDuration > 0.0f)
@@ -159,8 +179,11 @@ public class Spell : PoolableObject
     {
         PoolManager poolManager = PoolManager.Instance;
         GameObject spawnObject = poolManager.GetPooledObject(mySpawnedOnHit.GetComponent<UniqueID>().GetID());
-        spawnObject.GetComponent<SpawnObjectSpell>().SetParent(myParent);
-        spawnObject.GetComponent<SpawnObjectSpell>().SetTarget(myTarget);
+        if (!spawnObject)
+            return;
+
+        spawnObject.GetComponent<Spell>().SetParent(myParent);
+        spawnObject.GetComponent<Spell>().SetTarget(myTarget);
 
         spawnObject.transform.localPosition = transform.position;
         spawnObject.transform.localRotation = Quaternion.identity;
@@ -168,15 +191,10 @@ public class Spell : PoolableObject
 
     public virtual void AddDamageIncrease(float aDamageIncrease)
     {
-        myDamage = (int)(myDamage * aDamageIncrease);
+        myDamage = (int)(myOriginalDamage * aDamageIncrease);
     }
 
-    public void SetDamage(int aDamage)
-    {
-        myDamage = aDamage;
-    }
-
-    protected void DealDamage(int aDamage, GameObject aTarget = null)
+    protected void DealDamage(int aDamage, Vector3 aDamageLocation, GameObject aTarget = null)
     {
         GameObject target = myTarget;
         if (aTarget)
@@ -184,20 +202,30 @@ public class Spell : PoolableObject
 
         bool isPlayer = myParent.GetComponent<Player>() != null;
 
-        Vector3 damageFloatSpawnPosition = transform.position;
-        if(mySpeed <= 0.0f && isPlayer)
+        Vector3 damageFloatSpawnPosition = aDamageLocation;
+        if(mySpeed <= 0.0f)
         {
-            Vector3 toParent = (myParent.transform.position - transform.position);
-            float distance = toParent.magnitude;
-            if(distance > 0.0f)
-                toParent /= distance;
+            if(isPlayer)
+            {
+                Vector3 toParent = (myParent.transform.position - aDamageLocation);
+                float distance = toParent.magnitude;
+                if(distance > 0.0f)
+                    toParent /= distance;
 
-            const float distanceFromParent = 2.0f;
-            damageFloatSpawnPosition += toParent * Mathf.Min(distance - distanceFromParent, target.GetComponent<Stats>().myRangeCylinder.myRadius);
+                const float distanceFromParent = 2.0f;
+                damageFloatSpawnPosition += toParent * Mathf.Min(distance - distanceFromParent, target.GetComponent<Stats>().myRangeCylinder.myRadius);
+            }
+            else
+            {
+                if (this is AoeAttack)
+                    damageFloatSpawnPosition = target.transform.position;
+            }
         }
 
+        bool isAutoAttack = this is AutoAttack;
+
         int parentID = myParent.GetInstanceID();
-        int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<UIComponent>().myCharacterColor, damageFloatSpawnPosition);
+        int damageDone = target.GetComponent<Health>().TakeDamage(aDamage, myParent.GetComponent<UIComponent>().myCharacterColor, damageFloatSpawnPosition, isAutoAttack);
         target.GetComponent<Health>().GenerateThreat((int)(damageDone * myThreatModifier), parentID, true);
 
         if (isPlayer)
@@ -219,12 +247,12 @@ public class Spell : PoolableObject
         return myTarget;
     }
 
-    public SpellTarget GetSpellTarget()
+    public SpellTargetType GetSpellTarget()
     {
         return mySpellTarget;
     }
 
-    public bool IsCastableWhileMoving()
+    public virtual bool IsCastableWhileMoving()
     {
         return myIsCastableWhileMoving || myCastTime <= 0.0f;
     }
@@ -259,7 +287,7 @@ public class Spell : PoolableObject
     public virtual bool IsCastOnFriends()
     {
         if (myIsOnlySelfCast)
-            return false;
+            return true;
 
         return UtilityFunctions.HasSpellType(mySpellType, SpellType.Heal | SpellType.Ressurect);
     }
@@ -278,6 +306,9 @@ public class Spell : PoolableObject
 
         PoolManager poolManager = PoolManager.Instance;
         GameObject vfxGO = poolManager.GetPooledObject(mySpellVFX.GetComponent<UniqueID>().GetID()); ;
+        if (!vfxGO)
+            return null;
+
         if(mySpawnOnHitVFXOnSelf)
         {
             vfxGO.transform.parent = myParent.transform;
@@ -295,8 +326,16 @@ public class Spell : PoolableObject
         vfxGO.transform.rotation = Quaternion.Euler(-90f, 0.0f, 0.0f);
 
 
-        vfxGO.GetComponent<AudioSource>().clip = mySpellSFX.myHitSound;
-        vfxGO.GetComponent<AudioSource>().Play();
+        AudioSource vfxAudio = vfxGO.GetComponent<AudioSource>();
+        if(vfxAudio)
+        {
+            vfxAudio.clip = mySpellSFX.myHitSound;
+            vfxAudio.Play();
+        }
+        else
+        {
+            Debug.LogWarning(vfxGO.name + " can't play VFX audio. Missing AudioSource component");
+        }
 
         poolManager.AddTemporaryObject(vfxGO, aDuration);
 
@@ -314,5 +353,10 @@ public class Spell : PoolableObject
         {
             aPoolManager.AddPoolableObjects(mySpellVFX, mySpellVFX.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
         }
+    }
+
+    public void SetTargetHandler(TargetHandler aTargetHandler)
+    {
+        myTargetHandler = aTargetHandler;
     }
 }

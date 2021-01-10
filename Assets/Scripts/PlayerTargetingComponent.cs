@@ -14,10 +14,22 @@ public class PlayerTargetingComponent : TargetingComponent
     [Header("The duration of holding down a spell button before enabling targeting system")]
     [SerializeField]
     private float mySmartTargetHoldDownMaxDuration = 0.35f;
-    private bool myIsHealTargetingEnabled;
+    private float mySmartTargetHoldDownMaxDurationDefault;
+
+    [SerializeField]
+    private HealTargetingOption myHealTargetingOption = HealTargetingOption.NoHealTargeting;
 
     private List<GameObject> myPreviouslyTargetedEnemies = new List<GameObject>(8);
     private float myLatestSelectedTargetTime;
+
+    public enum ManualHealTargetingMode
+    {
+        NotActive,
+        LookAt,
+        LeftJoystick
+    };
+
+    private ManualHealTargetingMode myManualHealTargetingMode = ManualHealTargetingMode.NotActive;
 
     void Awake()
     {
@@ -27,6 +39,22 @@ public class PlayerTargetingComponent : TargetingComponent
         myStats = GetComponent<Stats>();
 
         myHealth.EventOnHealthZero += OnDeath;
+
+        mySmartTargetHoldDownMaxDurationDefault = mySmartTargetHoldDownMaxDuration;
+
+        OptionsConfig optionsConfig = OptionsConfig.Instance;
+        if (optionsConfig)
+        {
+            SetHealTargetOption(optionsConfig.myOptionsData.myHealTargetingMode);
+            optionsConfig.EventOnOptionsChanged += OnOptionsChanged;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        OptionsConfig optionsConfig = OptionsConfig.Instance;
+        if (optionsConfig)
+            optionsConfig.EventOnOptionsChanged -= OnOptionsChanged;
     }
 
     public float GetSmartTargetHoldDownMaxDuration()
@@ -43,13 +71,26 @@ public class PlayerTargetingComponent : TargetingComponent
         if (myStats.IsStunned())
             return;
 
-        if(myIsHealTargetingEnabled)
+        if(myManualHealTargetingMode != ManualHealTargetingMode.NotActive)
             DetectFriendlyTargetInput(myPlayerControls.Movement != Vector2.zero);
+
+        if(myHealTargetingOption == HealTargetingOption.SelectWithRightStickOrKeyboard)
+            GetFriendlyTargetByRightStickOrKeyboard();
     }
 
-    public bool IsHealTargeting()
+    public ManualHealTargetingMode GetHealTargetingMode()
     {
-        return myIsHealTargetingEnabled;
+        return myManualHealTargetingMode;
+    }
+
+    public bool IsSmartHealingAvailable()
+    {
+        return myHealTargetingOption != HealTargetingOption.SelectWithRightStickOrKeyboard;
+    }
+
+    public bool IsManualHealTargeting()
+    {
+        return myManualHealTargetingMode != ManualHealTargetingMode.NotActive;
     }
 
     public void SetPlayerController(PlayerControls aPlayerControls)
@@ -67,6 +108,10 @@ public class PlayerTargetingComponent : TargetingComponent
         if (Target)
         {
             Target.GetComponentInChildren<TargetProjector>().DropTargetProjection(myPlayer.PlayerIndex);
+            TargetedByHud targetedByHud = Target.GetComponentInChildren<TargetedByHud>();
+            if (targetedByHud)
+                targetedByHud.RemoveTargetedBy(myPlayer.PlayerIndex);
+
             Target.GetComponent<Health>().EventOnHealthZero -= OnTargetDied;
         }
 
@@ -75,6 +120,10 @@ public class PlayerTargetingComponent : TargetingComponent
         if (Target)
         {
             Target.GetComponentInChildren<TargetProjector>().AddTargetProjection(GetComponent<UIComponent>().myCharacterColor, myPlayer.PlayerIndex);
+            TargetedByHud targetedByHud = Target.GetComponentInChildren<TargetedByHud>();
+            if (targetedByHud)
+                targetedByHud.SetTargetedBy(GetComponent<UIComponent>().myCharacterColor, myPlayer.PlayerIndex);
+
             Target.GetComponent<Health>().EventOnHealthZero += OnTargetDied;
         }
 
@@ -86,11 +135,48 @@ public class PlayerTargetingComponent : TargetingComponent
         if (Time.timeScale <= 0.0f)
             return;
 
-        if (myPlayerControls.TargetEnemy.WasPressed && !myIsHealTargetingEnabled)
+        if (myPlayerControls.TargetEnemy.WasPressed && myManualHealTargetingMode == ManualHealTargetingMode.NotActive)
             DetermineNewEnemyTarget();
     }
 
     private void DetectFriendlyTargetInput(bool hasJoystickMoved)
+    {
+        switch (myHealTargetingOption)
+        {
+            case HealTargetingOption.SelectWithLeftStickOnly:
+            case HealTargetingOption.SelectWithLeftStickAndAutoHeal:
+                GetFriendlyTargetByStickLocation();
+                break;
+            case HealTargetingOption.SelectWithLookDirection:
+                GetFriendlyTargetByLooking(hasJoystickMoved);
+                break;
+        }
+    }
+
+    private void GetFriendlyTargetByStickLocation()
+    {
+        const float axisRequired = 0.7f;
+
+        int playerIndex = -1;
+        Vector2 leftStickAxis = myPlayerControls.Movement;
+        if (leftStickAxis.x <= -axisRequired)
+            playerIndex = 0;
+        else if (leftStickAxis.y >= axisRequired)
+            playerIndex = 1;
+        else if (leftStickAxis.y <= -axisRequired)
+            playerIndex = 2;
+        else if (leftStickAxis.x >= axisRequired)
+            playerIndex = 3;
+
+        GameObject target = myTargetHandler.GetPlayer(playerIndex);
+        if (target && Target != target)
+            SetTarget(target);
+
+        if (Target && Target != gameObject)
+            transform.LookAt(Target.transform, Vector3.up);
+    }
+
+    private void GetFriendlyTargetByLooking(bool hasJoystickMoved)
     {
         if (!hasJoystickMoved)
             return;
@@ -102,6 +188,9 @@ public class PlayerTargetingComponent : TargetingComponent
         for (int index = 0; index < players.Count; index++)
         {
             if (index == (myPlayer.PlayerIndex - 1))
+                continue;
+
+            if (players[index].GetComponent<Health>().IsDead())
                 continue;
 
             Vector3 toFriend = (players[index].transform.position - transform.position).normalized;
@@ -118,21 +207,100 @@ public class PlayerTargetingComponent : TargetingComponent
             SetTarget(bestTarget);
     }
 
+    private void GetFriendlyTargetByRightStickOrKeyboard()
+    {
+        int playerIndex = -1;
+        const float triggerValue = 0.8f;
+        if (myPlayerControls.TargetPlayerOne.RawValue > triggerValue)
+            playerIndex = 0;
+        if (myPlayerControls.TargetPlayerTwo.RawValue > triggerValue)
+            playerIndex = 1;
+        if (myPlayerControls.TargetPlayerThree.RawValue > triggerValue)
+            playerIndex = 2;
+        if (myPlayerControls.TargetPlayerFour.RawValue > triggerValue)
+            playerIndex = 3;
+
+        GameObject target = myTargetHandler.GetPlayer(playerIndex);
+        if (target && Target != target)
+            SetTarget(target);
+    }
+
     public void EnableManualHealTargeting(int aSpellIndex)
     {
-        myIsHealTargetingEnabled = true;
-        SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
+        switch (myHealTargetingOption)
+        {
+            case HealTargetingOption.SelectWithLeftStickOnly:
+            case HealTargetingOption.SelectWithLeftStickAndAutoHeal:
+                myManualHealTargetingMode = ManualHealTargetingMode.LeftJoystick;
+                if (!Target || Target.tag == "Enemy")
+                    SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
+                break;
+            case HealTargetingOption.SelectWithLookDirection:
+                myManualHealTargetingMode = ManualHealTargetingMode.LookAt;
+                SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
+                break;
+        }
+
         myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, false);
 
-        GetComponent<PlayerUIComponent>().HightlightHealTargeting(aSpellIndex, true);
+        GetComponent<PlayerUIComponent>().SetSpellPulsating(aSpellIndex, true);
         GetComponentInChildren<HealTargetArrow>().EnableHealTarget(GetComponent<UIComponent>().myCharacterColor);
     }
 
     public void DisableManualHealTargeting(int aSpellIndex)
     {
-        myIsHealTargetingEnabled = false;
-        GetComponent<PlayerUIComponent>().HightlightHealTargeting(aSpellIndex, false);
+        myManualHealTargetingMode = ManualHealTargetingMode.NotActive;
+        GetComponent<PlayerUIComponent>().SetSpellPulsating(aSpellIndex, false);
         GetComponentInChildren<HealTargetArrow>().DisableHealTarget();
+    }
+
+    public void SetTargetWithLowestHealthAndWithoutBuff(Spell aSpellToCast)
+    {
+        float lowestHealthPercentage = 1.0f;
+        int bestPlayerTarget = -1;
+        int playerTargetedByBossIndex = -1;
+        List<GameObject> players = myTargetHandler.GetAllPlayers();
+        List<GameObject> enemies = myTargetHandler.GetAllEnemies();
+
+        for (int index = 0; index < players.Count; index++)
+        {
+            GameObject player = players[index];
+            Health health = player.GetComponent<Health>();
+            if (health.IsDead())
+                continue;
+
+            float healthPercentage = health.GetHealthPercentage();
+            if(healthPercentage < lowestHealthPercentage || lowestHealthPercentage >= 1.0f)
+            {
+                if(aSpellToCast is SpellOverTime)
+                {
+                    if(player.GetComponent<Stats>().HasSpellOverTime(aSpellToCast as SpellOverTime))
+                        continue;
+                }
+
+                lowestHealthPercentage = healthPercentage;
+                bestPlayerTarget = index;
+            }
+
+            foreach (GameObject enemyGO in enemies)
+            {
+                TargetingComponent npcTargetingComponent = enemyGO.GetComponent<TargetingComponent>();
+                if (npcTargetingComponent && npcTargetingComponent.Target == player)
+                    playerTargetedByBossIndex = index;
+            }
+        }
+
+        if (bestPlayerTarget == -1)
+        {
+            if(playerTargetedByBossIndex != -1)
+                bestPlayerTarget = playerTargetedByBossIndex;
+            else
+                bestPlayerTarget = myPlayer.PlayerIndex - 1; //Self
+        }
+
+        GameObject bestTarget = myTargetHandler.GetPlayer(bestPlayerTarget);
+        if (Target != bestTarget)
+            SetTarget(bestTarget);
     }
 
     public void SetTargetWithSmartTargeting(int aKeyIndex)
@@ -208,9 +376,29 @@ public class PlayerTargetingComponent : TargetingComponent
             SetTarget(bestTarget);
     }
 
+    public void FindSpellTarget(Spell aSpell)
+    {
+        switch (aSpell.mySpellTarget)
+        {
+            case SpellTargetType.NPC:
+                if (!Target || Target.GetComponent<Player>())
+                    DetermineNewEnemyTarget();
+                break;
+            case SpellTargetType.LowestHealthPlayer:
+                SetTargetWithLowestHealthAndWithoutBuff(aSpell);
+                break;
+            case SpellTargetType.PlayerDefault:
+            case SpellTargetType.Player:
+            case SpellTargetType.Anyone:
+                break;
+            default:
+                break;
+        }
+    }
+
     public void DetermineNewEnemyTarget()
     {
-        const float resetTargetTimer = 2.0f;
+        const float resetTargetTimer = 1.0f;
         if (Time.time - myLatestSelectedTargetTime > resetTargetTimer)
             myPreviouslyTargetedEnemies.Clear();
 
@@ -237,9 +425,11 @@ public class PlayerTargetingComponent : TargetingComponent
             Vector3 toTarget = enemies[index].transform.position - transform.position;
             float distance = toTarget.magnitude;
             toTarget.y = 0.0f;
-            toTarget /= distance;
+            toTarget /= distance > 0 ? distance : 1;
 
             float dotAngle = Vector3.Dot(transform.forward, toTarget);
+            if (distance <= 0.05f)
+                dotAngle = 1.0f; //give high dot if really close.
 
             float score = (1 + dotAngle) * (100.0f - distance) + deathScore;
             if(score > bestScore)
@@ -250,17 +440,34 @@ public class PlayerTargetingComponent : TargetingComponent
         }
 
         if (bestIndex != -1)
+        {
+            myPreviouslyTargetedEnemies.Add(enemies[bestIndex]);
             SetTarget(enemies[bestIndex]);
+        }
     }
 
     private void OnDeath()
     {
         SetTarget(null);
-        myIsHealTargetingEnabled = false;
+        myManualHealTargetingMode = ManualHealTargetingMode.NotActive;
     }
 
     private void OnTargetDied()
     {
         SetTarget(null);
+    }
+
+    private void OnOptionsChanged(OptionsConfig aOptionsConfig)
+    {
+        SetHealTargetOption(aOptionsConfig.myOptionsData.myHealTargetingMode);
+    }
+
+    void SetHealTargetOption(HealTargetingOption aHealTargetOption)
+    {
+        myHealTargetingOption = aHealTargetOption;
+        if (myHealTargetingOption == HealTargetingOption.SelectWithRightStickOrKeyboard || myHealTargetingOption == HealTargetingOption.NoHealTargeting)
+            mySmartTargetHoldDownMaxDuration = float.MaxValue;
+        else
+            mySmartTargetHoldDownMaxDuration = mySmartTargetHoldDownMaxDurationDefault;
     }
 }

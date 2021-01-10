@@ -1,44 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.HighDefinition;
 
 public class HighlightAreaLogic : PoolableObject
 {
-    private Material myMaterial;
-    private DecalProjector myDecalProjector;
+    private MeshRenderer myDecalProjector;
 
     private float myDuration;
     private float myLifeTime;
 
     private void Awake()
     {
-        myDecalProjector = GetComponentInChildren<DecalProjector>();
-        myMaterial = new Material(myDecalProjector.material);
-
-        myDecalProjector.material = myMaterial;
+        myDecalProjector = GetComponentInChildren<MeshRenderer>();
+        myDecalProjector.material = new Material(myDecalProjector.material);
     }
 
-    public void SetData(float aDuration)
+    public void SetData(float aDuration, float aRadius)
     {
         myDuration = aDuration;
+
+        Transform decalTransform = transform.GetChild(0);
+        Vector3 decalScale = decalTransform.lossyScale;
+        decalScale.x = aRadius * 2.0f;
+        decalScale.z = aRadius * 2.0f;
+        decalTransform.localScale = decalScale;
     }
 
     private void OnEnable()
     {
         myLifeTime = 0.0f;
-        myMaterial.SetFloat("_Percentage", 1.0f);
+        myDecalProjector.material.SetFloat("_LifetimePercentage", 1.0f);
     }
 
     void Update()
     {
         myLifeTime += Time.deltaTime;
 
-        myMaterial.SetFloat("_Percentage", 1.0f - myLifeTime / myDuration);
+        myDecalProjector.material.SetFloat("_LifetimePercentage", 1.0f - myLifeTime / myDuration);
     }
 
     public override void Reset()
     {
-        
+        myLifeTime = 0;
+        myDecalProjector.material.SetFloat("_LifetimePercentage", 1.0f);
     }
 }

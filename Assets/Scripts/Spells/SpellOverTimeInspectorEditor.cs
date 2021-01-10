@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(SpellOverTime)), CanEditMultipleObjects]
+[CustomEditor(typeof(SpellOverTime), true), CanEditMultipleObjects]
 public class SpellOverTimeInspectorEditor : SpellInspectorEditor
 {
     public SerializedProperty
@@ -43,6 +43,9 @@ public class SpellOverTimeInspectorEditor : SpellInspectorEditor
         serializedObject.Update();
 
         EditorGUILayout.PropertyField(myIsCastManually, new GUIContent("Is Cast Manually"));
+        if(!myIsCastManually.boolValue)
+            EditorGUILayout.PropertyField(myPoolSize);
+
         EditorGUILayout.HelpBox("Spell Over Time Values", MessageType.None);
 
         EditorGUILayout.PropertyField(myDuration, new GUIContent("Spell Duration"));

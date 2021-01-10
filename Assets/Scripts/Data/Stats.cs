@@ -7,7 +7,9 @@ public class Stats : MonoBehaviour
     public float myAttackSpeed = 1.0f;
     public float myDamageIncrease = 1.0f;
     public float myDamageMitigator = 1.0f;
+    public float myAutoAttackDamageMitigator = 1.0f;
     public float myAutoAttackRange = 5;
+    public float myNextSpellModifier = 1.0f;
     public int myAutoAttackDamage = 20;
 
     [System.Serializable]
@@ -42,6 +44,9 @@ public class Stats : MonoBehaviour
     }
 
     public float AttackRange { get { return myAutoAttackRange; } }
+    public float NextSpellModifier { get { return myNextSpellModifier; } set { myNextSpellModifier = value; } }
+    public float DamageIncrease { get { return myDamageIncrease; } set { myDamageIncrease = value; } }
+
     public bool IsStunned() { return myIsStunned; }
     public void SetStunned(float aDuration)
     {
@@ -76,6 +81,9 @@ public class Stats : MonoBehaviour
     public void RemoveSpellOverTime(SpellOverTime aSpell)
     {
         int index = FindIndexOfSpellOverTime(aSpell);
+        if (index == -1)
+            return;
+
         mySpellOverTimeGOs.RemoveAt(index);
         UIComponent uiComponent = GetComponent<UIComponent>();
         if (uiComponent)
@@ -130,6 +138,14 @@ public class Stats : MonoBehaviour
         }
 
         return score + damageBuffCount;
+    }
+
+    public float GetAndResetSpellModifier()
+    {
+        float spellModifier = myNextSpellModifier;
+        myNextSpellModifier = 1.0f;
+
+        return spellModifier;
     }
 
     protected virtual void OnDeath()

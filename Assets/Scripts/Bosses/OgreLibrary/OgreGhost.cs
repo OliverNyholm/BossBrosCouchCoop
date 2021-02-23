@@ -11,8 +11,12 @@ public class OgreGhost : NPCComponent
     [SerializeField]
     private List<GameObject> myAvailableCheckpoints = new List<GameObject>(5);
 
+    private bool myShuffleCheckpoints = false;
     public List<GameObject> Players { get; set; }
 
+    private float myDroppedPlayerTimestamp = 0;
+
+    public bool HasPlayer { get { return myPlayerMovementComponent != null; } }
     public bool HasReachedTop { get; set; }
 
     protected override void Awake()
@@ -25,11 +29,17 @@ public class OgreGhost : NPCComponent
         foreach (OgreGhostCheckpoint checkpoint in checkpoints)
         {
             myCheckpoints.Add(checkpoint.gameObject);
-            if (!hasCheckpointsManuallySet)
-                myAvailableCheckpoints.Add(checkpoint.gameObject);
         }
 
+        myCheckpoints.Sort((first, second) => second.GetComponent<OgreGhostCheckpoint>().myOrder.CompareTo(first.GetComponent<OgreGhostCheckpoint>().myOrder));
+
         if (!hasCheckpointsManuallySet)
+        {
+            foreach (GameObject checkpoint in myCheckpoints)
+                myAvailableCheckpoints.Add(checkpoint);
+        }
+
+        if (myShuffleCheckpoints)
             myAvailableCheckpoints.Shuffle();
 
         Players = FindObjectOfType<TargetHandler>().GetAllPlayers();
@@ -65,7 +75,13 @@ public class OgreGhost : NPCComponent
         if (myPlayerMovementComponent)
             return;
 
+        if (Time.time - myDroppedPlayerTimestamp < 1.0f)
+            return;
+
         if (!aOther.GetComponent<Player>())
+            return;
+
+        if (aOther.GetComponent<Health>().IsDead())
             return;
 
         PlayerMovementComponent movementComponent = aOther.GetComponent<PlayerMovementComponent>();
@@ -99,11 +115,18 @@ public class OgreGhost : NPCComponent
         if(myAvailableCheckpoints.Count == 0)
         {
             foreach (GameObject checkpoint in myCheckpoints)
-            {
                 myAvailableCheckpoints.Add(checkpoint);
-            }
 
-            myAvailableCheckpoints.Shuffle();
+            if (myShuffleCheckpoints)
+                myAvailableCheckpoints.Shuffle();
         }
+    }
+
+    public void DropPlayer()
+    {
+        myPlayerMovementComponent.SetEnabledMovement(true);
+        myPlayerMovementComponent = null;
+
+        myDroppedPlayerTimestamp = Time.time;
     }
 }

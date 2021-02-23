@@ -4,4 +4,5 @@ using UnityEngine;
 
 public class OgreGhostCheckpoint : MonoBehaviour
 {
+    public int myOrder = 0;
 }

@@ -23,7 +23,7 @@ public class NPCThreatComponent : MonoBehaviour
     public delegate void OnTaunted();
     public event OnTaunted EventOnTaunted;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         myTargetingComponent = GetComponent<TargetingComponent>();
         myCastingComponent = GetComponent<NPCCastingComponent>();
@@ -64,7 +64,7 @@ public class NPCThreatComponent : MonoBehaviour
         PostMaster.Instance.UnregisterSubscriber(ref mySubscriber, MessageCategory.PlayerDied);
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (myHealth.IsDead())
             return;
@@ -102,7 +102,7 @@ public class NPCThreatComponent : MonoBehaviour
 
         int highestThreatIndex = -1;        
         if (myThreatValues.Count == 1)
-            return ShouldIgnoreTarget(Players[0]) ? -1 : highestThreatIndex;
+            return ShouldIgnoreTarget(Players[0]) ? -1 : 0;
 
         float timeNow = Time.time;
         float highestThreatValue = float.MinValue;
@@ -169,7 +169,7 @@ public class NPCThreatComponent : MonoBehaviour
         }
     }
 
-    private void SetTarget(int aTargetIndex)
+    public void SetTarget(int aTargetIndex)
     {
         myTargetingComponent.SetTarget(aTargetIndex == -1 ? null : Players[aTargetIndex]);
         myTargetIndex = aTargetIndex;

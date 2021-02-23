@@ -138,18 +138,23 @@ public static class UtilityFunctions
 
     public static bool FindGroundFromLocation(Vector3 aStartLocation, out Vector3 outHitLocation, out MovablePlatform outMovablePlatform, float aDistance = 5.0f)
     {
+        bool result = FindGroundFromLocation(aStartLocation, out RaycastHit hitInfo, out outMovablePlatform, aDistance);
+        outHitLocation = result ? hitInfo.point : Vector3.zero;
+
+        return result;
+    }
+
+    public static bool FindGroundFromLocation(Vector3 aStartLocation, out RaycastHit outHitInfo, out MovablePlatform outMovablePlatform, float aDistance = 5.0f)
+    {
         Ray ray = new Ray(aStartLocation + Vector3.up, Vector3.down);
         LayerMask layerMask = LayerMask.GetMask("Terrain");
 
-        RaycastHit hitInfo;
-        if (Physics.Raycast(ray, out hitInfo, aDistance, layerMask))
+        if (Physics.Raycast(ray, out outHitInfo, aDistance, layerMask))
         {
-            outHitLocation = hitInfo.point;
-            outMovablePlatform = hitInfo.collider.gameObject.GetComponent<MovablePlatform>();
-            return true; 
+            outMovablePlatform = outHitInfo.collider.gameObject.GetComponent<MovablePlatform>();
+            return true;
         }
 
-        outHitLocation = Vector3.zero;
         outMovablePlatform = null;
         return false;
     }

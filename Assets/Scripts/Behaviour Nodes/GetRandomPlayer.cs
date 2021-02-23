@@ -6,11 +6,13 @@ using BehaviorDesigner.Runtime.Tasks;
 public class GetRandomPlayer : Action
 {
     public SharedGameObject myGameObject;
+    public SharedInt mySelectedIndex;
     public bool myShouldExcludePlayer;
+    public bool myAcceptExludedPlayerIfAlone = true;
     public SharedInt myPlayerIndexToExclude;
 
     public SharedGameObjectList myPlayers;
-
+    private List<int> myAvailablePlayerIndices = new List<int>(4);
 
     public override TaskStatus OnUpdate()
     {
@@ -20,56 +22,37 @@ public class GetRandomPlayer : Action
         else
             players = GetComponent<NPCThreatComponent>().Players;
 
-
         if (players.Count == 0)
             return TaskStatus.Failure;
 
-        if(players.Count == 1)
+        myAvailablePlayerIndices.Clear();
+
+        bool isExludedPlayerAlive = false;
+        for (int index = 0; index < players.Count; index++)
         {
-            myGameObject.Value = players[0];
-            return TaskStatus.Success;
+            if (players[index].GetComponent<Health>().IsDead())
+                continue;
+
+            if (myShouldExcludePlayer && index == myPlayerIndexToExclude.Value)
+            {
+                isExludedPlayerAlive = true;
+                continue;
+            }
+
+            myAvailablePlayerIndices.Add(index);
         }
 
-        int randomPlayer = -1;
-        do
-        {
-            randomPlayer = Random.Range(0, players.Count);
-        } while (ShouldRepickRandom(randomPlayer, players));
+        if (myAvailablePlayerIndices.Count == 0 && isExludedPlayerAlive && myAcceptExludedPlayerIfAlone)
+            myAvailablePlayerIndices.Add(myPlayerIndexToExclude.Value);
+
+        if (myAvailablePlayerIndices.Count == 0)
+            return TaskStatus.Failure;
+
+        int randomPlayer = Random.Range(0, myAvailablePlayerIndices.Count);
 
         myGameObject.Value = players[randomPlayer];
+        mySelectedIndex.Value = myGameObject.Value.GetComponent<Player>().PlayerIndex - 1;
 
         return TaskStatus.Success;
-    }
-
-    private bool ShouldRepickRandom(int aRandomIndex, List<GameObject> somePlayer)
-    {
-        int deathCount = 0;
-        for (int index = 0; index < somePlayer.Count; index++)
-        {
-            if (!somePlayer[index])
-            {
-                if (aRandomIndex == index)
-                    return true;
-                else
-                    continue;
-            }
-
-            if(somePlayer[index].GetComponent<Health>().IsDead())
-            {
-                deathCount++;
-                if (aRandomIndex == index)
-                    return true;
-            }
-        }
-
-        //If we don't care about who we pick as random and current target isn't dead, go ahead.
-        if (!myShouldExcludePlayer)
-            return false;
-
-        //If we care about excluding, but our current target is the only one alive we'll go with it anyway.
-        if (deathCount == somePlayer.Count - 1)
-            return false;
-
-        return true;
     }
 }

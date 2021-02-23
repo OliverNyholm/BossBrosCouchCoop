@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -10225,6 +10225,8 @@ MonoBehaviour:
   myCharacterColor: {r: 0.5660378, g: 0, b: 0.4646879, a: 1}
   myName: Boss
   myUseCastbarAboveCharacter: 1
+  myUseMinionHud: 0
+  myCharacterHUD: {fileID: 0}
 --- !u!195 &68585855
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -10259,6 +10261,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6139c0ebc1eb51409642c730b18e116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myShouldHandleHudsOnActivations: 0
+  myShouldStopBehaviorOnDeath: 1
+  myDeathAudio: {fileID: 0}
 --- !u!114 &68585857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10275,7 +10280,9 @@ MonoBehaviour:
   myAttackSpeed: 1
   myDamageIncrease: 1
   myDamageMitigator: 1
+  myAutoAttackDamageMitigator: 1
   myAutoAttackRange: 5
+  myNextSpellModifier: 1
   myAutoAttackDamage: 200
   myRangeCylinder:
     myRadius: 2.5
@@ -16595,7 +16602,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &218967929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26739,6 +26746,8 @@ MonoBehaviour:
   myCharacterColor: {r: 1, g: 0, b: 0.76618385, a: 1}
   myName: Totem
   myUseCastbarAboveCharacter: 1
+  myUseMinionHud: 0
+  myCharacterHUD: {fileID: 0}
 --- !u!114 &771582010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26755,7 +26764,9 @@ MonoBehaviour:
   myAttackSpeed: 1
   myDamageIncrease: 1
   myDamageMitigator: 1
+  myAutoAttackDamageMitigator: 1
   myAutoAttackRange: 5
+  myNextSpellModifier: 1
   myAutoAttackDamage: 20
   myRangeCylinder:
     myRadius: 1.5
@@ -44467,6 +44478,8 @@ MonoBehaviour:
   myCharacterColor: {r: 0, g: 1, b: 0.6971648, a: 1}
   myName: Fallen Tree
   myUseCastbarAboveCharacter: 1
+  myUseMinionHud: 0
+  myCharacterHUD: {fileID: 0}
 --- !u!82 &1063597221
 AudioSource:
   m_ObjectHideFlags: 0
@@ -44600,7 +44613,9 @@ MonoBehaviour:
   myAttackSpeed: 1
   myDamageIncrease: 1
   myDamageMitigator: 1
+  myAutoAttackDamageMitigator: 1
   myAutoAttackRange: 5
+  myNextSpellModifier: 1
   myAutoAttackDamage: 20
   myRangeCylinder:
     myRadius: 5.58
@@ -45693,7 +45708,9 @@ MonoBehaviour:
   myAttackSpeed: 1
   myDamageIncrease: 1
   myDamageMitigator: 1
+  myAutoAttackDamageMitigator: 1
   myAutoAttackRange: 5
+  myNextSpellModifier: 1
   myAutoAttackDamage: 20
   myRangeCylinder:
     myRadius: 5.48
@@ -45717,6 +45734,8 @@ MonoBehaviour:
   myCharacterColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
   myName: Boulder
   myUseCastbarAboveCharacter: 1
+  myUseMinionHud: 0
+  myCharacterHUD: {fileID: 0}
 --- !u!1 &1160938857
 GameObject:
   m_ObjectHideFlags: 0
@@ -48283,6 +48302,85 @@ Transform:
   m_Father: {fileID: 704911990}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1438982470
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7889717877375787259, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889717877375787259, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_Cameras.Array.data[0]
+      value: 
+      objectReference: {fileID: 2094744442}
+    - target: {fileID: 7889717878366068889, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -51.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889717878366068889, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889717878366068889, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -117.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889717878366068889, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889717878366068889, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889717878366068889, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889717878366068889, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889717878366068889, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889717878366068889, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889717878366068889, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889717878366068889, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889717878366068891, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+        type: 3}
+      propertyPath: m_Name
+      value: CameraHandler (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9dd07cdc744a32d498a7ef7dda428ec8, type: 3}
 --- !u!1 &1440271939
 GameObject:
   m_ObjectHideFlags: 0
@@ -59458,6 +59556,8 @@ MonoBehaviour:
   myCharacterColor: {r: 0, g: 0.6509434, b: 0.34547535, a: 1}
   myName: Ogre Banner
   myUseCastbarAboveCharacter: 1
+  myUseMinionHud: 0
+  myCharacterHUD: {fileID: 0}
 --- !u!82 &1607266529
 AudioSource:
   m_ObjectHideFlags: 0
@@ -59591,7 +59691,9 @@ MonoBehaviour:
   myAttackSpeed: 1
   myDamageIncrease: 1
   myDamageMitigator: 1
+  myAutoAttackDamageMitigator: 1
   myAutoAttackRange: 5
+  myNextSpellModifier: 1
   myAutoAttackDamage: 20
   myRangeCylinder:
     myRadius: 1.32
@@ -67284,6 +67386,8 @@ MonoBehaviour:
   myCharacterColor: {r: 0.8932913, g: 0, b: 0.98039216, a: 1}
   myName: Ogre Banner
   myUseCastbarAboveCharacter: 1
+  myUseMinionHud: 0
+  myCharacterHUD: {fileID: 0}
 --- !u!82 &1849813298
 AudioSource:
   m_ObjectHideFlags: 0
@@ -67417,7 +67521,9 @@ MonoBehaviour:
   myAttackSpeed: 1
   myDamageIncrease: 1
   myDamageMitigator: 1
+  myAutoAttackDamageMitigator: 1
   myAutoAttackRange: 5
+  myNextSpellModifier: 1
   myAutoAttackDamage: 20
   myRangeCylinder:
     myRadius: 1.32

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 944630529259025171}
   - component: {fileID: 2518600737944746056}
   - component: {fileID: 1466204874942263110}
+  - component: {fileID: -2001911172522594932}
   m_Layer: 0
   m_Name: Auto Attack
   m_TagString: Untagged
@@ -48,6 +49,7 @@ MonoBehaviour:
   myQuickInfo: 
   myTutorialInfo: 
   myName: Auto Attack
+  myPoolSize: 3
   mySpellType: 1
   mySpellTarget: 4
   myAnimationType: 0
@@ -63,14 +65,21 @@ MonoBehaviour:
   myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
   mySpellIcon: {fileID: 0}
   myIsCastableWhileMoving: 1
+  mySpeedWhileCastingReducement: 0
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
   mySpawnedOnHit: {fileID: 0}
   mySpellSFX:
     myCastSound: {fileID: 0}
+    myChannelSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 0}
+    myCastEvent: 
+    myChannelEvent: 
+    myChannelEventStop: 
+    myHitEvent: Play_AutoAttack
+    mySpawnEvent: '""'
   mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 724740779098352624, guid: 079eb52411e313842b125463f59f5c29,
     type: 3}
@@ -183,3 +192,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myID: 41
+--- !u!114 &-2001911172522594932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076349553557202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c537799e18c62964b9e5b08eca6be9dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 0
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1

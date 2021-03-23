@@ -130,7 +130,7 @@ public class CharacterHUD : MonoBehaviour
             myResourceText.text = aString;
     }
 
-    public void AddBuff(Sprite aSprite)
+    public void AddBuff(SpellOverTime aSpell)
     {
         GameObject buff = myPoolManager.GetPooledObject(myBuffPrefab.GetComponent<UniqueID>().GetID());
         if (!buff)
@@ -138,8 +138,20 @@ public class CharacterHUD : MonoBehaviour
 
         buff.transform.SetParent(myBuffParent.transform, false);
 
-        buff.GetComponent<Image>().sprite = aSprite;
+        buff.GetComponentInChildren<Image>().sprite = aSpell.mySpellIcon;
+        buff.GetComponentInChildren<TextMeshProUGUI>().text = aSpell.GetStackCount() > 1 ? aSpell.GetStackCount().ToString() : "";
         myBuffs.Add(buff);
+    }
+
+    public void UpdateBuffCount(int anIndex, int aBuffCount)
+    {
+        myBuffs[anIndex].GetComponentInChildren<TextMeshProUGUI>().text = aBuffCount > 1 ? aBuffCount.ToString() : ""; ;
+    }
+
+    public void RemoveBuff(int anIndex)
+    {
+        myPoolManager.ReturnObject(myBuffs[anIndex], myBuffPrefab.GetComponent<UniqueID>().GetID());
+        myBuffs.RemoveAt(anIndex);
     }
 
     public void SetMinionTargetHudColor(Color aColor)
@@ -148,12 +160,6 @@ public class CharacterHUD : MonoBehaviour
             myTargetBar.color = aColor;
     }
 
-
-    public void RemoveBuff(int anIndex)
-    {
-        myPoolManager.ReturnObject(myBuffs[anIndex], myBuffPrefab.GetComponent<UniqueID>().GetID());
-        myBuffs.RemoveAt(anIndex);
-    }
 
     public void ToggleUIText(int aPlayerID)
     {

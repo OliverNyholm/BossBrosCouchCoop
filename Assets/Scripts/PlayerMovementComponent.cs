@@ -315,6 +315,11 @@ public class PlayerMovementComponent : MovementComponent
         return false;
     }
 
+    public bool IsInAir()
+    {
+        return !myIsGrounded;
+    }
+
     public void GiveImpulse(Vector3 aVelocity, float aStunDuration = 0.2f)
     {
         myStats.SetStunned(aStunDuration);

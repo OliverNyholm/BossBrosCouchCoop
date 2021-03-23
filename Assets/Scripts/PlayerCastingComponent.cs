@@ -341,6 +341,9 @@ public class PlayerCastingComponent : CastingComponent
         }
 
         StopCasting(false);
+        if (aSpell is ChannelSpell)
+            (aSpell as ChannelSpell).OnStoppedChannel();
+
         if (myChannelGameObject != null)
         {
             PoolManager.Instance.ReturnObject(myChannelGameObject, myChannelGameObject.GetComponent<UniqueID>().GetID());
@@ -400,8 +403,13 @@ public class PlayerCastingComponent : CastingComponent
 
         spellScript.Restart();
 
-        if (aSpawnPosition == transform.position && spellScript.GetSpellSFX().mySpawnSound)
-            GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
+        if (aSpawnPosition == transform.position)
+        {
+            if (spellScript.GetSpellSFX().mySpawnSound)
+                GetComponent<AudioSource>().PlayOneShot(spellScript.GetSpellSFX().mySpawnSound);
+            else if (spellScript.GetSpellSFX().mySpawnEvent != "")
+                AkSoundEngine.PostEvent(spellScript.GetSpellSFX().mySpawnEvent, gameObject);
+        }
 
         myCastingWhileMovingBufferTimestamp = Time.time;
 

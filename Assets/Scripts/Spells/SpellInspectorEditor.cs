@@ -164,12 +164,24 @@ public class SpellInspectorEditor : Editor
     protected void DrawEffects()
     {
         if (myCastTime.floatValue > 0.0f)
+        {
             EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myCastSound"), new GUIContent("Sound While Casting"));
+            EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myCastEvent"), new GUIContent("Event While Casting"));
+        }
         if (mySpell is ChannelSpell)
+        {
             EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myChannelSound"), new GUIContent("Sound While Channeling"));
+            EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myChannelEvent"), new GUIContent("Event While Channeling"));
+            EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myChannelEventStop"), new GUIContent("Event When Channel Stops"));
+        }
         if (mySpeed.floatValue > 0.0f)
+        {
             EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("mySpawnSound"), new GUIContent("Sound When Spell Spawns"));
+            EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("mySpawnEvent"), new GUIContent("Event When Spell Spawns"));
+        }
+
         EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myHitSound"), new GUIContent("Sound When Spell Hits Target"));
+        EditorGUILayout.PropertyField(mySpellSFX.FindPropertyRelative("myHitEvent"), new GUIContent("Event When Spell Hits Target"));
 
         EditorGUILayout.PropertyField(mySpellVFX, new GUIContent("On Hit VFX"));
         EditorGUILayout.PropertyField(mySpawnOnHitVFXOnSelf, new GUIContent("On Hit VFX Spawn On Self"));

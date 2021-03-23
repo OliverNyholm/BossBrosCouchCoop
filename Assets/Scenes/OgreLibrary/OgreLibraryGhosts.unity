@@ -982,6 +982,64 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 222729609}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &266473426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 266473428}
+  - component: {fileID: 266473427}
+  m_Layer: 0
+  m_Name: WwiseGlobal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &266473427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266473426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76cf7005e3115244bcf5534fe6f8618, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InitializationSettings: {fileID: 11400000, guid: 2f2baa211b0bb0c4e8e2a93d67feb2a3,
+    type: 2}
+  basePath: 
+  language: 
+  defaultPoolSize: 0
+  lowerPoolSize: 0
+  streamingPoolSize: 0
+  memoryCutoffThreshold: 0
+  monitorPoolSize: 0
+  monitorQueuePoolSize: 0
+  callbackManagerBufferSize: 0
+  spatialAudioPoolSize: 0
+  maxSoundPropagationDepth: 0
+  diffractionFlags: 11
+  engineLogging: 0
+--- !u!4 &266473428
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266473426}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 21
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &276974633 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d2424316e3916ff4a8fe16a0e5646f31,
@@ -2291,6 +2349,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 643709289785326796, guid: 28948b89e410567469f4a4faf824c3a4,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2238666246124805657, guid: 28948b89e410567469f4a4faf824c3a4,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2481211397706169222, guid: 28948b89e410567469f4a4faf824c3a4,
         type: 3}
       propertyPath: m_Enabled
@@ -9464,9 +9532,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1791537679}
   - component: {fileID: 1791537678}
-  - component: {fileID: 1791537677}
   - component: {fileID: 1791537676}
   - component: {fileID: 1791537675}
+  - component: {fileID: 1791537681}
+  - component: {fileID: 1791537680}
+  - component: {fileID: 1791537677}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -9522,14 +9592,31 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!81 &1791537677
-AudioListener:
+--- !u!114 &1791537677
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791537674}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29a7f55f7d1310548a317f2cf2efdfce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: f7e1664c
+  useOtherObject: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 6ff030fd41c50064aa201be0e1247cf5,
+      type: 2}
+  decodeBank: 0
+  loadAsynchronous: 0
+  saveDecodedBank: 0
+  unloadTriggerList: 958ca0ea
+  bankNameInternal: 
+  valueGuidInternal: 
 --- !u!20 &1791537678
 Camera:
   m_ObjectHideFlags: 0
@@ -9587,6 +9674,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 48, y: 0, z: 0}
+--- !u!114 &1791537680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791537674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 672a0cdae01c85d43b6a60373e95c0cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDefaultListener: 1
+  listenerId: 0
+--- !u!114 &1791537681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791537674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c537799e18c62964b9e5b08eca6be9dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 0
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1001 &1819058236
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9625,6 +9748,12 @@ PrefabInstance:
       propertyPath: mySpawnPoints.Array.data[3]
       value: 
       objectReference: {fileID: 208972892}
+    - target: {fileID: 3448170462930489257, guid: 503cc89a2de43d243aca431dd077b45f,
+        type: 3}
+      propertyPath: myDebugPlayerData.myClassData
+      value: 
+      objectReference: {fileID: 11400000, guid: 027f3f981548233438e7d41da8b3c1e2,
+        type: 2}
     - target: {fileID: 3448170462930489301, guid: 503cc89a2de43d243aca431dd077b45f,
         type: 3}
       propertyPath: m_Name
@@ -10786,8 +10915,8 @@ PrefabInstance:
         Ghost","Instant":true,"GameObjectmyObject":37,"SharedTransformmySpawnTransform":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"SpellSpawnTransform","IsShared":true,"TransformmValue":38},"SharedVector3mySpawnPosition":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,0)"},"Int32mySpellMaxCount":20,"SinglemyLifetime":0}]}]}]}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(1104.42114,134.964432)"},"ID":52,"Name":"Selector","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-213.5998,150.461639)"},"ID":53,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(-109.299614,126.605957)"},"ID":54,"Name":"Selector","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"PlayersInSight","NodeData":{"Offset":"(-92.10591,110)"},"ID":55,"Name":"Players
         In Sight","Instant":true,"SinglemyRange":10},{"Type":"HasTakenDamage","NodeData":{"Offset":"(78.2533,112.8152)"},"ID":56,"Name":"Has
         Taken Damage","Instant":true,"BooleanmyShouldListenToTaunt":true}]},{"Type":"SetState","NodeData":{"Offset":"(88.79344,119.3688)"},"ID":57,"Name":"Set
-        State","Instant":true,"CombatStatemyState":"Combat"},{"Type":"PlaySound","NodeData":{"Offset":"(231.688736,117.823242)"},"ID":58,"Name":"Play
-        Sound","Instant":true,"Disabled":true,"AudioClipmyAudioClip":39}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Idle","NodeData":{"Offset":"(319.0179,262.857178)"},"ID":59,"Name":"Idle","Instant":true}]}]},"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"AutoAttackCooldown","IsShared":true,"PropertyMapping":"NPCCastingComponent/AutoAttackTimer","PropertyMappingOwner":40,"SinglemValue":0},{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":"Phase","IsShared":true,"PropertyMapping":"NPCComponent/PhaseIndex","PropertyMappingOwner":41,"Int32mValue":0},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"SpellTarget","IsShared":true,"PropertyMapping":"TargetingComponent/SpellTarget","PropertyMappingOwner":42},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"PropertyMapping":"TargetingComponent/Target","PropertyMappingOwner":43},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"AutoAttackRange","IsShared":true,"PropertyMapping":"Stats/AttackRange","PropertyMappingOwner":44,"SinglemValue":0},{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"SpellSpawnTransform","IsShared":true,"TransformmValue":45},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"KnockbackModifier","IsShared":true,"PropertyMapping":"Stats/NextSpellModifier","PropertyMappingOwner":46,"SinglemValue":0},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"IsInTransition","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"SpawnLocation","IsShared":true,"IsDynamic":true},{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"NewGhostTransform","IsShared":true,"IsDynamic":true},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"NewGhostLocation","IsShared":true,"IsDynamic":true},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"GrabberGhostLocation","IsShared":true,"IsDynamic":true}]}'
+        State","Instant":true,"CombatStatemyState":"Combat"},{"Type":"PlayDialogue","NodeData":{"Offset":"(228.723389,119.361694)"},"ID":58,"Name":"Play
+        Dialogue","Instant":true,"DialogueDatamyDialogue":39}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Idle","NodeData":{"Offset":"(319.0179,262.857178)"},"ID":59,"Name":"Idle","Instant":true}]}]},"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"AutoAttackCooldown","IsShared":true,"PropertyMapping":"NPCCastingComponent/AutoAttackTimer","PropertyMappingOwner":40,"SinglemValue":0},{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":"Phase","IsShared":true,"PropertyMapping":"NPCComponent/PhaseIndex","PropertyMappingOwner":41,"Int32mValue":0},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"SpellTarget","IsShared":true,"PropertyMapping":"TargetingComponent/SpellTarget","PropertyMappingOwner":42},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"PropertyMapping":"TargetingComponent/Target","PropertyMappingOwner":43},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"AutoAttackRange","IsShared":true,"PropertyMapping":"Stats/AttackRange","PropertyMappingOwner":44,"SinglemValue":0},{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"SpellSpawnTransform","IsShared":true,"TransformmValue":45},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"KnockbackModifier","IsShared":true,"PropertyMapping":"Stats/NextSpellModifier","PropertyMappingOwner":46,"SinglemValue":0},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"IsInTransition","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"SpawnLocation","IsShared":true,"IsDynamic":true},{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"NewGhostTransform","IsShared":true,"IsDynamic":true},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"NewGhostLocation","IsShared":true,"IsDynamic":true},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"GrabberGhostLocation","IsShared":true,"IsDynamic":true}]}'
       objectReference: {fileID: 0}
     - target: {fileID: 962757517237296412, guid: 6dbc0711f5a85f34f81ed1658d91d9ad,
         type: 3}
@@ -10877,7 +11006,8 @@ PrefabInstance:
         type: 3}
       propertyPath: mBehaviorSource.mTaskData.fieldSerializationData.unityObjects.Array.data[39]
       value: 
-      objectReference: {fileID: 8300000, guid: 1a32da465bdcecc45b25420a738c8308, type: 3}
+      objectReference: {fileID: 11400000, guid: 90eaf11074ab881448437e8ef02ac441,
+        type: 2}
     - target: {fileID: 962757517237296412, guid: 6dbc0711f5a85f34f81ed1658d91d9ad,
         type: 3}
       propertyPath: mBehaviorSource.mTaskData.fieldSerializationData.unityObjects.Array.data[40]

@@ -123,10 +123,16 @@ public class UIComponent : MonoBehaviour
         myCastbar.FadeOutCastbar();
     }
 
-    public void AddBuff(Sprite aBuffIcon)
+    public void AddBuff(SpellOverTime aSpell)
     {
         if(myCharacterHUD)
-            myCharacterHUD.AddBuff(aBuffIcon);
+            myCharacterHUD.AddBuff(aSpell);
+    }
+
+    public void UpdateBuffStackCount(int anIndex, int aStackCount)
+    {
+        if (myCharacterHUD)
+            myCharacterHUD.UpdateBuffCount(anIndex, aStackCount);
     }
 
     public void RemoveBuff(int anIndex)

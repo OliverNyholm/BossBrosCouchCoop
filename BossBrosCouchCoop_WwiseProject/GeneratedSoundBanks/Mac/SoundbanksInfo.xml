@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Mac" BasePlatform="Mac" SchemaVersion="12" SoundbankVersion="135">
+	<RootPaths>
+		<ProjectRoot>C:\Users\Oliver\Documents\GitHub\BossBrosCouchCoop\BossBrosCouchCoop_WwiseProject\</ProjectRoot>
+		<SourceFilesRoot>C:\Users\Oliver\Documents\GitHub\BossBrosCouchCoop\BossBrosCouchCoop_WwiseProject\.cache\Mac\</SourceFilesRoot>
+		<SoundBanksRoot>C:\Users\Oliver\Documents\GitHub\BossBrosCouchCoop\BossBrosCouchCoop_WwiseProject\GeneratedSoundBanks\Mac\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>C:\Users\Oliver\Documents\GitHub\BossBrosCouchCoop\BossBrosCouchCoop_WwiseProject\GeneratedSoundBanks\Mac</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<StreamedFiles/>
+	<MediaFilesNotInAnyBank/>
+	<SoundBanks>
+		<SoundBank Id="1355168291" Language="SFX" Hash="2953616821">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+		</SoundBank>
+		<SoundBank Id="2228651116" Language="SFX" Hash="1314677439">
+			<ObjectPath>\SoundBanks\Default Work Unit\Main_Soundbank</ObjectPath>
+			<ShortName>Main_Soundbank</ShortName>
+			<Path>Main_Soundbank.bnk</Path>
+			<IncludedEvents>
+				<Event Id="2192154059" Name="Play_AutoAttack" ObjectPath="\Events\Default Work Unit\Play_AutoAttack" DurationType="OneShot" DurationMin="0.245573" DurationMax="0.245573">
+					<IncludedMemoryFiles>
+						<File Id="760230607" Language="SFX">
+							<ShortName>melee_stab.wav</ShortName>
+							<Path>SFX\melee_stab_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2726847109" Name="Play_LK_Beam" ObjectPath="\Events\Default Work Unit\PlayerSpells\LighthouseKeeper\Play_LK_Beam" DurationType="Infinite">
+					<IncludedMemoryFiles>
+						<File Id="125990085" Language="SFX">
+							<ShortName>LK_Beam.wav</ShortName>
+							<Path>SFX\LK_Beam_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1239924357" Name="Play_Wizard_Spell1" ObjectPath="\Events\Default Work Unit\PlayerSpells\Wizard\Play_Wizard_Spell1" DurationType="OneShot" DurationMin="1.825698" DurationMax="1.825698">
+					<IncludedMemoryFiles>
+						<File Id="67083628" Language="SFX">
+							<ShortName>Wizard_Spell1.wav</ShortName>
+							<Path>SFX\Wizard_Spell1_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1239924358" Name="Play_Wizard_Spell2" ObjectPath="\Events\Default Work Unit\PlayerSpells\Wizard\Play_Wizard_Spell2" DurationType="OneShot" DurationMin="3.174406" DurationMax="3.174406">
+					<IncludedMemoryFiles>
+						<File Id="353544332" Language="SFX">
+							<ShortName>Wizard_Spell2.wav</ShortName>
+							<Path>SFX\Wizard_Spell2_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2879748603" Name="Stop_LK_Beam" ObjectPath="\Events\Default Work Unit\PlayerSpells\LighthouseKeeper\Stop_LK_Beam" MaxAttenuation="0.000000" DurationType="OneShot" DurationMin="0.000000" DurationMax="0.000000"/>
+			</IncludedEvents>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>

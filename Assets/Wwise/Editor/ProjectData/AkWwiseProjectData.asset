@@ -1,0 +1,265 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a9e298d9d62637488af0f6f15c6901d, type: 3}
+  m_Name: AkWwiseProjectData
+  m_EditorClassIdentifier: 
+  AcousticTextureWwu:
+  - PhysicalPath: Virtual Acoustics\Default Work Unit.wwu
+    PathAndIcons:
+    - ElementName: Default Work Unit
+      ObjectType: 12
+    ParentPath: Default Work Unit
+    guid: a48dba330e1a834cb42b4e105617c75f
+    GuidInternal: 
+    m_lastTime: -8585911267914908076
+    List: []
+  AuxBusWwu:
+  - PhysicalPath: Master-Mixer Hierarchy\Default Work Unit.wwu
+    PathAndIcons:
+    - ElementName: Default Work Unit
+      ObjectType: 12
+    ParentPath: Default Work Unit
+    guid: 2725a0c2ff3c8541ae7eee32d214e675
+    GuidInternal: 
+    m_lastTime: -8585907920111570012
+    List:
+    - name: Master Audio Bus
+      guid: d8a41415a61d2a41a17e75ca0c2149f3
+      id: 3803692087
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+      Path: Default Work Unit\Master Audio Bus
+    - name: Music
+      guid: 05137e498709f745b63cb915cfcff6ad
+      id: 3991942870
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+      - ElementName: Music
+        ObjectType: 2
+      Path: Default Work Unit\Master Audio Bus\Music
+    - name: SFX
+      guid: 3c2cc993bf6cd748ba221a72ceb27737
+      id: 393239870
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+      - ElementName: SFX
+        ObjectType: 2
+      Path: Default Work Unit\Master Audio Bus\SFX
+    - name: VO
+      guid: daf93c1b41f27e46a5f959a8b86e6609
+      id: 1534528548
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+      - ElementName: VO
+        ObjectType: 2
+      Path: Default Work Unit\Master Audio Bus\VO
+  BankWwu:
+  - PhysicalPath: SoundBanks\Default Work Unit.wwu
+    PathAndIcons:
+    - ElementName: Default Work Unit
+      ObjectType: 12
+    ParentPath: Default Work Unit
+    guid: 6f88a571b21a1a4e8a1fbf8e68455598
+    GuidInternal: 
+    m_lastTime: -8585911254712058869
+    List:
+    - name: Main_Soundbank
+      guid: ca833b03b294db4f934d4a6c8fcc3b66
+      id: 2228651116
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Main_Soundbank
+        ObjectType: 7
+      Path: Default Work Unit\Main_Soundbank
+  EventWwu:
+  - PhysicalPath: Events\Default Work Unit.wwu
+    PathAndIcons:
+    - ElementName: Default Work Unit
+      ObjectType: 12
+    ParentPath: Default Work Unit
+    guid: 15cd7a486ae2b94d8256617aef77afd9
+    GuidInternal: 
+    m_lastTime: -8585909517560362083
+    List:
+    - name: LighthouseKeeper
+      guid: 5b4604e4c7d04f4daba1c478fa28f6e2
+      id: 587922851
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: PlayerSpells
+        ObjectType: 4
+      - ElementName: LighthouseKeeper
+        ObjectType: 4
+      Path: Default Work Unit\PlayerSpells\LighthouseKeeper
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_AutoAttack
+      guid: ccb8e30c3478c747b52d83ebfe3ac1bd
+      id: 2192154059
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Play_AutoAttack
+        ObjectType: 3
+      Path: Default Work Unit\Play_AutoAttack
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_LK_Beam
+      guid: 7f21ff2fea049c4892f11e61eb94378f
+      id: 2726847109
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: PlayerSpells
+        ObjectType: 4
+      - ElementName: LighthouseKeeper
+        ObjectType: 4
+      - ElementName: Play_LK_Beam
+        ObjectType: 3
+      Path: Default Work Unit\PlayerSpells\LighthouseKeeper\Play_LK_Beam
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_Wizard_Spell1
+      guid: 14bc053378ffd5489aa792e6953774ce
+      id: 1239924357
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: PlayerSpells
+        ObjectType: 4
+      - ElementName: Wizard
+        ObjectType: 4
+      - ElementName: Play_Wizard_Spell1
+        ObjectType: 3
+      Path: Default Work Unit\PlayerSpells\Wizard\Play_Wizard_Spell1
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_Wizard_Spell2
+      guid: 366c52ccf95548498c2be113d3daf974
+      id: 1239924358
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: PlayerSpells
+        ObjectType: 4
+      - ElementName: Wizard
+        ObjectType: 4
+      - ElementName: Play_Wizard_Spell2
+        ObjectType: 3
+      Path: Default Work Unit\PlayerSpells\Wizard\Play_Wizard_Spell2
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: PlayerSpells
+      guid: 5ce45bb0bbcdcb4b804630ad6229f440
+      id: 1201475979
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: PlayerSpells
+        ObjectType: 4
+      Path: Default Work Unit\PlayerSpells
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Stop_LK_Beam
+      guid: 86482a4a319b3543b89232623855676b
+      id: 2879748603
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: PlayerSpells
+        ObjectType: 4
+      - ElementName: LighthouseKeeper
+        ObjectType: 4
+      - ElementName: Stop_LK_Beam
+        ObjectType: 3
+      Path: Default Work Unit\PlayerSpells\LighthouseKeeper\Stop_LK_Beam
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Wizard
+      guid: e96dcd77d6c0524fa81e3adb2d1b9816
+      id: 3202541808
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: PlayerSpells
+        ObjectType: 4
+      - ElementName: Wizard
+        ObjectType: 4
+      Path: Default Work Unit\PlayerSpells\Wizard
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+  RtpcWwu:
+  - PhysicalPath: Game Parameters\Default Work Unit.wwu
+    PathAndIcons:
+    - ElementName: Default Work Unit
+      ObjectType: 12
+    ParentPath: Default Work Unit
+    guid: 73d843abf78f8842a18d6e29289ccfe9
+    GuidInternal: 
+    m_lastTime: -8585911267916192721
+    List: []
+  StateWwu:
+  - PhysicalPath: States\Default Work Unit.wwu
+    PathAndIcons:
+    - ElementName: Default Work Unit
+      ObjectType: 12
+    ParentPath: Default Work Unit
+    guid: fc0bc7aaedf0fb48ab2cf5237d857fae
+    GuidInternal: 
+    m_lastTime: -8585911267915597510
+    List: []
+  SwitchWwu:
+  - PhysicalPath: Switches\Default Work Unit.wwu
+    PathAndIcons:
+    - ElementName: Default Work Unit
+      ObjectType: 12
+    ParentPath: Default Work Unit
+    guid: 8233f644878f084eb89c90f615783ade
+    GuidInternal: 
+    m_lastTime: -8585911267915800881
+    List: []
+  TriggerWwu:
+  - PhysicalPath: Triggers\Default Work Unit.wwu
+    PathAndIcons:
+    - ElementName: Default Work Unit
+      ObjectType: 12
+    ParentPath: Default Work Unit
+    guid: 572fe82d5aa0e5438ed25ab94acb3153
+    GuidInternal: 
+    m_lastTime: -8585911267916415923
+    List: []
+  ExpandedItems:
+  - /BossBrosCouchCoop_WwiseProject
+  autoPopulateEnabled: 1
+  CurrentPluginConfig: 

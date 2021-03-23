@@ -58,7 +58,7 @@ MonoBehaviour:
   myThreatModifier: 1
   mySpeed: 0
   myCastTime: 0.5
-  myCooldown: 12
+  myCooldown: 1
   myRange: 0
   myStunDuration: 0
   myCastbarColor: {r: 1, g: 0.8377491, b: 0, a: 1}
@@ -75,6 +75,11 @@ MonoBehaviour:
     myChannelSound: {fileID: 0}
     mySpawnSound: {fileID: 0}
     myHitSound: {fileID: 0}
+    myCastEvent: 
+    myChannelEvent: 
+    myChannelEventStop: 
+    myHitEvent: 
+    mySpawnEvent: 
   mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 724740779098352624, guid: 59743f9761c461e40b82e5de87db851d,
     type: 3}

@@ -65,6 +65,11 @@ public class Spell : PoolableObject
         public AudioClip myChannelSound;
         public AudioClip mySpawnSound;
         public AudioClip myHitSound;
+        public string myCastEvent;
+        public string myChannelEvent;
+        public string myChannelEventStop;
+        public string myHitEvent;
+        public string mySpawnEvent;
     }
     //[Header("The sound effects for the spell")]
     [SerializeField]
@@ -325,12 +330,19 @@ public class Spell : PoolableObject
         }
         vfxGO.transform.rotation = Quaternion.Euler(-90f, 0.0f, 0.0f);
 
-
         AudioSource vfxAudio = vfxGO.GetComponent<AudioSource>();
         if(vfxAudio)
         {
-            vfxAudio.clip = mySpellSFX.myHitSound;
-            vfxAudio.Play();
+            if(mySpellSFX.myHitSound)
+            {
+                vfxAudio.clip = mySpellSFX.myHitSound;
+                vfxAudio.Play();
+            }
+            else
+            {
+                if (mySpellSFX.myHitEvent != "")
+                    AkSoundEngine.PostEvent(mySpellSFX.myHitEvent, gameObject);
+            }
         }
         else
         {

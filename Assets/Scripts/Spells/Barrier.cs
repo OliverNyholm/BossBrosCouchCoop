@@ -26,7 +26,7 @@ public class Barrier : ChannelSpell
         for (int index = 0; index < myActiveBuffs.Count; index++)
         {
             if(myActiveBuffs[index])
-                myActiveBuffs[index].RemoveSpellOverTime();
+                myActiveBuffs[index].RemoveSpellOverTime(true);
         }
 
         myActiveBuffs.Clear();
@@ -53,7 +53,7 @@ public class Barrier : ChannelSpell
             {
                 if (sqrDistance > myRadius * myRadius)
                 {
-                    myActiveBuffs[buffIndex].RemoveSpellOverTime();
+                    myActiveBuffs[buffIndex].RemoveSpellOverTime(true);
                     myActiveBuffs.RemoveAt(buffIndex);
                 }
             }

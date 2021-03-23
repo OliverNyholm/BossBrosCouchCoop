@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{C2A02527-3CFF-4185-AE7E-EE32D214E675}" SchemaVersion="97">
+	<Busses>
+		<WorkUnit Name="Default Work Unit" ID="{C2A02527-3CFF-4185-AE7E-EE32D214E675}" PersistMode="Standalone">
+			<ChildrenList>
+				<Bus Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}">
+					<ReferenceList>
+						<Reference Name="AudioDevice">
+							<ObjectRef Name="System" ID="{169B798B-61CA-40B5-8412-AA067C69E75D}" WorkUnitID="{2948A2F3-3D41-40C8-9D76-28B02D285121}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<Bus Name="VO" ID="{1B3CF9DA-F241-467E-A5F9-59A8B86E6609}">
+							<DuckingList>
+								<DuckItem>
+									<BusRef Name="SFX" ID="{93C92C3C-6CBF-48D7-BA22-1A72CEB27737}"/>
+									<DuckingParam>
+										<Volume>0</Volume>
+										<FadeInTime>1</FadeInTime>
+										<FadeOutTime>0.400000005960464</FadeOutTime>
+										<FadeCurve>FadeLinear</FadeCurve>
+									</DuckingParam>
+								</DuckItem>
+								<DuckItem>
+									<BusRef Name="Music" ID="{497E1305-0987-45F7-B63C-B915CFCFF6AD}"/>
+									<DuckingParam>
+										<Volume>-6</Volume>
+										<FadeInTime>1</FadeInTime>
+										<FadeOutTime>1</FadeOutTime>
+										<FadeCurve>FadeLinear</FadeCurve>
+									</DuckingParam>
+								</DuckItem>
+							</DuckingList>
+						</Bus>
+						<Bus Name="Music" ID="{497E1305-0987-45F7-B63C-B915CFCFF6AD}"/>
+						<Bus Name="SFX" ID="{93C92C3C-6CBF-48D7-BA22-1A72CEB27737}"/>
+					</ChildrenList>
+				</Bus>
+			</ChildrenList>
+		</WorkUnit>
+	</Busses>
+</WwiseDocument>

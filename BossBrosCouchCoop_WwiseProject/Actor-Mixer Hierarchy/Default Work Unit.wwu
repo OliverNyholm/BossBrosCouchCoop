@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{F130088E-40D4-4E36-82EE-512E6F33EE92}" SchemaVersion="97">
+	<AudioObjects>
+		<WorkUnit Name="Default Work Unit" ID="{F130088E-40D4-4E36-82EE-512E6F33EE92}" PersistMode="Standalone">
+			<ChildrenList>
+				<Folder Name="PlayerSpells" ID="{2524DCB0-7E77-4B70-A418-8CFB4CEBB794}" ShortID="86907028">
+					<ChildrenList>
+						<Folder Name="Wizard" ID="{02D31830-0EE8-4CAF-9BEB-87A0A6DD227E}" ShortID="37648890">
+							<ChildrenList>
+								<Sound Name="Wizard_Spell1" ID="{DC7E1EE7-AE57-4501-9035-876677CB0617}" ShortID="101254971">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{6160852D-F847-4C3C-AA5B-4FB77C8B30DA}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{C2A02527-3CFF-4185-AE7E-EE32D214E675}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Wizard_Spell1" ID="{B12B12AE-CE06-42B7-9DF7-43439449129D}">
+											<Language>SFX</Language>
+											<AudioFile>Wizard_Spell1.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="67083628"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Wizard_Spell1" ID="{B12B12AE-CE06-42B7-9DF7-43439449129D}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="Wizard_Spell2" ID="{4A2F7FFE-2AC5-493C-AF3D-D3D098BCCC03}" ShortID="993169491">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{6160852D-F847-4C3C-AA5B-4FB77C8B30DA}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{C2A02527-3CFF-4185-AE7E-EE32D214E675}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Wizard_Spell2" ID="{26C4A528-66E1-49A4-B700-739403F8E2AD}">
+											<Language>SFX</Language>
+											<AudioFile>Wizard_Spell2.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="353544332"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Wizard_Spell2" ID="{26C4A528-66E1-49A4-B700-739403F8E2AD}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+						</Folder>
+						<Folder Name="LighthouseKeeper" ID="{9BE524D8-3E2A-4D7C-8C7C-D1A32087FCA4}" ShortID="261370011">
+							<ChildrenList>
+								<Sound Name="LK_Beam" ID="{BF462DBD-0A67-4A26-BA23-744478D45497}" ShortID="117530850">
+									<PropertyList>
+										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+										<Property Name="Pitch" Type="int32">
+											<ValueList>
+												<Value>-55</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-4</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{6160852D-F847-4C3C-AA5B-4FB77C8B30DA}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="SFX" ID="{93C92C3C-6CBF-48D7-BA22-1A72CEB27737}" WorkUnitID="{C2A02527-3CFF-4185-AE7E-EE32D214E675}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="LK_Beam" ID="{E8145C77-1CCC-4F15-A2A0-BF52E91EB3D9}">
+											<Language>SFX</Language>
+											<AudioFile>LK_Beam.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="125990085"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="LK_Beam" ID="{E8145C77-1CCC-4F15-A2A0-BF52E91EB3D9}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+						</Folder>
+					</ChildrenList>
+				</Folder>
+				<Sound Name="Play_AutoAttack" ID="{5848CA0E-A225-4546-862F-D5271DF2B6E3}" ShortID="139932942">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{6160852D-F847-4C3C-AA5B-4FB77C8B30DA}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="SFX" ID="{93C92C3C-6CBF-48D7-BA22-1A72CEB27737}" WorkUnitID="{C2A02527-3CFF-4185-AE7E-EE32D214E675}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="melee_stab" ID="{5B4A39C6-5587-4206-B408-69986748B8F3}">
+							<Language>SFX</Language>
+							<AudioFile>melee_stab.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="760230607"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="melee_stab" ID="{5B4A39C6-5587-4206-B408-69986748B8F3}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+			</ChildrenList>
+		</WorkUnit>
+	</AudioObjects>
+</WwiseDocument>

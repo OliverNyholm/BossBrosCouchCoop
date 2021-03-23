@@ -50,9 +50,17 @@ public abstract class CastingComponent : MonoBehaviour
         if(aDuration > 0.0f) //No castbar for endless channel
             GetComponent<UIComponent>().SetCastbarChannelingStartValues(aSpellScript, aDuration);
 
-        AudioSource audioSource = GetComponent<AudioSource>();
-        audioSource.clip = aSpellScript.GetSpellSFX().myChannelSound;
-        audioSource.Play();
+        Spell.SpellSFX spellSfx = aSpellScript.GetSpellSFX();
+        if (spellSfx.myChannelSound)
+        {
+            AudioSource audioSource = GetComponent<AudioSource>();
+            audioSource.clip = aSpellScript.GetSpellSFX().myChannelSound;
+            audioSource.Play();
+        }
+        else if (spellSfx.myChannelEvent != "")
+        {
+            AkSoundEngine.PostEvent(spellSfx.myChannelEvent, gameObject);
+        }
 
         if (aSpellScript.myIsCastableWhileMoving)
         {

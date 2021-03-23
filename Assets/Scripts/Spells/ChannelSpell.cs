@@ -9,6 +9,7 @@ public class ChannelSpell : Spell
 
     public virtual void OnStoppedChannel()
     {
-
+        if (mySpellSFX.myChannelEventStop != "")
+            AkSoundEngine.PostEvent(mySpellSFX.myChannelEventStop, myParent);
     }
 }

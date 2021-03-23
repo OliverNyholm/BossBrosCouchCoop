@@ -10,6 +10,9 @@ public class SpellOverTimeInspectorEditor : SpellInspectorEditor
     public SerializedProperty
         myDuration,
 
+        myMaxStackCount,
+        myLoseStacksOneByOne,
+
         mySpellOverTimeType,
         myShieldValue,
         myIsCastManually,
@@ -26,6 +29,9 @@ public class SpellOverTimeInspectorEditor : SpellInspectorEditor
         // Setup the SerializedProperties
 
         myDuration = serializedObject.FindProperty("myDuration");
+
+        myMaxStackCount = serializedObject.FindProperty("myMaxStackCount");
+        myLoseStacksOneByOne = serializedObject.FindProperty("myLoseStacksOneByOne");
 
         mySpellOverTimeType = serializedObject.FindProperty("mySpellOverTimeType");
         myShieldValue = serializedObject.FindProperty("myShieldValue");
@@ -45,6 +51,9 @@ public class SpellOverTimeInspectorEditor : SpellInspectorEditor
         EditorGUILayout.PropertyField(myIsCastManually, new GUIContent("Is Cast Manually"));
         if(!myIsCastManually.boolValue)
             EditorGUILayout.PropertyField(myPoolSize);
+
+        EditorGUILayout.PropertyField(myMaxStackCount, new GUIContent("Max Stack Count"));
+        EditorGUILayout.PropertyField(myLoseStacksOneByOne, new GUIContent("Lose Stacks One By One"));
 
         EditorGUILayout.HelpBox("Spell Over Time Values", MessageType.None);
 

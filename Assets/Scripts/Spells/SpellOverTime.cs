@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SpellOverTime : Spell
 {
     [Tooltip("Set to true if the object is cast, and not spawned by another spell")]
     [HideInInspector] public bool myIsCastManually = false;
+
+    [HideInInspector] public int myMaxStackCount = 1;
+    [HideInInspector] public bool myLoseStacksOneByOne = false;
+    private int myCurrentStackCount = 0;
 
     [HideInInspector] public float myDuration = 6;
     [HideInInspector] public SpellOverTimeType mySpellOverTimeType;
@@ -26,6 +31,8 @@ public class SpellOverTime : Spell
     private float myLifeTimeLeft;
     private bool myHasReachedTarget;
 
+    private GameObject myBuffWidget = null;
+
     protected override void Awake()
     {
         base.Awake();
@@ -35,9 +42,10 @@ public class SpellOverTime : Spell
     public override void Reset()
     {
         base.Reset();
-        myLifeTimeLeft = myDuration;
-        myCurrentShieldValue = myShieldValue;
+        ResetBuff();
         myHasReachedTarget = false;
+        myCurrentStackCount = 0;
+        myBuffWidget = null;
 
         if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.DOT | SpellOverTimeType.HOT))
         {
@@ -45,6 +53,12 @@ public class SpellOverTime : Spell
             myInterval = myDuration / myNumberOfTicks;
             myIntervalTimer = 0.0f;
         }
+    }
+
+    private void ResetBuff()
+    {
+        myLifeTimeLeft = myDuration;
+        myCurrentShieldValue = myShieldValue;
     }
 
     protected override void Update()
@@ -55,18 +69,22 @@ public class SpellOverTime : Spell
             return;
         }
 
-        myLifeTimeLeft -= Time.deltaTime;
-        if (myLifeTimeLeft <= 0.0f)
+        if (myLifeTimeLeft >= 0)
         {
-            RemoveSpellOverTime();
-            return;
+            myLifeTimeLeft -= Time.deltaTime;
+            if (myLifeTimeLeft <= 0.0f)
+            {
+                myLifeTimeLeft = myDuration;
+                RemoveStack();
+                return;
+            }
         }
 
         if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.Shield))
         {
             if (myCurrentShieldValue <= 0)
             {
-                RemoveSpellOverTime();
+                RemoveStack();
                 return;
             }
         }
@@ -96,48 +114,108 @@ public class SpellOverTime : Spell
     private void SetOverTimeEffects()
     {
         Stats stats = myTarget.GetComponent<Stats>();
-        stats.RemoveSpellOverTimeIfExists(this);
 
-        stats.AddSpellOverTime(this);
+        SpellOverTime existingBuff = stats.GetSpellOverTimeIfExists(this);
+        if (existingBuff)
+        {
+            existingBuff.AddAnotherStack();
+            ReturnToPool();
+        }
+        else
+        {
+            myCurrentStackCount = 1;
+            ApplyBuffEffects(stats);
+            stats.AddSpellOverTime(this);
 
-        if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.Stats))
-            SetStatsEffect(stats, true);
-
-        if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.Shield))
-            myTarget.GetComponent<Health>().AddShield(this);
+            UIComponent uiComponent = myTarget.GetComponent<UIComponent>();
+            if (uiComponent)
+                myBuffWidget = uiComponent.AddBuffAndGetUIRef(this);
+        }
     }
 
-    private void RemoveOverTimeEffects()
+    public void AddAnotherStack()
     {
         Stats stats = myTarget.GetComponent<Stats>();
-        stats.RemoveSpellOverTime(this);
+        RemoveBuffEffects(stats);
+        myCurrentStackCount = Mathf.Min(myCurrentStackCount + 1, myMaxStackCount);
+        ResetBuff();
+        ApplyBuffEffects(stats);
 
+        SetStackCountOnUI();
+    }
+
+    private void ApplyBuffEffects(Stats aStats)
+    {
         if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.Stats))
-            SetStatsEffect(stats, false);
+            SetStatsEffect(aStats, myCurrentStackCount);
+
+        if (myCurrentStackCount == 1 || IsStackable()) //We can add shield if this was the first or if we can stack them
+        {
+            if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.Shield))
+                myTarget.GetComponent<Health>().AddShield(this);
+        }
+    }
+
+    private void RemoveBuffEffects(Stats aStats)
+    {
+        if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.Stats))
+            SetStatsEffect(aStats, -myCurrentStackCount);
 
         if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.Shield))
             myTarget.GetComponent<Health>().RemoveShield(this);
 
-        if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.DOT | SpellOverTimeType.HOT))
+        //Hmm... this is questionable
+        //if (UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.DOT | SpellOverTimeType.HOT))
+        //{
+        //    if (!myTarget.GetComponent<Health>().IsDead())
+        //        DealTickEffect();
+        //}
+    }
+
+    private void RemoveStack()
+    {
+        if (!myLoseStacksOneByOne || myCurrentStackCount == 1)
         {
-            if (!myTarget.GetComponent<Health>().IsDead())
-                DealTickEffect();
+            RemoveSpellOverTime(true);
+        }
+        else
+        {
+            Stats stats = myTarget.GetComponent<Stats>();
+            RemoveBuffEffects(stats);
+            myCurrentStackCount = Mathf.Max(myCurrentStackCount - 1, 0);
+            ResetBuff();
+            ApplyBuffEffects(stats);
+
+            SetStackCountOnUI();
         }
     }
 
-    public void RemoveSpellOverTime()
+    public void RemoveSpellOverTime(bool aForceRemove)
     {
-        RemoveOverTimeEffects();
-        ReturnToPool();
+        if (myCurrentStackCount - 1 == 0 || aForceRemove)
+        {
+            Stats stats = myTarget.GetComponent<Stats>();
+            RemoveBuffEffects(stats);
+            stats.RemoveSpellOverTime(this);
+
+            UIComponent uiComponent = myTarget.GetComponent<UIComponent>();
+            if (uiComponent && myBuffWidget)
+                uiComponent.RemoveBuff(myBuffWidget);
+
+            ReturnToPool();            
+        }
+        else
+        {
+            RemoveStack();
+        }
     }
 
-    private void SetStatsEffect(Stats aStats, bool anIsApply)
+    private void SetStatsEffect(Stats aStats, int aStatMultiplier)
     {
-        int applyModifier = anIsApply ? 1 : -1; //If not applying -> removing, therefore negating the value from what it was before.
-        aStats.mySpeedMultiplier += mySpeedMultiplier * applyModifier;
-        aStats.myAttackSpeed += myAttackSpeed * applyModifier;
-        aStats.myDamageIncrease += myDamageIncrease * applyModifier;
-        aStats.myDamageMitigator += myDamageMitigator * applyModifier;
+        aStats.mySpeedMultiplier += mySpeedMultiplier * aStatMultiplier;
+        aStats.myAttackSpeed += myAttackSpeed * aStatMultiplier;
+        aStats.myDamageIncrease += myDamageIncrease * aStatMultiplier;
+        aStats.myDamageMitigator += myDamageMitigator * aStatMultiplier;
 
         if (myAttackSpeed != 0.0f)
         {
@@ -161,6 +239,12 @@ public class SpellOverTime : Spell
         NPCMovementComponent npcMovementComponent = aStats.GetComponent<NPCMovementComponent>();
         if (npcMovementComponent)
             npcMovementComponent.ModifySpeed(aStats.mySpeedMultiplier);
+    }
+
+    private void SetStackCountOnUI()
+    {
+        if (myBuffWidget)
+            myBuffWidget.GetComponentInChildren<TextMeshProUGUI>().text = myCurrentStackCount > 1 ? myCurrentStackCount.ToString() : "";
     }
 
     public int SoakDamage(int aDamage)
@@ -214,5 +298,15 @@ public class SpellOverTime : Spell
             return true;
 
         return UtilityFunctions.HasSpellType(mySpellOverTimeType, SpellOverTimeType.HOT | SpellOverTimeType.Shield | SpellOverTimeType.Stats);
+    }
+
+    public bool IsStackable()
+    {
+        return myMaxStackCount > 1;
+    }
+
+    public int GetStackCount()
+    {
+        return myCurrentStackCount;
     }
 }

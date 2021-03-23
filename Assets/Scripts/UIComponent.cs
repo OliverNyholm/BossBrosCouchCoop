@@ -123,10 +123,12 @@ public class UIComponent : MonoBehaviour
         myCastbar.FadeOutCastbar();
     }
 
-    public void AddBuff(SpellOverTime aSpell)
+    public GameObject AddBuffAndGetUIRef(SpellOverTime aSpell)
     {
         if(myCharacterHUD)
-            myCharacterHUD.AddBuff(aSpell);
+            return myCharacterHUD.AddBuffAndGetRef(aSpell);
+
+        return null;
     }
 
     public void UpdateBuffStackCount(int anIndex, int aStackCount)
@@ -135,10 +137,10 @@ public class UIComponent : MonoBehaviour
             myCharacterHUD.UpdateBuffCount(anIndex, aStackCount);
     }
 
-    public void RemoveBuff(int anIndex)
+    public void RemoveBuff(GameObject aBuffWidget)
     {
         if(myCharacterHUD)
-            myCharacterHUD.RemoveBuff(anIndex);
+            myCharacterHUD.RemoveBuff(aBuffWidget);
     }
 
     public void SetTargetHUD(GameObject aTarget)

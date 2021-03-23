@@ -144,10 +144,10 @@ public class Health : MonoBehaviour
 
     public void RemoveShield(SpellOverTime aSpell)
     {
-        uint spellID = aSpell.GetComponent<UniqueID>().GetID();
+        int spellInstanceID = aSpell.GetInstanceID();
         for (int index = 0; index < myShields.Count; index++)
         {
-            if (myShields[index].GetComponent<UniqueID>().GetID() == spellID)
+            if (myShields[index].GetInstanceID() == spellInstanceID)
             {
                 myShields.RemoveAt(index);
                 break;

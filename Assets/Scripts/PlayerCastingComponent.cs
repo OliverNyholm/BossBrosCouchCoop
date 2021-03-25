@@ -437,6 +437,12 @@ public class PlayerCastingComponent : CastingComponent
         //    return false;
         //}
 
+        if (!aSpellScript.IsSpellAvailable(gameObject))
+        {
+            ShowError(SpellErrorHandler.SpellError.NotAvailable);
+            return false;
+        }
+
         if (!aSpellScript.IsCastableWhileMoving() && myMovementComponent && myMovementComponent.IsMoving())
         {
             ShowError(SpellErrorHandler.SpellError.CantMoveWhileCasting);

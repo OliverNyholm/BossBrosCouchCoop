@@ -371,4 +371,9 @@ public class Spell : PoolableObject
     {
         myTargetHandler = aTargetHandler;
     }
+
+    public virtual bool IsSpellAvailable(GameObject aCaster)
+    {
+        return true;
+    }
 }

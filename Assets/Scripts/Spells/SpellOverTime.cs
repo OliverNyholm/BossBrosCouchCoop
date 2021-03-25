@@ -172,7 +172,7 @@ public class SpellOverTime : Spell
         //}
     }
 
-    private void RemoveStack()
+    public void RemoveStack()
     {
         if (!myLoseStacksOneByOne || myCurrentStackCount == 1)
         {

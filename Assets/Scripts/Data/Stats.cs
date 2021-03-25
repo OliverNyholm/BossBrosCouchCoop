@@ -83,6 +83,15 @@ public class Stats : MonoBehaviour
         mySpellOverTimeGOs.RemoveAt(index);
     }
 
+    public void RemoveSpellOverTimeStack(SpellOverTime aSpell)
+    {
+        int index = FindIndexOfSpellOverTime(aSpell);
+        if (index == -1)
+            return;
+
+        mySpellOverTimeGOs[index].RemoveStack();
+    }
+
     public SpellOverTime GetSpellOverTimeIfExists(SpellOverTime aSpellOverTime)
     {
         int index = FindIndexOfSpellOverTime(aSpellOverTime);

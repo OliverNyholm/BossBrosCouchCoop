@@ -30,6 +30,7 @@ public class SpellErrorHandler : MonoBehaviour
     public Sprite myCooldownIcon = null;
     public Sprite myNotDeadIcon = null;
     public Sprite myIsDeadIcon = null;
+    public Sprite myIsNotAvailableIcon = null;
     public Sprite myIsNotSelfCastIcon = null;
 
     private TextMeshProUGUI myErrorText = null;
@@ -58,6 +59,7 @@ public class SpellErrorHandler : MonoBehaviour
         Cooldown,
         NotDead,
         IsDead,
+        NotAvailable,
         NotSelfCast
     };
 
@@ -108,6 +110,10 @@ public class SpellErrorHandler : MonoBehaviour
             case SpellError.IsDead:
                 mySpellErrorIcon.sprite = myIsDeadIcon;
                 myErrorText.text = "Can't cast spell on dead target!";
+                break;
+            case SpellError.NotAvailable:
+                mySpellErrorIcon.sprite = myIsNotAvailableIcon;
+                myErrorText.text = "Spell not available!";
                 break;
             case SpellError.NotSelfCast:
                 mySpellErrorIcon.sprite = myIsNotSelfCastIcon;

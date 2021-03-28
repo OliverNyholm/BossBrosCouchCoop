@@ -54,12 +54,12 @@ public class GuidingStar : ToggleSpell
         }
     }
 
-    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
+    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount, GameObject aSpawner = null)
     {
-        base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
+        base.CreatePooledObjects(aPoolManager, aSpellMaxCount, aSpawner);
 
         Spell pulseSpell = myPulseSpell.GetComponent<Spell>();
         if (pulseSpell)
-            pulseSpell.CreatePooledObjects(aPoolManager, pulseSpell.myPoolSize);
+            pulseSpell.CreatePooledObjects(aPoolManager, pulseSpell.myPoolSize, aSpawner);
     }
 }

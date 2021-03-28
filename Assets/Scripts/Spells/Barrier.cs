@@ -72,11 +72,6 @@ public class Barrier : ChannelSpell
         myParent.GetComponent<CastingComponent>().StartChannel(myChannelTime, this, aChannelSpell, 0.0f);
     }
 
-    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
-    {
-        base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
-    }
-
     private void AddBuff(GameObject aPlayer)
     {
         GameObject barrierBuff = PoolManager.Instance.GetPooledObject(mySpawnedOnHit.GetComponent<UniqueID>().GetID());

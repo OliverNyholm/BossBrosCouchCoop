@@ -9,11 +9,24 @@ public class ChickenMovementComponent : MovementComponent
     private AnimatorWrapper myAnimator;
     public PlayerMovementComponent myParentMovement = null;
 
-    private Queue<Vector3> myParentSeeds = new Queue<Vector3>(64);
-    private Vector3 myTargetPosition;
-    private float myDropSeedsInterval = 0.4f;
-    private float myDropSeedsInAirInterval = 0.1f;
-    private float myDropSeedTimer = 0.0f;
+    [SerializeField]
+    private float myDurationBeforeReactingToMovement = 1.0f;
+    private float myStartFollowingTimer = 0.0f;
+
+    [SerializeField]
+    private float myReactTooFarAwayRadius = 3.0f;
+    [SerializeField]
+    private float myCloseEnoughMovementRadius = 2.0f;
+
+    private Vector3 myParentOffsetLocation;
+
+    private bool myIsFollowingParent = false;
+
+    public void SetParentAndOffset(GameObject aParent, Vector3 anOffset)
+    {
+        myParentMovement = aParent.GetComponent<PlayerMovementComponent>();
+        myParentOffsetLocation = anOffset;
+    }
 
     private void Awake()
     {
@@ -26,41 +39,73 @@ public class ChickenMovementComponent : MovementComponent
         if (!myParentMovement)
             return;
 
-        bool hadSeeds = myParentSeeds.Count > 0;
-
-        myDropSeedTimer += Time.deltaTime;
-        if (myParentMovement.IsMoving())
+        if (!myIsFollowingParent && myStartFollowingTimer <= 0.0f && myParentMovement.IsMoving())
         {
-            float interval = myParentMovement.IsInAir() ? myDropSeedsInAirInterval : myDropSeedsInterval;
-            if (myDropSeedTimer > interval)
+            if ((transform.position - myParentMovement.transform.position).SqrMagnitude2D() > (myReactTooFarAwayRadius * myReactTooFarAwayRadius))
             {
-                myParentSeeds.Enqueue(myParentMovement.transform.position);
-                myDropSeedTimer = 0.0f;
+                myStartFollowingTimer = myDurationBeforeReactingToMovement;
+                return;
             }
         }
 
-        while (myParentSeeds.Count > 0 && Vector3.Distance(transform.position, myParentSeeds.Peek()) < 0.4f)
-            myParentSeeds.Dequeue();
-
-        if (myParentSeeds.Count == 0)
+        if (myStartFollowingTimer > 0.0f)
         {
-            if (hadSeeds)
-                myAnimator.SetBool(AnimationVariable.IsRunning, false);
+            myStartFollowingTimer -= Time.deltaTime;
+            if (myStartFollowingTimer <= 0.0f)
+            {
+                myAnimator.SetBool(AnimationVariable.IsRunning, true);
+                myIsFollowingParent = true;
+            }
+        }
 
+        if (!myIsFollowingParent)
+            return;
+
+        if ((transform.position - myParentMovement.transform.position).SqrMagnitude2D() < (myCloseEnoughMovementRadius * myCloseEnoughMovementRadius))
+        {
+            myAnimator.SetBool(AnimationVariable.IsRunning, false);
+            myNavAgent.destination = transform.position;
+            myIsFollowingParent = false;
             return;
         }
 
-        if (!hadSeeds)
-            myAnimator.SetBool(AnimationVariable.IsRunning, true);
+        myNavAgent.destination = myParentMovement.transform.position;
 
-        myTargetPosition = myParentSeeds.Peek();
-        Vector3 toTarget = (myTargetPosition - transform.position).normalized;
+        //bool hadSeeds = myParentSeeds.Count > 0;
+        //
+        //myDropSeedTimer += Time.deltaTime;
+        //if (myParentMovement.IsMoving())
+        //{
+        //    float interval = myParentMovement.IsInAir() ? myDropSeedsInAirInterval : myDropSeedsInterval;
+        //    if (myDropSeedTimer > interval)
+        //    {
+        //        myParentSeeds.Enqueue(myParentMovement.transform.position);
+        //        myDropSeedTimer = 0.0f;
+        //    }
+        //}
+        //
+        //while (myParentSeeds.Count > 0 && Vector3.Distance(transform.position, myParentSeeds.Peek()) < 0.4f)
+        //    myParentSeeds.Dequeue();
+        //
+        //if (myParentSeeds.Count == 0)
+        //{
+        //    if (hadSeeds)
+        //        myAnimator.SetBool(AnimationVariable.IsRunning, false);
+        //
+        //    return;
+        //}
+        //
+        //if (!hadSeeds)
+        //    myAnimator.SetBool(AnimationVariable.IsRunning, true);
+        //
+        //myTargetPosition = myParentSeeds.Peek();
+        //Vector3 toTarget = (myTargetPosition - transform.position).normalized;
+        //
+        //myAnimator.SetBool(AnimationVariable.IsGrounded, toTarget.y > 0);
 
-        myAnimator.SetBool(AnimationVariable.IsGrounded, toTarget.y > 0);
 
-
-        transform.position += toTarget * myBaseSpeed * Time.deltaTime;
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget, Vector3.up), Time.deltaTime * 360.0f);
+        //transform.position += toTarget * myBaseSpeed * Time.deltaTime;
+        //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget, Vector3.up), Time.deltaTime * 360.0f);
 
         //if (!myNavAgent.hasPath)
         //{
@@ -74,6 +119,11 @@ public class ChickenMovementComponent : MovementComponent
     }
 
     protected override void OnDeath()
+    {
+
+    }
+
+    public void SetFlightMode(Vector3 aFlightOffset, float aDuration)
     {
 
     }

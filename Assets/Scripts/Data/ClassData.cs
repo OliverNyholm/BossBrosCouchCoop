@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using UnityEngine.UI;
 
 public enum ClassRole
@@ -31,4 +32,12 @@ public class ClassData : ScriptableObject
     public int myAutoAttackDamage = 20;
     public float myTimeBetweenAutoAttacks = 1.2f;
     public float myAutoAttackDamageMitigator = 1.0f;
+
+    public List<string> myRequiredComponents = new List<string>(0);
+
+    public void AddRequiredComponents(GameObject aGameObject)
+    {
+        foreach (string component in myRequiredComponents)
+            aGameObject.AddComponent(Type.GetType(component));
+    }
 }

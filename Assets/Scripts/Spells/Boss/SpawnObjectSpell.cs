@@ -52,9 +52,9 @@ public class SpawnObjectSpell : Spell
         poolManager.AddTemporaryObject(spawnObject, mySpawnObjectLifetime);
     }
 
-    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
+    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount, GameObject aSpawner = null)
     {
-        base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
+        base.CreatePooledObjects(aPoolManager, aSpellMaxCount, aSpawner);
 
         aPoolManager.AddPoolableObjects(myObjectToSpawn, myObjectToSpawn.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
     }

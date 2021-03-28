@@ -24,7 +24,7 @@ public class SpawnSpellMultiplePositions : Action
     {
         base.OnAwake();
 
-        mySpell.GetComponent<Spell>().CreatePooledObjects(PoolManager.Instance, mySpellMaxCount);
+        mySpell.GetComponent<Spell>().CreatePooledObjects(PoolManager.Instance, mySpellMaxCount, gameObject);
     }
 
     public override void OnStart()

@@ -42,12 +42,12 @@ public class PreviewSpellChannel : ChannelSpell
         return myIsCastableWhileMoving;
     }
 
-    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
+    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount, GameObject aSpawner = null)
     {
-        base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
+        base.CreatePooledObjects(aPoolManager, aSpellMaxCount, aSpawner);
 
         Spell mySpellToSpawnSpellComponent = mySpellToSpawn.GetComponent<Spell>();
         if (mySpellToSpawnSpellComponent)
-            mySpellToSpawnSpellComponent.CreatePooledObjects(aPoolManager, mySpellToSpawnSpellComponent.myPoolSize);
+            mySpellToSpawnSpellComponent.CreatePooledObjects(aPoolManager, mySpellToSpawnSpellComponent.myPoolSize, aSpawner);
     }
 }

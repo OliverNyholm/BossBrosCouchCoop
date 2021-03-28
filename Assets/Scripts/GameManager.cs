@@ -23,12 +23,6 @@ public class GameManager : MonoBehaviour
     private PlayerControls myControllerListener = null;
 
     private List<PlayerSelectData> myPlayerSelectData = new List<PlayerSelectData>(4);
-    private struct ChangeClassData
-    {
-        public Vector3 myPosition;
-        public float myHealthPercentage;
-    };
-    private List<ChangeClassData> myChangeClassData = new List<ChangeClassData>(4);
 
     private void Awake()
     {
@@ -106,6 +100,8 @@ public class GameManager : MonoBehaviour
         playerGO.name = aCharacter.myName;
         playerGO.GetComponentInChildren<GnomeAppearance>().SetColorMaterial(aCharacter.myColorScheme.myMaterial);
 
+        aCharacter.myClassData.AddRequiredComponents(playerGO);
+
         Player player = playerGO.GetComponent<Player>();
         player.SetClassData(aCharacter.myClassData);
         player.SetPlayerControls(aCharacter.myPlayerControls);
@@ -143,6 +139,8 @@ public class GameManager : MonoBehaviour
         playerGO.GetComponent<Health>().MaxHealth = 50000;
         playerGO.GetComponent<Health>().SetHealthPercentage(1.0f);
 
+        myDebugPlayerData.myClassData.AddRequiredComponents(playerGO);
+
         myDebugPlayer = playerGO.GetComponent<Player>();
         myDebugPlayer.SetClassData(myDebugPlayerData.myClassData);
         myDebugPlayer.SetPlayerControls(keyboardListener);
@@ -159,58 +157,6 @@ public class GameManager : MonoBehaviour
 
         PostMaster.Instance.PostMessage(new Message(MessageCategory.RegisterPlayer, playerGO.GetInstanceID(), ColorToRGBVector(uiComponent.myCharacterColor)));
 
-        aTargetHandler.AddPlayer(playerGO);
-    }
-
-    public void ChangeClassInGame(GameObject aNewClass)
-    {
-        TargetHandler targetHandler = GetComponent<TargetHandler>();
-
-        myChangeClassData.Clear();
-
-        bool hadDebugPlayer = myDebugPlayer != null;
-
-        foreach (GameObject player in targetHandler.GetAllPlayers())
-        {
-            ChangeClassData changeClassData;
-            changeClassData.myHealthPercentage = player.GetComponent<Health>().GetHealthPercentage();
-            changeClassData.myPosition = player.transform.position;
-            myChangeClassData.Add(changeClassData);
-
-            PostMaster.Instance.PostMessage(new Message(MessageCategory.UnregisterPlayer, player.GetInstanceID()));
-            Destroy(player);
-        }
-        targetHandler.ClearAllPlayers();
-
-        for (int index = 0; index < myPlayerSelectData.Count; index++)
-        {
-            ChangePlayerClass(targetHandler, aNewClass, index);
-        }
-
-        if (hadDebugPlayer)
-            myDebugPlayer = targetHandler.GetPlayer(myPlayerSelectData.Count - 1).GetComponent<Player>();
-    }
-
-    private void ChangePlayerClass(TargetHandler aTargetHandler, GameObject aNewClass, int anIndex)
-    {
-        PlayerSelectData originalPlayerSelectData = myPlayerSelectData[anIndex];
-
-        GameObject playerGO = Instantiate(aNewClass, myChangeClassData[anIndex].myPosition, Quaternion.identity);
-        playerGO.name = originalPlayerSelectData.myName;
-        playerGO.GetComponentInChildren<SkinnedMeshRenderer>().material = originalPlayerSelectData.myColorScheme.myMaterial;
-
-        Player player = playerGO.GetComponent<Player>();
-        player.PlayerIndex = anIndex + 1;
-        player.SetPlayerControls(originalPlayerSelectData.myPlayerControls);
-
-        PlayerUIComponent uiComponent = player.GetComponent<PlayerUIComponent>();
-        uiComponent.myName = originalPlayerSelectData.myName;
-        uiComponent.myCharacterColor = originalPlayerSelectData.myColorScheme.myColor;
-        uiComponent.myAvatarSprite = originalPlayerSelectData.myColorScheme.myAvatar;
-
-        playerGO.GetComponent<Health>().SetHealthPercentage(myChangeClassData[anIndex].myHealthPercentage);
-
-        PostMaster.Instance.PostMessage(new Message(MessageCategory.RegisterPlayer, playerGO.GetInstanceID(), ColorToRGBVector(uiComponent.myCharacterColor)));
         aTargetHandler.AddPlayer(playerGO);
     }
 

@@ -33,7 +33,7 @@ public class AreaEffect : MonoBehaviour
         myTimer = myInitialDelay;
 
         if (mySpellOverTime)
-            mySpellOverTime.GetComponent<Spell>().CreatePooledObjects(PoolManager.Instance, myMaxSpellsOverTime);
+            mySpellOverTime.GetComponent<Spell>().CreatePooledObjects(PoolManager.Instance, myMaxSpellsOverTime, gameObject);
     }
 
     // Update is called once per frame

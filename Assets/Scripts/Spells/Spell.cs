@@ -354,7 +354,7 @@ public class Spell : PoolableObject
         return vfxGO;
     }
 
-    public virtual void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
+    public virtual void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount, GameObject aSpawner = null)
     {
         aPoolManager.AddPoolableObjects(gameObject, GetComponent<UniqueID>().GetID(), aSpellMaxCount);
 

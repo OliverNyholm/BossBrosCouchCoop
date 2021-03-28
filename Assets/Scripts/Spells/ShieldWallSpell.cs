@@ -24,9 +24,9 @@ public class ShieldWallSpell : Spell
         aChild.transform.localRotation = Quaternion.identity;
     }
 
-    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount)
+    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount, GameObject aSpawner = null)
     {
-        base.CreatePooledObjects(aPoolManager, aSpellMaxCount);
+        base.CreatePooledObjects(aPoolManager, aSpellMaxCount, aSpawner);
 
         aPoolManager.AddPoolableObjects(myShieldWallPrefab, myShieldWallPrefab.GetComponent<UniqueID>().GetID(), aSpellMaxCount);
     }

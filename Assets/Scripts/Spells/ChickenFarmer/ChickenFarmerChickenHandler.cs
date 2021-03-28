@@ -20,10 +20,10 @@ public class ChickenFarmerChickenHandler : MonoBehaviour
         myFlightFormation[1] = new Vector3(-1.0f, 2.5f, 0.0f);
         myFlightFormation[2] = new Vector3(0.0f, 2.5f, -1.0f);
         myFlightFormation[3] = new Vector3(0.0f, 2.5f, 1.0f);
-        myFlightFormation[4] = new Vector3(1.5f, 2.5f, 1.5f);
-        myFlightFormation[5] = new Vector3(-1.5f, 2.5f, 1.5f);
-        myFlightFormation[6] = new Vector3(1.5f, 2.5f, -1.5f);
-        myFlightFormation[7] = new Vector3(1.5f, 2.5f, 1.5f);
+        myFlightFormation[4] = new Vector3(0.7f, 2.5f, 0.7f);
+        myFlightFormation[5] = new Vector3(-0.7f, 2.5f, 0.7f);
+        myFlightFormation[6] = new Vector3(0.7f, 2.5f, -0.7f);
+        myFlightFormation[7] = new Vector3(-0.7f, 2.5f, -0.7f);
     }
 
     public void EnableFlightMode()

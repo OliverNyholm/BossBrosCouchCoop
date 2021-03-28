@@ -39,9 +39,10 @@ public class ChickenMovementComponent : MovementComponent
         if (!myParentMovement)
             return;
 
+        Vector3 myTargetOffset = myParentMovement.transform.position + myParentMovement.transform.rotation * myParentOffsetLocation;
         if (!myIsFollowingParent && myStartFollowingTimer <= 0.0f && myParentMovement.IsMoving())
         {
-            if ((transform.position - myParentMovement.transform.position).SqrMagnitude2D() > (myReactTooFarAwayRadius * myReactTooFarAwayRadius))
+            if ((transform.position - myTargetOffset).SqrMagnitude2D() > (myReactTooFarAwayRadius * myReactTooFarAwayRadius))
             {
                 myStartFollowingTimer = myDurationBeforeReactingToMovement;
                 return;
@@ -61,7 +62,7 @@ public class ChickenMovementComponent : MovementComponent
         if (!myIsFollowingParent)
             return;
 
-        if ((transform.position - myParentMovement.transform.position).SqrMagnitude2D() < (myCloseEnoughMovementRadius * myCloseEnoughMovementRadius))
+        if ((transform.position - myTargetOffset).SqrMagnitude2D() < (myCloseEnoughMovementRadius * myCloseEnoughMovementRadius))
         {
             myAnimator.SetBool(AnimationVariable.IsRunning, false);
             myNavAgent.destination = transform.position;

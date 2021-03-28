@@ -8,10 +8,23 @@ public class ChickenMovementComponent : MovementComponent
     private NavMeshAgent myNavAgent;
     private AnimatorWrapper myAnimator;
     public PlayerMovementComponent myParentMovement = null;
+    private ChickenFarmerChickenHandler myParentChickenHandler = null;
 
     [SerializeField]
     private float myDurationBeforeReactingToMovement = 1.0f;
     private float myStartFollowingTimer = 0.0f;
+
+    [SerializeField]
+    private float myFlightSpeed = 15.0f;
+
+    private Vector3 myFlightOffset;
+    private float myFlightDuration = 0.0f;
+
+    [SerializeField]
+    private float myGravity = 8.0f;
+    private bool myIsFalling = false;
+    private Vector3 myFallingVelocity = new Vector3();
+    private Vector3 myGroundLocation;
 
     [SerializeField]
     private float myReactTooFarAwayRadius = 3.0f;
@@ -25,6 +38,7 @@ public class ChickenMovementComponent : MovementComponent
     public void SetParentAndOffset(GameObject aParent, Vector3 anOffset)
     {
         myParentMovement = aParent.GetComponent<PlayerMovementComponent>();
+        myParentChickenHandler = aParent.GetComponent<ChickenFarmerChickenHandler>();
         myParentOffsetLocation = anOffset;
     }
 
@@ -39,6 +53,42 @@ public class ChickenMovementComponent : MovementComponent
         if (!myParentMovement)
             return;
 
+        if (myIsFalling)
+            Falling();
+        else if (myFlightDuration > 0.0f)
+            FlightMovement();
+        else
+            GroundMovement();
+    }
+
+    public void Reset()
+    {
+        myIsFalling = false;
+        myAnimator.SetBool(AnimationVariable.IsGrounded, true);
+        myAnimator.SetBool(AnimationVariable.IsRunning, false);
+    }
+
+    public override bool IsMoving()
+    {
+        return myNavAgent.hasPath;
+    }
+
+    protected override void OnDeath()
+    {
+
+    }
+
+    public void SetFlightMode(Vector3 aFlightOffset, float aDuration)
+    {
+        myFlightDuration = aDuration;
+        myFlightOffset = aFlightOffset;
+        myNavAgent.enabled = false;
+
+        myAnimator.SetBool(AnimationVariable.IsGrounded, false);
+    }
+
+    private void GroundMovement()
+    {
         Vector3 myTargetOffset = myParentMovement.transform.position + myParentMovement.transform.rotation * myParentOffsetLocation;
         if (!myIsFollowingParent && myStartFollowingTimer <= 0.0f && myParentMovement.IsMoving())
         {
@@ -71,61 +121,59 @@ public class ChickenMovementComponent : MovementComponent
         }
 
         myNavAgent.destination = myParentMovement.transform.position;
-
-        //bool hadSeeds = myParentSeeds.Count > 0;
-        //
-        //myDropSeedTimer += Time.deltaTime;
-        //if (myParentMovement.IsMoving())
-        //{
-        //    float interval = myParentMovement.IsInAir() ? myDropSeedsInAirInterval : myDropSeedsInterval;
-        //    if (myDropSeedTimer > interval)
-        //    {
-        //        myParentSeeds.Enqueue(myParentMovement.transform.position);
-        //        myDropSeedTimer = 0.0f;
-        //    }
-        //}
-        //
-        //while (myParentSeeds.Count > 0 && Vector3.Distance(transform.position, myParentSeeds.Peek()) < 0.4f)
-        //    myParentSeeds.Dequeue();
-        //
-        //if (myParentSeeds.Count == 0)
-        //{
-        //    if (hadSeeds)
-        //        myAnimator.SetBool(AnimationVariable.IsRunning, false);
-        //
-        //    return;
-        //}
-        //
-        //if (!hadSeeds)
-        //    myAnimator.SetBool(AnimationVariable.IsRunning, true);
-        //
-        //myTargetPosition = myParentSeeds.Peek();
-        //Vector3 toTarget = (myTargetPosition - transform.position).normalized;
-        //
-        //myAnimator.SetBool(AnimationVariable.IsGrounded, toTarget.y > 0);
-
-
-        //transform.position += toTarget * myBaseSpeed * Time.deltaTime;
-        //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget, Vector3.up), Time.deltaTime * 360.0f);
-
-        //if (!myNavAgent.hasPath)
-        //{
-        //    myNavAgent.destination = myParentSeeds.Peek();
-        //}
     }
 
-    public override bool IsMoving()
+    private void FlightMovement()
     {
-        return myNavAgent.hasPath;
+        myFlightDuration -= Time.deltaTime;
+        if (myFlightDuration <= 0.0f)
+        {
+            myIsFalling = true;
+            myFallingVelocity.y = 0.0f;
+            if (UtilityFunctions.FindGroundFromLocation(transform.position, out RaycastHit hitInfo, out _, 20.0f))
+                myGroundLocation = hitInfo.point;
+            else
+                myGroundLocation = transform.position - Vector3.up * -100.0f;
+
+            return;
+        }
+
+        Vector3 targetPosition = myParentMovement.transform.position + myParentMovement.transform.rotation * myFlightOffset;
+        float distanceToTargetPosition = (targetPosition - transform.position).sqrMagnitude;
+        const float closeEnoughDistanceSqr = 0.1f * 0.1f;
+        if (distanceToTargetPosition < closeEnoughDistanceSqr)
+        {
+            if (!myParentMovement.IsFlying())
+                myParentMovement.SetFlying(true);
+
+            transform.position = targetPosition;
+            transform.rotation = myParentMovement.transform.rotation;
+            return;
+        }
+
+        Vector3 toTarget = (targetPosition - transform.position).normalized;
+        Vector3 toTargetHorizontal = (targetPosition - transform.position).Normalized2D();
+
+        transform.position += toTarget * myFlightSpeed * Time.deltaTime;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTargetHorizontal, Vector3.up), Time.deltaTime * 360.0f);
     }
 
-    protected override void OnDeath()
+    private void Falling()
     {
+        if (transform.position.y < myGroundLocation.y)
+        {
+            myIsFalling = false;
+            myNavAgent.enabled = true;
+            myNavAgent.destination = transform.position;
+            myIsFollowingParent = false;
+            transform.position = myGroundLocation;
 
-    }
+            myAnimator.SetBool(AnimationVariable.IsGrounded, true);
+            myAnimator.SetBool(AnimationVariable.IsRunning, false);
+            return;
+        }
 
-    public void SetFlightMode(Vector3 aFlightOffset, float aDuration)
-    {
-
+        myFallingVelocity.y -= myGravity * Time.deltaTime;
+        transform.position += myFallingVelocity * Time.deltaTime;
     }
 }

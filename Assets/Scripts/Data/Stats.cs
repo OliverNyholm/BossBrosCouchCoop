@@ -109,6 +109,15 @@ public class Stats : MonoBehaviour
         return FindIndexOfSpellOverTime(aSpell) != -1;
     }
 
+    public bool HasMaxSpellOverTimeStackCount(SpellOverTime aSpell)
+    {
+        SpellOverTime spell = GetSpellOverTimeIfExists(aSpell);
+        if (!spell)
+            return false;
+
+        return spell.HasMaxStackCount();
+    }
+
     private int FindIndexOfSpellOverTime(SpellOverTime aSpell)
     {
         uint spellID = aSpell.GetComponent<UniqueID>().GetID();

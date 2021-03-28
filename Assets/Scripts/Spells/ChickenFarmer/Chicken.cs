@@ -6,6 +6,7 @@ public class Chicken : Character
 {
     [SerializeField]
     private GameObject myParent = null;
+    private Stats myParentStats = null;
 
     [SerializeField]
     private SpellOverTime myEggBuff = null;
@@ -17,12 +18,18 @@ public class Chicken : Character
     public void SetParent(GameObject aParent)
     {
         myParent = aParent;
+        myParentStats = aParent.GetComponent<Stats>();
     }
 
     public override void Reset()
     {
         base.Reset();
         myDropEggTimer = myDropEggInterval;
+
+        myParent = null;
+        myParentStats = null;
+
+        GetComponent<ChickenMovementComponent>().Reset();
     }
 
     // Update is called once per frame
@@ -34,7 +41,9 @@ public class Chicken : Character
         myDropEggTimer -= Time.deltaTime;
         if (myDropEggTimer <= 0.0f)
         {
-            SpawnEgg();
+            if (!myParentStats.HasMaxSpellOverTimeStackCount(myEggBuff))
+                SpawnEgg();
+
             myDropEggTimer = myDropEggInterval;
         }
     }

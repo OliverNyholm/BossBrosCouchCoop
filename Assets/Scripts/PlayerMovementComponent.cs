@@ -21,6 +21,7 @@ public class PlayerMovementComponent : MovementComponent
     private CameraXZTransform myCameraXZTransform;
 
     protected bool myIsGrounded;
+    public bool myIsFlying = false;
     private bool myHasJumped = false;
     private Vector3 myPreviousGroundPosition;
     private float myStartFallingTimestamp;
@@ -68,7 +69,8 @@ public class PlayerMovementComponent : MovementComponent
             return;
         }
 
-        myVelocity.y -= myGravity * Time.deltaTime;
+        if (!myIsFlying)
+            myVelocity.y -= myGravity * Time.deltaTime;
         myController.Move(myVelocity * Time.deltaTime);
 
         UpdateGrounded();
@@ -116,7 +118,7 @@ public class PlayerMovementComponent : MovementComponent
             myAnimatorWrapper.SetBool(AnimationVariable.IsRunning, isMoving);
         }
 
-        if (myPlayerControls.Jump.WasPressed && !myHasJumped)
+        if (myPlayerControls.Jump.WasPressed && !myHasJumped && !myIsFlying)
         {
             if (myIsGrounded || Time.time - myStartFallingTimestamp < 0.2f)
             {
@@ -172,6 +174,9 @@ public class PlayerMovementComponent : MovementComponent
 
     private void UpdateGrounded()
     {
+        if (myIsFlying)
+            return;
+
         bool wasGrounded = myIsGrounded;
 
         myIsGrounded = IsGrounded();
@@ -200,7 +205,7 @@ public class PlayerMovementComponent : MovementComponent
 
     private void HandleEndlessFalling()
     {
-        if (myIsGrounded || myHealth.IsDead())
+        if (myIsGrounded || myHealth.IsDead() || myIsFlying)
             return;
 
         const float endlessFallingDuration = 5.0f;
@@ -262,7 +267,7 @@ public class PlayerMovementComponent : MovementComponent
 
     private void DetectLanding()
     {
-        if (myIsGrounded)
+        if (myIsGrounded || myIsFlying)
             return;
 
         if (myVelocity.y > 0.0f)
@@ -315,9 +320,9 @@ public class PlayerMovementComponent : MovementComponent
         return false;
     }
 
-    public bool IsInAir()
+    public bool IsFlying()
     {
-        return !myIsGrounded;
+        return myIsFlying;
     }
 
     public void GiveImpulse(Vector3 aVelocity, float aStunDuration = 0.2f)
@@ -350,5 +355,29 @@ public class PlayerMovementComponent : MovementComponent
     public bool IsMovementDisabled()
     {
         return myIsMovementDisabled;
+    }
+
+    public void SetFlying(bool anIsFlying)
+    {
+        if (myIsFlying == anIsFlying)
+            return;
+
+        myIsFlying = anIsFlying;
+        myVelocity.y = 0.0f;
+
+        if (anIsFlying)
+        {
+            myAnimatorWrapper.SetBool(AnimationVariable.IsGrounded, false);
+            myIsGrounded = false;
+        }
+        else
+        {
+            myStartFallingTimestamp = Time.time + 5.0f; //Silly thing to stop endless falling instantly and make it last a bit longer.
+        }
+    }
+    
+    public Vector3 GetPreviousGroundedPosition()
+    {
+        return myPreviousGroundPosition;
     }
 }

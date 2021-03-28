@@ -28,7 +28,7 @@ public class SpellOverTime : Spell
     private float myInterval;
     private float myIntervalTimer;
 
-    private float myLifeTimeLeft;
+    protected float myLifeTimeLeft;
     private bool myHasReachedTarget;
 
     private GameObject myBuffWidget = null;
@@ -308,5 +308,10 @@ public class SpellOverTime : Spell
     public int GetStackCount()
     {
         return myCurrentStackCount;
+    }
+
+    public bool HasMaxStackCount()
+    {
+        return myCurrentStackCount == myMaxStackCount;
     }
 }

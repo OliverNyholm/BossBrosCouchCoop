@@ -12,7 +12,9 @@ public class ChickenFarmerChickenHandler : MonoBehaviour
     private Vector3[] myFlightFormation = new Vector3[myMaxChickenCount];
 
     [SerializeField]
-    private float myFlightDurationPerChicken = 1.0f;
+    private float myInitialFlightTime = 2.0f;
+    [SerializeField]
+    private float myAddedFlightDurationPerChicken = 1.0f;
 
     private void Awake()
     {
@@ -26,11 +28,18 @@ public class ChickenFarmerChickenHandler : MonoBehaviour
         myFlightFormation[7] = new Vector3(-0.7f, 2.5f, -0.7f);
     }
 
-    public void EnableFlightMode()
+    public float EnableFlightMode()
     {
-        float flightDuration = myChickens.Count * myFlightDurationPerChicken;
+        float flightDuration = myInitialFlightTime + myChickens.Count * myAddedFlightDurationPerChicken;
         for (int index = 0; index < myChickens.Count; index++)
             myChickens[index].GetComponent<ChickenMovementComponent>().SetFlightMode(myFlightFormation[index], flightDuration);
+
+        return flightDuration;
+    }
+
+    public void DisableFlightMode()
+    {
+        GetComponent<PlayerMovementComponent>().SetFlying(false);
     }
 
     public void AddChickenAndSetPosition(GameObject aChicken)
@@ -49,6 +58,11 @@ public class ChickenFarmerChickenHandler : MonoBehaviour
     public bool HasMaxAmountOfChickenActive()
     {
         return myChickens.Count == myMaxChickenCount;
+    }
+
+    public int GetCurrentChickenCount()
+    {
+        return myChickens.Count;
     }
 
     public int GetMaxChickenCount()

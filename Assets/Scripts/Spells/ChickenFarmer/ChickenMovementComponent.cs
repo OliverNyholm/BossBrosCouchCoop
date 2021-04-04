@@ -35,6 +35,17 @@ public class ChickenMovementComponent : MovementComponent
 
     private bool myIsFollowingParent = false;
 
+    enum BombingState
+    {
+        ToParent,
+        ToTarget,
+        LeaveArea
+    }
+
+    private BombingState myBombingState;
+    private GameObject myBombTarget = null;
+    private Vector3 myFlyAwayTarget;
+
     public void SetParentAndOffset(GameObject aParent, Vector3 anOffset)
     {
         myParentMovement = aParent.GetComponent<PlayerMovementComponent>();
@@ -55,6 +66,8 @@ public class ChickenMovementComponent : MovementComponent
 
         if (myIsFalling)
             Falling();
+        else if (myBombTarget)
+            BombingMovement();
         else if (myFlightDuration > 0.0f)
             FlightMovement();
         else
@@ -64,8 +77,12 @@ public class ChickenMovementComponent : MovementComponent
     public void Reset()
     {
         myIsFalling = false;
+        myIsFollowingParent = false;
         myAnimator.SetBool(AnimationVariable.IsGrounded, true);
         myAnimator.SetBool(AnimationVariable.IsRunning, false);
+        myNavAgent.enabled = true;
+
+        myBombTarget = null;
     }
 
     public override bool IsMoving()
@@ -75,7 +92,7 @@ public class ChickenMovementComponent : MovementComponent
 
     protected override void OnDeath()
     {
-
+        Reset();
     }
 
     public void SetFlightMode(Vector3 aFlightOffset, float aDuration)
@@ -85,6 +102,17 @@ public class ChickenMovementComponent : MovementComponent
         myNavAgent.enabled = false;
 
         myAnimator.SetBool(AnimationVariable.IsGrounded, false);
+    }
+
+    public void EnableBombingMode(GameObject aTarget)
+    {
+        myBombingState = BombingState.ToParent;
+        myBombTarget = aTarget;
+
+        myNavAgent.enabled = false;
+        myAnimator.SetBool(AnimationVariable.IsGrounded, false);
+
+        GetComponent<Chicken>().SetIsDroppingBomb();
     }
 
     private void GroundMovement()
@@ -149,6 +177,66 @@ public class ChickenMovementComponent : MovementComponent
             transform.position = targetPosition;
             transform.rotation = myParentMovement.transform.rotation;
             return;
+        }
+
+        Vector3 toTarget = (targetPosition - transform.position).normalized;
+        Vector3 toTargetHorizontal = (targetPosition - transform.position).Normalized2D();
+
+        transform.position += toTarget * myFlightSpeed * Time.deltaTime;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTargetHorizontal, Vector3.up), Time.deltaTime * 360.0f);
+    }
+
+    private void BombingMovement()
+    {
+        Vector3 targetPosition = Vector3.zero;
+        switch (myBombingState)
+        {
+            case BombingState.ToParent:
+                {
+                    const float heightOffset = 3.0f;
+                    targetPosition = myParentMovement.transform.position + Vector3.up * heightOffset;
+                    float distanceToTargetPosition = (targetPosition - transform.position).sqrMagnitude;
+                    const float closeEnoughDistanceSqr = 2.0f * 2.0f;
+                    if (distanceToTargetPosition < closeEnoughDistanceSqr)
+                    {
+                        myBombingState = BombingState.ToTarget;
+                        return;
+                    }
+                }
+                break;
+            case BombingState.ToTarget:
+                {
+                    if (!myBombTarget)
+                    {
+                        myBombingState = BombingState.LeaveArea;
+                        return;
+                    }
+
+                    const float heightOffset = 4.0f;
+                    targetPosition = myBombTarget.transform.position + Vector3.up * heightOffset;
+                    float distanceToTargetPosition = (targetPosition - transform.position).sqrMagnitude;
+                    const float closeEnoughDistanceSqr = 5.0f * 5.0f;
+                    if (distanceToTargetPosition < closeEnoughDistanceSqr)
+                    {
+                        myBombingState = BombingState.LeaveArea;
+                        myFlyAwayTarget = transform.position + (transform.forward + transform.up) * 20.0f;
+                        myParentChickenHandler.DropBomb(gameObject, myBombTarget);
+                        return;
+                    }
+                }
+                break;
+            case BombingState.LeaveArea:
+                {
+                    targetPosition = myFlyAwayTarget;
+                    float distanceToTargetPosition = (targetPosition - transform.position).sqrMagnitude;
+                    const float closeEnoughDistanceSqr = 5.0f * 5.0f;
+                    if (distanceToTargetPosition < closeEnoughDistanceSqr)
+                    {
+                        GetComponent<Chicken>().ReturnToPool();
+                        return;
+                    }
+                }
+                break;
         }
 
         Vector3 toTarget = (targetPosition - transform.position).normalized;

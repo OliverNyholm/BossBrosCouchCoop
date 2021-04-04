@@ -24,4 +24,12 @@ public class ChickenFarmerThrowEgg : Spell
         if (stats)
             stats.RemoveSpellOverTimeStack(myRequiredEggBuff);
     }
+
+    public override void CreatePooledObjects(PoolManager aPoolManager, int aSpellMaxCount, GameObject aSpawner = null)
+    {
+        base.CreatePooledObjects(aPoolManager, aSpellMaxCount, aSpawner);
+
+        //This is quite weird, but was an easy solution since I can set eggbuff property here, but not in the script as it is added via code.
+        aSpawner.GetComponent<ChickenFarmerChickenHandler>().SetEggBuff(myRequiredEggBuff);
+    }
 }

@@ -7,6 +7,7 @@ public class Chicken : Character
     [SerializeField]
     private GameObject myParent = null;
     private Stats myParentStats = null;
+    private ChickenFarmerChickenHandler myChickenHandler = null;
 
     [SerializeField]
     private SpellOverTime myEggBuff = null;
@@ -15,10 +16,13 @@ public class Chicken : Character
     private float myDropEggInterval = 2.0f;
     private float myDropEggTimer = 0.0f;
 
+    private bool myIsBombDropping = false;
+
     public void SetParent(GameObject aParent)
     {
         myParent = aParent;
         myParentStats = aParent.GetComponent<Stats>();
+        myChickenHandler = aParent.GetComponent<ChickenFarmerChickenHandler>();
     }
 
     public override void Reset()
@@ -28,6 +32,7 @@ public class Chicken : Character
 
         myParent = null;
         myParentStats = null;
+        myIsBombDropping = false;
 
         GetComponent<ChickenMovementComponent>().Reset();
     }
@@ -35,37 +40,21 @@ public class Chicken : Character
     // Update is called once per frame
     protected override void Update()
     {
-        if (!myParent || !myEggBuff)
+        if (!myParent || !myEggBuff || myIsBombDropping)
             return;
 
         myDropEggTimer -= Time.deltaTime;
         if (myDropEggTimer <= 0.0f)
         {
             if (!myParentStats.HasMaxSpellOverTimeStackCount(myEggBuff))
-                SpawnEgg();
+                myChickenHandler.SpawnEgg(gameObject);
 
             myDropEggTimer = myDropEggInterval;
         }
     }
 
-    private void SpawnEgg()
+    public void SetIsDroppingBomb()
     {
-        GameObject eggBuff = PoolManager.Instance.GetPooledObject(myEggBuff.GetComponent<UniqueID>().GetID());
-        if (!eggBuff)
-            return;
-
-        Spell spellScript = eggBuff.GetComponent<Spell>();
-        spellScript.SetParent(gameObject);
-        spellScript.AddDamageIncrease(myStats.myDamageIncrease);
-
-        eggBuff.transform.position = myParent.transform.position;
-        eggBuff.transform.rotation = myParent.transform.rotation;
-
-        spellScript.SetTarget(myParent);
-        spellScript.Restart();
-
-        AudioClip spawnSound = spellScript.GetSpellSFX().mySpawnSound;
-        if (spawnSound)
-            GetComponent<AudioSource>().PlayOneShot(spawnSound);
+        myIsBombDropping = true;
     }
 }

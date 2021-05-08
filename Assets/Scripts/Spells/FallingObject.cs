@@ -60,7 +60,7 @@ public class FallingObject : Spell
 
     private void OnHitGround()
     {
-        List<GameObject> targets = UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTargetType.Player) ? myTargetHandler.GetAllPlayers() : myTargetHandler.GetAllEnemies();
+        List<GameObject> targets = UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTargetType.Player) ? myTargetHandler.GetPlayersAndMinions() : myTargetHandler.GetAllEnemies();
 
         UtilityFunctions.GetAllCharactersInRadius(targets, transform.position, myRange, out List<GameObject> charactersInRange);
 

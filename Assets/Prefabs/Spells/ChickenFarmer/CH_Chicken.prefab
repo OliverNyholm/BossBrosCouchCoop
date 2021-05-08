@@ -459,6 +459,8 @@ GameObject:
   - component: {fileID: 4908768434097608450}
   - component: {fileID: 6687717894806690656}
   - component: {fileID: 3293557940411337964}
+  - component: {fileID: 269625586960090033}
+  - component: {fileID: -1904691268807874349}
   m_Layer: 0
   m_Name: CH_Chicken
   m_TagString: Untagged
@@ -526,9 +528,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myParent: {fileID: 0}
+  myOnDeathVfx: {fileID: 724740779098352624, guid: 61c02176f20eaf944be4fb1e9a04d784,
+    type: 3}
   myEggBuff: {fileID: -9131512974562092230, guid: b5305e9b0b72a8d43904d7f02ed47920,
     type: 3}
-  myDropEggInterval: 2
+  myDropEggInterval: 5
 --- !u!114 &3008096168764575971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,6 +549,8 @@ MonoBehaviour:
   myCanBeAffectedByMovingPlatform: 1
   myParentMovement: {fileID: 0}
   myDurationBeforeReactingToMovement: 1
+  myFlightSpeed: 15
+  myGravity: 8
   myReactTooFarAwayRadius: 3
   myCloseEnoughMovementRadius: 2
 --- !u!195 &3008096168764575974
@@ -625,6 +631,37 @@ MonoBehaviour:
     myHeight: 4
     myDrawGizmos: 1
   myCanBeStunned: 1
+--- !u!143 &269625586960090033
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2702034804322639561}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 0.74
+  m_Radius: 0.28
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.35, z: 0.17}
+--- !u!114 &-1904691268807874349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2702034804322639561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b88f80a92183a34d8d6373cf73d9c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTargetTag: 32
 --- !u!1 &3002644000697363940
 GameObject:
   m_ObjectHideFlags: 0

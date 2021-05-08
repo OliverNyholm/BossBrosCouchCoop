@@ -10,6 +10,9 @@ public class Chicken : Character
     private ChickenFarmerChickenHandler myChickenHandler = null;
 
     [SerializeField]
+    private GameObject myOnDeathVfx = null;
+
+    [SerializeField]
     private SpellOverTime myEggBuff = null;
 
     [SerializeField]
@@ -17,6 +20,13 @@ public class Chicken : Character
     private float myDropEggTimer = 0.0f;
 
     private bool myIsBombDropping = false;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        PoolManager.Instance.AddPoolableObjects(myOnDeathVfx, myOnDeathVfx.GetComponent<UniqueID>().GetID(), 1);
+    }
 
     public void SetParent(GameObject aParent)
     {
@@ -37,7 +47,6 @@ public class Chicken : Character
         GetComponent<ChickenMovementComponent>().Reset();
     }
 
-    // Update is called once per frame
     protected override void Update()
     {
         if (!myParent || !myEggBuff || myIsBombDropping)
@@ -56,5 +65,17 @@ public class Chicken : Character
     public void SetIsDroppingBomb()
     {
         myIsBombDropping = true;
+    }
+
+    protected override void OnDeath()
+    {
+        myChickenHandler.ReturnChicken(gameObject);
+
+        PoolManager poolManager = PoolManager.Instance;
+        GameObject onDeathVfx = poolManager.GetPooledObject(myOnDeathVfx.GetComponent<UniqueID>().GetID());
+        onDeathVfx.transform.position = transform.position + Vector3.up * 0.8f;
+        poolManager.AddTemporaryObject(onDeathVfx, 4.0f);
+
+        ReturnToPool();
     }
 }

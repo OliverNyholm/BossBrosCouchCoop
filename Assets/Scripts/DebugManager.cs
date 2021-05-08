@@ -37,7 +37,7 @@ public class DebugManager : MonoBehaviour
     public void KillAll()
     {
         TargetHandler targetHandler = FindObjectOfType<TargetHandler>();
-        foreach (GameObject player in targetHandler.GetAllPlayers())
+        foreach (GameObject player in targetHandler.GetPlayersAndMinions())
         {
             player.GetComponent<Health>().TakeDamage(100000, Color.black, player.transform.position);
         }

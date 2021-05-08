@@ -2362,6 +2362,7 @@ GameObject:
   - component: {fileID: 1005973123047388739}
   - component: {fileID: 5406170757351694417}
   - component: {fileID: -1139663040990309293}
+  - component: {fileID: -8516236542870413530}
   m_Layer: 9
   m_Name: Gnome
   m_TagString: Player
@@ -2622,7 +2623,9 @@ MonoBehaviour:
   myAttackSpeed: 1
   myDamageIncrease: 1
   myDamageMitigator: 1
+  myAutoAttackDamageMitigator: 1
   myAutoAttackRange: 4
+  myNextSpellModifier: 1
   myAutoAttackDamage: 15
   myRangeCylinder:
     myRadius: 1.5
@@ -2692,6 +2695,7 @@ MonoBehaviour:
   myCanBeAffectedByMovingPlatform: 0
   myJumpSpeed: 15
   myGravity: 30
+  myIsFlying: 0
 --- !u!114 &-1139663040990309293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2704,6 +2708,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c409e28fbf9d1b4eb7e1d921a14176f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-8516236542870413530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7268288696070191918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b88f80a92183a34d8d6373cf73d9c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTargetTag: 2
 --- !u!1 &7273063902147402380
 GameObject:
   m_ObjectHideFlags: 0

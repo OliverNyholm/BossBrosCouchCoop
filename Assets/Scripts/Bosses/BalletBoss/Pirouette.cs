@@ -4,21 +4,13 @@ using UnityEngine;
 
 public class Pirouette : SpellOverTime
 {
-    private List<GameObject> myPlayers = new List<GameObject>(4);
-
-    public override void Restart()
-    {
-        base.Restart();
-
-        myPlayers = myParent.GetComponent<NPCThreatComponent>().Players;
-    }
-
     protected override void DealTickEffect()
     {
-        foreach (GameObject player in myPlayers)
+        List<GameObject> playersAndMinions = myTargetHandler.GetPlayersAndMinions();
+        foreach (GameObject targets in playersAndMinions)
         {
-            if (UtilityFunctions.IsCharacterInRangeAndAlive(player, transform.position, myRange))
-                DealDamage(myDamage, player.transform.position, player);
+            if (UtilityFunctions.IsCharacterInRangeAndAlive(targets, transform.position, myRange))
+                DealDamage(myDamage, targets.transform.position, targets);
         }
     }
 }

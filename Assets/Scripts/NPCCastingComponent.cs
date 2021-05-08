@@ -242,15 +242,10 @@ public class NPCCastingComponent : CastingComponent
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTargetType.NPC) == 0 && spellTarget.tag == "Player")
+        ObjectTag objectTag = spellTarget.GetComponent<ObjectTag>();
+        if (aSpellScript.GetSpellTarget() != objectTag.GetTargetTag())
         {
             Debug.Log(gameObject.name + " can't cast friendly spells on players");
-            return false;
-        }
-
-        if ((aSpellScript.GetSpellTarget() & SpellTargetType.Player) == 0 && spellTarget.tag == "Enemy")
-        {
-            Debug.Log(gameObject.name + " can't cast hostile spells on friends");
             return false;
         }
 

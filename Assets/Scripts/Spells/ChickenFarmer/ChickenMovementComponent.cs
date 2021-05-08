@@ -9,6 +9,7 @@ public class ChickenMovementComponent : MovementComponent
     private AnimatorWrapper myAnimator;
     public PlayerMovementComponent myParentMovement = null;
     private ChickenFarmerChickenHandler myParentChickenHandler = null;
+    private CharacterController myController;
 
     [SerializeField]
     private float myDurationBeforeReactingToMovement = 1.0f;
@@ -57,6 +58,7 @@ public class ChickenMovementComponent : MovementComponent
     {
         myNavAgent = GetComponent<NavMeshAgent>();
         myAnimator = GetComponent<AnimatorWrapper>();
+        myController = GetComponent<CharacterController>();
     }
 
     private void Update()
@@ -159,7 +161,7 @@ public class ChickenMovementComponent : MovementComponent
             myIsFalling = true;
             myFallingVelocity.y = 0.0f;
             if (UtilityFunctions.FindGroundFromLocation(transform.position, out RaycastHit hitInfo, out _, 20.0f))
-                myGroundLocation = hitInfo.point;
+                myGroundLocation = hitInfo.point + Vector3.up * 0.2f;
             else
                 myGroundLocation = transform.position - Vector3.up * -100.0f;
 
@@ -182,7 +184,7 @@ public class ChickenMovementComponent : MovementComponent
         Vector3 toTarget = (targetPosition - transform.position).normalized;
         Vector3 toTargetHorizontal = (targetPosition - transform.position).Normalized2D();
 
-        transform.position += toTarget * myFlightSpeed * Time.deltaTime;
+        myController.Move(toTarget * myFlightSpeed * Time.deltaTime);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTargetHorizontal, Vector3.up), Time.deltaTime * 360.0f);
     }
 
@@ -242,7 +244,7 @@ public class ChickenMovementComponent : MovementComponent
         Vector3 toTarget = (targetPosition - transform.position).normalized;
         Vector3 toTargetHorizontal = (targetPosition - transform.position).Normalized2D();
 
-        transform.position += toTarget * myFlightSpeed * Time.deltaTime;
+        myController.Move(toTarget * myFlightSpeed * Time.deltaTime);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTargetHorizontal, Vector3.up), Time.deltaTime * 360.0f);
     }
 
@@ -262,6 +264,6 @@ public class ChickenMovementComponent : MovementComponent
         }
 
         myFallingVelocity.y -= myGravity * Time.deltaTime;
-        transform.position += myFallingVelocity * Time.deltaTime;
+        myController.Move(myFallingVelocity * Time.deltaTime);
     }
 }

@@ -6,6 +6,7 @@ public class TargetHandler : MonoBehaviour
 {
     [SerializeField]
     private List<GameObject> myPlayers = new List<GameObject>();
+    private List<GameObject> myPlayersAndMinions = new List<GameObject>();
 
     [SerializeField]
     private List<GameObject> myNPCs = new List<GameObject>();
@@ -44,14 +45,25 @@ public class TargetHandler : MonoBehaviour
         return myPlayers;
     }
 
-    public void ClearAllPlayers()
+    public List<GameObject> GetPlayersAndMinions()
     {
-        myPlayers.Clear();
+        return myPlayersAndMinions;
     }
 
     public void AddPlayer(GameObject aGameObject)
     {
         myPlayers.Add(aGameObject);
+        myPlayersAndMinions.Add(aGameObject);
+    }
+
+    public void AddMinion(GameObject aGameObject)
+    {
+        myPlayersAndMinions.Add(aGameObject);
+    }
+
+    public void RemoveMinion(GameObject aGameObject)
+    {
+        myPlayersAndMinions.Remove(aGameObject);
     }
 
     public GameObject GetPlayer(int aIndex)

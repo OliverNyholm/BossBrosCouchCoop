@@ -11,9 +11,7 @@ public class DirectionalSpell : Spell
 
     [Header("The target to damage")]
     [SerializeField]
-    private string myAttackTag = "Enemy";
-
-    private Vector3 myDirection;
+    private SpellTargetType myTargetType = SpellTargetType.Player;
 
     protected override void Awake()
     {
@@ -40,13 +38,15 @@ public class DirectionalSpell : Spell
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == myAttackTag)
+        Debug.Log(other.name + " entered");
+        ObjectTag objectTag = other.GetComponent<ObjectTag>();
+        if (objectTag && objectTag.IsTargetType(myTargetType))
         {
             if (!other.GetComponent<Health>().IsDead() && myDamage > 0.0f)
                 other.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor, other.transform.position);
         }
-        
-        if(other.gameObject.tag == "Terrain")
+
+        if (other.tag == "Terrain")
         {
             ReturnToPool();
             SpawnVFX(2.5f, other.gameObject);

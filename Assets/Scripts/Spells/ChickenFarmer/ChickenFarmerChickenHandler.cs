@@ -72,6 +72,11 @@ public class ChickenFarmerChickenHandler : MonoBehaviour
         myEggBomb = anEggBomb;
     }
 
+    public void ReturnChicken(GameObject aChicken)
+    {
+        myChickens.Remove(aChicken);
+    }
+
     public void DisableFlightMode()
     {
         GetComponent<PlayerMovementComponent>().SetFlying(false);

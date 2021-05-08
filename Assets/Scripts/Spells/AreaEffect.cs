@@ -76,8 +76,8 @@ public class AreaEffect : MonoBehaviour
 
     private void OnTriggerEnter(Collider aOther)
     {
-        if (!(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTargetType.Player) && aOther.GetComponent<Player>()) && 
-            !(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTargetType.NPC) && aOther.GetComponent<NPCComponent>()))
+        ObjectTag objectTag = aOther.GetComponent<ObjectTag>();
+        if (!objectTag || !objectTag.IsTargetType(mySpellTarget))
             return;
 
         if (aOther.gameObject.GetComponent<Health>().IsDead())
@@ -105,6 +105,8 @@ public class AreaEffect : MonoBehaviour
 
     private void OnTriggerExit(Collider aOther)
     {
+        Debug.Log(aOther.name + " exited " + this.name);
+
         if (!(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTargetType.Player) && aOther.GetComponent<Player>()) &&
             !(UtilityFunctions.HasSpellTarget(mySpellTarget, SpellTargetType.NPC) && aOther.GetComponent<NPCComponent>()))
             return;

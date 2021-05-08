@@ -127,7 +127,9 @@ public class PlayerTargetingComponent : TargetingComponent
             Target.GetComponent<Health>().EventOnHealthZero += OnTargetDied;
         }
 
-        castingComponent.SetShouldAutoAttack(Target && Target.tag == "Enemy");
+        ObjectTag objectTag = Target ? Target.GetComponent<ObjectTag>() : null;
+        bool shouldAutoAttack = Target && objectTag ? objectTag.IsTargetType(SpellTargetType.NPC) : false;
+        castingComponent.SetShouldAutoAttack(shouldAutoAttack);
     }
 
     private void DetectTargetingInput()
@@ -232,7 +234,8 @@ public class PlayerTargetingComponent : TargetingComponent
             case HealTargetingOption.SelectWithLeftStickOnly:
             case HealTargetingOption.SelectWithLeftStickAndAutoHeal:
                 myManualHealTargetingMode = ManualHealTargetingMode.LeftJoystick;
-                if (!Target || Target.tag == "Enemy")
+                ObjectTag objectTag = Target ? Target.GetComponent<ObjectTag>() : null;
+                if (!Target || !objectTag || objectTag.IsTargetType(SpellTargetType.NPC))
                     SetTarget(myTargetHandler.GetPlayer(myPlayer.PlayerIndex - 1));
                 break;
             case HealTargetingOption.SelectWithLookDirection:

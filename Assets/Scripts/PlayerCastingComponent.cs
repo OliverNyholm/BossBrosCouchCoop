@@ -490,9 +490,11 @@ public class PlayerCastingComponent : CastingComponent
             return false;
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTargetType.NPC) == 0 && target.tag == "Enemy")
+        ObjectTag objectTag = target.GetComponent<ObjectTag>();
+
+        if (!objectTag.IsTargetType(aSpellScript.GetSpellTarget()) && objectTag.IsTargetType(SpellTargetType.NPC))
         {
-            if ((aSpellScript.GetSpellTarget() & SpellTargetType.Player) != 0)
+            if (UtilityFunctions.HasSpellTarget(aSpellScript.GetSpellTarget(), SpellTargetType.Player))
             {
                 myTargetingComponent.SetTarget(gameObject);
             }
@@ -503,7 +505,7 @@ public class PlayerCastingComponent : CastingComponent
             }
         }
 
-        if ((aSpellScript.GetSpellTarget() & SpellTargetType.Player) == 0 && target.tag == "Player")
+        if (!objectTag.IsTargetType(aSpellScript.GetSpellTarget()) && objectTag.IsTargetType(SpellTargetType.Player))
         {
             ShowError(SpellErrorHandler.SpellError.WrongTargetPlayer);
             return false;

@@ -7,8 +7,9 @@ public enum SpellTargetType
     NPC = 1 << 2,
     LowestHealthPlayer = 1 << 3,
     SplitAmongAllPlayers = 1 << 4,
+    PlayerMinion = 1 << 5,
 
-    Player = PlayerDefault | LowestHealthPlayer | SplitAmongAllPlayers,
+    Player = PlayerDefault | LowestHealthPlayer | SplitAmongAllPlayers | PlayerMinion,
     Anyone = Player | NPC
 }
 
@@ -264,10 +265,7 @@ public class Spell : PoolableObject
 
     private void Interrupt()
     {
-        if (myTarget.tag == "Player")
-            myTarget.GetComponent<CastingComponent>().InterruptSpellCast();
-        else if (myTarget.tag == "Enemy")
-            myTarget.GetComponent<CastingComponent>().InterruptSpellCast();
+        myTarget.GetComponent<CastingComponent>().InterruptSpellCast();
     }
 
     public SpellSFX GetSpellSFX()

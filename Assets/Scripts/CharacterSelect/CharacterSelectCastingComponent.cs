@@ -95,7 +95,10 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
         }
         else
         {
-            if(!IsChannelSpell(aSpellIndex) && !anIsSwappingClass)
+            GameObject spell = myClass.GetSpell(aSpellIndex);
+            Spell spellScript = spell.GetComponent<Spell>();
+
+            if (!IsChannelSpell(aSpellIndex) && !anIsSwappingClass && IsAbleToCastSpell(spellScript))
                 CastSpell(aSpellIndex);
         }
 
@@ -160,6 +163,9 @@ public class CharacterSelectCastingComponent : PlayerCastingComponent
     protected override bool IsAbleToCastSpell(Spell aSpellScript)
     {
         if (myIsCasting)
+            return false;
+
+        if (!aSpellScript.IsSpellAvailable(gameObject))
             return false;
 
         return true;

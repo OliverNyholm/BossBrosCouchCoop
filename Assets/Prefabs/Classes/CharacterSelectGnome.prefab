@@ -2562,11 +2562,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d2c069978184cd4788cd4ddd56cf980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myMaxHealth: 100
-  myCurrentHealth: 100
-  myHealthPerTick: 0
+  myMaxHealth: 10000
+  myCurrentHealth: 10000
+  myHealthPerTick: 5000
   myHealthTickInterval: 1
-  myTimeBeforeHealthRegenerationAfterDamage: 5
+  myTimeBeforeHealthRegenerationAfterDamage: 1
   myShouldSpawnFloatingHealthOnTick: 0
 --- !u!114 &6501086424062129848
 MonoBehaviour:

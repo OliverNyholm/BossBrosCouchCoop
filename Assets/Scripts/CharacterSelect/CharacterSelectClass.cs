@@ -36,6 +36,8 @@ public class CharacterSelectClass : Class
         myCastingComponent.OnClassChanged();
         mySpells = aClassData.mySpells.ToArray();
 
+        aClassData.AddRequiredComponents(gameObject);
+
         CharacterSelectUIComponent csUIComponent = myUIComponent as CharacterSelectUIComponent;
 
         for (int index = 0; index < mySpells.Length; index++)
@@ -45,6 +47,7 @@ public class CharacterSelectClass : Class
                 csUIComponent.SetSpellHud(null, aClassData.myClassColor,  index);
                 continue;
             }
+
 
             Spell spell = mySpells[index].GetComponent<Spell>();
             spell.CreatePooledObjects(poolManager, spell.myPoolSize * 2, gameObject);

@@ -744,6 +744,7 @@ GameObject:
   - component: {fileID: 7550700189986221247}
   - component: {fileID: 302296119976523493}
   - component: {fileID: 4958998388956094642}
+  - component: {fileID: 7671163740791625084}
   m_Layer: 9
   m_Name: Minion_OgreLibrary_Dropper
   m_TagString: Enemy
@@ -1066,6 +1067,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67f7d3e7a352194c903a05147ca3e37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7671163740791625084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6616438649431743777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b88f80a92183a34d8d6373cf73d9c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTargetTag: 4
 --- !u!1001 &8233070546580063748
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10035,6 +10035,7 @@ GameObject:
   - component: {fileID: 68585849}
   - component: {fileID: 68585848}
   - component: {fileID: 68585847}
+  - component: {fileID: 68585862}
   m_Layer: 9
   m_Name: Boss
   m_TagString: Enemy
@@ -10434,6 +10435,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &68585862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68585845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b88f80a92183a34d8d6373cf73d9c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTargetTag: 4
 --- !u!1 &87195106
 GameObject:
   m_ObjectHideFlags: 0
@@ -44425,6 +44439,7 @@ GameObject:
   - component: {fileID: 1063597221}
   - component: {fileID: 1063597220}
   - component: {fileID: 1063597219}
+  - component: {fileID: 1063597225}
   m_Layer: 0
   m_Name: Birch
   m_TagString: Enemy
@@ -44640,6 +44655,19 @@ MonoBehaviour:
   myHealthTickInterval: 1
   myTimeBeforeHealthRegenerationAfterDamage: 5
   myShouldSpawnFloatingHealthOnTick: 0
+--- !u!114 &1063597225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063597217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b88f80a92183a34d8d6373cf73d9c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTargetTag: 4
 --- !u!1001 &1072795254
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45638,6 +45666,7 @@ GameObject:
   - component: {fileID: 1160079388}
   - component: {fileID: 1160079387}
   - component: {fileID: 1160079386}
+  - component: {fileID: 1160079390}
   m_Layer: 0
   m_Name: BigBoulder
   m_TagString: Untagged
@@ -45736,6 +45765,19 @@ MonoBehaviour:
   myUseCastbarAboveCharacter: 1
   myUseMinionHud: 0
   myCharacterHUD: {fileID: 0}
+--- !u!114 &1160079390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160079384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b88f80a92183a34d8d6373cf73d9c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTargetTag: 4
 --- !u!1 &1160938857
 GameObject:
   m_ObjectHideFlags: 0
@@ -48379,8 +48421,51 @@ PrefabInstance:
       propertyPath: m_Name
       value: CameraHandler (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7889717877375787256, guid: 9dd07cdc744a32d498a7ef7dda428ec8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9dd07cdc744a32d498a7ef7dda428ec8, type: 3}
+--- !u!1 &1438982471 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7889717877375787261, guid: 9dd07cdc744a32d498a7ef7dda428ec8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1438982470}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1438982472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438982471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 672a0cdae01c85d43b6a60373e95c0cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDefaultListener: 1
+  listenerId: 0
+--- !u!114 &1438982473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438982471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c537799e18c62964b9e5b08eca6be9dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 0
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &1440271939
 GameObject:
   m_ObjectHideFlags: 0
@@ -59516,6 +59601,7 @@ GameObject:
   - component: {fileID: 1607266530}
   - component: {fileID: 1607266529}
   - component: {fileID: 1607266528}
+  - component: {fileID: 1607266533}
   m_Layer: 0
   m_Name: Banner Two
   m_TagString: Enemy
@@ -59718,6 +59804,19 @@ MonoBehaviour:
   myHealthTickInterval: 1
   myTimeBeforeHealthRegenerationAfterDamage: 5
   myShouldSpawnFloatingHealthOnTick: 0
+--- !u!114 &1607266533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607266526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b88f80a92183a34d8d6373cf73d9c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTargetTag: 4
 --- !u!1001 &1611696715
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66993,6 +67092,90 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1820326561}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1821500046
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1821500049}
+  - component: {fileID: 1821500048}
+  - component: {fileID: 1821500047}
+  m_Layer: 0
+  m_Name: WwiseGlobal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1821500047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821500046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29a7f55f7d1310548a317f2cf2efdfce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: ae8d9d44
+  useOtherObject: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 6ff030fd41c50064aa201be0e1247cf5,
+      type: 2}
+  decodeBank: 0
+  loadAsynchronous: 0
+  saveDecodedBank: 0
+  unloadTriggerList: 958ca0ea
+  bankNameInternal: 
+  valueGuidInternal: 
+--- !u!114 &1821500048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821500046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76cf7005e3115244bcf5534fe6f8618, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InitializationSettings: {fileID: 11400000, guid: 2f2baa211b0bb0c4e8e2a93d67feb2a3,
+    type: 2}
+  basePath: 
+  language: 
+  defaultPoolSize: 0
+  lowerPoolSize: 0
+  streamingPoolSize: 0
+  memoryCutoffThreshold: 0
+  monitorPoolSize: 0
+  monitorQueuePoolSize: 0
+  callbackManagerBufferSize: 0
+  spatialAudioPoolSize: 0
+  maxSoundPropagationDepth: 0
+  diffractionFlags: 11
+  engineLogging: 0
+--- !u!4 &1821500049
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821500046}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1822061943
 GameObject:
   m_ObjectHideFlags: 0
@@ -67346,6 +67529,7 @@ GameObject:
   - component: {fileID: 1849813299}
   - component: {fileID: 1849813298}
   - component: {fileID: 1849813297}
+  - component: {fileID: 1849813302}
   m_Layer: 0
   m_Name: Banner One
   m_TagString: Enemy
@@ -67548,6 +67732,19 @@ MonoBehaviour:
   myHealthTickInterval: 1
   myTimeBeforeHealthRegenerationAfterDamage: 5
   myShouldSpawnFloatingHealthOnTick: 0
+--- !u!114 &1849813302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849813295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b88f80a92183a34d8d6373cf73d9c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTargetTag: 4
 --- !u!1001 &1852653772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -75460,6 +75657,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4785516941260731380, guid: 28948b89e410567469f4a4faf824c3a4,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5158353926637512072, guid: 28948b89e410567469f4a4faf824c3a4,
         type: 3}

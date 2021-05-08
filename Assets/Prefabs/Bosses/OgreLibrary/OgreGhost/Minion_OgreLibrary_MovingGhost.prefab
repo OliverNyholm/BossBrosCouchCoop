@@ -742,6 +742,7 @@ GameObject:
   - component: {fileID: 6108257247565009929}
   - component: {fileID: 4652011594544444758}
   - component: {fileID: 7550700189986221247}
+  - component: {fileID: -6492349555292936067}
   m_Layer: 9
   m_Name: Minion_OgreLibrary_MovingGhost
   m_TagString: Enemy
@@ -1039,6 +1040,19 @@ CapsuleCollider:
   m_Height: 4.98
   m_Direction: 1
   m_Center: {x: 0, y: -0.31, z: 0}
+--- !u!114 &-6492349555292936067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6616438649431743777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b88f80a92183a34d8d6373cf73d9c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTargetTag: 4
 --- !u!1001 &8233070546580063748
 PrefabInstance:
   m_ObjectHideFlags: 0

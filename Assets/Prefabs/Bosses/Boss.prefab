@@ -717,6 +717,7 @@ GameObject:
   - component: {fileID: 4073057182515293439}
   - component: {fileID: 5823357983417734917}
   - component: {fileID: 2591115709201662040}
+  - component: {fileID: 1634625315883149465}
   m_Layer: 9
   m_Name: Boss
   m_TagString: Enemy
@@ -900,7 +901,9 @@ MonoBehaviour:
   myAttackSpeed: 1
   myDamageIncrease: 1
   myDamageMitigator: 1
+  myAutoAttackDamageMitigator: 1
   myAutoAttackRange: 5
+  myNextSpellModifier: 1
   myAutoAttackDamage: 80
   myRangeCylinder:
     myRadius: 1.5
@@ -919,6 +922,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6139c0ebc1eb51409642c730b18e116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myShouldHandleHudsOnActivations: 0
+  myShouldStopBehaviorOnDeath: 1
+  myDeathAudio: {fileID: 0}
 --- !u!195 &2695556951504777833
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -958,6 +964,8 @@ MonoBehaviour:
   myCharacterColor: {r: 0.5660378, g: 0, b: 0.4646879, a: 1}
   myName: Boss
   myUseCastbarAboveCharacter: 1
+  myUseMinionHud: 0
+  myCharacterHUD: {fileID: 0}
 --- !u!114 &1985732884223160888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -971,6 +979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myBaseSpeed: 8
+  myCanBeAffectedByMovingPlatform: 0
 --- !u!114 &4073057182515293439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -996,7 +1005,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce21cdc1ae203c408ff0ac479c0d2f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myThreatValues: 
 --- !u!114 &2591115709201662040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1009,6 +1017,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67f7d3e7a352194c903a05147ca3e37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1634625315883149465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2697255862740792503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b88f80a92183a34d8d6373cf73d9c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTargetTag: 4
 --- !u!1 &2917393181218341440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1824,7 +1845,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 60a21eef012cd1e4fb0e36502a099b3b, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -38,8 +38,9 @@ public class AoeAttack : Spell
 
         float radiusSqr = myRadius * myRadius;
         List<GameObject> targets = mySpellTarget == SpellTargetType.NPC ? myTargetHandler.GetAllEnemies() : myTargetHandler.GetPlayersAndMinions();
-        foreach (GameObject target in targets)
+        for (int index = 0; index < targets.Count; index++)
         {
+            GameObject target = targets[index];
             if (myInitialTarget == target || !target)
                 continue;
 

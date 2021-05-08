@@ -52,6 +52,7 @@ public class ChickenMovementComponent : MovementComponent
         myParentMovement = aParent.GetComponent<PlayerMovementComponent>();
         myParentChickenHandler = aParent.GetComponent<ChickenFarmerChickenHandler>();
         myParentOffsetLocation = anOffset;
+        myNavAgent.enabled = true;
     }
 
     private void Awake()

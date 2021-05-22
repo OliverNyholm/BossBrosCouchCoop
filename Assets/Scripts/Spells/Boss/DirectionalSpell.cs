@@ -9,14 +9,24 @@ public class DirectionalSpell : Spell
     private float myLifeTime = 0.05f;
     private float myLifeTimeReset;
 
+    [SerializeField]
+    private bool myIgnoreCollisionOnParent = true;
+
+    [SerializeField]
+    private bool myRemoveOnTargetImpact = false;
+
     [Header("The target to damage")]
     [SerializeField]
     private SpellTargetType myTargetType = SpellTargetType.Player;
+
+    private LayerMask myTerrainLayerMask;
 
     protected override void Awake()
     {
         base.Awake();
         myLifeTimeReset = myLifeTime;
+
+        myTerrainLayerMask = LayerMask.NameToLayer("Terrain");
     }
 
     public override void Reset()
@@ -38,15 +48,25 @@ public class DirectionalSpell : Spell
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name + " entered");
-        ObjectTag objectTag = other.GetComponent<ObjectTag>();
+        ObjectTag objectTag = other.GetComponentInParent<ObjectTag>();
         if (objectTag && objectTag.IsTargetType(myTargetType))
         {
-            if (!other.GetComponent<Health>().IsDead() && myDamage > 0.0f)
-                other.GetComponentInParent<Health>().TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor, other.transform.position);
+            if (myIgnoreCollisionOnParent && objectTag.gameObject == myParent)
+                return;
+
+            Health health = other.GetComponentInParent<Health>();
+            if (health && !health.IsDead() && myDamage > 0.0f)
+                health.TakeDamage(myDamage, myParent.GetComponent<UIComponent>().myCharacterColor, other.transform.position);
+
+            if (myRemoveOnTargetImpact)
+            {
+                ReturnToPool();
+                SpawnVFX(2.5f, gameObject);
+                return;
+            }
         }
 
-        if (other.tag == "Terrain")
+        if (other.gameObject.layer == myTerrainLayerMask)
         {
             ReturnToPool();
             SpawnVFX(2.5f, other.gameObject);

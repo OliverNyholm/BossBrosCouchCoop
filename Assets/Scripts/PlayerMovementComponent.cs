@@ -19,6 +19,7 @@ public class PlayerMovementComponent : MovementComponent
 
     protected Vector3 myVelocity;
     private CameraXZTransform myCameraXZTransform;
+    private Transform myFocusStrafeTransform = null;
 
     protected bool myIsGrounded;
     public bool myIsFlying = false;
@@ -303,7 +304,10 @@ public class PlayerMovementComponent : MovementComponent
         if (myVelocity == Vector3.zero)
             return;
 
-        transform.rotation = Quaternion.LookRotation(myVelocity, Vector3.up);
+        if (myFocusStrafeTransform)
+            transform.LookAt(myFocusStrafeTransform, Vector3.up);
+        else
+            transform.rotation = Quaternion.LookRotation(myVelocity, Vector3.up);
     }
 
     public override bool IsMoving()
@@ -379,5 +383,11 @@ public class PlayerMovementComponent : MovementComponent
     public Vector3 GetPreviousGroundedPosition()
     {
         return myPreviousGroundPosition;
+    }
+
+    public void SetStrafeFocusTarget(Transform aTransform)
+    {
+        myFocusStrafeTransform = aTransform;
+        transform.LookAt(aTransform, Vector3.up);
     }
 }

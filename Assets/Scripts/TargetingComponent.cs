@@ -9,6 +9,9 @@ public class TargetingComponent : MonoBehaviour
 
     protected TargetHandler myTargetHandler;
 
+    public delegate void OnTargetChanged(GameObject aTarget);
+    public event OnTargetChanged myOnTargetChangedEvent;
+
     private void Start()
     {
         myTargetHandler = GameObject.Find("GameManager").GetComponent<TargetHandler>();
@@ -18,6 +21,8 @@ public class TargetingComponent : MonoBehaviour
     {
         Target = aTarget;
         GetComponent<UIComponent>().SetTargetHUD(aTarget);
+
+        myOnTargetChangedEvent?.Invoke(Target);
     }
 
     public virtual void SetSpellTarget(GameObject aTarget)

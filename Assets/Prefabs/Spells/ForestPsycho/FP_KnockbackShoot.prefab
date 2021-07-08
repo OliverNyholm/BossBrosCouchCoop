@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4822057767249848}
   - component: {fileID: 5087510029794061131}
-  - component: {fileID: 5874896598364928670}
   - component: {fileID: 3721983586347860365}
+  - component: {fileID: 6158354736486479129}
   m_Layer: 0
-  m_Name: StrafeShooting
+  m_Name: FP_KnockbackShoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,7 +129,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5874896598364928670
+--- !u!114 &3721983586347860365
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,30 +138,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 1385395385526390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc4cdd74eecef754895de569a6b803aa, type: 3}
+  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myQuickInfo: Trusty Blunderbluss
-  myTutorialInfo: Pull out the blunderbluss and start strafe moving, facing your
-    target. Will fire projectiles towards the target, damage anyone in the way
-  myName: Trusty Blunderbluss
-  myPoolSize: 1
+  myID: 134
+--- !u!114 &6158354736486479129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385395385526390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1315970e441e3fe4b879700c2df53c4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myQuickInfo: 
+  myTutorialInfo: 
+  myName: Knockback Shoot
+  myPoolSize: 3
   mySpellType: 0
-  mySpellTarget: 4
+  mySpellTarget: 0
   myAnimationType: 0
   myDamage: 0
   myHealValue: 0
   myResourceCost: 0
   myThreatModifier: 1
-  mySpeed: 0
+  mySpeed: 20
   myCastTime: 0
   myCooldown: 0
-  myRange: 100000
+  myRange: 0
   myStunDuration: 0
-  myCastbarColor: {r: 1, g: 0, b: 0.048223495, a: 1}
-  mySpellIcon: {fileID: 21300000, guid: e077b944f1f9aa54087ee54ec20dd064, type: 3}
-  myIsCastableWhileMoving: 1
-  mySpeedWhileCastingReducement: 0.1
+  myCastbarColor: {r: 0, g: 0, b: 0, a: 0}
+  mySpellIcon: {fileID: 21300000, guid: 841e3d7198f5598408fd3fb8727cd6af, type: 3}
+  myIsCastableWhileMoving: 0
+  mySpeedWhileCastingReducement: 0
   myCanCastOnSelf: 0
   myIsOnlySelfCast: 0
   myShouldRotate: 0
@@ -178,20 +190,14 @@ MonoBehaviour:
     mySpawnEvent: 
   mySpawnOnHitVFXOnSelf: 0
   mySpellVFX: {fileID: 0}
-  myProjectileSpell: {fileID: 1385395385526390, guid: bacb52eaa1930404faebec179e237a12,
-    type: 3}
-  myKnockbackBuff: {fileID: 0}
-  myShootInterval: 1
---- !u!114 &3721983586347860365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1385395385526390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2312271f8bc95d4485161fd5e593e47, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myID: 132
+  myIsCastManually: 1
+  myMaxStackCount: 1
+  myLoseStacksOneByOne: 0
+  myDuration: 0.1
+  mySpellOverTimeType: 0
+  mySpeedMultiplier: 0
+  myAttackSpeed: 0
+  myDamageIncrease: 0
+  myDamageMitigator: 0
+  myShieldValue: 0
+  myNumberOfTicks: 3

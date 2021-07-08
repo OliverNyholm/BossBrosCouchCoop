@@ -6,6 +6,8 @@ public class StrafeShooting : ToggleSpell
 {
     [SerializeField]
     private GameObject myProjectileSpell = null;
+    [SerializeField]
+    private GameObject myKnockbackBuff = null;
 
     [SerializeField]
     private float myShootInterval = 1.5f;
@@ -59,17 +61,26 @@ public class StrafeShooting : ToggleSpell
         base.Update();
 
         myShootTimer -= Time.deltaTime;
-        if (myShootTimer <= 0.0f)
-        {
-            myShootTimer += myShootInterval;
+        if (myShootTimer > 0.0f)
+            return;
 
-            PlayerCastingComponent playerCastingComponent = myParent.GetComponent<PlayerCastingComponent>();
-            if (playerCastingComponent)
+        myShootTimer += myShootInterval;
+
+        PlayerCastingComponent playerCastingComponent = myParent.GetComponent<PlayerCastingComponent>();
+        if (playerCastingComponent)
+        {
+            Spell projectile = playerCastingComponent.SpawnSpellExternal(myProjectileSpell.GetComponent<Spell>(), myParent.transform.position + Vector3.up * 1.0f);
+            if (!projectile)
             {
-                Spell projectile = playerCastingComponent.SpawnSpellExternal(myProjectileSpell.GetComponent<Spell>(), myParent.transform.position + Vector3.up * 1.0f);
-                projectile.SetParent(myParent);
-                projectile.transform.forward = myParent.transform.forward;
+                Debug.Log("Out of projectiles while shooting: " + name);
+                return;
             }
+
+            projectile.SetParent(myParent);
+            projectile.transform.forward = myParent.transform.forward;
+
+            if (myKnockbackBuff)
+                SpawnKnockbackBuff();
         }
     }
 
@@ -77,8 +88,32 @@ public class StrafeShooting : ToggleSpell
     {
         base.CreatePooledObjects(aPoolManager, aSpellMaxCount, aSpawner);
 
-        Spell projectile = myProjectileSpell.GetComponent<Spell>();
         if (myProjectileSpell)
+        {
+            Spell projectile = myProjectileSpell.GetComponent<Spell>();
             projectile.CreatePooledObjects(aPoolManager, projectile.myPoolSize, aSpawner);
+        }
+
+        if (myKnockbackBuff)
+        {
+            Spell knockback = myKnockbackBuff.GetComponent<Spell>();
+            knockback.CreatePooledObjects(aPoolManager, knockback.myPoolSize, aSpawner);
+        }
+    }
+
+    public void SpawnKnockbackBuff()
+    {
+        PoolManager poolManager = PoolManager.Instance;
+        GameObject spawnObject = poolManager.GetPooledObject(myKnockbackBuff.GetComponent<UniqueID>().GetID());
+        if (!spawnObject)
+            return;
+
+        spawnObject.transform.parent = myParent.transform;
+        spawnObject.transform.localPosition = Vector3.zero;
+
+        DragBuff knockback = spawnObject.GetComponent<DragBuff>();
+        knockback.SetParent(myParent);
+        knockback.SetTarget(myParent);
+        knockback.SetDragDirection(-myParent.transform.forward);
     }
 }

@@ -17,10 +17,13 @@ public class TutorialCompletion : MonoBehaviour
     protected TutorialHighlightManager myHighlightManager;
     protected Camera myMainCamera;
 
-    private bool myHasStarted = false;
+    protected bool myHasStarted = false;
 
     protected delegate IEnumerator FinishRoutine();
     protected FinishRoutine myFinishRoutine;
+
+    public delegate void DelegateTutorialCompleted();
+    public event DelegateTutorialCompleted OnTutorialCompleted;
 
     protected virtual void Awake()
     {
@@ -51,6 +54,8 @@ public class TutorialCompletion : MonoBehaviour
 
     protected virtual void EndTutorial()
     {
+        OnTutorialCompleted?.Invoke();
+
         if (!myGate)
             return;
 

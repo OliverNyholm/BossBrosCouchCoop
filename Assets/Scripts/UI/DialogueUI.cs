@@ -12,16 +12,21 @@ public class DialogueUI : MonoBehaviour
     private void Awake()
     {
         myText = GetComponent<TextMeshProUGUI>();
+        this.enabled = false;
+        myText.enabled = false;
     }
 
     private void Update()
     {
-        myDuration -= Time.deltaTime;
-        if (myDuration <= 0.0f)
+        if (myDuration > 0.0f)
         {
-            this.enabled = false;
-            myText.enabled = false;
-        }    
+            myDuration -= Time.deltaTime;
+            if (myDuration <= 0.0f)
+            {
+                this.enabled = false;
+                myText.enabled = false;
+            }    
+        }
     }
 
     public void SetDialogue(DialogueData aDialogueData, Color aColor)

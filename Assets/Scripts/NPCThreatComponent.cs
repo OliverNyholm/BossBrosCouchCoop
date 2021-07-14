@@ -158,7 +158,7 @@ public class NPCThreatComponent : MonoBehaviour
                 AddThreat(1000, aTaunterID, true);
                 EventOnTaunted?.Invoke();
 
-                if (!ShouldIgnoreTarget(Players[myTargetIndex]))
+                if (myTargetIndex != -1 && !ShouldIgnoreTarget(Players[myTargetIndex]))
                 {
                     myTargetIndex = index;
                     SetTarget(myTargetIndex);

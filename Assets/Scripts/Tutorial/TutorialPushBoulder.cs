@@ -48,6 +48,7 @@ public class TutorialPushBoulder : TutorialCompletion
 
     private void OnTargetDied()
     {
+        EndTutorial();
         myTargetHandler.RemoveEnemy(myBoulder);
         myBoulder.GetComponentInChildren<TutorialBoulder>().DisableBoulder();
         StartCoroutine(BoulderFlyingCoroutine());

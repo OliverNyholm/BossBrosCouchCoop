@@ -1281,7 +1281,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4ab96d49cf9927a47abc165f26aebb20, type: 2}
+  - {fileID: 2100000, guid: 7d3416cec008bb84db78a3fc6f46b6a1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1616,7 +1616,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4141026777950717591}
-  m_LocalRotation: {x: -0, y: -0.9992544, z: -0, w: 0.0386102}
+  m_LocalRotation: {x: 0, y: -0.9992542, z: 0, w: 0.038614616}
   m_LocalPosition: {x: -62.79, y: 4.9990854, z: -100.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1671,17 +1671,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myWaypoints:
   - myTargetTransform: {fileID: 0}
+    myActivateTargetTransform: {fileID: 0}
     myTutorial: {fileID: 0}
     myActivateHitbox: {fileID: 0}
     myGuideData: {fileID: 11400000, guid: 9de14404de4a65f4fb76a5e0436c0de1, type: 2}
   - myTargetTransform: {fileID: 0}
+    myActivateTargetTransform: {fileID: 0}
     myTutorial: {fileID: 0}
     myActivateHitbox: {fileID: 0}
     myGuideData: {fileID: 11400000, guid: af534a662e455f14e9cc33aed28abb3a, type: 2}
   - myTargetTransform: {fileID: 0}
+    myActivateTargetTransform: {fileID: 0}
     myTutorial: {fileID: 0}
     myActivateHitbox: {fileID: 0}
     myGuideData: {fileID: 11400000, guid: 9cf02edfd1b4e8640ad841f3d22fe050, type: 2}
+  - myTargetTransform: {fileID: 0}
+    myActivateTargetTransform: {fileID: 0}
+    myTutorial: {fileID: 0}
+    myActivateHitbox: {fileID: 0}
+    myGuideData: {fileID: 11400000, guid: e03a70775292a5841870e828d5ad7a7b, type: 2}
 --- !u!114 &925484000049524971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1707,7 +1715,7 @@ NavMeshAgent:
   m_Speed: 12
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 800
+  m_AngularSpeed: 720
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1

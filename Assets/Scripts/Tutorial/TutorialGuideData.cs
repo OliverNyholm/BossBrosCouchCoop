@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Class", menuName = "Scriptables/TutorialGuideData")]
+[CreateAssetMenu(fileName = "TutorialGuideData", menuName = "Scriptables/TutorialGuideData")]
 public class TutorialGuideData : ScriptableObject
 {
     public DialogueData myOnActivate = null;

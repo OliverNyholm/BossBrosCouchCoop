@@ -9,7 +9,7 @@ public class TutorialOldGnome : MonoBehaviour
     private DialogueCanvas myDialogueCanvas = null;
 
     [System.Serializable]
-    private struct TutorialWaypoints
+    public struct TutorialWaypoints
     {
         public Transform myTargetTransform;
         public Transform myActivateTargetTransform;
